@@ -5,7 +5,7 @@
 
 // Check what faire taxonomy we need to display
 $current_faire_slug = get_post_meta( $post->ID, '_faire-tax-archive', true );
-$faire = ( ! empty( $current_faire_slug ) || $current_faire_slug != 'none' ) ? wpcom_vip_get_term_by( 'slug', sanitize_text_field( $current_faire_slug ), 'faire' ) : '';
+$faire = ( ! empty( $current_faire_slug ) || $current_faire_slug != 'none' ) ? get_term_by( 'slug', sanitize_text_field( $current_faire_slug ), 'faire' ) : '';
 
 get_header(); ?>
 <div class="clear"></div>

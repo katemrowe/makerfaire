@@ -40,8 +40,9 @@ class Make_Instagram {
 		$url = add_query_arg( $params, $base_url );
 
 		// Request the data
-		$json = wpcom_vip_file_get_contents( $url );
-
+		$response = wp_remote_get( $url );
+		$json = wp_remote_retrieve_body( $response );
+		
 		// Parse the JSON
 		$data = json_decode( $json );
 

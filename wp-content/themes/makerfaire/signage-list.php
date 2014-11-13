@@ -14,7 +14,7 @@ if ( isset( $_GET['day'] ) )
 	$day = sanitize_title_for_query( $_GET['day'] );
 
 if ( ! empty( $location ) )
-	$term = wpcom_vip_get_term_by( 'name', $location, 'location' );
+	$term = get_term_by( 'name', $location, 'location' );
 
 /**
  * Get our schedule stuff

@@ -26,12 +26,12 @@ require_once( TEMPLATEPATH. '/plugins/status-board/status-board.php' );
 
 // Current Faire Page
 require_once( TEMPLATEPATH. '/plugins/admin-pages/current-faire/current-faire.php');
-/*
-// Sponsor Carousel
-include_once dirname( __FILE__ ) . '/plugins/public-pages/sponsor.php';
 
 // Sponsor Carousel
-include_once dirname( __FILE__ ) . '/plugins/instagram/instagram.php';
+include_once TEMPLATEPATH. '/plugins/public-pages/sponsor.php';
+
+// Sponsor Carousel
+include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
 
 // Post Locker
 include_once dirname( __FILE__ ) . '/plugins/hide-post-locker/hide-post-locker.php';
@@ -47,7 +47,7 @@ include_once dirname( __FILE__ ) . '/api/admin-settings.php';
 
 // Load the functions for the Applications API
 include_once dirname( __FILE__ ) . '/api/v2/functions.php';
-*/
+
 
 require_once( 'taxonomies/type.php' );
 require_once( 'taxonomies/sponsor-category.php' );
@@ -145,7 +145,8 @@ function mf_clean_content( $content, $report = false ) {
 
 function makerfaire_get_news() {
 	$url = 'http://makezine.com/maker-faire-news/';
-	$output = wp_remote_get( $url, 3, 60,  array( 'obey_cache_control_header' => false ) );
+	$response = wp_remote_get( $url, 3, 60,  array( 'obey_cache_control_header' => false ) );
+	$output = wp_remote_retrieve_body( $response );
 	return $output;
 }
 
@@ -153,7 +154,8 @@ add_shortcode('news', 'makerfaire_get_news');
 
 function makerfaire_get_beat() {
 	$url = 'http://makezine.com/beat-reports/';
-	$output = wp_remote_get( $url, 3, 60*60,  array( 'obey_cache_control_header' => false ) );
+	$response = wp_remote_get( $url, 3, 60*60,  array( 'obey_cache_control_header' => false ) );
+	$output = wp_remote_retrieve_body( $response );
 	return $output;
 }
 
@@ -162,14 +164,16 @@ add_shortcode('mf_beat_reports', 'makerfaire_get_beat');
 function makerfaire_sidebar_news() {
 
 	$url = 'http://makezine.com/maker-faire-news-sidebar/';
-	$output = wpcom_vip_file_get_contents( $url, 3, 60*60,  array( 'obey_cache_control_header' => false ) );
+	$response = wp_remote_get( $url, 3, 60*60,  array( 'obey_cache_control_header' => false ) );
+	$output = wp_remote_retrieve_body( $response );
 	return $output;
 
 }
 
 function makerfaire_get_slider() {
 	$url = 'http://makezine.com/maker-faire-featured-slider/';
-	$output = wpcom_vip_file_get_contents( $url, 3, 60,  array( 'obey_cache_control_header' => false ) );
+	$response = wp_remote_get( $url, 3, 60,  array( 'obey_cache_control_header' => false ) );
+	$output = wp_remote_retrieve_body( $response );
 	return $output;
 }
 add_shortcode( 'mf-featured-slider', 'makerfaire_get_slider' );
@@ -324,7 +328,7 @@ function make_modal_builder( $atts, $content = null ) {
 	if ( wpcom_vip_is_valid_domain( $embed,  array('fora.tv', 'ustream.com', 'ustream.tv' ) ) ) {
 		$output .= '<iframe src="' . esc_url( $embed ) . '" width="530" height="320" frameborder="0"></iframe>';
 	} else {
-		$output .= ( !empty( $embed ) ) ? wpcom_vip_wp_oembed_get( esc_url( $embed ), array( 'width' => 530 ) ) : '';
+		$output .= ( !empty( $embed ) ) ? wp_oembed_get( esc_url( $embed ), array( 'width' => 530 ) ) : '';
 	}
 	$output .= 			wp_kses_post( $content );
 	$output .= '	</div>';
@@ -566,7 +570,11 @@ function mf_send_hipchat_notification( $message = 'Default Message', $from = 'Ma
 	);
 
 	$url = add_query_arg( $opts, $base );
-	$json = wpcom_vip_file_get_contents( $url );
+	//Move to wp_remote_get 
+	$request =   wp_remote_get($url);
+	// Get the body of the response
+	$json = wp_remote_retrieve_body( $request );
+	//$json = wpcom_vip_file_get_contents( $url );
 }
 
 // Redirect mobile users on iOS or Android to their app stores if set.

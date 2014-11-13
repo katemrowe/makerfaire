@@ -12,7 +12,7 @@
 
 				<h1 class="search-title">Search Results</h1>
 				<?php if ( isset( $_GET['faire'] ) && ! empty( $_GET['faire'] ) ) :
-					$faire_obj = wpcom_vip_get_term_by( 'slug', sanitize_text_field( $_GET['faire'] ), 'faire' ); ?>
+					$faire_obj = get_term_by( 'slug', sanitize_text_field( $_GET['faire'] ), 'faire' ); ?>
 					<h3>Results for '<?php echo esc_html( $faire_obj->name ); ?>'</h3>
 					<p><a href="<?php echo esc_url( '/?s=' . esc_attr( $_GET['s'] ) . '&post_type=mf_form' ); ?>">Search all Maker Faire events</a></p>
 				<?php endif; ?>

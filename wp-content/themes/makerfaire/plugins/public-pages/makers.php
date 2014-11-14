@@ -175,7 +175,7 @@ function mf_public_blurb( $json ) {
 			echo ( !empty( $json->video ) ) ? '<a class="btn btn-info" href="'. esc_url( $json->video ) . '"><i class="icon-facetime-video icon-white"></i> Video</a>' : null ;
 			if (!empty( $json->video ) ) {
 				echo '<hr />';
-				echo wpcom_vip_wp_oembed_get( esc_url( $json->video ), array( 'width'=>620 ) );
+				echo wp_oembed_get( esc_url( $json->video ), array( 'width'=>620 ) );
 			}
 			echo '<hr>';
 		}
@@ -197,13 +197,13 @@ function mf_public_blurb( $json ) {
 				echo '<div class="media">';
 				if ( is_array( $json->presenter_photo ) ) {
 					if ( !empty( $json->presenter_photo[ $i ] ) && strlen( $json->presenter_photo[ $i ] ) > 1 ) {
-						echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
 					} elseif (isset( $json->presenter_email[ $i ] )) {
 						echo get_avatar( $json->presenter_email[ $i ], 130 );
 					}
 				} else {
 					if ( !empty( $json->presenter_photo ) && strlen( $json->presenter_photo ) > 1 ) {
-						echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
 					} elseif (isset( $json->presenter_email[ $i ] )) {
 						echo get_avatar( $json->presenter_email[ $i ], 130 );
 					}

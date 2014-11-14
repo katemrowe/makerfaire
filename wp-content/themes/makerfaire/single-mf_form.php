@@ -19,8 +19,7 @@ get_header(); ?>
 					$content = get_the_content();
 					// Adding the Ohm for one Maker... Will probably pull this out at somepoint.
 					$json =  stripslashes(urldecode( $content )) ;
-					print_r($json);
-					$json = json_decode($json,true);
+					$json = json_decode($json);
 				?>
 
 				<article <?php post_class(); ?>>

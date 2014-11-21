@@ -56,7 +56,7 @@ if ( $type == 'entity' ) {
 
 		// Application Thumbnail and Large Images
 		$app_image = mf_get_the_maker_image( $app_data );
-		$app['thumb_img_url'] = esc_url( wpcom_vip_get_resized_remote_image_url( $app_image, '80', '80' ) );
+		$app['thumb_img_url'] = esc_url( wp_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$app['large_image_url'] = esc_url( $app_image );
 		// Should actually be this... Adding it in for the future.
 		$app['large_img_url'] = esc_url( $app_image );

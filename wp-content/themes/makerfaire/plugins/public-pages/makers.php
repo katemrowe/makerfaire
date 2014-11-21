@@ -69,7 +69,7 @@ function mf_public_blurb( $json ) {
 		if (!empty($json->project_photo)) {
 			$url = $json->project_photo;
 			$url = add_query_arg( 'w', 610, $url );
-			echo '<img src="'. wpcom_vip_get_resized_remote_image_url( $url, 610, 610 ) . '" class="thumbnail" />';
+			echo '<img src="'. wp_get_resized_remote_image_url( $url, 610, 610 ) . '" class="thumbnail" />';
 		}
 		echo '<hr>';
 
@@ -103,7 +103,7 @@ function mf_public_blurb( $json ) {
 				echo '<h3>About the Maker</h3>';
 				echo '<div class="media">';
 				if (!empty($json->maker_photo)) {
-					echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->maker_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
+					echo '<img src="' . wp_get_resized_remote_image_url( $json->maker_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
 				}
 				echo '<div class="media-body">';
 				echo '<h4>' . wp_kses_post( $json->maker_name ) . '</h4>';
@@ -119,7 +119,7 @@ function mf_public_blurb( $json ) {
 				echo '<h3>Group Association</h3>';
 				echo '<div class="media">';
 				if (!empty($json->group_photo)) {
-					echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+					echo '<img src="' . wp_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
 				}
 				echo '<div class="media-body">';
 				echo '<h4>' . wp_kses_post( $json->group_name ) . '</h4>';
@@ -137,7 +137,7 @@ function mf_public_blurb( $json ) {
 				foreach ($makers as $maker) {
 					echo '<div class="media">';
 					if ( !empty( $json->m_maker_photo[ $i ] ) && strlen( $json->m_maker_photo[ $i ] ) > 1 ) {
-						echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->m_maker_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . wp_get_resized_remote_image_url( $json->m_maker_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
 					} elseif (isset( $json->m_maker_email[ $i ] ) ) {
 						echo get_avatar( $json->m_maker_email[ $i ], 130 );
 					}
@@ -223,7 +223,7 @@ function mf_public_blurb( $json ) {
 			echo '<h3>Group Association</h3>';
 			echo '<div class="media">';
 			if (!empty($json->group_photo)) {
-				echo '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+				echo '<img src="' . wp_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
 			}
 			echo '<div class="media-body">';
 			echo '<h4>' . wp_kses_post( $json->group_name ) . '</h4>';
@@ -297,7 +297,7 @@ function mf_public_blurb( $json ) {
 					$json = json_decode( html_entity_decode( mf_convert_newlines( str_replace( array("\'", "u03a9"), array("'", '&#8486;'), $the_post->post_content ), "\n"), ENT_COMPAT, 'utf-8' ) );
 					echo  '<div class="media">';
 					if ( !empty( $json->maker_photo ) ) {
-						echo  '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->project_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
+						echo  '<img src="' . wp_get_resized_remote_image_url( $json->project_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
 					}
 					echo  '<div class="media-body">';
 					echo  ( !empty( $json->project_name ) ) ? '<h4><a href="' . get_permalink( $the_post->ID ) . '">' . wp_kses_post( $json->project_name ) . '</a></h4>' : '' ;
@@ -336,22 +336,22 @@ function mf_featured_makers( $atts ) {
 		}
 		$output .= '<a href="' . get_permalink( get_the_ID() ) . '">';
 		if ( !empty( $json->presenter_photo[0] ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo[0], 620, 400, true ) . '" class="Test"/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo[0], 620, 400, true ) . '" class="Test"/>';
 			$output .= '<!--Presenter Photo Array-->';
 		} elseif (!empty( $json->project_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->project_photo, 620, 400, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->project_photo, 620, 400, true ) . '" class="" />';
 			$output .= '<!--Project Photo-->';
 		} elseif ( !empty( $json->performer_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->performer_photo, 620, 400, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->performer_photo, 620, 400, true ) . '" class="" />';
 			$output .= '<!--Performer Photo-->';
 		} elseif ( !empty( $json->maker_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->maker_photo, 620, 400, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->maker_photo, 620, 400, true ) . '" class="" />';
 			$output .= '<!--Maker Photo-->';
 		} elseif ( !empty( $json->presentation_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presentation_photo, 620, 400, true ) . '" class=""/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presentation_photo, 620, 400, true ) . '" class=""/>';
 			$output .= '<!--Presentation Photo-->';
 		} elseif ( isset( $json->presenter_photo) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo, 620, 400, true ) . '" class=""/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo, 620, 400, true ) . '" class=""/>';
 			$output .= '<!--Presenter Photo-->';
 		}
 		$output .= '<div class="carousel-caption">';
@@ -385,13 +385,13 @@ add_filter( 'pre_get_posts', 'mf_add_custom_types' );
 
 function mf_the_maker_image( $json ) {
 	if (!empty($json->presentation_photo)) {
-		echo '<img src="'. wpcom_vip_get_resized_remote_image_url( $json->presentation_photo, 140, 140 ) . '" class="" />';
+		echo '<img src="'. wp_get_resized_remote_image_url( $json->presentation_photo, 140, 140 ) . '" class="" />';
 	}
 	if (!empty($json->project_photo)) {
-		echo '<img src="'. wpcom_vip_get_resized_remote_image_url( $json->project_photo, 140, 140 ) . '" class="" />';
+		echo '<img src="'. wp_get_resized_remote_image_url( $json->project_photo, 140, 140 ) . '" class="" />';
 	}
 	if (!empty($json->performer_photo)) {
-		echo '<img src="'. wpcom_vip_get_resized_remote_image_url( $json->performer_photo, 140, 140 ) . '" class="" />';
+		echo '<img src="'. wp_get_resized_remote_image_url( $json->performer_photo, 140, 140 ) . '" class="" />';
 	}
 }
 
@@ -612,22 +612,22 @@ function mf_featured_makers_home() {
 		}
 		$output .= '<a href="' . get_permalink( get_the_ID() ) . '">';
 		if ( !empty( $json->presenter_photo[0] ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo[0], 620, 230, true ) . '" class="Test"/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo[0], 620, 230, true ) . '" class="Test"/>';
 			$output .= '<!--Presenter Photo Array-->';
 		} elseif (!empty( $json->project_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->project_photo, 620, 230, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->project_photo, 620, 230, true ) . '" class="" />';
 			$output .= '<!--Project Photo-->';
 		} elseif ( !empty( $json->performer_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->performer_photo, 620, 230, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->performer_photo, 620, 230, true ) . '" class="" />';
 			$output .= '<!--Performer Photo-->';
 		} elseif ( !empty( $json->maker_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->maker_photo, 620, 230, true ) . '" class="" />';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->maker_photo, 620, 230, true ) . '" class="" />';
 			$output .= '<!--Maker Photo-->';
 		} elseif ( !empty( $json->presentation_photo ) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presentation_photo, 620, 230, true ) . '" class=""/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presentation_photo, 620, 230, true ) . '" class=""/>';
 			$output .= '<!--Presentation Photo-->';
 		} elseif ( isset( $json->presenter_photo) ) {
-			$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo, 620, 230, true ) . '" class=""/>';
+			$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo, 620, 230, true ) . '" class=""/>';
 			$output .= '<!--Presenter Photo-->';
 		}
 		$output .= '</a></div>';
@@ -733,12 +733,12 @@ function mf_schedule( $atts ) {
 			} elseif ( isset( $json->presenter_photo[0] ) && !is_array( $json->presenter_photo[0] ) && strlen( $json->presenter_photo[0] ) > 5 ) {
 				$output .= '<div class="pull-left thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
-				$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
+				$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			} else {
 				$output .= '<div class="pull-left thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
-				$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
+				$output .= '<img src="' . wp_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			}
 		}
@@ -827,12 +827,12 @@ function mf_schedule( $atts ) {
 			} elseif ( isset( $json->presenter_photo[0] ) && !is_array( $json->presenter_photo[0] ) && strlen( $json->presenter_photo[0] ) > 5 ) {
 				$output .= '<div class="pull-left thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
-				$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
+				$output .= '<img src="' . wp_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			} else {
 				$output .= '<div class="pull-left thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
-				$output .= '<img src="' . wpcom_vip_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
+				$output .= '<img src="' . wp_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			}
 		}
@@ -1174,13 +1174,13 @@ function mf_display_schedule_by_location( $atts ) {
 									if ( has_post_thumbnail( absint( $event_id ) ) ) {
 										$output .= get_the_post_thumbnail( absint( $event_id ), 'schedule-thumb' );
 									} elseif ( $app->form_type == 'performer' || $app->form_type == 'exhibit' ) {
-										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wpcom_vip_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }, 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
+										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wp_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }, 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
 									}
 									elseif ( ! empty( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }[0] ) ) {
-										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wpcom_vip_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }[0], 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
+										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wp_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }[0], 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
 									}
 									else {
-										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wpcom_vip_get_resized_remote_image_url( mf_get_the_maker_image( $app ), 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
+										$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . wp_get_resized_remote_image_url( mf_get_the_maker_image( $app ), 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
 									}
 								$output .= '</div>';
 							}

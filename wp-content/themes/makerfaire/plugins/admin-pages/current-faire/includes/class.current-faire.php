@@ -533,7 +533,7 @@
 		function check_screen_options( $option, $metabox = false, $default = false ) {
 
 			$user_id = get_current_user_id();
-			$screen_options = get_user_attribute( $user_id, 'metaboxhidden_current_faire', true );
+			$screen_options = 'true'; // get_user_attribute( $user_id, 'metaboxhidden_current_faire', true );
 			$output = '';
 
 			// Let's make sure we have data in DB before requesting it. If there isn't, setup the defaults.
@@ -792,7 +792,7 @@
 										echo '<tr id="post-' . absint( $post->ID ) . '" valign="top">';
 										echo '<td class="post_photo column-post_photo"' . $this->check_screen_options( 'post_photo', false, true ) . '>';
 											if ( ! empty( $app_image ) )
-												echo '<img src="' . wpcom_vip_get_resized_remote_image_url( esc_url( $app_image ), 130, 130, true ) . '" width="130" height="130">';
+												echo '<img src="' . wp_get_resized_remote_image_url( esc_url( $app_image ), 130, 130, true ) . '" width="130" height="130">';
 										echo '</td>';
 										echo '<td class="post_id column-post_id"' . $this->check_screen_options( 'post_id', false, true ) . '>' . $post_id . '</td>';
 										echo '<td class="post_status column-post_status"' . $this->check_screen_options( 'post_status', false, true ) . '>' . $post_status . '</td>';

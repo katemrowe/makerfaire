@@ -871,3 +871,7 @@ ul#horizontal-list li {
 .blue a {
   color: #00adef;
 }
+
+.make-bootstrap-dialog button{
+  font-size: 13px;
+}

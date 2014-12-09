@@ -7,7 +7,7 @@ define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 //require_once( WP_CONTENT_DIR . '/themes/vip/plugins/vip-init.php' );
 
 // Include Gigya plugin
-require_once( TEMPLATEPATH. '/plugins/gigya/gigya.php' );
+//require_once( TEMPLATEPATH. '/plugins/gigya/gigya.php' );
 
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
@@ -101,6 +101,7 @@ if (!(is_admin() )) {
 function make_enqueue_jquery() {
 	// Styles
 	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
+	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
 	wp_enqueue_style( 'ytv', get_stylesheet_directory_uri() . '/css/ytv.css' );
 
@@ -110,6 +111,9 @@ function make_enqueue_jquery() {
 	wp_enqueue_script( 'make-countdown', get_stylesheet_directory_uri() . '/js/jquery.countdown.js', array( 'jquery' ) );
 	wp_enqueue_script( 'jquery_cookie',  get_stylesheet_directory_uri() . '/js/jquery.cookie.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'ytv', get_stylesheet_directory_uri() . '/js/ytv.js', array( 'jquery' ) );
+	wp_enqueue_script( 'make-bootstrapdialog',  get_stylesheet_directory_uri() . '/js/bootstrap-dialog.min.js', array( 'jquery' ), null );
+	wp_enqueue_script( 'make-login-dialog',  get_stylesheet_directory_uri() . '/js/login.js', array( 'jquery' ), null );
+	
 
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );

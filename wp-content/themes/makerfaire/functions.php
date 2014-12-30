@@ -767,3 +767,18 @@ function wp_get_resized_remote_image_url( $url, $width, $height, $escape = true 
 
 	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
 }
+
+add_filter("gform_column_input_content_6_108_10", "change_column_content");
+function change_column_content($input, $input_info, $field, $text, $value, $form_id) {
+	$tabindex = GFCommon::get_tabindex() ;
+	$input_field_name = 'input_' . $field["id"] . '[]';
+	$new_input = '<input type="file" name="' . $input_field_name . '" ' . $tabindex . ' class="YOUR_CSS_CLASS_GOES_HERE" />';
+	return $new_input;
+	
+}
+
+add_filter("gform_column_input_6_108_1", "set_column");
+function set_column($input_info, $field, $column, $value, $form_id){
+	return array("type" => "select", "choices" => "Lead Presenter, Co-Presenter, Panel Facilitator, Panelist");
+}
+

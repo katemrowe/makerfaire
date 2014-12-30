@@ -4,10 +4,10 @@
 readyclass.css
 Gravity Forms Ready Class Pre-Set Styles
 http://www.gravityforms.com
-updated: December 12, 2013 12:14 PM
+updated: October 3, 2014 4:31 PM
 
 Gravity Forms is a Rocketgenius project
-copyright 2013 Rocketgenius Inc.
+copyright 2008-2014 Rocketgenius Inc.
 http: //www.rocketgenius.com
 this may not be redistributed without the
 express written permission of the author.
@@ -112,7 +112,7 @@ to no.
 
 .gform_wrapper .top_label li.gfield.gfield_error.gf_left_half,
 .gform_wrapper .top_label li.gfield.gfield_error.gf_right_half {
-	width: 46%;
+	width: 47.20%;
 }
 
 .gform_wrapper .top_label li.gfield.gfield_error.gf_right_half {

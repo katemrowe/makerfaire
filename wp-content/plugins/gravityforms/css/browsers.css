@@ -4,10 +4,10 @@
 browsers.css
 Gravity Forms Browser-Specific CSS
 http://www.gravityforms.com
-updated: June 3, 2013 5:39 PM
+updated: October 3, 2014 4:54 PM
 
 Gravity Forms is a Rocketgenius project
-copyright 2013 Rocketgenius Inc.
+copyright 2008-2014 Rocketgenius Inc.
 http: //www.rocketgenius.com
 this may not be redistributed without the
 express written permission of the author.
@@ -76,6 +76,16 @@ to no.
 	margin-top: 4px;
 }
 
+.gform_wrapper.gf_browser_chrome ul.gform_fields li.gfield div.ginput_complex span.ginput_left select,
+.gform_wrapper.gf_browser_chrome ul.gform_fields li.gfield div.ginput_complex span.ginput_right select,
+.gform_wrapper.gf_browser_chrome ul.gform_fields li.gfield select {
+	margin-left: 1px;
+}
+
+.gform_wrapper.gf_browser_chrome ul.gform_fields li.gfield input[type=radio] {
+	margin-left: 1px;
+}
+
 /* Firefox specific rules ------------------------------------------------------*/
 
 .gform_wrapper.gf_browser_gecko ul li:before,
@@ -88,15 +98,17 @@ to no.
 .gform_wrapper.gf_browser_gecko ul.gform_fields li.gfield div.ginput_complex span.ginput_left select,
 .gform_wrapper.gf_browser_gecko ul.gform_fields li.gfield div.ginput_complex span.ginput_right select,
 .gform_wrapper.gf_browser_gecko ul.gform_fields li.gfield select {
-	margin-left: 2px;
+	margin-left: 1px;
 }
 
 .gform_wrapper.gf_browser_gecko .ginput_complex .ginput_cardinfo_left select.ginput_card_expiration.ginput_card_expiration_month {
-	margin-right: 2px;
+	margin-right: 1px;
 }
 
-.gform_wrapper.gf_browser_gecko select {
-	padding: 5px 0 0 0;
+.gform_wrapper.gf_browser_gecko .gfield_checkbox li input[type=checkbox],
+.gform_wrapper.gf_browser_gecko .gfield_radio li input[type=radio],
+.gform_wrapper.gf_browser_gecko .gfield_checkbox li input {
+	margin-top: 5px;
 }
 
 /* Opera specific rules ------------------------------------------------------*/

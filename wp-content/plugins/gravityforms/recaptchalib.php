@@ -134,11 +134,14 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false, $lang='en
 /**
  * A ReCaptchaResponse is returned from recaptcha_check_answer()
  */
+if( ! class_exists( 'ReCaptchaResponse' )){
+
 class ReCaptchaResponse {
-        var $is_valid;
-        var $error;
+	var $is_valid;
+	var $error;
 }
 
+}
 
 /**
   * Calls an HTTP POST function to verify if the user's guess was correct

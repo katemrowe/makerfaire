@@ -782,7 +782,7 @@ function set_column($input_info, $field, $column, $value, $form_id){
 	return array("type" => "select", "choices" => "Lead Presenter, Co-Presenter, Panel Facilitator, Panelist");
 }
 
-add_filter("gform_column_input_7_108_1", "set_column");
-function set_column($input_info, $field, $column, $value, $form_id){
+add_filter("gform_column_input_7_108_1", "set_column_7_108_1");
+function set_column_7_108_1($input_info, $field, $column, $value, $form_id){
 	return array("type" => "select", "choices" => "Lead Presenter, Co-Presenter, Panel Facilitator, Panelist");
 }

@@ -48,6 +48,8 @@ include_once dirname( __FILE__ ) . '/api/admin-settings.php';
 // Load the functions for the Applications API
 include_once dirname( __FILE__ ) . '/api/v2/functions.php';
 
+// Sponsor Carousel
+include_once TEMPLATEPATH. '/classes/gw-multi-page-navigation.php';
 
 require_once( 'taxonomies/type.php' );
 require_once( 'taxonomies/sponsor-category.php' );
@@ -113,6 +115,7 @@ function make_enqueue_jquery() {
 	wp_enqueue_script( 'ytv', get_stylesheet_directory_uri() . '/js/ytv.js', array( 'jquery' ) );
 	wp_enqueue_script( 'make-bootstrapdialog',  get_stylesheet_directory_uri() . '/js/bootstrap-dialog.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'make-login-dialog',  get_stylesheet_directory_uri() . '/js/login.js', array( 'jquery' ), null );
+	wp_enqueue_script( 'make-confirmation-dialog',  get_stylesheet_directory_uri() . '/js/confirmation.js', array( 'jquery' ), null );
 	
 
 }
@@ -768,21 +771,9 @@ function wp_get_resized_remote_image_url( $url, $width, $height, $escape = true 
 	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
 }
 
-add_filter("gform_column_input_content_6_108_10", "change_column_content");
-function change_column_content($input, $input_info, $field, $text, $value, $form_id) {
-	$tabindex = GFCommon::get_tabindex() ;
-	$input_field_name = 'input_' . $field["id"] . '[]';
-	$new_input = '<input type="file" name="' . $input_field_name . '" ' . $tabindex . ' class="YOUR_CSS_CLASS_GOES_HERE" />';
-	return $new_input;
-	
+/* Gravity Forms Specific Section*/
+function add_grav_forms(){
+	$role = get_role('editor');
+	$role->add_cap('gform_full_access');
 }
-
-add_filter("gform_column_input_6_108_1", "set_column");
-function set_column($input_info, $field, $column, $value, $form_id){
-	return array("type" => "select", "choices" => "Lead Presenter, Co-Presenter, Panel Facilitator, Panelist");
-}
-
-add_filter("gform_column_input_7_108_1", "set_column_7_108_1");
-function set_column_7_108_1($input_info, $field, $column, $value, $form_id){
-	return array("type" => "select", "choices" => "Lead Presenter, Co-Presenter, Panel Facilitator, Panelist");
-}
+add_action('admin_init','add_grav_forms');

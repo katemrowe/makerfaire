@@ -1,0 +1,35 @@
+
+# Changelog
+
+## 1.0.2
+
+    - Updated for Gravity Form 1.9 release
+    - Fixed strict standards notice where non-variable was passed by reference
+
+## 1.0.1
+
+    - Fixed issue where {product_summary} merge tag was generating notices and interfering with merge tags for calculation-enabled product fields
+
+## 1.0
+
+    - Ready to rock!
+    - Added support for processing merge tags in field labels; must be enabled by 'gppc_replace_merge_tags_in_labels' filter
+    - Added has_any_merge_tag() function to make pre_render code more readable
+
+## 1.0.beta2.3
+
+    - Added back {product_summary} and new alias {order_summary} for showing cleaner version of {pricing_fields} data
+
+## 1.0.beta2.2
+
+    - Updated single merge tag support for File Upload fields:
+        + {Label:Id} now gives the file URL
+        + {Label:Id:link} now gives a link to the file URL with the file name as the label
+
+## 1.0.beta2.1
+
+    - Added support for displaying signature fields in submission preview
+
+## 1.0.beta2.0
+
+    - Added support for using merge tags as dynamic population parameters ([based on this snippet](http://gravitywiz.com/use-merge-tags-as-dynamic-population-parameters/))

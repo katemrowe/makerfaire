@@ -50,6 +50,7 @@ include_once dirname( __FILE__ ) . '/api/v2/functions.php';
 
 // Sponsor Carousel
 include_once TEMPLATEPATH. '/classes/gw-multi-page-navigation.php';
+include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
 
 require_once( 'taxonomies/type.php' );
 require_once( 'taxonomies/sponsor-category.php' );

@@ -2,7 +2,7 @@ jQuery( document ).ready(function() {
 
 	 jQuery(".checkbox_makerfaire_plans input").on("click", function() {
 	    var value = jQuery(this).attr("value");
-	 	if (value=='Selling at Maker Faire' || value=='Promoting a product or service')
+	 	if (value=='Selling at Maker Faire [Commercial Maker]' || value=='Promoting a product or service [Commercial Maker]')
 			{
 	 			var checked1=jQuery('input[value="Selling at Maker Faire [Commercial Maker]"]').attr("checked");
 				var checked2=jQuery('input[value="Promoting a product or service [Commercial Maker]"]').attr("checked");

@@ -784,7 +784,7 @@ function add_grav_forms(){
 add_action('admin_init','add_grav_forms');
 
 add_filter( 'gform_next_button', 'gform_next_button_markup' );
-function gform_next_button_markup( $next_button, $form ) {
+function gform_next_button_markup( $next_button ) {
 
 	$next_button = '<span class="container-gnb">'. $next_button . '</span>';
 
@@ -792,7 +792,7 @@ function gform_next_button_markup( $next_button, $form ) {
 }
 
 add_filter( 'gform_previous_button', 'gform_previous_button_markup' );
-function gform_previous_button_markup( $previous_button, $form ) {
+function gform_previous_button_markup( $previous_button ) {
 
 	$previous_button = '<span class="container-gpb">'. $previous_button . '</span>';
 
@@ -800,7 +800,7 @@ function gform_previous_button_markup( $previous_button, $form ) {
 }
 
 add_filter('gform_submit_button','form_submit_button');
-function form_submit_button($button,$form){
+function form_submit_button($button){
 return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';	
 }
 

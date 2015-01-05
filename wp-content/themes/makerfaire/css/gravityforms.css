@@ -6,16 +6,12 @@
   	margin: 6px 0;
     padding: 0;
 }
-.gfield_description {
-    margin: 0 0 0.75em;
-    font-size: 120% !important;
-}
-.gform_wrapper
-{
+
+.gform_wrapper, .gform_wrapper .gfield_label, .gform_wrapper label, .gfield_description {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-    font-size: 110% !important;
-    line-height: 18px !important;
-}
+    font-size: 16px !important;
+    }
+	
 .ginput_complex
 {
 	width:auto !important;
@@ -36,8 +32,7 @@
     border-radius: 2px;
     box-shadow: 0 2px 0 rgba(255, 255, 255, 0.3) inset;
     color: #ffffff;
-    font-family: "Roboto Slab" !important;
-    font-size: 16px !important;
+     font-size: 20px !important;
     font-weight: bold;
     padding: 12px 20px 12px 10px;
     text-shadow: none;
@@ -51,8 +46,7 @@
     border-radius: 2px;
     box-shadow: 0 2px 0 rgba(255, 255, 255, 0.3) inset;
     color: #ffffff;
-    font-family: "Roboto Slab" !important;
-    font-size: 16px !important;
+    font-size: 20px !important;
     font-weight: bold;
     padding: 12px 10px 12px 20px;
     text-shadow: none;
@@ -66,8 +60,7 @@
     border-radius: 2px;
     box-shadow: 0 2px 0 rgba(255, 255, 255, 0.3) inset;
     color: #ffffff;
-    font-family: "Roboto Slab" !important;
-    font-size: 16px !important;
+    font-size: 20px !important;
     font-weight: bold;
     padding: 12px 20px 12px 20px;
     text-shadow: none;
@@ -82,9 +75,9 @@
     border-top: 8px solid transparent;
     content: "";
     height: 0;
-    margin-top: -11px;
+    margin-top: -10px;
     position: absolute;
-    right: 100px;
+    right: 120px;
     top: 45%;
     width: 0;
 }
@@ -94,7 +87,7 @@
     border-top: 8px solid transparent;
     content: "";
     height: 0;
-    margin-top: -11px;
+    margin-top: -10px;
     position: absolute;
     right: 18px;
     top: 45%;

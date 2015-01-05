@@ -103,6 +103,7 @@ if (!(is_admin() )) {
 
 function make_enqueue_jquery() {
 	// Styles
+	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );
 	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
 	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
@@ -116,11 +117,14 @@ function make_enqueue_jquery() {
 	wp_enqueue_script( 'ytv', get_stylesheet_directory_uri() . '/js/ytv.js', array( 'jquery' ) );
 	wp_enqueue_script( 'make-bootstrapdialog',  get_stylesheet_directory_uri() . '/js/bootstrap-dialog.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'make-login-dialog',  get_stylesheet_directory_uri() . '/js/login.js', array( 'jquery' ), null );
-	wp_enqueue_script( 'make-confirmation-dialog',  get_stylesheet_directory_uri() . '/js/confirmation.js', array( 'jquery' ), null );
+	//wp_enqueue_script( 'make-confirmation-dialog',  get_stylesheet_directory_uri() . '/js/confirmation.js', array( 'jquery' ), null );
+	wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
 	
 
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
+
+
 
 
 /**
@@ -778,3 +782,25 @@ function add_grav_forms(){
 	$role->add_cap('gform_full_access');
 }
 add_action('admin_init','add_grav_forms');
+
+add_filter( 'gform_next_button', 'gform_next_button_markup' );
+function gform_next_button_markup( $next_button, $form ) {
+
+	$next_button = '<span class="container-gnb">'. $next_button . '</span>';
+
+	return $next_button;
+}
+
+add_filter( 'gform_previous_button', 'gform_previous_button_markup' );
+function gform_previous_button_markup( $previous_button, $form ) {
+
+	$previous_button = '<span class="container-gpb">'. $previous_button . '</span>';
+
+	return $previous_button;
+}
+
+add_filter('gform_submit_button','form_submit_button');
+function form_submit_button($button,$form){
+return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';	
+}
+

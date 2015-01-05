@@ -4,8 +4,8 @@ jQuery( document ).ready(function() {
 	    var value = jQuery(this).attr("value");
 	 	if (value=='Selling at Maker Faire' || value=='Promoting a product or service')
 			{
-	 			var checked1=jQuery('input[value="Selling at Maker Faire"]').attr("checked");
-				var checked2=jQuery('input[value="Promoting a product or service"]').attr("checked");
+	 			var checked1=jQuery('input[value="Selling at Maker Faire [Commercial Maker]"]').attr("checked");
+				var checked2=jQuery('input[value="Promoting a product or service [Commercial Maker]"]').attr("checked");
 				var disablesizes = (checked1 == 'checked' || checked2=='checked');
 				if (disablesizes)
 					{

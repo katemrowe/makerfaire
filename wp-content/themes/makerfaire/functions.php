@@ -34,7 +34,7 @@ include_once TEMPLATEPATH. '/plugins/public-pages/sponsor.php';
 include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
 
 // Post Locker
-include_once dirname( __FILE__ ) . '/plugins/hide-post-locker/hide-post-locker.php';
+//include_once dirname( __FILE__ ) . '/plugins/hide-post-locker/hide-post-locker.php';
 
 // Blue Ribbons
 include_once dirname( __FILE__ ) . '/plugins/blue-ribbons/blue-ribbons.php';
@@ -777,6 +777,7 @@ function wp_get_resized_remote_image_url( $url, $width, $height, $escape = true 
 }
 
 /* Gravity Forms Specific Section*/
+
 function add_grav_forms(){
 	$role = get_role('editor');
 	$role->add_cap('gform_full_access');

@@ -6,13 +6,17 @@
   	margin: 6px 0;
     padding: 0;
 }
-/*
-.gform_wrapper, .gform_wrapper .gfield_label, .gform_wrapper label, .gfield_description {
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-    font-size: 16px !important;
-    }
-    */
-	
+.gform_wrapper .gfield_label {
+    font-size: 1.4em !important;
+    font-weight: bold !important;
+}
+.gform_wrapper .description, .gform_wrapper .gfield_description, .gform_wrapper .gsection_description, .gform_wrapper .instruction {
+    font-size: 1.1em !important;
+}
+.gf_scrolling_description div {
+    height: 400px;
+    overflow: auto;
+}
 .ginput_complex
 {
 	width:auto !important;

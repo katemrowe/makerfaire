@@ -1,4 +1,10 @@
 <div class="span4">
+	
+	<div class="center">
+		<a href="http://www.makershed.com/collections/make-gear" target="_blank">
+			<img src="https://makerfaire.files.wordpress.com/2014/11/mf-300x250_holidaymerch_v1.jpg" />
+		</a>
+	</div>
 
          <div class="center twitter">
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

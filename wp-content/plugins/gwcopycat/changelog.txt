@@ -1,0 +1,17 @@
+
+# Changelog
+
+## 1.0.4
+
+    - Added namespace to checkbox click event which triggers copy cat functionality ("click.gpcopycat")
+    - Added form-specific instance of gwCopyObj to #gform_wrapper div for use in customizations
+
+## 1.0.3
+
+    - Updated minimum required version of Gravity Perks: 1.0.6
+    - Added 'gpcc_overwrite_existing_values' filter to allow users to indicate whether existing values in fields being copied *to* should have their value overwritten if already have a value
+    
+## 1.0.1
+
+    - Updated minimum required version of Gravity Perks: 1.0.5
+    - Updated documentation to return GravityWiz.com URL

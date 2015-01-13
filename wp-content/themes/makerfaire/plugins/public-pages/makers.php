@@ -84,7 +84,7 @@ function mf_public_blurb( $json ) {
 			echo ( !empty( $json->project_video ) ) ? '<a class="btn btn-info" href="'. esc_url( $json->project_video ) . '"><i class="icon-facetime-video icon-white"></i> Video</a>' : null ;
 			if (!empty( $json->project_video ) ) {
 				echo '<hr />';
-				echo wpcom_vip_wp_oembed_get( esc_url( $json->project_video ), array( 'width'=>620 ) );
+				echo wp_oembed_get( esc_url( $json->project_video ), array( 'width'=>620 ) );
 			}
 			echo '<hr>';
 		}
@@ -252,7 +252,7 @@ function mf_public_blurb( $json ) {
 			echo ( !empty( $json->performer_video ) ) ? '<a class="btn btn-info" href="'. esc_url( $json->performer_video ) . '"><i class="icon-facetime-video icon-white"></i> Video</a>' : null ;
 			if (!empty( $json->performer_video ) ) {
 				echo '<hr />';
-				echo wpcom_vip_wp_oembed_get( esc_url( $json->performer_video ), array( 'width'=>620 ) );
+				echo wp_oembed_get( esc_url( $json->performer_video ), array( 'width'=>620 ) );
 			}
 			echo '<hr>';
 		}
@@ -676,7 +676,7 @@ function mf_schedule( $atts ) {
 
 	// Get the location
 	if ( ! empty( $location ) ) {
-		$term = wpcom_vip_get_term_by( 'id', $location, 'location');
+		$term = get_term_by( 'id', $location, 'location');
 		$url = get_term_link( $term );
 		if ( !is_wp_error( $url ) ) {
 			$output .= '<a href="' . esc_url( home_url( '/stage-schedule/?location=' . $term->slug ) ) . '" class="pull-right" style="position:relative; top:7px;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a>';

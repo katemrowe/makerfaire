@@ -62,7 +62,7 @@ require_once( 'post-types/sponsor.php' );
 require_once( 'post-types/location.php' );
 if ( defined( 'WP_CLI' ) && WP_CLI )
 	require_once( 'plugins/wp-cli/wp-cli.php' );
-
+/*
 if ( function_exists( 'wpcom_vip_load_plugin' ) ) {
 	wpcom_vip_load_plugin( 'easy-custom-fields' );
 }
@@ -71,11 +71,11 @@ if ( function_exists( 'wpcom_vip_load_plugin' ) ) {
 if ( function_exists( 'wpcom_vip_load_plugin' ) ) {
 	wpcom_vip_load_plugin( 'edit-flow' );
 }
-
+*/
 // add post-thumbnails support to theme
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'schedule-thumb', 140, 140, true );
-
+/*
 if ( function_exists( 'wpcom_vip_enable_opengraph' ) ) {
 	wpcom_vip_enable_opengraph();
 }
@@ -87,7 +87,7 @@ if ( function_exists( 'vip_contrib_add_upload_cap' ) ) {
 if ( function_exists( 'wpcom_vip_sharing_twitter_via' ) ) {
 	wpcom_vip_sharing_twitter_via( 'make' );
 }
-
+*/
 
 // Defer jQuery Parsing using the HTML5 defer property
 if (!(is_admin() )) {
@@ -677,7 +677,6 @@ function make_copyright_footer() { ?>
 		<div class="span12">
 			<p class="footer_copyright text-center"><a href="http://makezine.com/">Make:</a> and <a href="http://makerfaire.com/">Maker Faire</a> are registered trademarks of <a href="http://makermedia.com/">Maker Media, Inc.</a><br>
 			Copyright &copy; 2004-<?php echo date("Y") ?> Maker Media, Inc.  All rights reserved</p>
-			<?php if ( function_exists('vip_powered_wpcom') ) { echo vip_powered_wpcom(4); } ?>
 		</div>
 	</div>
 <?php }
@@ -803,4 +802,3 @@ add_filter('gform_submit_button','form_submit_button');
 function form_submit_button($button){
 return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';	
 }
-

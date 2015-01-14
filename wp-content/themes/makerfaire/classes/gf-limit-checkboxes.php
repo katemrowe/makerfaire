@@ -212,7 +212,7 @@ new GFLimitCheckboxes(10, array(
         'max' => 5
         )
     ));
-new GFLimitCheckboxes(11, array(
+new GFLimitCheckboxes(20, array(
 		147 => array(
 				'max' => 5
 		)

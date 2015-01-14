@@ -4,11 +4,6 @@
 define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 
 
-//require_once( WP_CONTENT_DIR . '/themes/vip/plugins/vip-init.php' );
-
-// Include Gigya plugin
-//require_once( TEMPLATEPATH. '/plugins/gigya/gigya.php' );
-
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
 
@@ -31,7 +26,7 @@ require_once( TEMPLATEPATH. '/plugins/admin-pages/current-faire/current-faire.ph
 include_once TEMPLATEPATH. '/plugins/public-pages/sponsor.php';
 
 // Sponsor Carousel
-include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
+//include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
 
 // Post Locker
 //include_once dirname( __FILE__ ) . '/plugins/hide-post-locker/hide-post-locker.php';
@@ -50,6 +45,10 @@ include_once dirname( __FILE__ ) . '/api/v2/functions.php';
 
 // Gravity Forms Specific Plugins and Classes
 include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
+
+// Legacy Helper Functions replacing VIP Wordpress.com calls
+include_once TEMPLATEPATH. '/classes/legacy-helper.php';
+
 
 require_once( 'taxonomies/type.php' );
 require_once( 'taxonomies/sponsor-category.php' );
@@ -90,7 +89,7 @@ if ( function_exists( 'wpcom_vip_sharing_twitter_via' ) ) {
 */
 
 // Defer jQuery Parsing using the HTML5 defer property
-if (!(is_admin() )) {
+/*if (!(is_admin() )) {
     function defer_parsing_of_js ( $url ) {
         if ( FALSE === strpos( $url, '.js' ) ) return $url;
         if ( strpos( $url, 'jquery.js' ) ) return $url;
@@ -99,6 +98,7 @@ if (!(is_admin() )) {
     }
     add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
 }
+*/
 
 function make_enqueue_jquery() {
 	// Styles
@@ -336,7 +336,7 @@ function make_modal_builder( $atts, $content = null ) {
 	$output .= '		<h3>' . esc_html( $title ) . '</h3>';
 	$output .= '	</div>';
 	$output .= '	<div class="modal-body">';
-	if ( wpcom_vip_is_valid_domain( $embed,  array('fora.tv', 'ustream.com', 'ustream.tv' ) ) ) {
+	if ( legacy_is_valid_domain( $embed,  array('fora.tv', 'ustream.com', 'ustream.tv' ) ) ) {
 		$output .= '<iframe src="' . esc_url( $embed ) . '" width="530" height="320" frameborder="0"></iframe>';
 	} else {
 		$output .= ( !empty( $embed ) ) ? wp_oembed_get( esc_url( $embed ), array( 'width' => 530 ) ) : '';
@@ -498,7 +498,7 @@ add_filter( 'jetpack_open_graph_tags', function( $tags ) {
 
 
 /**
- * Hide Maker Faire applications from past faires
+ * OBSOLETE: No longer using this functionality: Hide Maker Faire applications from past faires
  *
  * In the past, CS had a method for only selecting the current
  * faire for applications. We want to do the same here, and prevent
@@ -508,7 +508,7 @@ add_filter( 'jetpack_open_graph_tags', function( $tags ) {
  *
  * @global $query
  *
- */
+ *
 function mf_hide_faires( $query ) {
 	if ( is_admin() && $query->is_main_query() ) {
 		$tax_query = array(
@@ -524,6 +524,8 @@ function mf_hide_faires( $query ) {
 }
 
 // add_action( 'pre_get_posts', 'mf_hide_faires' );
+ * 
+ */
 
 
 

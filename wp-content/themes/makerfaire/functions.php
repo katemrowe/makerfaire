@@ -26,7 +26,7 @@ require_once( TEMPLATEPATH. '/plugins/admin-pages/current-faire/current-faire.ph
 include_once TEMPLATEPATH. '/plugins/public-pages/sponsor.php';
 
 // Sponsor Carousel
-//include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
+include_once TEMPLATEPATH. '/plugins/instagram/instagram.php';
 
 // Post Locker
 //include_once dirname( __FILE__ ) . '/plugins/hide-post-locker/hide-post-locker.php';

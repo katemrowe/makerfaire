@@ -25,7 +25,7 @@ jQuery( document ).ready(function() {
 	 });
 	 jQuery(".presentation_type input").on("click", function() {
 		    var value = jQuery(this).attr("value");
-		 	if (value=='Standard Presentation (1-2 presenters)')
+		 	if (value=='Standard Presentation (1-2 presenters)' || value=='Panel Presentation (up to 5 participants, with moderator)')
 				{
 		 			var checked1=jQuery('input[value="Standard Presentation (1-2 presenters)"]').attr("checked");
 					var disablesizes = (checked1 == 'checked');

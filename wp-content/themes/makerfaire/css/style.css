@@ -302,9 +302,12 @@ footer .pills a {
 .sidebar-bordered {
   border: 1px solid #d7d7d7;
   border-radius: 3px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-top: 10px;
   text-align: left;
+}
+.sidebar-bordered .countdown {
+  margin-left: -3px;
 }
 .sidebar-bordered .makey {
   margin-top: -25px;
@@ -314,7 +317,7 @@ footer .pills a {
 }
 .sidebar-bordered .counter-title {
   margin: 0px 20px 16px;
-  font-size: 20px;
+  font-size: 19px;
   line-height: 1.2em;
   font-family: "Proxima Nova", sans-serif;
   text-align: right;
@@ -465,7 +468,7 @@ footer .pills a {
 }
 .twitter,
 .adblock {
-  margin-bottom: 20px;
+  margin: 20px auto 20px;
 }
 .featured {
   margin: 20px 0;
@@ -870,8 +873,4 @@ ul#horizontal-list li {
 .topper .blue,
 .blue a {
   color: #00adef;
-}
-
-.make-bootstrap-dialog button{
-  font-size: 13px;
 }

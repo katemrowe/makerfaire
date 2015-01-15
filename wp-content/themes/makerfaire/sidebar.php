@@ -4,13 +4,13 @@
 	<div class="sidebar-bordered">
 
                 <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
-                <h3 class="counter-title">Maker Faire Bay Area<br />May 17 &amp; 18, 2015</h3>
+                <h3 class="counter-title">Maker Faire Bay Area<br />May 16 &amp; 17, 2015</h3>
 
                 <div class="countdown">
 
                         <script type="text/javascript">
                                 jQuery(document).ready(function() {
-                                        mfba = new Date(2015, 5-1, 17, 10, 00);
+                                        mfba = new Date(2015, 5-1, 16, 10, 00);
                                         jQuery('.countdown').countdown({
                                                 until: mfba,
                                                 timezone: -5,

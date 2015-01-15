@@ -23,4 +23,22 @@ jQuery( document ).ready(function() {
 				
 			}
 	 });
+	 jQuery(".presentation_type input").on("click", function() {
+		    var value = jQuery(this).attr("value");
+		 	if (value=='45 minutes')
+				{
+		 			var checked1=jQuery('input[value="Standard Presentation (1-2 presenters)"]').attr("checked");
+					var disablesizes = (checked1 == 'checked');
+					if (disablesizes)
+						{
+							jQuery('input[value="45 minutes"]').prop("checked",false)
+							jQuery('input[value="45 minutes"]').prop("checked",false);
+						} 
+					else 
+					{
+						jQuery('input[value="45 minutes"]').prop("disabled",false);
+					}
+					
+				}
+		 });
 });

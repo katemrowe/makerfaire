@@ -32,7 +32,7 @@ jQuery( document ).ready(function() {
 					if (disablesizes)
 						{
 							jQuery('input[value="45 minutes"]').prop("checked",false)
-							jQuery('input[value="45 minutes"]').prop("checked",false);
+							jQuery('input[value="45 minutes"]').prop("disabled",true);
 						} 
 					else 
 					{

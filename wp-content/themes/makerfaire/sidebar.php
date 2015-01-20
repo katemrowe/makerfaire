@@ -1,16 +1,39 @@
+
 <div class="span4">
 	
+	<div class="sidebar-bordered">
+
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
+                <h3 class="counter-title">Maker Faire Bay Area<br />May 16 &amp; 17, 2015</h3>
+
+                <div class="countdown">
+
+                        <script type="text/javascript">
+                                jQuery(document).ready(function() {
+                                        mfba = new Date(2015, 5-1, 16, 9, 00);
+                                        jQuery('.countdown').countdown({
+                                                until: mfba,
+                                                timezone: -8,
+                                                format: 'DHMS',
+                                                layout:'<div class="countdown-numbers"><table><tr><th>{dnn}</th><th>{sep}</td><th>{hnn}</th><th>{sep}</td><th>{mnn}</th><th>{sep}</td><th>{snn}</th></tr><tr class="time"><td>Days</td><td></td><td>Hours</td><td></td><td>Minutes</td><td></td><td>Seconds</td></tr></table></div>',
+                                                timeSeparator:'<span class="separator">:</span>',
+                                        });
+                                });
+                        </script>
+	</div>
+	</div>
+	
 	<div class="center">
-		<a href="http://www.makershed.com/collections/make-gear" target="_blank">
-			<img src="https://makerfaire.files.wordpress.com/2014/11/mf-300x250_holidaymerch_v1.jpg" />
+		<a href="http://makerfaire.com/bay-area-2015/call-for-makers/" target="_blank">
+			<img src="http://makerfaire.com/wp-content/uploads/2015/01/MF-300x250_CallForMakers.gif" />
 		</a>
 	</div>
 
          <div class="center twitter">
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-          <a class="twitter-timeline" href="https://twitter.com/search?q=%23makerfaire" data-widget-id="322225978648698880">Tweets about "#makerfaire"</a>
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-          <a href="https://twitter.com/makerfaire" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @makerfaire</a>
+	          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	          <a class="twitter-timeline" href="https://twitter.com/search?q=%23makerfaire" data-widget-id="322225978648698880">Tweets about "#makerfaire"</a>
+	          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	          <a href="https://twitter.com/makerfaire" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @makerfaire</a>
         </div>
 
 	<!-- Beginning Sync AdSlot 2 for Ad unit header ### size: [[300,250]]  -->

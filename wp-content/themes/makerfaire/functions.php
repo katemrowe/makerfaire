@@ -99,6 +99,11 @@ if ( function_exists( 'wpcom_vip_sharing_twitter_via' ) ) {
     add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
 }
 */
+/* Favicon in Header */
+add_action('wp_head','my_custom_fav_ico');
+function my_custom_fav_ico() {
+	echo '<link rel="shortcut icon" href="'.get_stylesheet_directory_uri(). '/images/favicon.ico'.'" />';
+}
 
 function make_enqueue_jquery() {
 	// Styles

@@ -45,6 +45,7 @@ include_once dirname( __FILE__ ) . '/api/v2/functions.php';
 
 // Gravity Forms Specific Plugins and Classes
 include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
+include_once TEMPLATEPATH. '/classes/gf-admin-metaboxes.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';
@@ -124,9 +125,14 @@ function make_enqueue_jquery() {
 	//wp_enqueue_script( 'make-confirmation-dialog',  get_stylesheet_directory_uri() . '/js/confirmation.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
 	
-
+	
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
+
+function load_admin_scripts() {
+    wp_enqueue_script('make-gravityforms-admin',  get_stylesheet_directory_uri() . '/js/gravityformsadmin.js');
+}
+add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
 
 
 

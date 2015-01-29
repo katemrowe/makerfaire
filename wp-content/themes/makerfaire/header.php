@@ -74,6 +74,7 @@
 	</head>
 
 <body id="bootstrap-js" <?php body_class('no-js'); ?>>
+	
 	<!-- Google Tag Manager -->
 	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WR8NLB"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -82,6 +83,16 @@
 	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 	})(window,document,'script','dataLayer','GTM-WR8NLB');</script>
+	<!-- End Google Tag Manager -->
+	
+	<!-- Google Tag Manager MakerShed -->
+	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PCDDDV"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-PCDDDV');</script>
 	<!-- End Google Tag Manager -->
 
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>

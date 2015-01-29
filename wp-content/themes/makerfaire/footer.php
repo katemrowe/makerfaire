@@ -74,7 +74,7 @@
 				<div class="span3 offset1" >
 					<div class="sidebar-bordered-nl">
                     <a href="https://www.pubservice.com/MK/subscribe.aspx?PC=MK&PK=M3AMFB">
-                    	<img style="max-width:100% ;height:auto;" src="<?php echo get_stylesheet_directory_uri(); ?>/images/mf_subscribe_ad.jpg" alt="Subscribe to MAKE magazine!" />
+                    	<img style="max-width:100% ;height:auto;" src="<?php echo get_stylesheet_directory_uri(); ?>/images/mf-sub-promo-43.jpg" alt="Subscribe to MAKE magazine!" />
                     </a>
                </div>
                 </div><!--subad-->

@@ -24,6 +24,12 @@
 	</div>
 	
 	<div class="center">
+		<a href="https://mfba2015.eventbrite.com/" target="_blank">
+			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF-300x250_BuyTickets.gif" />
+		</a>
+	</div>	
+	
+	<div class="center" style="margin-top:10px;">
 		<a href="http://makerfaire.com/bay-area-2015/call-for-makers/" target="_blank">
 			<img src="http://makerfaire.com/wp-content/uploads/2015/01/MF-300x250_CallForMakers.gif" />
 		</a>

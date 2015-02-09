@@ -137,16 +137,16 @@ if ( isset( $long_description ) ) {
 	$main_description = $short_description;
 }
 ?>
-			<table class="widefat fixed entry-detail-view">
-				<thead><th id="header" style="border:none">
+			<table class="fixed entry-detail-view">
+				<thead><th id="header">
 				<h1><?php echo esc_html($project_name); ?></h1>
 			</th></thead>
 			<tbody>
 				<tr>
-					<td style="width:210px;" valign="top"><img src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>" width="200" height="200" /></td>
+					<td valign="top"><img src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>" width="200" height="200" /></td>
 					<td valign="top">
 						<p><?php echo Markdown ( stripslashes( wp_filter_post_kses( mf_convert_newlines( $main_description, "\n" ) ) ) ); ?></p>
-						<table style="width:100%">
+						<table>
 							<tr>
 								<td style="width:80px;" valign="top"><strong>Type:</strong></td>
 								<td valign="top"><?php echo esc_attr( ucfirst( $entry_form_type ) ); ?></td>
@@ -169,11 +169,13 @@ if ( isset( $long_description ) ) {
 							</tr>
 							<tr>
 							<td valign="top"><strong>Video:</strong></td>
+							<td>
 								<?php
-								  echo ( isset( $entry_project_video ) ) ? '<td valign="top"><a href="' . esc_url( $entry_project_video ) . '" target="_blank">' . esc_url( $entry_project_video ) . '</a></td>' : null ;
-								  echo ( isset( $entry_performer_video ) ) ? '<td valign="top"><a href="' . esc_url( $entry_performer_video ) . '" target="_blank">' . esc_url( $entry_performer_video ) . '</a></td>' : null ;
-								  echo ( isset( $entry_video ) ) ? '<td valign="top"><a href="' . esc_url( $entry_video ) . '" target="_blank">' . esc_url( $entry_video ) . '</a></td>' : '<td></td>' ;
+								  echo ( isset( $entry_project_video ) ) ? '<a href="' . esc_url( $entry_project_video ) . '" target="_blank">' . esc_url( $entry_project_video ) . '</a><br />' : null ;
+								  echo ( isset( $entry_performer_video ) ) ? '<a href="' . esc_url( $entry_performer_video ) . '" target="_blank">' . esc_url( $entry_performer_video ) . '</a><br />' : null ;
+								  echo ( isset( $entry_video ) ) ? '<a href="' . esc_url( $entry_video ) . '" target="_blank">' . esc_url( $entry_video ) . '</a><br/>' : '' ;
 								?>
+							</td>
 							</tr>
 							<?php if( $entry_form_type == 'exhibit' ) : ?>
 								<tr>
@@ -286,7 +288,70 @@ if ( isset( $long_description ) ) {
 					</tr>
 					</tbody>
 					</table>
-					
+		
 					<?php
 					
 } //end function
+
+
+add_action("gform_after_update_entry", "set_post_content", 10, 2);
+function set_post_content($entry, $form){
+	$location_change=$_POST['entry_info_location_change'];
+	$status_change=$_POST['entry_info_status_change'];
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	
+	error_log(print_r($_POST, true));
+	if (!empty($entry_info_entry_id))
+	{
+		$entry_info_entry = GFAPI::get_entry($entry_info_entry_id);
+		if (!empty($location_change))
+		{
+			foreach($location_change as $location_entry)
+			{
+				$exploded_location_entry=explode("_",$location_entry);
+				$entry_info_entry[$exploded_location_entry[0]] = $exploded_location_entry[1];
+			}
+		}
+		if (!empty($status_change))
+		{
+			$entry_info_entry['303'] = $status_change;
+		}
+	
+		$results=GFAPI::update_entry($entry_info_entry);
+	}
+}
+
+add_action("gform_entry_info", "my_entry_info", 10, 2);
+function my_entry_info($form_id, $lead) {
+	//print_r( $lead);
+	
+	$form = GFAPI::get_form($form_id);
+	
+	$field302=RGFormsModel::get_field($form,'302');
+	$field303=RGFormsModel::get_field($form,'303');
+	
+	echo ('<input type="hidden" name="entry_info_entry_id" value="'.$lead['id'].'">');
+	echo ('<h4><label class="detail-label">Status:</label></h4>');
+	echo ('<select name="entry_info_status_change">');
+	foreach( $field303['choices'] as $choice )
+	{
+		$selected = '';
+	
+		if ($lead[$field303['id']] == $choice['text']) $selected=' selected ';
+	
+		echo('<option '.$selected.' value="'.$choice['text'].'">'.$choice['text'].'</option>');
+	}
+	echo('</select><br />');
+	
+	
+	echo ('<h4><label class="detail-label">Location:</label></h4>');
+	foreach(   $field302['inputs'] as $choice)
+	{
+		$selected = '';
+		if ($lead[$choice['id']] == $choice['label']) $selected=' checked ';
+		echo('<input type="checkbox" '.$selected.' name="entry_info_location_change[]" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
+	}
+	
+	
+	echo ('		<input type="submit" onclick="jQuery(\'#action\').val(\'update\'); jQuery(\'#screen_mode\').val(\'view\');" name="save" value="Save Changes" tabindex="4" class="button button-large button-primary" id="gform_update_button">&nbsp;&nbsp;');	
+}

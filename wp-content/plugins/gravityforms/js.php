@@ -258,7 +258,7 @@ if ( ! class_exists( 'GFForms' ) ) {
 				img = isHidden ? 'active0.png' : 'active1.png';
 				html += "<tr data-input_id='" + id + "' class='field_custom_input_row field_custom_input_row_" + inputId + "'>";
 				if (showInputSwitches) {
-					html += "<td><img title='" + title + "' alt='" + title + "' class='input_active_icon' src='" + imagesUrl + img + "'/></td>";
+					html += "<td><img data-input_id='" + input.id + "' title='" + title + "' alt='" + title + "' class='input_active_icon' src='" + imagesUrl + img + "'/></td>";
 				}
 				if (isHidden) {
 					jQuery("#input_" + inputId + "_container").toggle(!isHidden);
@@ -1135,11 +1135,11 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 			str += gform.applyFilters('gform_append_field_choice_option', '', field, i);
 
-			str += "<a class='gf_insert_field_choice' onclick=\"InsertFieldChoice(" + (i + 1) + ");\"><i class='fa fa-plus-square'></i></a>";
+			str += "<a class='gf_insert_field_choice' onclick=\"InsertFieldChoice(" + (i + 1) + ");\"><i class='gficon-add'></i></a>";
 
 
 			if (field.choices.length > 1)
-				str += "<a class='gf_delete_field_choice' onclick=\"DeleteFieldChoice(" + i + ");\"><i class='fa fa-minus-square'></i></a>";
+				str += "<a class='gf_delete_field_choice' onclick=\"DeleteFieldChoice(" + i + ");\"><i class='gficon-subtract'></i></a>";
 
 			str += "</li>";
 
@@ -1167,10 +1167,10 @@ if ( ! class_exists( 'GFForms' ) ) {
 			str += "<input type='text' id='" + inputType + "_choice_text_" + i + "' value=\"" + input.choices[i].text.replace(/"/g, "&quot;") + "\" class='field-choice-input field-choice-text' />";
 			str += "<input type='text' id='" + inputType + "_choice_value_" + i + "' value=\"" + value.replace(/"/g, "&quot;") + "\" class='field-choice-input field-choice-value' />";
 
-			str += "<a class='gf_insert_field_choice field-input-insert-choice'><i class='fa fa-plus-square'></i></a>";
+			str += "<a class='gf_insert_field_choice field-input-insert-choice'><i class='gficon-add'></i></a>";
 
 			if (input.choices.length > 1)
-				str += "<a class='gf_delete_field_choice field-input-delete-choice'><i class='fa fa-minus-square'></i></a>";
+				str += "<a class='gf_delete_field_choice field-input-delete-choice'><i class='gficon-subtract'></i></a>";
 
 			str += "</li>";
 

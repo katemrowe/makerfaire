@@ -538,7 +538,7 @@ class GFExport {
 					<br /><br />
 					<input type="submit" name="export_lead" value="<?php _e( 'Download Export File', 'gravityforms' ); ?>" class="button button-large button-primary" />
                     <span id="please_wait_container" style="display:none; margin-left:15px;">
-                        <img src="<?php echo GFCommon::get_base_url() ?>/images/loading.gif"> <?php _e( 'Exporting entries. Please wait...', 'gravityforms' ); ?>
+                        <i class='gficon-gravityforms-spinner-icon gficon-spin'></i> <?php _e( 'Exporting entries. Please wait...', 'gravityforms' ); ?>
                     </span>
 
 					<iframe id="export_frame" width="1" height="1" src="about:blank"></iframe>
@@ -678,7 +678,7 @@ class GFExport {
 
 		//paging through results for memory issues
 		while ( $entry_count > 0 ) {
-			//$leads = RGFormsModel::get_leads($form_id,"date_created", 'DESC', '', $offset, $page_size, null, null, false, $start_date, $end_date);
+
 			$paging = array(
 				'offset'    => $offset,
 				'page_size' => $page_size,
@@ -760,7 +760,14 @@ class GFExport {
 				$lines = utf8_encode( $lines );
 			}
 
+			if ( function_exists( 'mb_convert_encoding' ) ) {
+				// Convert the contents to UTF-16LE which has wider support than UTF-8.
+				// This fixes an issue with special characters in Excel for Mac.
+				$lines = mb_convert_encoding( $lines, 'UTF-16LE', 'UTF-8' );
+			}
+
 			echo $lines;
+
 			$lines = '';
 		}
 	}

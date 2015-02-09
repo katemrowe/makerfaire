@@ -74,7 +74,7 @@ jQuery(document).ready(function() {
                 return;
             }
 
-            var li = "<li id='gform_adding_field_spinner'><img src='" + gf_vars["baseUrl"] + "/images/spinner.gif' /></li>";
+            var li = "<li id='gform_adding_field_spinner'><i class='gficon-gravityforms-spinner-icon gficon-spin'></i></li>";
             var index = ui.item.index();
             ui.item.replaceWith( li );
             StartAddField(type, index);
@@ -810,12 +810,12 @@ function LoadFieldSettings(){
         }
         this.checked = false;
     });
-    
+
     if(has_entry(field.id))
         jQuery("#field_type, #field_multiple_files").prop("disabled", true);
     else
         jQuery("#field_type, #field_multiple_files").prop("disabled", false);
-	
+
     jQuery("#field_custom_field_name").val(field.postCustomFieldName);
 
     jQuery("#field_columns_enabled").prop("checked", field.enableColumns ? true : false);

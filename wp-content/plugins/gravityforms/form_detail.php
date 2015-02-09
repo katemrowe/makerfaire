@@ -880,13 +880,11 @@ class GFFormDetail {
 				<?php gform_tooltip( 'form_field_post_status' ) ?>
 			</label>
 			<select id="field_post_status" name="field_post_status">
-				<?php $post_stati = apply_filters(
-					'gform_post_status_options', array(
+				<?php $post_stati = apply_filters( 'gform_post_status_options', array(
 						'draft'   => 'Draft',
 						'pending' => 'Pending Review',
 						'publish' => 'Published',
-					)
-				);
+					) );
 				foreach ( $post_stati as $value => $label ) {
 					?>
 					<option value="<?php echo $value; ?>"><?php echo $label; ?></option>
@@ -1445,14 +1443,15 @@ class GFFormDetail {
 					<div class="bulk-left-panel">
 						<ul id="bulk_items">
 							<?php
-							foreach (array_keys( $predefined_choices ) as $name){
-							$key = str_replace( "'", "\'", $name );
+							foreach ( array_keys( $predefined_choices ) as $name ){
+								$key = str_replace( "'", "\'", $name );
 							?>
 							<li>
-								<a href="javascript:void(0);" onclick="SelectPredefinedChoice('<?php echo $key ?>');" class="bulk-choice"><?php echo $name ?></a>
-								<?php
-								}
-								?>
+								<a href="javascript:void(0);" onclick="SelectPredefinedChoice('<?php echo $key ?>');"
+								   class="bulk-choice"><?php echo $name ?></a>
+							<?php
+							}
+							?>
 						</ul>
 					</div>
 					<div class="bulk-arrow-mid"></div>
@@ -1880,55 +1879,62 @@ class GFFormDetail {
 						$label_placement_form_setting_label = __( 'Top aligned', 'gravityforms' );
 				}
 
-				$description_placement_form_setting = rgar( $form, 'descriptionPlacement' );
+				$enable_label_visiblity_settings = apply_filters( 'gform_enable_field_label_visibility_settings', false );
+
+				$description_placement_form_setting       = rgar( $form, 'descriptionPlacement' );
 				$description_placement_form_setting_label = $description_placement_form_setting == 'above' ? $description_placement_form_setting_label = __( 'Above inputs', 'gravityforms' ) : $description_placement_form_setting_label = __( 'Below inputs', 'gravityforms' );
-
 				?>
-                <li class="label_placement_setting field_setting">
-                    <label for="field_label_placement">
-                        <?php _e( 'Field Label Visibility', 'gravityforms' ); ?>
-                        <?php gform_tooltip( 'form_field_label_placement' ) ?>
-                    </label>
-                    <select id="field_label_placement" onchange="SetFieldLabelPlacement(jQuery(this).val());">
-                        <option value=""><?php printf( __( 'Visible (%s)', 'gravityforms' ), $label_placement_form_setting_label ); ?></option>
-                        <option value="hidden_label"><?php _e( 'Hidden', 'gravityforms' ); ?></option>
-                    </select>
+				<li class="label_placement_setting field_setting">
+					<?php if ( $enable_label_visiblity_settings ) : ?>
+					<label for="field_label_placement">
+						<?php _e( 'Field Label Visibility', 'gravityforms' ); ?>
+						<?php gform_tooltip( 'form_field_label_placement' ) ?>
+					</label>
+					<select id="field_label_placement" onchange="SetFieldLabelPlacement(jQuery(this).val());">
+						<option value=""><?php printf( __( 'Visible (%s)', 'gravityforms' ), $label_placement_form_setting_label ); ?></option>
+						<option value="hidden_label"><?php _e( 'Hidden', 'gravityforms' ); ?></option>
+					</select>
+					<?php endif ?>
+					<div id="field_description_placement_container" style="display:none; padding-top:10px;">
+						<label for="field_description_placement">
+							<?php _e( 'Description Placement', 'gravityforms' ); ?>
+							<?php gform_tooltip( 'form_field_description_placement' ) ?>
+						</label>
+						<select id="field_description_placement"
+						        onchange="SetFieldDescriptionPlacement(jQuery(this).val());">
+							<option
+								value=""><?php printf( __( 'Use Form Setting (%s)', 'gravityforms' ), $description_placement_form_setting_label ); ?></option>
+							<option value="below"><?php _e( 'Below inputs', 'gravityforms' ); ?></option>
+							<option value="above"><?php _e( 'Above inputs', 'gravityforms' ); ?></option>
+						</select>
+					</div>
+				</li>
+				<?php
 
-                    <div id="field_description_placement_container" style="display:none; padding-top:10px;">
-                        <label for="field_description_placement">
-                            <?php _e( 'Description Placement', 'gravityforms' ); ?>
-                            <?php gform_tooltip( 'form_field_description_placement' ) ?>
-                        </label>
-                        <select id="field_description_placement" onchange="SetFieldDescriptionPlacement(jQuery(this).val());">
-                            <option value=""><?php printf( __( 'Use Form Setting (%s)', 'gravityforms' ), $description_placement_form_setting_label ); ?></option>
-                            <option value="below"><?php _e( 'Below inputs', 'gravityforms' ); ?></option>
-                            <option value="above"><?php _e( 'Above inputs', 'gravityforms' ); ?></option>
-                        </select>
-                    </div>
-                </li>
-
-                <?php
 				do_action( 'gform_field_appearance_settings', 150, $form_id );
 
-				$sub_label_placement_form_setting = rgar( $form, 'subLabelPlacement' );
+				$sub_label_placement_form_setting       = rgar( $form, 'subLabelPlacement' );
 				$sub_label_placement_form_setting_label = $sub_label_placement_form_setting == 'above' ? $sub_label_placement_form_setting_label = __( 'Above inputs', 'gravityforms' ) : $sub_label_placement_form_setting_label = __( 'Below inputs', 'gravityforms' );
 				?>
-                <li class="sub_label_placement_setting field_setting">
-                    <label for="field_sub_label_placement">
-                        <?php _e( 'Sub-Label Placement', 'gravityforms' ); ?>
-                        <?php gform_tooltip( 'form_field_sub_label_placement' ) ?>
-                    </label>
-                    <select id="field_sub_label_placement" onchange="SetFieldSubLabelPlacement(jQuery(this).val());">
-                        <option value=""><?php printf( __( 'Use Form Setting (%s)', 'gravityforms' ), $sub_label_placement_form_setting_label ); ?></option>
-                        <option value="below"><?php _e( 'Below inputs', 'gravityforms' ); ?></option>
-                        <option value="above"><?php _e( 'Above inputs', 'gravityforms' ); ?></option>
-                        <option value="hidden_label"><?php _e( 'Hidden', 'gravityforms' ); ?></option>
-                    </select>
-                </li>
+				<li class="sub_label_placement_setting field_setting">
+					<label for="field_sub_label_placement">
+						<?php _e( 'Sub-Label Placement', 'gravityforms' ); ?>
+						<?php gform_tooltip( 'form_field_sub_label_placement' ) ?>
+					</label>
+					<select id="field_sub_label_placement"
+					        onchange="SetFieldSubLabelPlacement(jQuery(this).val());">
+						<option
+							value=""><?php printf( __( 'Use Form Setting (%s)', 'gravityforms' ), $sub_label_placement_form_setting_label ); ?></option>
+						<option value="below"><?php _e( 'Below inputs', 'gravityforms' ); ?></option>
+						<option value="above"><?php _e( 'Above inputs', 'gravityforms' ); ?></option>
+						<?php if ( $enable_label_visiblity_settings ) : ?>
+						<option value="hidden_label"><?php _e( 'Hidden', 'gravityforms' ); ?></option>
+						<?php endif; ?>
 
-				<?php
-				do_action( 'gform_field_appearance_settings', 200, $form_id );
-				?>
+					</select>
+				</li>
+
+				<?php do_action( 'gform_field_appearance_settings', 200, $form_id ); ?>
 
 				<li class="error_message_setting field_setting">
                     <label for="field_error_message">
@@ -2056,10 +2062,10 @@ class GFFormDetail {
 			</label>
 
 			<div id="field_copy_values_disabled" style="display:none;padding-top: 10px;">
-                                            <span class="instruction" style="margin-left:0">
-                                                <?php _e( 'To activate this option, please add a field to be used as the source.', 'gravityforms' ); ?>
-												<?php gform_tooltip( 'form_field_enable_copy_values_disabled' ) ?>
-                                            </span>
+	            <span class="instruction" style="margin-left:0">
+	                <?php _e( 'To activate this option, please add a field to be used as the source.', 'gravityforms' ); ?>
+					<?php gform_tooltip( 'form_field_enable_copy_values_disabled' ) ?>
+	            </span>
 			</div>
 			<div id="field_copy_values_container" style="display:none;" class="gfield_sub_setting">
 				<label for="field_copy_values_option_label">
@@ -2273,11 +2279,16 @@ class GFFormDetail {
 							array( 'class' => 'button', 'data-type' => 'address', 'value' => GFCommon::get_field_type_title( 'address' ) ),
 							array( 'class' => 'button', 'data-type' => 'website', 'value' => GFCommon::get_field_type_title( 'website' ) ),
 							array( 'class' => 'button', 'data-type' => 'email', 'value' => GFCommon::get_field_type_title( 'email' ) ),
-
 						);
 
-						if ( apply_filters( 'gform_enable_password_field', false ) )
-							$advanced_fields[] = array( 'class' => 'button', 'data-type' => 'password', 'value' => GFCommon::get_field_type_title( 'password' ) );
+						if ( apply_filters( 'gform_enable_password_field', false ) ) {
+							$advanced_fields[] = array(
+								'class'     => 'button',
+								'data-type' => 'password',
+								'value'     => GFCommon::get_field_type_title( 'password' )
+							);
+						}
+
 
 						$advanced_fields[] = array( 'class' => 'button', 'data-type' => 'fileupload', 'value' => GFCommon::get_field_type_title( 'fileupload' ) );
 						$advanced_fields[] = array( 'class' => 'button', 'data-type' => 'captcha', 'value' => GFCommon::get_field_type_title( 'captcha' ) );
@@ -2301,8 +2312,14 @@ class GFFormDetail {
 							array( 'class' => 'button', 'data-type' => 'total', 'value' => GFCommon::get_field_type_title( 'total' ) ),
 						);
 
-						if ( apply_filters( 'gform_enable_credit_card_field', false ) )
-							$pricing_fields[] = array( 'class' => 'button', 'data-type' => 'creditcard', 'value' => GFCommon::get_field_type_title( 'creditcard' ) );
+						if ( apply_filters( 'gform_enable_credit_card_field', false ) ) {
+							$pricing_fields[] = array(
+								'class'     => 'button',
+								'data-type' => 'creditcard',
+								'value'     => GFCommon::get_field_type_title( 'creditcard' )
+							);
+						}
+
 
 						$field_groups = array(
 							array( 'name' => 'standard_fields', 'label' => __( 'Standard Fields', 'gravityforms' ), 'fields' => $standard_fields, 'tooltip_class' => 'tooltip_bottomleft' ),
@@ -2355,7 +2372,7 @@ class GFFormDetail {
 					echo $save_button;
 					?>
 
-					<span id="please_wait_container" style="display:none;"><img src="<?php echo GFCommon::get_base_url() ?>/images/loading.gif" class="gf_loader"></span>
+					<span id="please_wait_container" style="display:none;"><i class='gficon-gravityforms-spinner-icon gficon-spin'></i></span>
 
 					<div class="updated_base" id="after_update_dialog" style="display:none;">
 						<strong><?php _e( 'Form updated successfully.', 'gravityforms' ); ?>
@@ -2419,7 +2436,7 @@ class GFFormDetail {
 					<input type='text' class="iColorPicker" size="7" name='<?php echo esc_attr( $field_name ) ?>' onchange='SetColorPickerColor(this.name, this.value, "<?php echo $callback ?>");' id='<?php echo esc_attr( $field_name ) ?>' />
 				</td>
 				<td style="padding-right:5px; padding-left:5px;">
-					<img style="top:3px; cursor:pointer; border:1px solid #dfdfdf;" id="chip_<?php echo $field_name ?>" valign="bottom" height="22" width="22" src="<?php echo GFCommon::get_base_url() ?>/images/blank.gif" />
+					<img style="top:3px; cursor:pointer; border:1px solid #dfdfdf;" id="chip_<?php echo $field_name ?>" valign="bottom" height="22" width="22" src="<?php echo GFCommon::get_base_url() ?>/images/blankspace.png" />
 				</td>
 				<td>
 					<img style="cursor:pointer;" valign="bottom" id="chooser_<?php echo $field_name ?>" src="<?php echo GFCommon::get_base_url() ?>/images/color.png" />

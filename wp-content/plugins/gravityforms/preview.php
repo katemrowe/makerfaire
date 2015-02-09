@@ -61,7 +61,7 @@ if ( ! empty( $styles ) ) {
 <div id="preview_top">
 	<div id="preview_hdr">
 		<div>
-			<span class="actionlinks"><a href="javascript:window.close()" class="close_window"><?php _e( 'close window', 'gravityforms' ) ?></a></span><?php _e( 'Form Preview', 'gravityforms' ) ?>
+			<span class="actionlinks"><a href="javascript:window.close()" class="close_window"><?php _e( 'close window', 'gravityforms' ) ?></a></span><h2><?php _e( 'Form Preview', 'gravityforms' ) ?></h2>
 		</div>
 	</div>
 	<div id="preview_note"><?php _e( 'Note: This is a simple form preview. This form may display differently when added to your page based on inheritance from individual theme styles.', 'gravityforms' ) ?></div>

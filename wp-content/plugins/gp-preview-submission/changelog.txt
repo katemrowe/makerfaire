@@ -1,6 +1,11 @@
 
 # Changelog
 
+## 1.1
+
+    - Added support for multi-file uploads
+    - Added new filter: gpps_special_merge_tags_value; useful for modifying the values of specially-handled merge tags values
+
 ## 1.0.2
 
     - Updated for Gravity Form 1.9 release

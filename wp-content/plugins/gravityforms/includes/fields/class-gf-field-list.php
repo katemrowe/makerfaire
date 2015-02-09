@@ -58,19 +58,19 @@ class GF_Field_List extends GF_Field {
 		$shim_style  = is_rtl() ? 'position:absolute;left:999em;' : 'position:absolute;left:-999em;';
 		$label_target_shim = sprintf( '<input type=\'text\' id=\'input_%1$s_%2$s_shim\' style=\'%3$s\' onfocus=\'jQuery( "#field_%1$s_%2$s table tr td:first-child input" ).focus();\' />', $form_id, $this->id, $shim_style );
 
-        $list = "<div class='ginput_container ginput_list'>" .
-            $label_target_shim .
-            "<table class='gfield_list'>";
+		$list = "<div class='ginput_container ginput_list'>" .
+			$label_target_shim .
+			"<table class='gfield_list'>";
 
 		$class_attr = '';
 		if ( $has_columns ) {
 
-            $list .= '<colgroup>';
-            for( $colnum = 1; $colnum <= count( $columns ) + 1; $colnum++ ) {
-                $odd_even = ( $colnum % 2 ) == 0 ? 'even' : 'odd';
-                $list .= sprintf( "<col id='gfield_list_%d_col_%d' class='gfield_list_col_%s' />", $this->id, $colnum, $odd_even );
-            }
-            $list .= '</colgroup>';
+			$list .= '<colgroup>';
+			for ( $colnum = 1; $colnum <= count( $columns ) + 1; $colnum++ ) {
+				$odd_even = ( $colnum % 2 ) == 0 ? 'even' : 'odd';
+				$list .= sprintf( "<col id='gfield_list_%d_col_%d' class='gfield_list_col_%s' />", $this->id, $colnum, $odd_even );
+			}
+			$list .= '</colgroup>';
 
 			$list .= '<thead><tr>';
 			foreach ( $columns as $column ) {
@@ -78,11 +78,11 @@ class GF_Field_List extends GF_Field {
 			}
 			$list .= '<th>&nbsp;</th></tr></thead>';
 		} else {
-            $list .=
-                '<colgroup>' .
-                    "<col id='gfield_list_{$this->id}_col1' class='gfield_list_col_odd' />" .
-                    "<col id='gfield_list_{$this->id}_col2' class='gfield_list_col_even' />" .
-                '</colgroup>';
+			$list .=
+				'<colgroup>' .
+					"<col id='gfield_list_{$this->id}_col1' class='gfield_list_col_odd' />" .
+					"<col id='gfield_list_{$this->id}_col2' class='gfield_list_col_even' />" .
+				'</colgroup>';
 		}
 
 		$delete_display      = count( $value ) == 1 ? 'visibility:hidden;' : '';
@@ -115,8 +115,8 @@ class GF_Field_List extends GF_Field {
 				$colnum ++;
 			}
 
-			$add_icon    = ! empty( $this->addIconUrl ) ? $this->addIconUrl : GFCommon::get_base_url() . '/images/add.png';
-			$delete_icon = ! empty( $this->deleteIconUrl) ? $this->deleteIconUrl : GFCommon::get_base_url() . '/images/remove.png';
+			$add_icon    = ! empty( $this->addIconUrl ) ? $this->addIconUrl : GFCommon::get_base_url() . '/images/blankspace.png';
+			$delete_icon = ! empty( $this->deleteIconUrl) ? $this->deleteIconUrl : GFCommon::get_base_url() . '/images/blankspace.png';
 
 			$on_click = $is_form_editor ? '' : "onclick='gformAddListItem(this, {$maxRow})'";
 
@@ -127,8 +127,8 @@ class GF_Field_List extends GF_Field {
 				$list .= "<td class='gfield_list_icons'>";
 				$list .= "   <img src='{$add_icon}' class='add_list_item {$disabled_icon_class}' {$disabled_text} title='" . __( 'Add another row', 'gravityforms' ) . "' alt='" . __( 'Add a row', 'gravityforms' ) . "' {$on_click} style='cursor:pointer; margin:0 3px;' />" .
 					"   <img src='{$delete_icon}' {$disabled_text} title='" . __( 'Remove this row', 'gravityforms' ) . "' alt='" . __( 'Remove this row', 'gravityforms' ) . "' class='delete_list_item' style='cursor:pointer; {$delete_display}' onclick='gformDeleteListItem(this, {$maxRow})' />";
-
 				$list .= '</td>';
+
 			}
 
 			$list .= '</tr>';
@@ -140,13 +140,57 @@ class GF_Field_List extends GF_Field {
 			$rownum ++;
 		}
 
-		$list .= '</tbody></table></div>';
+		$list .= '</tbody>';
+		$list .= $this->maxRows != 1 ? $this->get_svg_image_block() : '';
+		$list .= '</table></div>';
 
 		return $list;
 
 	}
 
-	function get_list_input( $has_columns, $column, $value, $form_id ) {
+	public function get_svg_image_block(){
+		global $_has_image_block;
+
+		//return image block once per page load
+		if ( ! $_has_image_block ){
+
+			$_has_image_block = true;
+			return '
+					<style type="text/css">
+
+					/* add SVG background image support for retina devices -------------------------------*/
+
+					img.add_list_item {
+						background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxnIGlkPSJpY29tb29uLWlnbm9yZSI+PC9nPjxwYXRoIGQ9Ik0yNTYgNTEyYy0xNDEuMzc1IDAtMjU2LTExNC42MDktMjU2LTI1NnMxMTQuNjI1LTI1NiAyNTYtMjU2YzE0MS4zOTEgMCAyNTYgMTE0LjYwOSAyNTYgMjU2cy0xMTQuNjA5IDI1Ni0yNTYgMjU2ek0yNTYgNjRjLTEwNi4wMzEgMC0xOTIgODUuOTY5LTE5MiAxOTJzODUuOTY5IDE5MiAxOTIgMTkyYzEwNi4wNDcgMCAxOTItODUuOTY5IDE5Mi0xOTJzLTg1Ljk1My0xOTItMTkyLTE5MnpNMjg4IDM4NGgtNjR2LTk2aC05NnYtNjRoOTZ2LTk2aDY0djk2aDk2djY0aC05NnY5NnoiPjwvcGF0aD48L3N2Zz4=);
+					}
+
+					img.delete_list_item {
+						background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxnIGlkPSJpY29tb29uLWlnbm9yZSI+PC9nPjxwYXRoIGQ9Ik0yNTYgMGMtMTQxLjM3NSAwLTI1NiAxMTQuNjI1LTI1NiAyNTYgMCAxNDEuMzkxIDExNC42MjUgMjU2IDI1NiAyNTYgMTQxLjM5MSAwIDI1Ni0xMTQuNjA5IDI1Ni0yNTYgMC0xNDEuMzc1LTExNC42MDktMjU2LTI1Ni0yNTZ6TTI1NiA0NDhjLTEwNi4wMzEgMC0xOTItODUuOTY5LTE5Mi0xOTJzODUuOTY5LTE5MiAxOTItMTkyYzEwNi4wNDcgMCAxOTIgODUuOTY5IDE5MiAxOTJzLTg1Ljk1MyAxOTItMTkyIDE5MnpNMTI4IDI4OGgyNTZ2LTY0aC0yNTZ2NjR6Ij48L3BhdGg+PC9zdmc+);
+					}
+
+					img.add_list_item,
+					img.delete_list_item {
+						width: 1em;
+						height: 1em;
+						background-size: 1em 1em;
+						opacity: 0.5;
+					}
+
+					img.add_list_item:hover,
+					img.add_list_item:active,
+					img.delete_list_item:hover,
+					img.delete_list_item:active {
+						opacity: 1.0;
+					}
+
+					</style>
+				';
+		}
+
+		return '';
+	}
+
+	public function get_list_input( $has_columns, $column, $value, $form_id ) {
 
 		$tabindex = GFCommon::get_tabindex();
 		$disabled = $this->is_form_editor() ? 'disabled' : '';

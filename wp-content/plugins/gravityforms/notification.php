@@ -199,9 +199,9 @@ Class GFNotification {
 				str += "<option value='ends_with' " + endsWithSelected + "><?php _e( 'ends with', 'gravityforms' )  ?></option>";
 				str += "</select>";
 				str += GetRoutingValues(i, routings[i].fieldId, routings[i].value);
-				str += "<a class='gf_insert_field_choice' title='add another rule' onclick=\"InsertRouting(" + (i + 1) + ");\"><i class='fa fa-plus-square'></i></a>";
+				str += "<a class='gf_insert_field_choice' title='add another rule' onclick=\"InsertRouting(" + (i + 1) + ");\"><i class='gficon-add'></i></a>";
 				if (routings.length > 1)
-					str += "<a class='gf_delete_field_choice' title='remove this rule' onclick=\"DeleteRouting(" + i + ");\"><i class='fa fa-minus-square'></i></a>";
+					str += "<a class='gf_delete_field_choice' title='remove this rule' onclick=\"DeleteRouting(" + i + ");\"><i class='gficon-subtract'></i></a>";
 
 				str += "</div>";
 			}
@@ -635,7 +635,7 @@ Class GFNotification {
 				<input type="text" name="gform_notification_to_email" id="gform_notification_to_email" value="<?php echo esc_attr( $to_email ) ?>" class="fieldwidth-1" />
 
 				<?php if ( rgpost( 'gform_notification_to_type' ) == 'email' && $is_invalid_email_to ) { ?>
-					<span class="validation_message"><?php _e( 'Please enter a valid email address', 'gravityforms' ) ?></span>
+					<span class="validation_message"><?php _e( 'Please enter a valid email address', 'gravityforms' ) ?>.</span>
 				<?php } ?>
 			</td>
 			<?php echo $subsetting_close; ?>
@@ -719,7 +719,7 @@ Class GFNotification {
 								</select>
 								<?php echo self::get_field_values( $i, $form, rgar( $routing, 'fieldId' ), rgar( $routing, 'value' ) ) ?>
 
-								<a class='gf_insert_field_choice' title='add another rule' onclick='SetRouting(<?php echo $i ?>); InsertRouting(<?php echo $i + 1 ?>);'><i class='fa fa-plus-square'></i></a>
+								<a class='gf_insert_field_choice' title='add another rule' onclick='SetRouting(<?php echo $i ?>); InsertRouting(<?php echo $i + 1 ?>);'><i class='gficon-add'></i></a>
 
 								<?php if ( $count > 1 ) { ?>
 									<img src='<?php echo GFCommon::get_base_url() ?>/images/remove.png' id='routing_delete_<?php echo $i ?>' title='remove this email routing' alt='remove this email routing' class='delete_field_choice' style='cursor:pointer;' onclick='DeleteRouting(<?php echo $i ?>);' />
@@ -934,7 +934,7 @@ Class GFNotification {
 		foreach ( $emails as $email ) {
 			$email            = trim( $email );
 			$invalid_email    = GFCommon::is_invalid_or_empty_email( $email );
-			$invalid_variable = ! preg_match( '/^({[^{]*?:(\d+(\.\d+)?)(:(.*?))?},? *)+$/', $email );
+			$invalid_variable = ! preg_match( '/^({[^{]*?:(\d+(\.\d+)?)(:(.*?))?},? *)+$/', $email ) && $email != '{admin_email}';
 
 			if ( $invalid_email && $invalid_variable ) {
 				return false;
@@ -945,9 +945,11 @@ Class GFNotification {
 	}
 
 	private static function is_valid_notification_to() {
+
+		$notification_to_email = rgpost( 'gform_notification_to_email' );
 		$is_valid = ( rgpost( 'gform_notification_to_type' ) == 'routing' && self::is_valid_routing() )
 			||
-			( rgpost( 'gform_notification_to_type' ) == 'email' && ( self::is_valid_notification_email( $_POST['gform_notification_to_email'] ) ) || $_POST['gform_notification_to_email'] == '{admin_email}' )
+			( rgpost( 'gform_notification_to_type' ) == 'email' && ( self::is_valid_notification_email( $notification_to_email ) ) )
 			||
 			( rgpost( 'gform_notification_to_type' ) == 'field' && ( ! rgempty( 'gform_notification_to_field' ) ) )
 			|| rgpost( 'gform_notification_to_type' ) == 'hidden';
@@ -1077,9 +1079,13 @@ Class GFNotification {
 			$new_name = $name . " - Copy $count";
 			$count ++;
 		}
-		$new_notification['name']       = $new_name;
-		$new_notification['id']         = $new_id;
-		unset($new_notification['isDefault']);
+		$new_notification['name'] = $new_name;
+		$new_notification['id']   = $new_id;
+		unset( $new_notification['isDefault'] );
+		if ( $new_notification['toType'] == 'hidden' ) {
+			$new_notification['toType'] = 'email';
+		}
+
 		$form['notifications'][ $new_id ] = $new_notification;
 
 		// clear Form cache so next retrieval of form meta will return duplicated notification

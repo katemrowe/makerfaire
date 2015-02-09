@@ -1406,7 +1406,7 @@ abstract class GFAddOn {
 		$html = '<input
                     type="hidden"
                     name="_gaddon_setting_' . esc_attr( $field['name'] ) . '"
-                    value="' . esc_attr( $value ) . '" ' .
+                    value=\'' . esc_attr( $value ) . '\' ' .
 		        implode( ' ', $attributes ) .
 		        ' />';
 

@@ -257,7 +257,7 @@ function gf_do_action(action, targetId, useAnimation, defaultValues, isInit, cal
         else{
 			//$target.show();
 			//Getting around an issue with Chrome on Android. Does not like jQuery('xx').show() ...
-            if ($target.hasClass('gf_inline')) {
+            if ($target.is('.gf_inline, input.button')) {
                 $target.css('display', 'inline-block');
             } else {
                 $target.css('display', 'block');

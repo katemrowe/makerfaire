@@ -1,4 +1,3 @@
-
 /**
 * Common JS functions for form settings and form editor pages.
 */
@@ -125,9 +124,9 @@ function CreateConditionalLogic(objectType, obj){
         str += GetRuleFields(objectType, i, rule.fieldId);
         str += GetRuleOperators(objectType, i, rule.fieldId, rule.operator);
         str += GetRuleValues(objectType, i, rule.fieldId, rule.value);
-        str += "<a class='add_field_choice' title='add another rule' onclick=\"InsertRule('" + objectType + "', " + (i+1) + ");\" ><i class='fa fa-plus-square fa-lg'></i></a>";
+        str += "<a class='add_field_choice' title='add another rule' onclick=\"InsertRule('" + objectType + "', " + (i+1) + ");\" ><i class='gficon-add'></i></a>";
         if(obj.conditionalLogic.rules.length > 1 )
-            str += "<a class='delete_field_choice' title='remove this rule' onclick=\"DeleteRule('" + objectType + "', " + i + ");\" ><i class='fa fa-minus-square fa-lg'></i></a></li>";
+            str += "<a class='delete_field_choice' title='remove this rule' onclick=\"DeleteRule('" + objectType + "', " + i + ");\" ><i class='gficon-subtract'></i></a></li>";
 
         str += "</div>";
     }
@@ -936,21 +935,38 @@ var gfMergeTagsObj = function(form) {
                     case 'name':
 
                     	var requiredField = Copy(field);
+                        var prefix, middle, suffix, optionalField;
 
                         if(field['nameFormat'] == 'extended') {
 
-                            var prefix = GetInput(field, field.id + '.2');
-                            var suffix = GetInput(field, field.id + '.8');
+                            prefix = GetInput(field, field.id + '.2');
+                            suffix = GetInput(field, field.id + '.8');
 
-                            var optionalField = Copy(field);
+                            optionalField = Copy(field);
                             optionalField['inputs'] = [prefix, suffix];
 
                             // add optional name fields to optional list
                             optionalFields.push(optionalField);
 
-                            // remove option name fields from required list
+                            // remove optional name fields from required list
                             delete requiredField.inputs[0];
                             delete requiredField.inputs[3];
+                        } else if(field['nameFormat'] == 'advanced') {
+
+                            prefix = GetInput(field, field.id + '.2');
+                            middle = GetInput(field, field.id + '.4');
+                            suffix = GetInput(field, field.id + '.8');
+
+                            optionalField = Copy(field);
+                            optionalField['inputs'] = [prefix, middle, suffix];
+
+                            // add optional name fields to optional list
+                            optionalFields.push(optionalField);
+
+                            // remove optional name fields from required list
+                            delete requiredField.inputs[0];
+                            delete requiredField.inputs[2];
+                            delete requiredField.inputs[4];
                         }
 
                         requiredFields.push(requiredField);
@@ -1109,6 +1125,10 @@ var gfMergeTagsObj = function(form) {
         var inputType = GetInputType(field);
         var tagArgs = inputType == "list" ? ":" + option : ""; //option currently only supported by list field
         var value = '', label = '';
+
+        if(jQuery.inArray(inputType, ['date', 'email', 'time', 'password'])>-1){
+            field['inputs'] = null;
+        }
 
         if( typeof field['inputs'] != 'undefined' && jQuery.isArray(field['inputs']) ) {
 
@@ -1374,5 +1394,3 @@ function makeArray( object ) {
 function isSet( $var ) {
     return typeof $var != 'undefined';
 }
-
-

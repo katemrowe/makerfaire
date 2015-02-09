@@ -124,7 +124,7 @@ class GFFormDisplay {
 				$nl2br        = rgar( $form['confirmation'], 'disableAutoformat' ) ? false : true;
 				$confirmation = GFCommon::replace_variables( $confirmation, $form, $lead, false, true, $nl2br );
 
-				$form_unique_id = rgpost( 'gform_unique_id' );
+				$form_unique_id = GFFormsModel::get_form_unique_id( $form_id );
 				$ip             = GFFormsModel::get_ip();
 				$source_url     = GFFormsModel::get_current_page_url();
 				$resume_token   = rgpost( 'gform_resume_token' );
@@ -132,9 +132,12 @@ class GFFormDisplay {
 
 				$notifications_to_send = GFCommon::get_notifications_to_send( 'form_saved', $form, $lead );
 
+				$log_notification_event = empty( $notifications_to_send ) ? 'No notifications to process' : 'Processing notifications';
+				GFCommon::log_debug( "GFFormDisplay::process_form(): {$log_notification_event} for form_saved event." );
+
 				foreach ( $notifications_to_send as $notification ) {
 					if ( isset( $notification['isActive'] ) && ! $notification['isActive'] ) {
-						GFCommon::log_debug( "GFFormDisplay::process_form(): Not sending {$notification['id']}. The notification named '{$notification['name']}' is inactive." );
+						GFCommon::log_debug( "GFFormDisplay::process_form(): Notification is inactive, not processing notification (#{$notification['id']} - {$notification['name']})." );
 						continue;
 					}
 					$notification['message'] = self::replace_save_variables( $notification['message'], $form, $resume_token );
@@ -240,7 +243,7 @@ class GFFormDisplay {
 
 					case 'singleshipping' :
 						$price = ! empty( $value ) ? $value : $field->basePrice;
-						$price = GFCommon::to_number( $price );
+						$price = ! empty( $price ) ? GFCommon::to_number( $price ) : 0;
 
 						$product_fields[ $field->id ] = wp_hash( GFFormsModel::maybe_trim_input( $price, $form['id'], $field ) );
 						break;
@@ -495,7 +498,23 @@ class GFFormDisplay {
 		}
 
 		if ( isset( $_POST['gform_send_resume_link'] ) ) {
-			return self::handle_save_email_confirmation( $form, $ajax );
+			$save_email_confirmation = self::handle_save_email_confirmation( $form, $ajax );
+			if ( is_wp_error( $save_email_confirmation ) ) { // Failed email validation
+				$resume_token = rgpost('gform_resume_token');
+				$incomplete_submission_info = GFFormsModel::get_incomplete_submission_values( rgpost('gform_resume_token') );
+				if ( $incomplete_submission_info['form_id'] == $form_id ) {
+					$submission_details_json                = $incomplete_submission_info['submission'];
+					$submission_details                     = json_decode( $submission_details_json, true );
+					$partial_entry                          = $submission_details['partial_entry'];
+					$form = self::update_confirmation( $form, $partial_entry, 'form_saved' );
+					$confirmation_message = rgar( $form['confirmation'], 'message' );
+					$nl2br        = rgar( $form['confirmation'], 'disableAutoformat' ) ? false : true;
+					$confirmation_message = GFCommon::replace_variables( $confirmation_message, $form, $partial_entry, false, true, $nl2br );
+					return self::handle_save_confirmation( $form, $resume_token, $confirmation_message, $ajax );
+				}
+			} else {
+				return $save_email_confirmation;
+			}
 		}
 
 		$is_postback          = false;
@@ -766,7 +785,7 @@ class GFFormDisplay {
 
 				if ( $use_anchor !== false ) {
 					$scroll_position['default']      = is_numeric( $use_anchor ) ? 'jQuery(document).scrollTop(' . intval( $use_anchor ) . ');' : "jQuery(document).scrollTop(jQuery('#gform_wrapper_{$form_id}').offset().top);";
-					$scroll_position['confirmation'] = is_numeric( $use_anchor ) ? 'jQuery(document).scrollTop(' . intval( $use_anchor ) . ');' : "jQuery(document).scrollTop(jQuery('#gforms_confirmation_message').offset().top);";
+					$scroll_position['confirmation'] = is_numeric( $use_anchor ) ? 'jQuery(document).scrollTop(' . intval( $use_anchor ) . ');' : "jQuery(document).scrollTop(jQuery('#gforms_confirmation_message_{$form_id}').offset().top);";
 				}
 
 				$iframe_style = defined( 'GF_DEBUG' ) && GF_DEBUG ? 'display:block;width:600px;height:300px;border:1px solid #eee;' : 'display:none;width:0px;height:0px;';
@@ -774,44 +793,45 @@ class GFFormDisplay {
 				$form_string .= "
                 <iframe style='{$iframe_style}' src='about:blank' name='gform_ajax_frame_{$form_id}' id='gform_ajax_frame_{$form_id}'></iframe>
                 <script type='text/javascript'>" . apply_filters( 'gform_cdata_open', '' ) . '' .
-					"jQuery(document).ready(function($){" .
-					"gformInitSpinner( {$form_id}, '{$spinner_url}' );" .
-					"jQuery('#gform_ajax_frame_{$form_id}').load( function(){" .
-					"var contents = jQuery(this).contents().find('*').html();" .
-					"var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;" .
-					"if(!is_postback){return;}" .
-					"var form_content = jQuery(this).contents().find('#gform_wrapper_{$form_id}');" .
-					"var is_redirect = contents.indexOf('gformRedirect(){') >= 0;" .
-					"var is_form = !(form_content.length <= 0 || is_redirect);" .
-					"if(is_form){" .
-					"jQuery('#gform_wrapper_{$form_id}').html(form_content.html());" .
-					"{$scroll_position['default']}" .
-					"if(window['gformInitDatepicker']) {gformInitDatepicker();}" .
-					"if(window['gformInitPriceFields']) {gformInitPriceFields();}" .
-					"var current_page = jQuery('#gform_source_page_number_{$form_id}').val();" .
-					"gformInitSpinner( {$form_id}, '{$spinner_url}' );" .
-					"jQuery(document).trigger('gform_page_loaded', [{$form_id}, current_page]);" .
-					"window['gf_submitting_{$form_id}'] = false;" .
-					"}" .
-					"else if(!is_redirect){" .
-					"var confirmation_content = jQuery(this).contents().find('#gforms_confirmation_message').html();" .
-					"if(!confirmation_content){" .
-					"confirmation_content = contents;" .
-					"}" .
-					"setTimeout(function(){" .
-					"jQuery('#gform_wrapper_{$form_id}').replaceWith('<' + 'div id=\'gforms_confirmation_message\' class=\'gform_confirmation_message_{$form_id}\'' + '>' + confirmation_content + '<' + '/div' + '>');" .
-					"{$scroll_position['confirmation']}" .
-					"jQuery(document).trigger('gform_confirmation_loaded', [{$form_id}]);" .
-					"window['gf_submitting_{$form_id}'] = false;" .
-					"}, 50);" .
-					"}" .
-					"else{" .
-					"jQuery('#gform_{$form_id}').append(contents);" .
-					"if(window['gformRedirect']) {gformRedirect();}" .
-					"}" .
-					"jQuery(document).trigger('gform_post_render', [{$form_id}, current_page]);" .
-					"} );" .
-					"} );" . apply_filters( 'gform_cdata_close', '' ) . '</script>';
+					'jQuery(document).ready(function($){' .
+						"gformInitSpinner( {$form_id}, '{$spinner_url}' );" .
+						"jQuery('#gform_ajax_frame_{$form_id}').load( function(){" .
+							"var contents = jQuery(this).contents().find('*').html();" .
+							"var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;" .
+							'if(!is_postback){return;}' .
+							"var form_content = jQuery(this).contents().find('#gform_wrapper_{$form_id}');" .
+							"var is_confirmation = jQuery(this).contents().find('#gform_confirmation_wrapper_{$form_id}').length > 0;" .
+							"var is_redirect = contents.indexOf('gformRedirect(){') >= 0;" .
+							'var is_form = form_content.length > 0 && ! is_redirect && ! is_confirmation;' .
+							'if(is_form){' .
+								"jQuery('#gform_wrapper_{$form_id}').html(form_content.html());" .
+								"{$scroll_position['default']}" .
+								"if(window['gformInitDatepicker']) {gformInitDatepicker();}" .
+								"if(window['gformInitPriceFields']) {gformInitPriceFields();}" .
+								"var current_page = jQuery('#gform_source_page_number_{$form_id}').val();" .
+								"gformInitSpinner( {$form_id}, '{$spinner_url}' );" .
+								"jQuery(document).trigger('gform_page_loaded', [{$form_id}, current_page]);" .
+								"window['gf_submitting_{$form_id}'] = false;" .
+							'}' .
+							'else if(!is_redirect){' .
+								"var confirmation_content = jQuery(this).contents().find('#gforms_confirmation_message_{$form_id}').html();" .
+								'if(!confirmation_content){' .
+									'confirmation_content = contents;' .
+								'}' .
+								'setTimeout(function(){' .
+									"jQuery('#gform_wrapper_{$form_id}').replaceWith('<' + 'div id=\'gforms_confirmation_message_{$form_id}\' class=\'gform_confirmation_message_{$form_id} gforms_confirmation_message\'' + '>' + confirmation_content + '<' + '/div' + '>');" .
+									"{$scroll_position['confirmation']}" .
+									"jQuery(document).trigger('gform_confirmation_loaded', [{$form_id}]);" .
+									"window['gf_submitting_{$form_id}'] = false;" .
+									'}, 50);' .
+								'}' .
+							'else{' .
+								"jQuery('#gform_{$form_id}').append(contents);" .
+								"if(window['gformRedirect']) {gformRedirect();}" .
+							'}' .
+							"jQuery(document).trigger('gform_post_render', [{$form_id}, current_page]);" .
+						'} );' .
+					'} );' . apply_filters( 'gform_cdata_close', '' ) . '</script>';
 			}
 
 			$is_first_load = ! $is_postback;
@@ -841,7 +861,7 @@ class GFFormDisplay {
 			if ( $start_at_zero && $has_pages && ! $is_admin && ( $form['confirmation']['type'] == 'message' && $form['pagination']['type'] == 'percentage' ) ) {
 				$progress_confirmation = self::get_progress_bar( $form, $form_id, $confirmation_message );
 				if ( $ajax ) {
-					$progress_confirmation = "<!DOCTYPE html><html><head><meta charset='UTF-8' /></head><body class='GF_AJAX_POSTBACK'>" . $progress_confirmation . '</body></html>';
+					$progress_confirmation = apply_filters( 'gform_ajax_iframe_content', "<!DOCTYPE html><html><head><meta charset='UTF-8' /></head><body class='GF_AJAX_POSTBACK'>" . $progress_confirmation . '</body></html>' );
 				}
 			} else {
 				//return regular confirmation message
@@ -1153,7 +1173,8 @@ class GFFormDisplay {
 				$query_string .= '#' . rgar( $url_info, 'fragment' );
 			}
 
-			$url = $url_info['scheme'] . '://' . rgar( $url_info, 'host' );
+			$url = isset( $url_info['scheme'] ) ? $url_info['scheme'] : 'http';
+			$url .= '://' . rgar( $url_info, 'host' );
 			if ( ! empty( $url_info['port'] ) ) {
 				$url .= ':' . rgar( $url_info, 'port' );
 			}
@@ -1659,7 +1680,7 @@ class GFFormDisplay {
 							$default_values[ $field->id ] = array();
 						}
 
-						$default_values[ $field->id ][] = "choice_{$field->id}_{$choice_index}";
+						$default_values[ $field->id ][] = "choice_{$form['id']}_{$field->id}_{$choice_index}";
 					}
 					$choice_index ++;
 				}
@@ -2505,7 +2526,7 @@ class GFFormDisplay {
 		$email        = rgpost( 'gform_resume_email' );
 		$resume_token = rgpost( 'gform_resume_token' );
 
-		if ( empty( $form_id ) || empty( $email ) || empty( $resume_token ) ) {
+		if ( empty( $form_id ) || empty( $email ) || empty( $resume_token ) || ! GFCommon::is_valid_email( $email ) ) {
 			return;
 		}
 
@@ -2515,17 +2536,20 @@ class GFFormDisplay {
 			return;
 		}
 
-		$incomplete_sumbission = GFFormsModel::get_incomplete_submission_values( $resume_token );
+		$incomplete_submission = GFFormsModel::get_incomplete_submission_values( $resume_token );
 
-		$submission = json_decode( $incomplete_sumbission['submission'], true );
+		$submission = json_decode( $incomplete_submission['submission'], true );
 
 		$partial_entry = $submission['partial_entry'];
 
 		$notifications_to_send = GFCommon::get_notifications_to_send( 'form_save_email_requested', $form, $partial_entry );
 
+		$log_notification_event = empty( $notifications_to_send ) ? 'No notifications to process' : 'Processing notifications';
+		GFCommon::log_debug( "GFFormDisplay::process_send_resume_link(): {$log_notification_event} for form_save_email_requested event." );
+
 		foreach ( $notifications_to_send as $notification ) {
 			if ( isset( $notification['isActive'] ) && ! $notification['isActive'] ) {
-				GFCommon::log_debug( "GFFormDisplay::process_send_resume_link(): Not sending {$notification['id']}. The notification named '{$notification['name']}' is inactive." );
+				GFCommon::log_debug( "GFFormDisplay::process_send_resume_link(): Notification is inactive, not processing notification (#{$notification['id']} - {$notification['name']})." );
 				continue;
 			}
 			if ( $notification['toType'] == 'hidden' ) {
@@ -2538,49 +2562,72 @@ class GFFormDisplay {
 		GFFormsModel::add_email_to_incomplete_sumbmission( $resume_token, $email );
 	}
 
-	public static function replace_save_variables( $text, $form, $resume_token, $email = '' ) {
+	public static function replace_save_variables( $text, $form, $resume_token, $email = null ) {
 
-		$form_id = $form['id'];
+		$form_id = intval( $form['id'] );
 
-		$resume_url  = add_query_arg( array( 'gf_token' => $resume_token ), GFFormsModel::get_current_page_url() );
-		$resume_link = "<a href=\"{$resume_url}\">{$resume_url}</a>";
+		$resume_url  = apply_filters( 'gform_save_and_continue_resume_url', add_query_arg( array( 'gf_token' => $resume_token ), GFFormsModel::get_current_page_url() ), $form, $resume_token, $email );
+		$resume_url  = esc_url( $resume_url );
+		$resume_link = "<a href=\"{$resume_url}\" class='resume_form_link'>{$resume_url}</a>";
 		$text        = str_replace( '{save_link}', $resume_link, $text );
 		$text        = str_replace( '{save_token}', $resume_token, $text );
 
 		$text = str_replace( '{save_url}', $resume_url, $text );
 
-		$text = str_replace( '{save_email}', $email, $text );
+		$email_esc = esc_attr( $email );
+		$text      = str_replace( '{save_email}', $email_esc, $text );
 
+		$resume_submit_button_text       = __( 'Send Email', 'gravityforms' );
+		$resume_email_validation_message = __( 'Please enter a valid email address.', 'gravityforms' );
+
+		// The {save_email_input} accepts shortcode-style options button_text and validation_message. E.g.,
+		// {save_email_input: button_text="Send the link to my email address" validation_message="The link couldn't be sent because the email address is not valid."}
 		preg_match_all( '/\{save_email_input:(.*?)\}/', $text, $matches, PREG_SET_ORDER );
 
-		$resume_submit_button_text = __( 'Send', 'gravityforms' );
-
 		if ( is_array( $matches ) && isset( $matches[0] ) && isset( $matches[0][1] ) ) {
-			$full_tag                  = $matches[0][1];
-			$options_string            = isset( $matches[0][1] ) ? $matches[0][1] : '';
-			$options                   = shortcode_parse_atts( $options_string );
-			$resume_submit_button_text = $options['button_text'];
-			$text                      = str_replace( $full_tag, '{save_email_input}', $text );
+			$options_string = isset( $matches[0][1] ) ? $matches[0][1] : '';
+			$options        = shortcode_parse_atts( $options_string );
+			if ( isset( $options['button_text'] ) ) {
+				$resume_submit_button_text = $options['button_text'];
+			}
+			if ( isset( $options['validation_message'] ) ) {
+				$resume_email_validation_message = $options['validation_message'];
+			}
+			$full_tag = $matches[0][0];
+			$text     = str_replace( $full_tag, '{save_email_input}', $text );
 		}
 
-		$action = remove_query_arg( 'gf_token' );
+		$action = esc_url( remove_query_arg( 'gf_token' ) );
 
-		$resume_form = "<div>
-	                        <form action='{$action}' method='POST'>
-	                            <input type='text' name='gform_resume_email' />
-	                            <input type='hidden' name='gform_resume_token' value='{$resume_token}' />
-	                             <input type='hidden' name='gform_send_resume_link' value='{$form_id}' />
+		$html_input_type = RGFormsModel::is_html5_enabled() ? 'email' : 'text';
+
+		$resume_token = esc_attr( $resume_token );
+
+		$validation_message = ! is_null( $email ) && ! GFCommon::is_valid_email( $email ) ? sprintf( '<div class="validation_message">%s</div>', $resume_email_validation_message ) : '';
+
+		$resume_form = "<div class='form_saved_message_emailform'>
+							<form action='{$action}' method='POST'>
+								<input type='{$html_input_type}' name='gform_resume_email' value='{$email_esc}'/>
+								<input type='hidden' name='gform_resume_token' value='{$resume_token}' />
+								<input type='hidden' name='gform_send_resume_link' value='{$form_id}' />
 	                            <input type='submit' name='gform_send_resume_link_button' value='{$resume_submit_button_text}' />
-	                        </form>
+	                            {$validation_message}
+							</form>
 	                    </div>";
 
 		$text = str_replace( '{save_email_input}', $resume_form, $text );
+
+
 
 		return $text;
 	}
 
 	public static function handle_save_email_confirmation( $form, $ajax ) {
 		$resume_email       = $_POST['gform_resume_email'];
+		if ( ! GFCommon::is_valid_email( $resume_email ) ) {
+			GFCommon::log_debug( 'GFFormDisplay::handle_save_email_confirmation(): Invalid email address: ' . $resume_email );
+			return new WP_Error( 'invalid_email' );
+		}
 		$resume_token       = $_POST['gform_resume_token'];
 		$submission_details = GFFormsModel::get_incomplete_submission_values( $resume_token );
 		$submission_json    = $submission_details['submission'];
@@ -2588,7 +2635,7 @@ class GFFormDisplay {
 		$entry              = $submission['partial_entry'];
 		$form               = self::update_confirmation( $form, $entry, 'form_save_email_sent' );
 
-		$confirmation            = rgar( $form['confirmation'], 'message' );
+		$confirmation            = '<div class="form_saved_message_sent">' . rgar( $form['confirmation'], 'message' ) . '</div>';
 		$nl2br                   = rgar( $form['confirmation'], 'disableAutoformat' ) ? false : true;
 		$save_email_confirmation = self::replace_save_variables( $confirmation, $form, $resume_token, $resume_email );
 
@@ -2598,16 +2645,20 @@ class GFFormDisplay {
 			$save_email_confirmation = "<!DOCTYPE html><html><head><meta charset='UTF-8' /></head><body class='GF_AJAX_POSTBACK'>" . $save_email_confirmation . '</body></html>';
 		}
 
+		GFCommon::log_debug( 'GFFormDisplay::handle_save_email_confirmation(): Confirmation => ' . print_r( $save_email_confirmation, true ) );
+
 		return $save_email_confirmation;
 	}
 
 	public static function handle_save_confirmation( $form, $resume_token, $confirmation_message, $ajax ) {
-
-		$confirmation_message = self::replace_save_variables( $confirmation_message, $form, $resume_token );
+		$resume_email = isset( $_POST['gform_resume_email'] ) ? $_POST['gform_resume_email'] : null;
+		$confirmation_message = self::replace_save_variables( $confirmation_message, $form, $resume_token, $resume_email );
 		$confirmation_message       = "<div class='form_saved_message'>" . $confirmation_message . '</div>';
 		if ( $ajax ) {
 			$confirmation_message = "<!DOCTYPE html><html><head><meta charset='UTF-8' /></head><body class='GF_AJAX_POSTBACK'>" . $confirmation_message . '</body></html>';
 		}
+
+		GFCommon::log_debug( 'GFFormDisplay::handle_save_confirmation(): Confirmation => ' . print_r( $confirmation_message, true ) );
 
 		return $confirmation_message;
 	}

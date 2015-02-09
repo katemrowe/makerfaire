@@ -139,33 +139,36 @@ abstract class GFFeedAddOn extends GFAddOn {
 			return $entry;
 		}
 
-		//get paypal feed to pass for delay check, must be done per add-on
-		$paypal_feeds = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
-		$active_paypal_feed = '';
-		//loop through paypal feeds to get active one for this form submission, needed to see if add-on processing should be delayed
-		foreach ( $paypal_feeds as $paypal_feed ){
-			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
-				$active_paypal_feed = $paypal_feed;
-				break;
-			}
-		}
-
 		$is_delayed = false;
-		if ( ! empty( $active_paypal_feed ) && $this->is_delayed( $active_paypal_feed ) && $this->has_paypal_payment( $active_paypal_feed, $form, $entry ) ) {
-			$this->log_debug( 'GFFeedAddOn::maybe_process_feed(): Feed processing is delayed pending payment, not processing feed for entry #' . $entry['id'] . ' for ' . $this->_slug );
-			$is_delayed = true;
+		if ( class_exists( 'GFPayPal' ) ){
+			//get paypal feed to pass for delay check, must be done per add-on
+			$paypal_feeds = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
+			$active_paypal_feed = '';
+			//loop through paypal feeds to get active one for this form submission, needed to see if add-on processing should be delayed
+			foreach ( $paypal_feeds as $paypal_feed ){
+				if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
+					$active_paypal_feed = $paypal_feed;
+					break;
+				}
+			}
+
+
+			if ( ! empty( $active_paypal_feed ) && $this->is_delayed( $active_paypal_feed ) && $this->has_paypal_payment( $active_paypal_feed, $form, $entry ) ) {
+				$this->log_debug( 'GFFeedAddOn::maybe_process_feed(): Feed processing is delayed pending payment, not processing feed for entry #' . $entry['id'] . ' for ' . $this->_slug );
+				$is_delayed = true;
+			}
 		}
 
 		//Processing feeds
 		$processed_feeds = array();
 		foreach ( $feeds as $feed ) {
 			if ( ! $feed['is_active'] ) {
-				$feed_name = rgar($feed['meta'], 'feedName');
+				$feed_name = rgar( $feed['meta'], 'feedName' );
 				$this->log_debug( "GFFeedAddOn::maybe_process_feed(): Feed is inactive, not processing feed (#{$feed['id']} - {$feed_name}) for entry #{$entry['id']} for {$this->_slug}" );
 				continue;
 			}
 			if ( ! $this->is_feed_condition_met( $feed, $form, $entry ) ){
-				$feed_name = rgar($feed['meta'], 'feedName');
+				$feed_name = rgar( $feed['meta'], 'feedName' );
 				$this->log_debug( "GFFeedAddOn::maybe_process_feed(): Feed condition not met, not processing feed (#{$feed['id']} - {$feed_name}) for entry #{$entry['id']} for {$this->_slug}" );
 				continue;
 			}
@@ -175,7 +178,7 @@ abstract class GFFeedAddOn extends GFAddOn {
 			//process feed if not delayed
 			if ( ! $is_delayed ) {
 				//all requirements met, process feed
-				$feed_name = rgar($feed['meta'], 'feedName');
+				$feed_name = rgar( $feed['meta'], 'feedName' );
 				$this->log_debug( "GFFeedAddOn::maybe_process_feed(): Starting to process feed (#{$feed['id']} - {$feed_name}) for entry #{$entry['id']} for {$this->_slug}" );
 				$this->process_feed( $feed, $entry, $form );
 				//should the add-on fulfill be done here????

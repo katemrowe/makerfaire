@@ -312,9 +312,7 @@ if ( ! class_exists( 'GFResults' ) ) {
 
 											<div class="gresults-filter-loading"
 											     style="display:none; float:right; margin-top:5px;">
-												<img
-													src="<?php echo GFCommon::get_base_url() ?>/images/spinner.gif"
-													alt="loading..."/>
+												<i class='gficon-gravityforms-spinner-icon gficon-spin'></i> <?php _e( 'Loading', 'gravityforms' ); ?>
 											</div>
 										</div>
 									</form>
@@ -323,9 +321,7 @@ if ( ! class_exists( 'GFResults' ) ) {
 						</div>
 					</div>
 					<div class="gresults-filter-loading" style="display:none;margin:0 5px 10px 0;">
-						<img style="vertical-align:middle;"
-						     src="<?php echo GFCommon::get_base_url() ?>/images/spinner.gif"
-						     alt="loading..."/>&nbsp;
+						<i class='gficon-gravityforms-spinner-icon gficon-spin'></i>&nbsp;
 						<a href="javascript:void(0);"
 						   onclick="javascript:gresultsAjaxRequest.abort()"><?php _e( 'Cancel', 'gravityforms' ); ?></a>
 					</div>
@@ -741,8 +737,12 @@ if ( ! class_exists( 'GFResults' ) ) {
 							}
 						}
 					} else {
-						foreach ( $choices as $choice ) {
-							$field_data[ $field->id ][ $choice['value'] ] = 0;
+						if(!empty($choices) && is_array($choices)){
+							foreach ( $choices as $choice ) {
+								$field_data[ $field->id ][ $choice['value'] ] = 0;
+							}
+						} else {
+							$field_data[ $field->id ] = 0;
 						}
 					}
 					if ( $field_type == 'likert' && rgar( $field, 'gsurveyLikertEnableScoring' ) ) {
@@ -756,7 +756,7 @@ if ( ! class_exists( 'GFResults' ) ) {
 
 			$entries_left = $count_search_leads - $offset;
 
-			while ( $entries_left >= 0 ) {
+			while ( $entries_left > 0 ) {
 
 				$paging = array(
 					'offset'    => $offset,
@@ -771,8 +771,10 @@ if ( ! class_exists( 'GFResults' ) ) {
 				$leads_in_search = count( $leads );
 
 				$entry_count += $leads_in_search;
-
+				$leads_processed = 0;
 				foreach ( $leads as $lead ) {
+
+					$lead_time_start = microtime(true);
 					foreach ( $fields as $field ) {
 						$field_type = GFFormsModel::get_input_type( $field );
 						$field_id   = $field->id;
@@ -804,13 +806,14 @@ if ( ! class_exists( 'GFResults' ) ) {
 							}
 						} else {
 
-							if ( false === isset( $field->choices ) ) {
+							if ( empty( $field->choices ) ) {
 								if ( false === empty( $value ) ) {
 									$field_data[ $field_id ] ++;
 								}
 								continue;
 							}
 							$choices = $field->choices;
+
 							foreach ( $choices as $choice ) {
 								$choice_is_selected = false;
 								if ( is_array( $value ) ) {
@@ -832,16 +835,22 @@ if ( ! class_exists( 'GFResults' ) ) {
 							$field_data[ $field->id ]['sum_of_scores'] += $this->get_likert_score( $field, $lead );
 						}
 					}
+					$leads_processed ++;
+					$lead_time_end       = microtime(true);
+					$total_execution_time = $lead_time_end - $search_leads_time_start;
+					$lead_execution_time = $lead_time_end - $lead_time_start;
+					if($total_execution_time + $lead_execution_time > $max_execution_time) {
+						break;
+					}
+
 				}
 				$data['field_data'] = $field_data;
 				if ( isset( $this->_callbacks['calculation'] ) ) {
 					$data       = call_user_func( $this->_callbacks['calculation'], $data, $form, $fields, $leads );
 					$field_data = $data['field_data'];
 				}
-
-
-				$offset += $page_size;
-				$entries_left -= $page_size;
+				$offset += $leads_processed;
+				$entries_left -= $leads_processed;
 
 				$time_end       = microtime( true );
 				$execution_time = ( $time_end - $time_start );

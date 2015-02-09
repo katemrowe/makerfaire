@@ -74,6 +74,8 @@ class GFSettings {
 			delete_option( 'rg_gforms_captcha_public_key' );
 			delete_option( 'rg_gforms_captcha_private_key' );
 			delete_option( 'rg_gforms_message' );
+			delete_option( 'gform_enable_noconflict' );
+			delete_option( 'gform_enable_background_updates' );
 			delete_option( 'gf_dismissed_upgrades' );
 			delete_option( 'rg_gforms_currency' );
 			delete_option( 'gform_api_count' );
@@ -143,6 +145,7 @@ class GFSettings {
 			update_option( 'rg_gforms_disable_css', rgpost( 'gforms_disable_css' ) );
 			update_option( 'rg_gforms_enable_html5', rgpost( 'gforms_enable_html5' ) );
 			update_option( 'gform_enable_noconflict', rgpost( 'gform_enable_noconflict' ) );
+			update_option( 'gform_enable_background_updates', rgpost( 'gform_enable_background_updates' ) );
 			update_option( 'rg_gforms_enable_akismet', rgpost( 'gforms_enable_akismet' ) );
 			update_option( 'rg_gforms_captcha_public_key', rgpost( 'gforms_captcha_public_key' ) );
 			update_option( 'rg_gforms_captcha_private_key', rgpost( 'gforms_captcha_private_key' ) );
@@ -273,6 +276,18 @@ class GFSettings {
 						<?php do_action( 'gform_currency_setting_message', '' ); ?>
 					</td>
 				</tr>
+
+				<tr valign="top">
+					<th scope="row">
+						<label for="gform_enable_background_updates"><?php _e( 'Background updates', 'gravityforms' ); ?></label>  <?php gform_tooltip( 'settings_background_updates' ) ?>
+					</th>
+					<td>
+						<input type="radio" name="gform_enable_background_updates" value="1" <?php echo get_option( 'gform_enable_background_updates' ) == 1 ? "checked='checked'" : '' ?> id="gform_enable_background_updates" /> <?php _e( 'On', 'gravityforms' ); ?>&nbsp;&nbsp;
+						<input type="radio" name="gform_enable_background_updates" value="0" <?php echo get_option( 'gform_enable_background_updates' ) == 1 ? '' : "checked='checked'" ?> id="gform_disable_background_updates" /> <?php _e( 'Off', 'gravityforms' ); ?>
+						<br />
+						<span class="gf_settings_description"><?php _e( 'Set this to ON to allow Gravity Forms to download and install bug fixes and security updates automatically in the background. Requires a valid license key.', 'gravityforms' ); ?></span>
+					</td>
+				</tr>
 			</table>
 
 			<div class="hr-divider"></div>
@@ -284,7 +299,6 @@ class GFSettings {
 			</p>
 
 			<table class="form-table">
-
 
 				<tr valign="top">
 					<th scope="row">

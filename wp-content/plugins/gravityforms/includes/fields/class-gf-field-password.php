@@ -22,6 +22,7 @@ class GF_Field_Password extends GF_Field {
 			'label_placement_setting',
 			'admin_label_setting',
 			'rules_setting',
+			'input_placeholders_setting',
 			'duplicate_setting',
 			'sub_labels_setting',
 			'sub_label_placement_setting',
@@ -108,26 +109,30 @@ class GF_Field_Password extends GF_Field {
 		$confirm_password_label   = rgar( $confirm_password_field_input, 'customLabel' ) != '' ? $confirm_password_field_input['customLabel'] : __( 'Confirm Password', 'gravityforms' );
 		$confirm_password_label = apply_filters( "gform_password_confirm_{$form_id}", apply_filters( 'gform_password_confirm', $confirm_password_label, $form_id ), $form_id );
 
+
+		$enter_password_placeholder_attribute  = GFCommon::get_input_placeholder_attribute( $enter_password_field_input );
+		$confirm_password_placeholder_attribute  = GFCommon::get_input_placeholder_attribute( $confirm_password_field_input );
+
 		if ( $is_sub_label_above ) {
 			return "<div class='ginput_complex$class_suffix ginput_container' id='{$field_id}_container'>
 					<span id='{$field_id}_container' class='ginput_left'>
 						<label for='{$field_id}' {$sub_label_class_attribute}>{$enter_password_label}</label>
-						<input type='password' name='input_{$id}' id='{$field_id}' {$onkeyup} {$onchange} value='{$password_value}' {$first_tabindex} {$disabled_text}/>
+						<input type='password' name='input_{$id}' id='{$field_id}' {$onkeyup} {$onchange} value='{$password_value}' {$first_tabindex} {$enter_password_placeholder_attribute} {$disabled_text}/>
 					</span>
 					<span id='{$field_id}_2_container' class='ginput_right'>
 						<label for='{$field_id}_2' {$sub_label_class_attribute}>{$confirm_password_label}</label>
-						<input type='password' name='input_{$id}_2' id='{$field_id}_2' {$onkeyup} {$onchange} value='{$confirmation_value}' $last_tabindex {$disabled_text}/>
+						<input type='password' name='input_{$id}_2' id='{$field_id}_2' {$onkeyup} {$onchange} value='{$confirmation_value}' {$last_tabindex} {$confirm_password_placeholder_attribute} {$disabled_text}/>
 					</span>
 					<div class='gf_clear gf_clear_complex'></div>
 				</div>{$strength}";
 		} else {
 			return "<div class='ginput_complex$class_suffix ginput_container' id='{$field_id}_container'>
 					<span id='{$field_id}_container' class='ginput_left'>
-						<input type='password' name='input_{$id}' id='{$field_id}' {$onkeyup} {$onchange} value='{$password_value}' $first_tabindex {$disabled_text}/>
+						<input type='password' name='input_{$id}' id='{$field_id}' {$onkeyup} {$onchange} value='{$password_value}' {$first_tabindex} {$enter_password_placeholder_attribute} {$disabled_text}/>
 						<label for='{$field_id}' {$sub_label_class_attribute}>{$enter_password_label}</label>
 					</span>
 					<span id='{$field_id}_2_container' class='ginput_right'>
-						<input type='password' name='input_{$id}_2' id='{$field_id}_2' {$onkeyup} {$onchange} value='{$confirmation_value}' $last_tabindex {$disabled_text}/>
+						<input type='password' name='input_{$id}_2' id='{$field_id}_2' {$onkeyup} {$onchange} value='{$confirmation_value}' {$last_tabindex} {$confirm_password_placeholder_attribute} {$disabled_text}/>
 						<label for='{$field_id}_2' {$sub_label_class_attribute}>{$confirm_password_label}</label>
 					</span>
 					<div class='gf_clear gf_clear_complex'></div>

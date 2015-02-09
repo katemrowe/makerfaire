@@ -1,10 +1,9 @@
 <?php
-
 /**
 * Plugin Name: GP Copy Cat
 * Description: Allow users to copy the value of one field to another by clicking a checkbox. Is your shipping address the same as your billing? Copy cat!
 * Plugin URI: http://gravitywiz/category/perks/
-* Version: 1.0.4
+* Version: 1.2.1
 * Author: David Smith
 * Author URI: http://gravitywiz.com/
 * License: GPL2
@@ -21,7 +20,7 @@ if(!require_once(dirname($gw_perk_file) . '/safetynet.php'))
 class GWCopyCat extends GWPerk {
 
     protected $min_perks_version = '1.0.6';
-    public $version = '1.0.4';
+    public $version = '1.2.1';
 
     private $script_loaded;
 
@@ -71,7 +70,7 @@ class GWCopyCat extends GWPerk {
 
                 var copyObj = this;
 
-                jQuery('.gwcopy input[type="checkbox"]').bind( 'click.gpcopycat', function(){
+                jQuery( '#gform_wrapper_' + this._formId + ' .gwcopy input[type="checkbox"]').bind( 'click.gpcopycat', function(){
 
                     if(jQuery(this).is(':checked')) {
                         copyObj.copyValues(this);
@@ -81,46 +80,51 @@ class GWCopyCat extends GWPerk {
 
                 } );
 
+                jQuery( '#gform_wrapper_' + this._formId + ' .gwcopy' ).find( 'input, textarea' ).bind( 'change.gpcopycat', function() {
+                    copyObj.copyValues( this, true );
+                } );
+
                 jQuery( '#gform_wrapper_' + this._formId ).data( 'GPCopyCat', this );
 
             }
 
-            this.copyValues = function(elem) {
+            this.copyValues = function( elem, isOverride ) {
 
-                var copyObj = this;
-                var fieldId = jQuery(elem).parents('li.gwcopy').attr('id').replace('field_' + this._formId + '_', '');
-                var fields = this._fields[fieldId];
+                var copyObj    = this,
+                    fieldId    = jQuery(elem).parents('li.gwcopy').attr('id').replace('field_' + this._formId + '_', '' ),
+                    fields     = this._fields[fieldId],
+                    isOverride = copyObj._overwrite || isOverride;
 
-                for(i in fields) {
+                for( var i = 0; i < fields.length; i++ ) {
 
-                    var field = fields[i];
+                    var field        = fields[i],
+                        sourceValues = [],
+                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + field.source ).find( 'input, select, textarea' ),
+                        targetGroup  = jQuery( '#field_' + this._formId + '_' + field.target ).find( 'input, select, textarea' );
 
-                    var sourceValues = new Array();
+                    if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
+                        sourceGroup = sourceGroup.filter( ':checked' );
+                    }
 
-                    // group of inputs, selects, etc that are to have their values copied
-                    var sourceGroup = jQuery('#field_<?php echo $form_id; ?>_' + field.source + ' input, #field_<?php echo $form_id; ?>_' + field.source + ' select');
-
-                    sourceGroup.each(function(i){
-                        // store the values in an array
+                    sourceGroup.each( function( i ) {
                         sourceValues[i] = jQuery(this).val();
-                    });
-
-                    // group of inputs, selects, etc that are to have values copied to them
-                    var targetGroup = jQuery('#field_<?php echo $form_id; ?>_' + field.target + ' input, #field_<?php echo $form_id; ?>_' + field.target + ' select');
+                    } );
 
                     targetGroup.each(function(i){
 
                         var targetElem = jQuery(this);
 
                         // if overwrite is false and a value exists, skip
-                        if( ! copyObj._overwrite && targetElem.val() )
+                        if( ! isOverride && targetElem.val() ) {
                             return;
+                        }
 
                         // if there is no source value for this element, skip
-                        if(!sourceValues[i] || !sourceValues.join(' '))
+                        if( ! sourceValues[i] || ! sourceValues.join(' ') ) {
                             return;
+                        }
 
-                        if(targetGroup.length > 1) {
+                        if( targetGroup.length > 1 ) {
                             targetElem.val(sourceValues[i]);
                         }
                         // if there is only one input, join the source values
@@ -128,7 +132,7 @@ class GWCopyCat extends GWPerk {
                             targetElem.val(sourceValues.join(' '));
                         }
 
-                    });
+                    } ).change();
 
                 }
 
@@ -139,26 +143,30 @@ class GWCopyCat extends GWPerk {
                 var fieldId = jQuery(elem).parents('li.gwcopy').attr('id').replace('field_' + this._formId + '_', '');
                 var fields = this._fields[fieldId];
 
-                for(i in fields) {
+                for( var i = 0; i < fields.length; i++ ) {
 
-                    var field = fields[i];
-                    var targetGroup = jQuery('#field_<?php echo $form_id; ?>_' + field.target + ' input, #field_<?php echo $form_id; ?>_' + field.target + ' select');
-                    var sourceValues = new Array();
-                    var sourceGroup = jQuery('#field_<?php echo $form_id; ?>_' + field.source + ' input, #field_<?php echo $form_id; ?>_' + field.source + ' select');
+                    var field        = fields[i],
+                        targetGroup  = jQuery( '#field_' + this._formId + '_' + field.target ).find( 'input, select, textarea' ),
+                        sourceValues = [],
+                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + field.source ).find( 'input, select, textarea' );
 
-                    sourceGroup.each(function(i){
-                        // store the values in an array
+                    if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
+                        sourceGroup = sourceGroup.filter( ':checked' );
+                    }
+
+                    sourceGroup.each( function( i ) {
                         sourceValues[i] = jQuery(this).val();
-                    });
+                    } );
 
-                    targetGroup.each(function(i){
+                    targetGroup.each( function( i ) {
 
                         var fieldValue = jQuery(this).val();
 
-                        if(fieldValue == sourceValues[i])
-                            jQuery(this).val('');
+                        if( fieldValue == sourceValues[i] ) {
+                            jQuery(this).val( '' );
+                        }
 
-                    });
+                    } ).change();
 
                 }
 

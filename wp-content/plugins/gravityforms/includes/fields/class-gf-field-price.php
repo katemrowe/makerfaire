@@ -16,6 +16,7 @@ class GF_Field_Price extends GF_Field {
 			'error_message_setting',
 			'label_setting',
 			'label_placement_setting',
+			'placeholder_setting',
 			'size_setting',
 			'duplicate_setting',
 		);

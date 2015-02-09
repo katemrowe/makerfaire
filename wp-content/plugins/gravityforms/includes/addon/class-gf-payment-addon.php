@@ -215,6 +215,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
 			//Running an authorization only transaction if function is implemented and this is a single payment
 			$this->authorization = $this->authorize( $feed, $submission_data, $form, $entry );
+			$this->log_debug( __METHOD__ . "(): Authorization result for form #{$form['id']} submission => " . print_r( $this->authorization, 1 ) );
 
 			$performed_authorization = true;
 
@@ -225,6 +226,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 			$this->authorization['is_authorized'] = $subscription['is_success'];
 			$this->authorization['error_message'] = rgar( $subscription, 'error_message' );
 			$this->authorization['subscription']  = $subscription;
+			$this->log_debug( __METHOD__ . "(): Authorization result for form #{$form['id']} submission => " . print_r( $this->authorization, 1 ) );
 
 			$performed_authorization = true;
 		}
@@ -394,6 +396,8 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 			return $entry;
 		}
 
+		$this->log_debug( __METHOD__ . "(): Updating entry #{$entry['id']} with result => " . print_r( $payment, 1 ) );
+
 		if ( $payment['is_success'] ) {
 
 			$entry['is_fulfilled']     = '1';
@@ -419,6 +423,8 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 		if ( empty( $subscription ) ) {
 			return $entry;
 		}
+
+		$this->log_debug( __METHOD__ . "(): Updating entry #{$entry['id']} with result => " . print_r( $subscription, 1 ) );
 
 		// if setup fee / trial is captured as part of a separate transaction
 		$payment      = rgar( $subscription, 'captured_payment' );
@@ -526,7 +532,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 		$card_field = $this->get_credit_card_field( $form );
 		if ( $card_field ) {
 
-			$form_data['card_number']          = rgpost( "input_{$card_field['id']}_1" );
+			$form_data['card_number']          = $this->remove_spaces_from_card_number( rgpost( "input_{$card_field['id']}_1" ) );
 			$form_data['card_expiration_date'] = rgpost( "input_{$card_field['id']}_2" );
 			$form_data['card_security_code']   = rgpost( "input_{$card_field['id']}_3" );
 			$form_data['card_name']            = rgpost( "input_{$card_field['id']}_5" );
@@ -554,7 +560,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
 		$products = GFCommon::get_product_fields( $form, $entry );
 
-		$payment_field   = $feed['meta']['transactionType'] == 'product' ? $feed['meta']['paymentAmount'] : $feed['meta']['recurringAmount'];
+		$payment_field   = $feed['meta']['transactionType'] == 'product' ? rgars( $feed, 'meta/paymentAmount' ) : rgars( $feed, 'meta/recurringAmount' );
 		$setup_fee_field = rgar( $feed['meta'], 'setupFee_enabled' ) ? $feed['meta']['setupFee_product'] : false;
 		$trial_field     = rgar( $feed['meta'], 'trial_enabled' ) ? rgars( $feed, 'meta/trial_product' ) : false;
 
@@ -1264,10 +1270,16 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 	public function settings_billing_cycle( $field, $echo = true ) {
 
 		$intervals = $this->supported_billing_intervals();
-
+		//get unit so the length drop down is populated with the appropriate numbers for initial load
+		$unit = $this->get_setting( $field['name'] . '_unit' );
 		//Length drop down
 		$interval_keys  = array_keys( $intervals );
-		$first_interval = $intervals[ $interval_keys[0] ];
+		if ( ! $unit ){
+			$first_interval = $intervals[ $interval_keys[0] ];
+		}
+		else{
+			$first_interval = $intervals[ $unit ];
+		}
 		$length_field   = array(
 			'name'    => $field['name'] . '_length',
 			'type'    => 'select',
@@ -1733,7 +1745,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
                                 LEFT OUTER JOIN(
                                   SELECT  {$select_inner2},
-                                          sum(t.amount) as revenue,
+                                          sum( if(t.transaction_type = 'refund', abs(t.amount) * -1, t.amount) ) as revenue,
                                           sum( if(t.transaction_type = 'refund', 1, 0) ) as refunds,
                                           sum( if(t.transaction_type = 'payment' AND t.is_recurring = 1, 1, 0) ) as recurring_payments
                                   FROM {$wpdb->prefix}gf_addon_payment_transaction t
@@ -1806,7 +1818,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
                      LEFT OUTER JOIN(
                        SELECT  date( CONVERT_TZ(t.date_created, '+00:00', '" . $tz_offset . "') ) as date,
-                               sum(t.amount) as revenue
+                               sum( if(t.transaction_type = 'refund', abs(t.amount) * -1, t.amount) ) as revenue
                        FROM {$wpdb->prefix}gf_addon_payment_transaction t
                          INNER JOIN {$wpdb->prefix}rg_lead l ON l.id = t.lead_id
                        WHERE l.form_id=%d
@@ -1820,7 +1832,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 			$wpdb->prepare(
 				"
                     SELECT sum( if(transaction_type = 1,1,0) ) as orders,
-                         sum( if(transaction_type = 2,1,0) ) as subscriptions
+                           sum( if(transaction_type = 2,1,0) ) as subscriptions
                     FROM {$wpdb->prefix}rg_lead
                     WHERE form_id=%d", $form_id
 			), ARRAY_A
@@ -1829,7 +1841,7 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 		$total_revenue = $wpdb->get_var(
 			$wpdb->prepare(
 				"
-                    SELECT sum(t.amount) as revenue
+                    SELECT sum( if(t.transaction_type = 'refund', abs(t.amount) * -1, t.amount) ) as revenue
                     FROM {$wpdb->prefix}gf_addon_payment_transaction t
                     INNER JOIN {$wpdb->prefix}rg_lead l ON l.id = t.lead_id
                     WHERE l.form_id=%d", $form_id
@@ -2077,6 +2089,15 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 		GFFormsModel::add_note( $entry_id, $user_id, $user_name, $note, $note_type );
 
 	}
+
+	public function remove_spaces_from_card_number( $card_number ) {
+		$card_number = str_replace( "\t", "", $card_number );
+		$card_number = str_replace( "\n", "", $card_number );
+		$card_number = str_replace( "\r", "", $card_number );
+		$card_number = str_replace( " ", "", $card_number );
+
+		return $card_number;
+	}
 }
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -2125,13 +2146,17 @@ class GFPaymentStatsTable extends WP_List_Table {
 		return rgar( $item, $column );
 	}
 
+	function column_revenue( $item ){
+		return GFCommon::to_money( $item['revenue'] );
+	}
+
 	function pagination( $which ) {
 		if ( empty( $this->_pagination_args ) ) {
 			return;
 		}
 
-		$total_items = $this->get_pagination_arg('total_items');
-		$total_pages = $this->get_pagination_arg('total_pages');
+		$total_items = $this->get_pagination_arg( 'total_items' );
+		$total_pages = $this->get_pagination_arg( 'total_pages' );
 
 		$output = '<span class="displaying-num">' . sprintf( _n( '1 item', '%s items', $total_items, 'gravityforms' ), number_format_i18n( $total_items ) ) . '</span>';
 

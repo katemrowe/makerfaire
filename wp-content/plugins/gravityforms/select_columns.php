@@ -104,7 +104,7 @@ class GFSelectColumns {
 					float: left;
 					width: 45px;
 					height: 250px;
-					background-image: url(<?php echo GFCommon::get_base_url(); ?>/images/arrow-rightleft.jpg);
+					background-image: url(<?php echo GFCommon::get_base_url(); ?>/images/arrow-rightleft.png);
 					background-repeat: no-repeat;
 					background-position: center center;
 					margin-top: 26px;

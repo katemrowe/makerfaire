@@ -104,7 +104,7 @@
                 for (j = 0; j < numRows; j++) {
                     label = settings[i].filters[j].text;
                     val = settings[i].filters[j].key;
-                   // disabled = isFieldSelected(val) ? 'disabled="disabled"' : "";
+                    disabled = isFieldSelected(val) ? 'disabled="disabled"' : "";
                     options.push('<option {0} value="{1}">{2}</option>'.format(disabled, val, label));
                 }
                 select.push('<optgroup label="{0}">{1}</optgroup>'.format(question, options.join('')));
@@ -157,7 +157,7 @@
         if (filter) {
             for (i = 0; i < filter.operators.length; i++) {
                 operator = filter.operators[i];
-                str += "<option value='{0}'>{1}</option>".format(operator, gf_vars[operatorStrings[operator]] );
+                str += '<option value="{0}">{1}</option>'.format(operator, gf_vars[operatorStrings[operator]] );
             }
         }
         str += "</select>";
@@ -171,7 +171,7 @@
             for (i = 0; i < filter.values.length; i++) {
                 val = filter.values[i].value;
                 text = filter.values[i].text;
-                options += "<option value='{0}'>{1}</option>".format(val, text);
+                options += '<option value="{0}">{1}</option>'.format(val, text);
             }
             str = "<select name='v[]' class='gform-filter-value'>{0}</select>".format(options);
         } else {

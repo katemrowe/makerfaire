@@ -582,8 +582,15 @@ class GFFormSettings {
             </th>
             <td>
                 <div class="gforms_help_alert fieldwidth-3">
+                    <div>
                     <i class="fa fa-warning"></i>
-                    This feature stores potentially private and sensitive data on this server and protects it with a unique link which is displayed to the user on the page in plain, unencrypted text. The link is similar to a password so it\'s strongly advisable to ensure that the page enforces a secure connection (HTTPS) before activating this setting.
+                    '. __('This feature stores potentially private and sensitive data on this server and protects it with a unique link which is displayed to the user on the page in plain, unencrypted text. The link is similar to a password so it\'s strongly advisable to ensure that the page enforces a secure connection (HTTPS) before activating this setting.', 'gravityforms').
+		            '</div>
+		            <br />
+		            <div>
+		            <i class="fa fa-warning"></i>
+                    '. __('When this setting is activated two confirmations and one notification are automatically generated and can be modified in their respective editors. When this setting is deactivated the confirmations and the notification will be deleted automatically and any modifications will be lost.', 'gravityforms').
+		            '</div>
                 </div>
             </td>
 
@@ -1082,6 +1089,11 @@ class GFFormSettings {
 			var entry_meta = <?php echo GFCommon::json_encode( $entry_meta ) ?>;
 
 			jQuery(document).ready(function ($) {
+
+				if ( confirmation.event == 'form_saved' || confirmation.event == 'form_save_email_sent' ) {
+					$('#form_confirmation_redirect, #form_confirmation_show_page').attr('disabled', true);
+				}
+
 				SetConfirmationConditionalLogic();
 				<?php if ( ! rgar( $confirmation, 'isDefault' ) ) : ?>
 				ToggleConditionalLogic(true, 'confirmation');
@@ -1468,9 +1480,9 @@ class GFFormSettings {
 				}
 				break;
 			case 'redirect':
-				if ( empty( $confirmation['url'] ) ) {
+				if ( empty( $confirmation['url'] ) || ! GFCommon::is_valid_url( $confirmation['url'] ) ) {
 					$failed_validation = true;
-					GFCommon::add_error_message( __( 'You must specify a Redirect URL.', 'gravityforms' ) );
+					GFCommon::add_error_message( __( 'You must specify a valid Redirect URL.', 'gravityforms' ) );
 				}
 				break;
 		}
@@ -1622,7 +1634,7 @@ class GFFormSettings {
 				'name'        => __( 'Save and Continue Confirmation', 'gravityforms' ),
 				'isDefault'   => true,
 				'type'        => 'message',
-				'message'     => __( 'Please use the following link to return to your form from any computer. <br /><br /> {save_link} <br /><br /> This link will expire after 30 days. <br /><br />Enter your email address to send the link by email. <br /><br /> {save_email_input}', 'gravityforms' ),
+				'message'     => __( 'Please use the following link to return to your form from any computer. <br /> {save_link} <br /> This link will expire after 30 days. <br />Enter your email address to send the link by email. <br /> {save_email_input}', 'gravityforms' ),
 				'url'         => '',
 				'pageId'      => '',
 				'queryString' => '',

@@ -1032,7 +1032,7 @@ class GFFormsModel {
 		// update lead field value - simulate form submission
 
 		$lead_detail_table = self::get_lead_details_table_name();
-		$sql               = $wpdb->prepare( "SELECT id FROM $lead_detail_table WHERE lead_id=%d AND field_number BETWEEN %s AND %s", $entry_id, doubleval( $field_id ) - 0.001, doubleval( $field_id ) + 0.001 );
+		$sql               = $wpdb->prepare( "SELECT id FROM $lead_detail_table WHERE lead_id=%d AND field_number BETWEEN %s AND %s", $entry_id, doubleval( $field_id ) - 0.0001, doubleval( $field_id ) + 0.0001 );
 		$entry_detail_id   = $wpdb->get_var( $sql );
 
 		self::update_lead_field_value( $form, $entry, $field, $entry_detail_id, $field_id, $field_value );
@@ -1490,23 +1490,29 @@ class GFFormsModel {
 
 			case 'post_image':
 				$file_info = self::get_temp_filename( $form['id'], $input_name );
-				$file_path = self::get_file_upload_path( $form['id'], $file_info['uploaded_filename'] );
-				$url       = $file_path['url'];
+				if ( ! empty( $file_info ) ) {
+					$file_path = self::get_file_upload_path( $form['id'], $file_info['uploaded_filename'] );
+					$url       = $file_path['url'];
 
-				$image_title       = isset( $_POST[ "{$input_name}_1" ] ) ? strip_tags( $_POST[ "{$input_name}_1" ] ) : '';
-				$image_caption     = isset( $_POST[ "{$input_name}_4" ] ) ? strip_tags( $_POST[ "{$input_name}_4" ] ) : '';
-				$image_description = isset( $_POST[ "{$input_name}_7" ] ) ? strip_tags( $_POST[ "{$input_name}_7" ] ) : '';
+					$image_title       = isset( $_POST[ "{$input_name}_1" ] ) ? strip_tags( $_POST[ "{$input_name}_1" ] ) : '';
+					$image_caption     = isset( $_POST[ "{$input_name}_4" ] ) ? strip_tags( $_POST[ "{$input_name}_4" ] ) : '';
+					$image_description = isset( $_POST[ "{$input_name}_7" ] ) ? strip_tags( $_POST[ "{$input_name}_7" ] ) : '';
 
-				$value = ! empty( $url ) ? $url . '|:|' . $image_title . '|:|' . $image_caption . '|:|' . $image_description : '';
+					$value = ! empty( $url ) ? $url . '|:|' . $image_title . '|:|' . $image_caption . '|:|' . $image_description : '';
+				}
 				break;
 
 			case 'fileupload' :
 				if ( $field->multipleFiles ) {
-					$value = json_encode( $value );
+					if ( ! empty( $value ) ) {
+						$value = json_encode( $value );
+					}
 				} else {
 					$file_info = self::get_temp_filename( $form['id'], $input_name );
-					$file_path = self::get_file_upload_path( $form['id'], $file_info['uploaded_filename'] );
-					$value     = $file_path['url'];
+					if ( ! empty( $file_info ) ) {
+						$file_path = self::get_file_upload_path( $form['id'], $file_info['uploaded_filename'] );
+						$value     = $file_path['url'];
+					}
 				}
 
 				break;
@@ -1913,6 +1919,7 @@ class GFFormsModel {
 				array( '%s' ) );
 		}
 
+		do_action( 'gform_incomplete_submission_post_save', $submission, $resume_token, $form, $entry );
 
 		return $result ? $resume_token : $result;
 	}
@@ -2884,7 +2891,7 @@ class GFFormsModel {
                                     WHERE lead_detail_id IN(
                                         SELECT id FROM $lead_detail_table WHERE lead_id=%d AND field_number BETWEEN %s AND %s
                                     )",
-				$lead_id, doubleval( $input_id ) - 0.001, doubleval( $input_id ) + 0.001
+				$lead_id, doubleval( $input_id ) - 0.0001, doubleval( $input_id ) + 0.0001
 			);
 			$result = $wpdb->query( $sql );
 			if ( false === $result ) {
@@ -2892,7 +2899,7 @@ class GFFormsModel {
 			}
 
 			//Deleting details for this field
-			$sql    = $wpdb->prepare( "DELETE FROM $lead_detail_table WHERE lead_id=%d AND field_number BETWEEN %s AND %s ", $lead_id, doubleval( $input_id ) - 0.001, doubleval( $input_id ) + 0.001 );
+			$sql    = $wpdb->prepare( "DELETE FROM $lead_detail_table WHERE lead_id=%d AND field_number BETWEEN %s AND %s ", $lead_id, doubleval( $input_id ) - 0.0001, doubleval( $input_id ) + 0.0001 );
 			$result = $wpdb->query( $sql );
 			if ( false === $result ) {
 				return false;
@@ -3133,11 +3140,11 @@ class GFFormsModel {
             $input_count = sizeof($field["inputs"]);
             foreach($field["inputs"] as $input){
                 $union = empty($inner_sql) ? "" : " UNION ALL ";
-                $inner_sql .= $union . $wpdb->prepare($inner_sql_template, $input["id"], $form_id, $form_id, $input["id"] - 0.001, $input["id"] + 0.001, $value[ $input['id'] ], $value[ $input['id'] ] );
+                $inner_sql .= $union . $wpdb->prepare($inner_sql_template, $input["id"], $form_id, $form_id, $input["id"] - 0.0001, $input["id"] + 0.0001, $value[ $input['id'] ], $value[ $input['id'] ] );
             }
         }
         else{
-            $inner_sql = $wpdb->prepare($inner_sql_template, $field["id"], $form_id, $form_id, doubleval($field["id"]) - 0.001, doubleval($field["id"]) + 0.001, $value, $value );
+            $inner_sql = $wpdb->prepare($inner_sql_template, $field["id"], $form_id, $form_id, doubleval($field["id"]) - 0.0001, doubleval($field["id"]) + 0.0001, $value, $value );
         }
 
         $sql .= $inner_sql . "
@@ -3219,6 +3226,7 @@ class GFFormsModel {
 			//making sure values submitted are sent in the value even if
 			//there isn't an input associated with it
 			$lead_field_keys = array_keys( $lead );
+			natsort( $lead_field_keys );
 			foreach ( $lead_field_keys as $input_id ) {
 				if ( is_numeric( $input_id ) && absint( $input_id ) == absint( $field->id ) ) {
 					$val = $lead[ $input_id ];
@@ -3269,7 +3277,7 @@ class GFFormsModel {
 		$sql = $wpdb->prepare(
 			" SELECT l.value FROM $detail_table_name d
                                 INNER JOIN $long_table_name l ON l.lead_detail_id = d.id
-                                WHERE lead_id=%d AND field_number BETWEEN %s AND %s", $lead['id'], doubleval( $field_number ) - 0.001, doubleval( $field_number ) + 0.001
+                                WHERE lead_id=%d AND field_number BETWEEN %s AND %s", $lead['id'], doubleval( $field_number ) - 0.0001, doubleval( $field_number ) + 0.0001
 		);
 
 		$val = $wpdb->get_var( $sql );
@@ -3343,8 +3351,8 @@ class GFFormsModel {
 
 		$search_sql = self::get_leads_where_sql( compact( 'form_id', 'search', 'status', 'star', 'read', 'start_date', 'end_date', 'payment_status', 'is_default' ) );
 
-		$field_number_min = $sort_field_number - 0.001;
-		$field_number_max = $sort_field_number + 0.001;
+		$field_number_min = $sort_field_number - 0.0001;
+		$field_number_max = $sort_field_number + 0.0001;
 
 		$sql = "
             SELECT filtered.sort, l.*, d.field_number, d.value
@@ -3732,7 +3740,7 @@ class GFFormsModel {
 	 * @return string
 	 */
 	public static function get_label( $field, $input_id = 0, $input_only = false ) {
-		if ( ! is_subclass_of( $field, 'GF_Field' ) ) {
+		if ( ! $field instanceof GF_Field ) {
 			$field = GF_Fields::create( $field );
 		}
 		$field_label = ( IS_ADMIN || RG_CURRENT_PAGE == 'select_columns.php' || RG_CURRENT_PAGE == 'print-entry.php' || rgget( 'gf_page', $_GET ) == 'select_columns' || rgget( 'gf_page', $_GET ) == 'print-entry' ) && ! empty( $field->adminLabel ) ? $field->adminLabel : $field->label;
@@ -4057,8 +4065,8 @@ class GFFormsModel {
 
 		$where = self::get_search_where( $form_id, $search_criteria );
 
-		$field_number_min = $sort_field_number - 0.001;
-		$field_number_max = $sort_field_number + 0.001;
+		$field_number_min = $sort_field_number - 0.0001;
+		$field_number_max = $sort_field_number + 0.0001;
 
 		$sql = "
             SELECT filtered.sort, l.*, d.field_number, d.value
@@ -4386,7 +4394,7 @@ class GFFormsModel {
 								$choice_texts_clauses_for_field = array();
 								if ( is_array( $field->choices ) ) {
 									foreach ( $field->choices as $choice ) {
-										if ( ( $operator == '=' && strtolower( $choice['text'] ) == strtolower( $val ) ) || ( $operator == 'like' && strpos( strtolower( $choice['text'] ), strtolower( $val ) ) !== false ) ) {
+										if ( ( $operator == '=' && strtolower( $choice['text'] ) == strtolower( $val ) ) || ( $operator == 'like' && ! empty( $val ) && strpos( strtolower( $choice['text'] ), strtolower( $val ) ) !== false ) ) {
 											if ( $field->gsurveyLikertEnableMultipleRows ){
 												$choice_value = '%' . $choice['value'] . '%' ;
 												$choice_search_operator = 'like';
@@ -4621,6 +4629,8 @@ class GFFormsModel {
 				if ( ! $trim_value ) {
 					continue;
 				}
+
+
 
 				if ( isset( $field->label ) && $field->label != trim( $field->label ) ) {
 					$field->label = trim( $field->label );

@@ -84,6 +84,11 @@ if ( ! class_exists( 'RGCurrency' ) ) {
 			}
 
 			$money        = number_format( $number, $this->currency['decimals'], $this->currency['decimal_separator'], $this->currency['thousand_separator'] );
+
+			if ( $money == '0.00' ){
+				$negative = '';
+			}
+
 			$symbol_left  = ! empty( $this->currency['symbol_left'] ) ? $this->currency['symbol_left'] . $this->currency['symbol_padding'] : '';
 			$symbol_right = ! empty( $this->currency['symbol_right'] ) ? $this->currency['symbol_padding'] . $this->currency['symbol_right'] : '';
 

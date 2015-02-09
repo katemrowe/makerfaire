@@ -103,6 +103,13 @@ class GF_Field_Time extends GF_Field {
 		$minute_tabindex = $this->get_tabindex();
 		$ampm_tabindex   = $this->get_tabindex();
 
+		$is_html5   = RGFormsModel::is_html5_enabled();
+		$input_type = $is_html5 ? 'number' : 'text';
+
+		$max_hour = $this->timeFormat == '24' ? 23 : 12;
+		$hour_html5_attributes   = $is_html5 ? "min='0' max='{$max_hour}' step='1'" : '';
+		$minute_html5_attributes = $is_html5 ? "min='0' max='59' step='1'" : '';
+
 		$ampm_field_style = $is_form_editor && $this->timeFormat == '24' ? "style='display:none;'" : '';
 		if ( $is_form_editor || $this->timeFormat != '24' ) {
 			$am_text = __( 'AM', 'gravityforms' );
@@ -131,22 +138,22 @@ class GF_Field_Time extends GF_Field {
 			return "<div class='clear-multi'>
                         <div class='gfield_time_hour ginput_container' id='{$field_id}'>
                             <label for='{$field_id}_1' {$sub_label_class_attribute}>{$hour_label}</label>
-                            <input type='text' maxlength='2' name='input_{$id}[]' id='{$field_id}_1' value='{$hour}' {$hour_tabindex} {$disabled_text} {$hour_placeholder_attribute}/> :
+                            <input type='{$input_type}' maxlength='2' name='input_{$id}[]' id='{$field_id}_1' value='{$hour}' {$hour_tabindex} {$hour_html5_attributes} {$disabled_text} {$hour_placeholder_attribute}/> <i>:</i>
                         </div>
                         <div class='gfield_time_minute ginput_container'>
                             <label for='{$field_id}_2' {$sub_label_class_attribute}>{$minute_label}</label>
-                            <input type='text' maxlength='2' name='input_{$id}[]' id='{$field_id}_2' value='{$minute}' {$minute_tabindex} {$disabled_text} {$minute_placeholder_attribute}/>
+                            <input type='{$input_type}' maxlength='2' name='input_{$id}[]' id='{$field_id}_2' value='{$minute}' {$minute_tabindex} {$minute_html5_attributes} {$disabled_text} {$minute_placeholder_attribute}/>
                         </div>
                         {$ampm_field}
                     </div>";
 		} else {
 			return "<div class='clear-multi'>
                         <div class='gfield_time_hour ginput_container' id='{$field_id}'>
-                            <input type='text' maxlength='2' name='input_{$id}[]' id='{$field_id}_1' value='{$hour}' {$hour_tabindex} {$disabled_text} {$hour_placeholder_attribute}/> :
+                            <input type='{$input_type}' maxlength='2' name='input_{$id}[]' id='{$field_id}_1' value='{$hour}' {$hour_tabindex} {$hour_html5_attributes} {$disabled_text} {$hour_placeholder_attribute}/> <i>:</i>
                             <label for='{$field_id}_1' {$sub_label_class_attribute}>{$hour_label}</label>
                         </div>
                         <div class='gfield_time_minute ginput_container'>
-                            <input type='text' maxlength='2' name='input_{$id}[]' id='{$field_id}_2' value='{$minute}' {$minute_tabindex} {$disabled_text} {$minute_placeholder_attribute}/>
+                            <input type='{$input_type}' maxlength='2' name='input_{$id}[]' id='{$field_id}_2' value='{$minute}' {$minute_tabindex} {$minute_html5_attributes} {$disabled_text} {$minute_placeholder_attribute}/>
                             <label for='{$field_id}_2' {$sub_label_class_attribute}>{$minute_label}</label>
                         </div>
                         {$ampm_field}

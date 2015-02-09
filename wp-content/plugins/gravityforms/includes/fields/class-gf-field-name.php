@@ -230,7 +230,7 @@ class GF_Field_Name extends GF_Field {
 					$first_markup = '';
 					$style        = ( $is_admin && rgar( $first_input, 'isHidden' ) ) ? "style='display:none;'" : '';
 					if ( $is_admin || ! rgar( $first_input, 'isHidden' ) ) {
-						$first_markup = "<span id='{$field_id}_3_container' class='ginput_left' {$style}>
+						$first_markup = "<span id='{$field_id}_3_container' class='name_first' {$style}>
                                                     <label for='{$field_id}_3' {$sub_label_class_attribute}>{$first_name_sub_label}</label>
                                                     <input type='text' name='input_{$id}.3' id='{$field_id}_3' value='{$first}' {$first_tabindex} {$disabled_text} {$first_placeholder_attribute}/>
                                                 </span>";
@@ -239,7 +239,7 @@ class GF_Field_Name extends GF_Field {
 					$last_markup = '';
 					$style       = ( $is_admin && rgar( $last_input, 'isHidden' ) ) ? "style='display:none;'" : '';
 					if ( $is_admin || ! rgar( $last_input, 'isHidden' ) ) {
-						$last_markup = "<span id='{$field_id}_6_container' class='ginput_right' {$style}>
+						$last_markup = "<span id='{$field_id}_6_container' class='name_last' {$style}>
                                                 <label for='{$field_id}_6' {$sub_label_class_attribute}>" . $last_name_sub_label . "</label>
                                                 <input type='text' name='input_{$id}.6' id='{$field_id}_6' value='{$last}' {$last_tabindex} {$disabled_text} {$last_placeholder_attribute}/>
                                             </span>";
@@ -248,7 +248,7 @@ class GF_Field_Name extends GF_Field {
 					$first_markup = '';
 					$style        = ( $is_admin && rgar( $first_input, 'isHidden' ) ) ? "style='display:none;'" : '';
 					if ( $is_admin || ! rgar( $first_input, 'isHidden' ) ) {
-						$first_markup = "<span id='{$field_id}_3_container' class='ginput_left' {$style}>
+						$first_markup = "<span id='{$field_id}_3_container' class='name_first' {$style}>
                                                     <input type='text' name='input_{$id}.3' id='{$field_id}_3' value='{$first}' {$first_tabindex} {$disabled_text} {$first_placeholder_attribute}/>
                                                     <label for='{$field_id}_3' {$sub_label_class_attribute}>{$first_name_sub_label}</label>
                                                </span>";
@@ -257,7 +257,7 @@ class GF_Field_Name extends GF_Field {
 					$last_markup = '';
 					$style       = ( $is_admin && rgar( $last_input, 'isHidden' ) ) ? "style='display:none;'" : '';
 					if ( $is_admin || ! rgar( $last_input, 'isHidden' ) ) {
-						$last_markup = "<span id='{$field_id}_6_container' class='ginput_right' {$style}>
+						$last_markup = "<span id='{$field_id}_6_container' class='name_last' {$style}>
                                                     <input type='text' name='input_{$id}.6' id='{$field_id}_6' value='{$last}' {$last_tabindex} {$disabled_text} {$last_placeholder_attribute}/>
                                                     <label for='{$field_id}_6' {$sub_label_class_attribute}>{$last_name_sub_label}</label>
                                                 </span>";
@@ -284,19 +284,19 @@ class GF_Field_Name extends GF_Field {
 
 		$css_class = '';
 
-		if ( ! rgar( $prefix_input, 'isHidden' ) ) {
+		if ( $prefix_input && ! rgar( $prefix_input, 'isHidden' ) ) {
 			$css_class .= 'has_prefix ';
 		}
-		if ( ! rgar( $first_input, 'isHidden' ) ) {
+		if ( $first_input && ! rgar( $first_input, 'isHidden' ) ) {
 			$css_class .= 'has_first_name ';
 		}
-		if ( ! rgar( $middle_input, 'isHidden' ) ) {
+		if ( $middle_input && ! rgar( $middle_input, 'isHidden' ) ) {
 			$css_class .= 'has_middle_name ';
 		}
-		if ( ! rgar( $last_input, 'isHidden' ) ) {
+		if ( $last_input && ! rgar( $last_input, 'isHidden' ) ) {
 			$css_class .= 'has_last_name ';
 		}
-		if ( ! rgar( $suffix_input, 'isHidden' ) ) {
+		if ( $suffix_input && ! rgar( $suffix_input, 'isHidden' ) ) {
 			$css_class .= 'has_suffix ';
 		}
 

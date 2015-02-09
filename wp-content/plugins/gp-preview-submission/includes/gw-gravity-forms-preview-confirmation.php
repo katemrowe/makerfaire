@@ -5,11 +5,11 @@
 */
 class GWPreviewConfirmation {
 
-    private static $lead;
+    private static $entry;
 
     public static function init() {
 
-        // add the "gform_submit" to post so the RGFormsModel::get_form_unique_id() function will pull correct ID
+        // add the "gform_submit" to post so the GFFormsModel::get_form_unique_id() function will pull correct ID
         /*if( ! rgpost( 'gform_submit' ) && rgpost( 'gform_form_id' ) )
             $_POST['gform_submit'] = rgpost( 'gform_form_id' );*/
 
@@ -137,65 +137,104 @@ class GWPreviewConfirmation {
     * Adds special support for file upload, post image and multi input merge tags.
     */
     public static function preview_special_merge_tags( $value, $input_id, $options, $field ) {
-        
+
+        $input_type            = GFFormsModel::get_input_type($field);
+        $is_upload_field       = in_array( $input_type, array( 'post_image', 'fileupload' ) );
+        $is_multi_upload_field = $is_upload_field && rgar( $field, 'multipleFiles' );
+
         // added to prevent overriding :noadmin filter (and other filters that remove fields)
-        if( ! $value )
+        // added exception for multi upload file fields which have an empty $value at this stage
+        if( ! $value && ! $is_multi_upload_field ) {
             return $value;
-        
-        $input_type = RGFormsModel::get_input_type($field);
-        
-        $is_upload_field = in_array( $input_type, array('post_image', 'fileupload') );
+        }
+
         $is_multi_input = is_array( rgar($field, 'inputs') );
-        $is_input = intval( $input_id ) != $input_id;
+        $is_input       = intval( $input_id ) != $input_id;
         
-        if( !$is_upload_field && !$is_multi_input )
+        if( ! $is_upload_field && ! $is_multi_input ) {
             return $value;
+        }
 
         // if is individual input of multi-input field, return just that input value
-        if( $is_input )
+        if( $is_input ) {
             return $value;
-            
-        $form = RGFormsModel::get_form_meta($field['formId']);
-        $lead = self::create_lead($form);
+        }
+
+        $form     = GFFormsModel::get_form_meta( $field['formId'] );
+        $entry    = self::create_lead($form);
         $currency = GFCommon::get_currency();
 
-        if(is_array(rgar($field, 'inputs'))) {
-            $value = RGFormsModel::get_lead_field_value($lead, $field);
-            return GFCommon::get_lead_field_display($field, $value, $currency);
+        if( is_array( rgar( $field, 'inputs' ) ) ) {
+            $value = GFFormsModel::get_lead_field_value( $entry, $field );
+            return GFCommon::get_lead_field_display( $field, $value, $currency );
         }
 
-        switch($input_type) {
-        case 'fileupload':
-            $value = self::preview_image_value("input_{$field['id']}", $field, $form, $lead);
-            $value = $input_id == 'all_fields' || $options == 'link' ? self::preview_image_display( $field, $form, $value ) : $value;
-            break;
-        default:
-            $value = self::preview_image_value("input_{$field['id']}", $field, $form, $lead);
-            $value = GFCommon::get_lead_field_display( $field, $value, $currency );
-            break;
+        switch( $input_type ) {
+            case 'fileupload':
+
+                $value = self::preview_image_value( "input_{$field['id']}", $field, $form, $entry );
+
+                if( $is_multi_upload_field ) {
+
+                    if( is_a( $field, 'GF_Field' ) ) {
+                        $value = $field->get_value_entry_detail( json_encode( $value ) );
+                    } else {
+                        $value = GFCommon::get_lead_field_display( $field, json_encode( $value ) );
+                    }
+
+                    $input_name = "input_" . str_replace('.', '_', $field['id']);
+                    $file_info  = (array) rgar( GFFormsModel::get_temp_filename( $form['id'], $input_name ), 'uploaded_filename' );
+
+                    foreach( $file_info as $file ) {
+                        $value = str_replace( '>' . $file['temp_filename'], '>' . $file['uploaded_filename'], $value );
+                    }
+
+                } else {
+                    $value = $input_id == 'all_fields' || $options == 'link' ? self::preview_image_display( $field, $form, $value ) : $value;
+                }
+                break;
+            default:
+                $value = self::preview_image_value( "input_{$field['id']}", $field, $form, $entry );
+                $value = GFCommon::get_lead_field_display( $field, $value, $currency );
+                break;
         }
+
+        $value = apply_filters( 'gpps_special_merge_tags_value',                                             $value, $field, $input_id, $options, $form, $entry );
+        $value = apply_filters( sprintf( 'gpps_special_merge_tags_value_%s', $form['id'] ),                  $value, $field, $input_id, $options, $form, $entry );
+        $value = apply_filters( sprintf( 'gpps_special_merge_tags_value_%s_%s', $form['id'], $field['id'] ), $value, $field, $input_id, $options, $form, $entry );
+        $value = apply_filters( sprintf( 'gpps_special_merge_tags_value_%s', $input_type ),                  $value, $field, $input_id, $options, $form, $entry );
+        $value = apply_filters( sprintf( 'gpps_special_merge_tags_value_%s_%s', $form['id'], $input_type ),  $value, $field, $input_id, $options, $form, $entry );
 
         return $value;
     }
 
-    public static function preview_image_value($input_name, $field, $form, $lead) {
+    public static function preview_image_value( $input_name, $field, $form, $entry ) {
 
-        $field_id = $field['id'];
-        $file_info = RGFormsModel::get_temp_filename($form['id'], $input_name);
-        $source = RGFormsModel::get_upload_url($form['id']) . "/tmp/" . $file_info["temp_filename"];
+        $field_id  = $field['id'];
+        $file_info = GFFormsModel::get_temp_filename( $form['id'], $input_name );
+        $source    = GFFormsModel::get_upload_url( $form['id'] ) . '/tmp/' . $file_info['temp_filename'];
 
-        if(!$file_info)
+        if( ! $file_info ) {
             return '';
+        }
 
-        switch(RGFormsModel::get_input_type($field)){
+        switch( GFFormsModel::get_input_type( $field ) ){
 
             case "post_image":
-                list(,$image_title, $image_caption, $image_description) = explode("|:|", $lead[$field['id']]);
+                list(,$image_title, $image_caption, $image_description) = explode("|:|", $entry[$field['id']]);
                 $value = !empty($source) ? $source . "|:|" . $image_title . "|:|" . $image_caption . "|:|" . $image_description : "";
                 break;
 
             case "fileupload" :
-                $value = $source;
+                if( rgar( $field, 'multipleFiles' ) ) {
+                    $file_names = wp_list_pluck( $file_info['uploaded_filename'], 'temp_filename' );
+                    $value = array();
+                    foreach( $file_names as $file_name ) {
+                        $value[] = GFFormsModel::get_upload_url( $form['id'] ) . '/tmp/' . $file_name;
+                    }
+                } else {
+                    $value = $source;
+                }
                 break;
 
         }
@@ -203,15 +242,15 @@ class GWPreviewConfirmation {
         return $value;
     }
 
-    public static function preview_image_display($field, $form, $value) {
+    public static function preview_image_display( $field, $form, $value ) {
 
         // need to get the tmp $file_info to retrieve real uploaded filename, otherwise will display ugly tmp name
         $input_name = "input_" . str_replace('.', '_', $field['id']);
-        $file_info = RGFormsModel::get_temp_filename($form['id'], $input_name);
-
+        $file_info  = GFFormsModel::get_temp_filename($form['id'], $input_name);
         $file_path = $value;
-        if(!empty($file_path)){
-            $file_path = esc_attr(str_replace(" ", "%20", $file_path));
+
+        if( ! empty( $file_path ) ) {
+            $file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
             $value = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $file_info['uploaded_filename'] . "</a>";
         }
         return $value;
@@ -219,13 +258,13 @@ class GWPreviewConfirmation {
     }
 
     /**
-    * Retrieves $lead object from class if it has already been created; otherwise creates a new $lead object.
+    * Retrieves $entry object from class if it has already been created; otherwise creates a new $entry object.
     */
     public static function create_lead( $form ) {
         
-        if( empty( self::$lead ) ) {
+        if( empty( self::$entry ) ) {
 
-            self::$lead = GFFormsModel::create_lead( $form );
+            self::$entry = GFFormsModel::create_lead( $form );
             self::clear_field_value_cache( $form );
 
             foreach( $form['fields'] as $field ) {
@@ -234,8 +273,8 @@ class GWPreviewConfirmation {
 
                 switch( $input_type ) {
                     case 'signature':
-                        if( empty( self::$lead[$field['id']] ) )
-                            self::$lead[$field['id']] = rgpost( "input_{$form['id']}_{$field['id']}_signature_filename" );
+                        if( empty( self::$entry[$field['id']] ) )
+                            self::$entry[$field['id']] = rgpost( "input_{$form['id']}_{$field['id']}_signature_filename" );
                         break;
                 }
 
@@ -243,19 +282,19 @@ class GWPreviewConfirmation {
 
         }
         
-        return self::$lead;
+        return self::$entry;
     }
 
     public static function preview_replace_variables( $content, $form ) {
 
-        $lead = self::create_lead($form);
+        $entry = self::create_lead($form);
 
         // add filter that will handle getting temporary URLs for file uploads and post image fields (removed below)
-        // beware, the RGFormsModel::create_lead() function also triggers the gform_merge_tag_filter at some point and will
+        // beware, the GFFormsModel::create_lead() function also triggers the gform_merge_tag_filter at some point and will
         // result in an infinite loop if not called first above
         add_filter('gform_merge_tag_filter', array('GWPreviewConfirmation', 'preview_special_merge_tags'), 10, 4);
 
-        $content = GFCommon::replace_variables( $content, $form, $lead, false, false, false );
+        $content = GFCommon::replace_variables( $content, $form, $entry, false, false, false );
 
         // remove filter so this function is not applied after preview functionality is complete
         remove_filter('gform_merge_tag_filter', array('GWPreviewConfirmation', 'preview_special_merge_tags'));
@@ -282,11 +321,11 @@ class GWPreviewConfirmation {
      *
      * @param $text
      * @param $form
-     * @param $lead
+     * @param $entry
      *
      * @return mixed
      */
-    public static function product_summary_merge_tag( $text, $form, $lead ) {
+    public static function product_summary_merge_tag( $text, $form, $entry ) {
 
         if( ! $text ) {
             return $text;
@@ -306,14 +345,14 @@ class GWPreviewConfirmation {
             return $text;
         }
 
-        if( empty( $lead ) ) {
-            $lead = self::create_lead( $form );
+        if( empty( $entry ) ) {
+            $entry = self::create_lead( $form );
         }
 
         add_filter( 'gform_order_label', '__return_false', 11 );
 
         $remove = array( "<tr bgcolor=\"#EAF2FA\">\n                            <td colspan=\"2\">\n                                <font style=\"font-family: sans-serif; font-size:12px;\"><strong>Order</strong></font>\n                            </td>\n                       </tr>\n                       <tr bgcolor=\"#FFFFFF\">\n                            <td width=\"20\">&nbsp;</td>\n                            <td>\n                                ", "\n                            </td>\n                        </tr>" );
-        $product_summary = str_replace( $remove, '', GFCommon::get_submitted_pricing_fields( $form, $lead, 'html' ) );
+        $product_summary = str_replace( $remove, '', GFCommon::get_submitted_pricing_fields( $form, $entry, 'html' ) );
 
         remove_filter( 'gform_order_label', '__return_false', 11 );
 

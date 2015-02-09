@@ -348,8 +348,8 @@ class GFCommon {
 
 	/**
 	 * This function is used by the gfMergeTags JS object to get the localized label for non-field merge tags as well as
-	 * for backwards compatability with the gform_custom_merge_tags hook. Lastly, this plugin is used by the soon-to-be
-	 * deprecrated insert_variables() function as the new gfMergeTags object has not yet been applied to the Post Content
+	 * for backwards compatibility with the gform_custom_merge_tags hook. Lastly, this plugin is used by the soon-to-be
+	 * deprecated insert_variables() function as the new gfMergeTags object has not yet been applied to the Post Content
 	 * Template setting.
 	 *
 	 * @param GF_Field[] $fields
@@ -508,34 +508,52 @@ class GFCommon {
 		return $merge_tags;
 	}
 
+	/**
+	 * @param GF_Field $field
+	 * @param string $option
+	 * @return string
+	 */
 	public static function get_field_merge_tags( $field, $option = '' ) {
 
 		$merge_tags = array();
 		$tag_args   = RGFormsModel::get_input_type( $field ) == 'list' ? ":{$option}" : ''; //args currently only supported by list field
 
-		if ( is_array( $field->inputs ) ) {
+		$inputs = $field->get_entry_inputs();
+
+		if ( is_array( $inputs ) ) {
 
 			if ( RGFormsModel::get_input_type( $field ) == 'checkbox' ) {
 				$value        = '{' . esc_html( GFCommon::get_label( $field, $field->id ) ) . ':' . $field->id . "{$tag_args}}";
-				$merge_tags[] = array( 'tag' => $value, 'label' => esc_html( GFCommon::get_label( $field, $field->id ) ) );
+				$merge_tags[] = array(
+					'tag'   => $value,
+					'label' => esc_html( GFCommon::get_label( $field, $field->id ) )
+				);
 			}
 
 			foreach ( $field->inputs as $input ) {
-				if( RGFormsModel::get_input_type( $field ) == 'creditcard' ) {
+				if ( RGFormsModel::get_input_type( $field ) == 'creditcard' ) {
 					//only include the credit card type (field_id.4) and number (field_id.1)
 					if ( $input['id'] == $field['id'] . '.1' || $input['id'] == $field['id'] . '.4' ) {
-						$value = '{' . esc_html( GFCommon::get_label( $field, $input['id'] ) ) . ':' . $input['id'] . "{$tag_args}}";
-						$merge_tags[] =  array( 'tag' => $value, 'label' => esc_html( GFCommon::get_label( $field, $input['id'] ) ) );
+						$value        = '{' . esc_html( GFCommon::get_label( $field, $input['id'] ) ) . ':' . $input['id'] . "{$tag_args}}";
+						$merge_tags[] = array(
+							'tag'   => $value,
+							'label' => esc_html( GFCommon::get_label( $field, $input['id'] ) )
+						);
 					}
-				}
-				else {
+				} else {
 					$value        = '{' . esc_html( GFCommon::get_label( $field, $input['id'] ) ) . ':' . $input['id'] . "{$tag_args}}";
-					$merge_tags[] = array( 'tag' => $value, 'label' => esc_html( GFCommon::get_label( $field, $input['id'] ) ) );
+					$merge_tags[] = array(
+						'tag'   => $value,
+						'label' => esc_html( GFCommon::get_label( $field, $input['id'] ) )
+					);
 				}
 			}
 		} else {
 			$value        = '{' . esc_html( GFCommon::get_label( $field ) ) . ':' . $field->id . "{$tag_args}}";
-			$merge_tags[] = array( 'tag' => $value, 'label' => esc_html( GFCommon::get_label( $field ) ) );
+			$merge_tags[] = array(
+				'tag'   => $value,
+				'label' => esc_html( GFCommon::get_label( $field ) )
+			);
 		}
 
 		return $merge_tags;
@@ -1399,7 +1417,7 @@ class GFCommon {
 
 	public static function send_notification( $notification, $form, $lead ) {
 
-		GFCommon::log_debug( "GFCommon::send_notification(): Preparing {$notification['id']}. Notification named '{$notification['name']}'." );
+		GFCommon::log_debug( "GFCommon::send_notification(): Starting to process notification (#{$notification['id']} - {$notification['name']})." );
 		$notification = apply_filters( "gform_notification_{$form['id']}", apply_filters( 'gform_notification', $notification, $form, $lead ), $form, $lead );
 
 		$to_field = '';
@@ -1459,7 +1477,7 @@ class GFCommon {
 
 	public static function send_notifications( $notification_ids, $form, $lead, $do_conditional_logic = true, $event = 'form_submission' ) {
 		if ( ! is_array( $notification_ids ) || empty( $notification_ids ) ) {
-			GFCommon::log_debug( "GFCommon::send_notifications(): No notifications to process for {$event} event." );
+			GFCommon::log_debug( "GFCommon::send_notifications(): Aborting. No notifications to process for {$event} event." );
 
 			return;
 		}
@@ -1471,7 +1489,7 @@ class GFCommon {
 				continue;
 			}
 			if ( isset( $form['notifications'][ $notification_id ]['isActive'] ) && ! $form['notifications'][ $notification_id ]['isActive'] ) {
-				GFCommon::log_debug( "GFCommon::send_notifications(): Not sending {$notification_id}. The notification named '{$form['notifications'][$notification_id]['name']}' is inactive." );
+				GFCommon::log_debug( "GFCommon::send_notifications(): Notification is inactive, not processing notification (#{$notification_id} - {$form['notifications'][$notification_id]['name']})." );
 				continue;
 			}
 
@@ -1479,7 +1497,7 @@ class GFCommon {
 
 			//check conditional logic when appropriate
 			if ( $do_conditional_logic && ! GFCommon::evaluate_conditional_logic( rgar( $notification, 'conditionalLogic' ), $form, $lead ) ) {
-				GFCommon::log_debug( "GFCommon::send_notifications(): Not sending {$notification_id}. The notification named '{$notification['name']}' failed conditional logic checks." );
+				GFCommon::log_debug( "GFCommon::send_notifications(): Notification conditional logic not met, not processing notification (#{$notification_id} - {$notification['name']})." );
 				continue;
 			}
 
@@ -1573,8 +1591,8 @@ class GFCommon {
 		}
 
 		if ( is_wp_error( $error ) ) {
-			GFCommon::log_debug( $error->get_error_message() );
-			GFCommon::log_debug( print_r( compact( 'to', 'subject', 'message' ), true ) );
+			GFCommon::log_error( 'GFCommon::send_email(): ' . $error->get_error_message() );
+			GFCommon::log_error( print_r( compact( 'to', 'subject', 'message' ), true ) );
 			do_action( 'gform_send_email_failed', $error, compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'attachments' ) );
 
 			return;
@@ -1584,9 +1602,9 @@ class GFCommon {
 		$name         = empty( $from_name ) ? $from : $from_name;
 
 		$headers         = array();
-		$headers["From"] = "From: \"" . wp_strip_all_tags($name, true) . "\" <{$from}>";
+		$headers['From'] = "From: \"" . wp_strip_all_tags($name, true) . "\" <{$from}>";
 
-		if ( GFCommon::is_valid_email( $reply_to ) ) {
+		if ( GFCommon::is_valid_email_list( $reply_to ) ) {
 			$headers['Reply-To'] = "Reply-To: {$reply_to}";
 		}
 
@@ -1601,15 +1619,17 @@ class GFCommon {
 
 		$is_success = false;
 		if ( ! $abort_email ) {
-			GFCommon::log_debug( 'GFCommon::send_email(): Sending email via wp_mail()' );
+			GFCommon::log_debug( 'GFCommon::send_email(): Sending email via wp_mail().' );
 			GFCommon::log_debug( print_r( compact( 'to', 'subject', 'message', 'headers', 'attachments', 'abort_email' ), true ) );
 			$is_success = wp_mail( $to, $subject, $message, $headers, $attachments );
 			GFCommon::log_debug( "GFCommon::send_email(): Result from wp_mail(): {$is_success}" );
 			if ( $is_success ) {
 				GFCommon::log_debug( 'GFCommon::send_email(): Mail was passed from WordPress to the mail server.' );
 			} else {
-				GFCommon::log_debug( 'GFCommon::send_email(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
+				GFCommon::log_error( 'GFCommon::send_email(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
 			}
+		} else {
+			GFCommon::log_debug( 'GFCommon::send_email(): Aborting. The gform_pre_send_email hook was used to set the abort_email parameter to true.' );
 		}
 
 		self::add_emails_sent();
@@ -2068,6 +2088,11 @@ class GFCommon {
 		}
 
 		switch ( $position ) {
+			case 'year' :
+			case 'month' :
+			case 'day' :
+				return $date[ $position ];
+
 			case 'ymd' :
 				return $date['year'] . $separator . $date['month'] . $separator . $date['day'];
 				break;

@@ -1,6 +1,30 @@
 
 # Changelog
 
+## 1.2.1
+
+    - Added support for copying textareas
+
+## 1.2
+
+    - Updated support for copying only the selected value from radio and checkbox fields
+
+## 1.1
+
+    - Added support for copying values when the field value changes, allowing support for automatically copying a value from one field two another without a checkbox
+
+## 1.0.7
+
+    - Fixed bug introduced in 1.0.6 where Country (if select type) was not copied
+
+## 1.0.6
+
+    - Fixed issue where calcultions were not updated when copy cat enabled fields were updated
+
+## 1.0.5
+
+    - Fixed issue which caused Copy Cat to break when applied to multiple forms displayed on the same page
+
 ## 1.0.4
 
     - Added namespace to checkbox click event which triggers copy cat functionality ("click.gpcopycat")
@@ -10,7 +34,7 @@
 
     - Updated minimum required version of Gravity Perks: 1.0.6
     - Added 'gpcc_overwrite_existing_values' filter to allow users to indicate whether existing values in fields being copied *to* should have their value overwritten if already have a value
-    
+
 ## 1.0.1
 
     - Updated minimum required version of Gravity Perks: 1.0.5

@@ -53,10 +53,11 @@
 			} elseif ( $display == 'table' ) {
 				$output .= '<tr><td>' . $k . '</a></td><td><a href="edit.php?post_type=mf_form&page=current_faire&post_status=' . $type . '">' . $query->found_posts . '</a></td></tr>';
 			}
-			*/
+			
 			$entries = GFAPI::get_entries(0);
 			print_r($entries);
 		}
+		*/
 		$output .= ( $display == 'table' ) ? '</table>' : '';
 		return substr($output, 2);
 	}

@@ -355,7 +355,7 @@ class GFEntryDetail {
 			</div>
 		<?php } ?>
 
-		<?php RGForms::top_toolbar() ?>
+		<?php // RGForms::top_toolbar() ?>
 
 		<div id="poststuff" class="metabox-holder has-right-sidebar">
 		<div id="side-info-column" class="inner-sidebar">

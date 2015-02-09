@@ -9,6 +9,9 @@ function add_main_text_before($form, $lead){
 
 function gf_summary_adminNotes($form,$lead) {
 	$is_editable = true;
+	
+	print_r(get_makerfaire_status_counts($form['id']));
+	
 	$notes = RGFormsModel::get_lead_notes( $lead['id'] );?>
 	
 	<table class="widefat fixed entry-detail-notes" cellspacing="0">
@@ -354,4 +357,21 @@ function my_entry_info($form_id, $lead) {
 	
 	
 	echo ('		<input type="submit" onclick="jQuery(\'#action\').val(\'update\'); jQuery(\'#screen_mode\').val(\'view\');" name="save" value="Save Changes" tabindex="4" class="button button-large button-primary" id="gform_update_button">&nbsp;&nbsp;');	
+}
+
+function get_makerfaire_status_counts( $form_id ) {
+	global $wpdb;
+	$lead_details_table_name = self::get_lead_details_tablename();
+	$sql             = $wpdb->prepare(
+			"SELECT entries=count(0),label=value FROM $lead_details_table_name
+			where field_number='303'
+			and form_id=%d
+			group by value",
+			$form_id
+	);
+
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+
+	return $results[0];
+
 }

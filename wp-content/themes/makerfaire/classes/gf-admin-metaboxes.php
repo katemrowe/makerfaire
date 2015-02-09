@@ -1,6 +1,8 @@
 <?php
 add_action("gform_entry_detail_content_before", "add_main_text_before", 10, 2);
 function add_main_text_before($form, $lead){
+	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+	if ($mode != "view") return;
 	
 	echo gf_summary_metabox($form, $lead);
 	//echo gf_summary_adminNotes($form, $lead);
@@ -16,7 +18,7 @@ function gf_summary_adminNotes($form,$lead) {
 	
 	<table class="widefat fixed entry-detail-notes" cellspacing="0">
 	<?php
-	if ( ! $is_editable ) {
+	if ( ! $is_editable && !($mode == "edit") ) {
 		?>
 					<thead>
 					<tr>
@@ -326,6 +328,9 @@ function set_post_content($entry, $form){
 
 add_action("gform_entry_info", "my_entry_info", 10, 2);
 function my_entry_info($form_id, $lead) {
+	
+	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+	if ($mode != "view") return;
 	//print_r( $lead);
 	
 	$form = GFAPI::get_form($form_id);

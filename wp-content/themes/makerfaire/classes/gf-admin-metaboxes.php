@@ -117,6 +117,7 @@ if ( $jdb_success == '' ) {
 	$jdb = '[SUCCESS] : ' . date( 'M jS, Y g:i A', $jdb_success - ( 7 * 3600 ) );
 }
 
+$entry_id = $lead['id'];
 $photo = $lead['22'];
 $short_description = $lead['16'];
 $long_description = $lead['21'];
@@ -206,7 +207,7 @@ if ( isset( $long_description ) ) {
 									'meta_query' 	=> array(
 										array(
 											'key' 	=> 'mfei_record',
-											'value'	=> $post->ID
+											'value'	=> $entry_id
 									   ),
 									)
 								);
@@ -267,12 +268,12 @@ if ( isset( $long_description ) ) {
 									<?php endwhile; ?>
 									<tr>
 										<td style="width:80px;" valign="top"><strong>Schedule:</strong></a></td>
-										<td valign="top"><a href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo absint( $parent_post_id ); ?>">Schedule Another Event</a></td>
+										<td valign="top"><a href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo absint( $entry_id ); ?>">Schedule Another Event</a></td>
 									</tr>
 								<?php } else { ?>
 									<tr>
 										<td style="width:80px;" valign="top"><strong>Scheduled:</strong></a></td>
-										<td valign="top"><a href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo get_the_ID(); ?>">Schedule This Event</a></td>
+										<td valign="top"><a href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo $entry_id; ?>">Schedule This Event</a></td>
 									</tr>
 								<?php }
 							?>
@@ -299,8 +300,8 @@ if ( isset( $long_description ) ) {
 } //end function
 
 
-add_action("gform_after_update_entry", "set_post_content", 10, 2);
-function set_post_content($entry, $form){
+
+function set_entry_status_content(){
 	$location_change=$_POST['entry_info_location_change'];
 	$status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
@@ -308,29 +309,36 @@ function set_post_content($entry, $form){
 	error_log(print_r($_POST, true));
 	if (!empty($entry_info_entry_id))
 	{
-		$entry_info_entry = GFAPI::get_entry($entry_info_entry_id);
 		if (!empty($location_change))
 		{
 			foreach($location_change as $location_entry)
 			{
 				$exploded_location_entry=explode("_",$location_entry);
 				$entry_info_entry[$exploded_location_entry[0]] = $exploded_location_entry[1];
+				GFAPI::update_entry_field($entry_info_entry_id,$exploded_location_entry[0],$exploded_location_entry[1]);
 			}
 		}
 		if (!empty($status_change))
 		{
 			$entry_info_entry['303'] = $status_change;
+			GFAPI::update_entry_field($entry_info_entry_id,'303',$status_change);
+				
 		}
-	
 		$results=GFAPI::update_entry($entry_info_entry);
 	}
 }
 
 add_action("gform_entry_info", "my_entry_info", 10, 2);
 function my_entry_info($form_id, $lead) {
-	
-	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+	switch ( RGForms::post( 'action' ) ) {
+	case 'status_update' :
+		set_entry_status_content();
+		break;
+}
+$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;
+	
+	
 	//print_r( $lead);
 	
 	$form = GFAPI::get_form($form_id);
@@ -361,7 +369,7 @@ function my_entry_info($form_id, $lead) {
 	}
 	
 	
-	echo ('		<input type="submit" onclick="jQuery(\'#action\').val(\'update\'); jQuery(\'#screen_mode\').val(\'view\');" name="save" value="Save Changes" tabindex="4" class="button button-large button-primary" id="gform_update_button">&nbsp;&nbsp;');	
+	echo ('		<input type="submit" onclick="jQuery(\'#action\').val(\'status_update\'); jQuery(\'#screen_mode\').val(\'view\');" name="save" value="Save Changes" tabindex="4" class="button button-large button-primary" id="gform_update_button">&nbsp;&nbsp;');	
 }
 
 function get_makerfaire_status_counts( $form_id ) {

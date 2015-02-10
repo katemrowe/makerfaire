@@ -111,3 +111,7 @@ a.gform_save_link {
 .container-gnb {
     position: relative;
 }
+
+#gf_form_toolbar {
+	display:none;
+}

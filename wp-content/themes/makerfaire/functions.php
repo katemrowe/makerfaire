@@ -825,4 +825,13 @@ function form_submit_button($button){
 return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';	
 }
 
+add_action( 'admin_head', 'remove_gf_form_toolbar' );
 
+function remove_gf_form_toolbar(){ ?>
+     <style>
+     #gf_form_toolbar {
+		    display:none;
+		    		}
+     </style>
+<?php
+}

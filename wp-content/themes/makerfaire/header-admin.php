@@ -12,7 +12,9 @@
 
 	<!-- Le styles -->
 
-	<?php wp_head(); ?>
+	<?php
+	
+	wp_head(); ?>
 
 
 

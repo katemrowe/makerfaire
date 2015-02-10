@@ -333,7 +333,9 @@ function my_entry_info($form_id, $lead) {
 	switch ( RGForms::post( 'action' ) ) {
 	case 'status_update' :
 		set_entry_status_content();
-		break;
+				$lead = RGFormsModel::get_lead( $lead['id'] );
+				//$lead = GFFormsModel::set_entry_meta( $lead, $form );
+						break;
 }
 $mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;

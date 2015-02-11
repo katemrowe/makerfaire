@@ -123,14 +123,9 @@ $short_description = $lead['16'];
 $long_description = $lead['21'];
 $project_name = $lead['151'];
 $entry_form_type = $form['title'];
-$entry_form_status = $lead['status'];
-$is_commercialmaker = '';
-$commercialmaker_sales = '';
-$wkey = 'https://makezineblog.files.wordpress.com/2015/01/unisphere-final-exp.mp4';//$this->merge_fields( 'project_website', $data->form_type );
-$vkey = 'https://makezineblog.files.wordpress.com/2015/01/unisphere-final-exp.mp4';//$this->merge_fields( 'project_video', $data->form_type );
-$entry_project_video = $vkey;
-$entry_performer_video = $vkey;
-$entry_video = $vkey;
+$entry_form_status = $lead['303'];
+$wkey = $lead['27'];
+$vkey = $lead['32'];
 $data->project_video;
 
 
@@ -144,16 +139,20 @@ if ( isset( $long_description ) ) {
 }
 ?>
 			<table class="fixed entry-detail-view">
-				<thead><th id="header">
+				<thead><th colspan="2" style="text-align:left" id="header">
 				<h1><?php echo esc_html($project_name); ?></h1>
 			</th></thead>
 			<tbody>
 				<tr>
-					<td valign="top"><img src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>" width="200" height="200" /></td>
+					<td valign="top"><img src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>" width="300" /></td>
 					<td valign="top">
-						<p><?php echo Markdown ( stripslashes( wp_filter_post_kses( mf_convert_newlines( $main_description, "\n" ) ) ) ); ?></p>
 						<table>
+							<tr><td colspan="2">
+							<p><?php echo stripslashes( nl2br( $main_description, "\n" )  ); ?></p>
+							</td>
+							</tr>
 							<tr>
+							
 								<td style="width:80px;" valign="top"><strong>Type:</strong></td>
 								<td valign="top"><?php echo esc_attr( ucfirst( $entry_form_type ) ); ?></td>
 							</tr>
@@ -177,22 +176,10 @@ if ( isset( $long_description ) ) {
 							<td valign="top"><strong>Video:</strong></td>
 							<td>
 								<?php
-								  echo ( isset( $entry_project_video ) ) ? '<a href="' . esc_url( $entry_project_video ) . '" target="_blank">' . esc_url( $entry_project_video ) . '</a><br />' : null ;
-								  echo ( isset( $entry_performer_video ) ) ? '<a href="' . esc_url( $entry_performer_video ) . '" target="_blank">' . esc_url( $entry_performer_video ) . '</a><br />' : null ;
-								  echo ( isset( $entry_video ) ) ? '<a href="' . esc_url( $entry_video ) . '" target="_blank">' . esc_url( $entry_video ) . '</a><br/>' : '' ;
+								  echo ( isset( $vkey ) ) ? '<a href="' . esc_url( $vkey ) . '" target="_blank">' . esc_url( $vkey ) . '</a><br/>' : '' ;
 								?>
 							</td>
 							</tr>
-							<?php if( $entry_form_type == 'exhibit' ) : ?>
-								<tr>
-									<td style="width:80px;" valign="top"><strong>Supporting Documents:</strong></td>
-									<td valign="top"><a href="<?php echo esc_url( $entry_supporting_documents ); ?>" target="_blank"><?php echo esc_url( $entry_supporting_documents ); ?></a></td>
-								</tr>
-								<tr>
-									<td style="width:80px;" valign="top"><strong>Layout:</strong></td>
-									<td valign="top"><a href="<?php echo esc_url( $entry_layout ); ?>" target="_blank"><?php echo esc_url( $entry_layout ); ?></a></td>
-								</tr>
-							<?php endif; ?>
 							<?php
 
 								// Store the current application ID so we can return it within the loop
@@ -277,18 +264,6 @@ if ( isset( $long_description ) ) {
 									</tr>
 								<?php }
 							?>
-							<tr>
-								<td style="width:80px;" valign="middle"><strong>MF Video:</strong></td>
-								<td valign="top"> NOTE: Need to research what is supposed to go here.
-								<!--  	<input type="text" id="video-coverage" name="video-coverage" style="width:25%;" value="<?php echo !empty( $event_record['mfei_coverage'][0] ) ? esc_url( $event_record['mfei_coverage'][0] ) : ''; ?>" />
-									<input type="hidden" name="event-id" value="<?php echo get_the_ID(); ?>" />
-									-->
-								</td>
-							</tr>
-							<tr>
-								<td valign="top"><strong>JDB Sync:</strong></td>
-								<td valign="top"><?php echo esc_html( $jdb ); ?></td>
-							</tr>
 						</table>
 						</td>
 					</tr>
@@ -333,9 +308,8 @@ function my_entry_info($form_id, $lead) {
 	switch ( RGForms::post( 'action' ) ) {
 	case 'status_update' :
 		set_entry_status_content();
-				$lead = RGFormsModel::get_lead( $lead['id'] );
-				//$lead = GFFormsModel::set_entry_meta( $lead, $form );
-						break;
+		$lead = RGFormsModel::get_lead( $lead['id'] );
+		break;
 }
 $mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;

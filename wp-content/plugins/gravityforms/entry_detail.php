@@ -370,8 +370,6 @@ class GFEntryDetail {
 			<div class="inside">
 				<div id="submitcomment" class="submitbox">
 					<div id="minor-publishing" style="padding:10px;">
-						<br />
-						<?php _e( 'Entry Id', 'gravityforms' ); ?>: <?php echo absint( $lead['id'] ) ?><br /><br />
 						<?php _e( 'Submitted on', 'gravityforms' ); ?>: <?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?>
 						
 						<?php 

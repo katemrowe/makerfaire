@@ -21,6 +21,7 @@
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <meta name="viewport" content="width=device-width" />
+<meta name="google-site-verification" content="nl0yUKlfB0zC2zj2QviqAWgt8doPQ7CKjNXEYd1aIzU" />
 <title><?php wp_title( '|', true, 'right' ); ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
@@ -29,9 +30,54 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/html5.js" type="text/javascript"></script>
 <![endif]-->
 <?php wp_head(); ?>
+
+		<!-- Pingdom for site monitoring -->
+		<script>
+		var _prum = [['id', '53fcea2fabe53d341d4ae0eb'],
+		            ['mark', 'firstbyte', (new Date()).getTime()]];
+		(function() {
+		    var s = document.getElementsByTagName('script')[0]
+		      , p = document.createElement('script');
+		    p.async = 'async';
+		    p.src = '//rum-static.pingdom.net/prum.min.js';
+		    s.parentNode.insertBefore(p, s);
+		})();
+		</script>
+
 </head>
 
 <body <?php body_class(); ?>>
+
+		<!-- Google Universal Analytics -->
+		<script type="text/javascript">
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-51157-29', 'auto');
+			  ga('require', 'displayfeatures');
+			  ga('send', 'pageview', {
+			 'page': location.pathname + location.search  + location.hash
+			  });
+		</script>
+
+		<?php if ( is_404() ) : // Load this last. ?>
+			 <script>
+			ga('send', 'event', '404', document.location.pathname + document.location.search, document.referrer);
+			</script>
+		<?php endif; ?>
+
+		<!-- Google Tag Manager -->
+		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PC5R77"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PC5R77');</script>
+		<!-- End Google Tag Manager  -->
+
 <div id="page" class="hfeed site">
 	<header id="masthead" class="site-header" role="banner">
 		<hgroup>

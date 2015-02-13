@@ -863,7 +863,7 @@ $wp_admin_bar->add_node( $args );
 $args = array(
 		'id'    => 'mf_admin_parent_bayarea',
 		'title' => 'Bay Area',
-		'meta'  => array( 'class' => 'my-toolbar-page' ),
+			'meta'  => array( 'class' => 'my-toolbar-page' ),
 		'parent' => 'mf_admin_parent'
 );
 

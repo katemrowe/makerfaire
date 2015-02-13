@@ -243,7 +243,8 @@ function makerfaire_index_feed($n = 4) {
 
 function isc_register_menus() {
   register_nav_menus(
-	array( 'header-menu' => __( 'Header Menu' ) )
+	array( 'header-menu' => __( 'Header Menu' ),
+			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ) )
   );
 }
 add_action( 'init', 'isc_register_menus' );
@@ -834,4 +835,54 @@ function remove_gf_form_toolbar(){ ?>
 		    		}
      </style>
 <?php
+}
+
+add_action( 'admin_bar_menu', 'toolbar_link_to_mypage', 999 );
+
+function toolbar_link_to_mypage( $wp_admin_bar ) {
+$locations = get_registered_nav_menus();
+$menus = wp_get_nav_menus();
+$menu_locations = get_nav_menu_locations();
+
+$location_id = 'mf-admin-bayarea-register-menu';
+if (isset($menu_locations[ $location_id ])) {
+	foreach ($menus as $menu) {
+		// If the ID of this menu is the ID associated with the location we're searching for
+		if ($menu->term_id == $menu_locations[ $location_id ]) {
+			// This is the correct menu
+			$menu_items = wp_get_nav_menu_items($menu);
+
+$args = array(
+		'id'    => 'mf_admin_parent',
+		'title' => 'MF Admin',
+		'href'  => $menu_item->url,
+		'meta'  => array( 'class' => 'my-toolbar-page' ),
+);
+
+$wp_admin_bar->add_node( $args );
+
+$args = array(
+		'id'    => 'mf_admin_parent_bayarea',
+		'title' => 'Bay Area',
+		'href'  => $menu_item->url,
+		'meta'  => array( 'class' => 'my-toolbar-page' ),
+		'parent' => 'mf_admin_parent'
+);
+
+$wp_admin_bar->add_node( $args );
+
+foreach ( (array) $menu_items as $key => $menu_item ) {
+	$args = array(
+		'id'    => $menu_item->object_id,
+		'title' => $menu_item->title,
+		'href'  => $menu_item->url,
+		'meta'  => array( 'class' => 'my-toolbar-page' ),
+		'parent' => 'mf_admin_parent_bayarea'
+	);
+
+	$wp_admin_bar->add_node( $args );
+	}
+	}
+	}
+	}
 }

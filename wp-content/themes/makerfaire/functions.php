@@ -855,7 +855,6 @@ if (isset($menu_locations[ $location_id ])) {
 $args = array(
 		'id'    => 'mf_admin_parent',
 		'title' => 'MF Admin',
-		'href'  => $menu_item->url,
 		'meta'  => array( 'class' => 'my-toolbar-page' ),
 );
 
@@ -864,7 +863,6 @@ $wp_admin_bar->add_node( $args );
 $args = array(
 		'id'    => 'mf_admin_parent_bayarea',
 		'title' => 'Bay Area',
-		'href'  => $menu_item->url,
 		'meta'  => array( 'class' => 'my-toolbar-page' ),
 		'parent' => 'mf_admin_parent'
 );

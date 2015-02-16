@@ -5,7 +5,7 @@ define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 
 
 // include maker-faire-forms plugin
-//require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
+require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
 
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/plugins/public-pages/makers.php' );

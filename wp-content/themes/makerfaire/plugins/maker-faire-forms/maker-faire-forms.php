@@ -19,7 +19,7 @@ class MAKER_FAIRE_FORM {
 	 * This variable is used in many locations that display this name. This is simply a one location to update many kind of deal.
 	 * @var string
 	 */
-	public $faire_friendly_name = 'World Maker Faire New York 2014';
+	//public $faire_friendly_name = 'World Maker Faire New York 2014';
 
 
 	/**
@@ -27,7 +27,7 @@ class MAKER_FAIRE_FORM {
 	 * We'll store this into a variable for easier editing in the future instead of digging through this jungle of an application.
 	 * @var string
 	 */
-	public $commercial_maker_deadline = 'September 5th';
+	//public $commercial_maker_deadline = 'September 5th';
 
 
 	/*
@@ -228,7 +228,7 @@ class MAKER_FAIRE_FORM {
 	/**
 	 * Faire internal code
 	 */
-	var $maker_faire = '2014_newyork';
+	//var $maker_faire = '2014_newyork';
 
 	/*
 	* Default Form Values

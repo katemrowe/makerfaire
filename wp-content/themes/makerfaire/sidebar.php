@@ -36,18 +36,19 @@
 	</div>
   
           <div class="sidebar-bordered sponsored">
-            
-             
-               <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Presenting Sponsor</a></h3>
- 
+
+               <h3>Presenting Sponsor</h3>
+
                <div id="myCarousel" class="carousel slide">
-                       <div class="carousel-inner">
-                               <?php echo mf_sponsor_carousel( 'Presenting Sponsor' ); ?>
-                       </div>
+                             <div class="carousel-inner">
+                                        <a href="http://intel.com/">
+                                                  <img src="http://i1.wp.com/makerfaire.files.wordpress.com/2014/03/intel-logo-slider.jpg?resize=125%2C105" alt="Intel">
+                                        </a>
+                          </div>
                </div>
- 
+
                <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Goldsmith Sponsors</a></h3>
- 
+
                <div id="myCarousel" class="carousel slide">
                        <div class="carousel-inner">
                                <?php echo mf_sponsor_carousel( 'Goldsmith Sponsor' ); ?>

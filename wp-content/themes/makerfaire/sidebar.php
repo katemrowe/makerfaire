@@ -37,7 +37,7 @@
   
           <div class="sidebar-bordered sponsored">
 
-               <h3>Presenting Sponsor</h3>
+               <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Presenting Sponsor</a></h3>
 
                <div id="myCarousel" class="carousel slide">
                              <div class="carousel-inner">

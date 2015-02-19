@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms
 Plugin URI: http://www.gravityforms.com
 Description: Easily create web forms and manage form entries within the WordPress admin.
-Version: 1.9.0.1
+Version: 1.9.1.2
 Author: rocketgenius
 Author URI: http://www.rocketgenius.com
 Text Domain: gravityforms
@@ -112,7 +112,7 @@ add_action( 'plugins_loaded', array( 'GFForms', 'loaded' ) );
 
 class GFForms {
 
-	public static $version = '1.9.0.1';
+	public static $version = '1.9.1.2';
 
 	public static function loaded() {
 
@@ -203,7 +203,6 @@ class GFForms {
 
 					if ( self::is_gravity_page() ) {
 						require_once( GFCommon::get_base_path() . '/tooltips.php' );
-						add_action( 'admin_print_scripts', array( 'RGForms', 'print_scripts' ) );
 					} else if ( RG_CURRENT_PAGE == 'media-upload.php' ) {
 						require_once( GFCommon::get_base_path() . '/entry_list.php' );
 					} else if ( in_array( RG_CURRENT_PAGE, array( 'admin.php', 'admin-ajax.php' ) ) ) {
@@ -984,12 +983,6 @@ class GFForms {
 		}
 	}
 
-	//Prints common admin scripts
-	public static function print_scripts() {
-		wp_enqueue_script( 'sack' );
-		wp_print_scripts();
-	}
-
 	public static function is_gravity_ajax_action() {
 		//Gravity Forms AJAX requests
 		$current_action  = self::post( 'action' );
@@ -1541,6 +1534,7 @@ class GFForms {
 					'gform_json',
 					'gform_form_admin',
 					'thickbox',
+					'sack',
 				);
 				break;
 
@@ -1554,6 +1548,7 @@ class GFForms {
 					'jquery-ui-datepicker',
 					'gform_masked_input',
 					'jquery-ui-sortable',
+					'sack',
 				);
 				break;
 
@@ -1566,7 +1561,6 @@ class GFForms {
 					'jquery-ui-draggable',
 					'jquery-ui-droppable',
 					'jquery-ui-tabs',
-					'sack',
 					'gform_gravityforms',
 					'gform_forms',
 					'gform_json',
@@ -1575,6 +1569,7 @@ class GFForms {
 					'gform_menu',
 					'gform_placeholder',
 					'jquery-ui-autocomplete',
+					'sack',
 				);
 
 				if ( wp_is_mobile() ) {
@@ -1584,11 +1579,18 @@ class GFForms {
 				break;
 
 			case 'entry_detail':
-				$scripts = array( 'gform_json' );
+				$scripts = array(
+					'gform_json',
+					'sack',
+				);
 				break;
 
 			case 'entry_detail_edit':
-				$scripts = array( 'gform_gravityforms', 'plupload-all' );
+				$scripts = array(
+					'gform_gravityforms',
+					'plupload-all',
+					'sack',
+				);
 				break;
 
 			case 'entry_list':
@@ -1599,6 +1601,7 @@ class GFForms {
 					'gform_json',
 					'thickbox',
 					'gform_field_filter',
+					'sack',
 				);
 				break;
 
@@ -1607,6 +1610,7 @@ class GFForms {
 					'gform_forms',
 					'gform_json',
 					'gform_form_admin',
+					'sack',
 				);
 				break;
 
@@ -1619,6 +1623,7 @@ class GFForms {
 					'gform_form_admin',
 					'gform_forms',
 					'gform_json',
+					'sack',
 				);
 				break;
 
@@ -1630,11 +1635,15 @@ class GFForms {
 					'gform_placeholder',
 					'gform_json',
 					'wp-pointer',
+					'sack',
 				);
 				break;
 
 			case 'addons':
-				$scripts = array( 'thickbox' );
+				$scripts = array(
+					'thickbox',
+					'sack',
+				);
 				break;
 
 			case 'export_entry':
@@ -1642,11 +1651,13 @@ class GFForms {
 					'jquery-ui-datepicker',
 					'gform_form_admin',
 					'gform_field_filter',
+					'sack',
 				);
 				break;
 			case 'updates' :
 				$scripts = array(
-					'thickbox'
+					'thickbox',
+					'sack',
 				);
 
 		}

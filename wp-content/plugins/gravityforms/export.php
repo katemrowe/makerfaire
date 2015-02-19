@@ -661,7 +661,7 @@ class GFExport {
 
 			GFCommon::log_debug( "GFExport::start_export(): Header for field ID {$field_id}: {$value}" );
 
-			$headers[ $field_id ] = $str = preg_replace('/[^a-z\d ]/i', '', $value);
+			$headers[ $field_id ] = $value;
 
 			$subrow_count = isset( $field_rows[ $field_id ] ) ? intval( $field_rows[ $field_id ] ) : 0;
 			if ( $subrow_count == 0 ) {
@@ -716,7 +716,7 @@ class GFExport {
 							} else if ( $input_type == 'fileupload' && $field->multipleFiles ) {
 								$value = ! empty( $value ) ? implode( ' , ', json_decode( $value, true ) ) : '';
 							}
-							$value = preg_replace('/[^a-z\d ]/i', '', $value);
+
 							$value = apply_filters( 'gform_export_field_value', $value, $form_id, $field_id, $lead );
 
 							GFCommon::log_debug( "GFExport::start_export(): Value for field ID {$field_id}: {$value}" );
@@ -760,11 +760,7 @@ class GFExport {
 				$lines = utf8_encode( $lines );
 			}
 
-			if ( function_exists( 'mb_convert_encoding' ) ) {
-				// Convert the contents to UTF-16LE which has wider support than UTF-8.
-				// This fixes an issue with special characters in Excel for Mac.
-				$lines = mb_convert_encoding( $lines, 'UTF-16LE', 'UTF-8' );
-			}
+			$lines = apply_filters( 'gform_export_lines', $lines );
 
 			echo $lines;
 

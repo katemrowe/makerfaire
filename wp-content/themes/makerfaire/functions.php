@@ -46,6 +46,7 @@ include_once dirname( __FILE__ ) . '/api/v2/functions.php';
 // Gravity Forms Specific Plugins and Classes
 include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
 include_once TEMPLATEPATH. '/classes/gf-admin-metaboxes.php';
+include_once TEMPLATEPATH. '/classes/gf-helper.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';
@@ -754,135 +755,6 @@ function create_post_type() {
 	)
 	);
 }
-/*public $post_status = array(
-		'All'	   	  	   => 'all',
-		'Accepted'         => 'accepted',
-		'In Progress'      => 'in-progress',
-		'Proposed' 	  	   => 'proposed',
-		'Rejected'         => 'rejected',
-		'Cancelled'		   => 'cancelled',
-		'More Info'        => 'more-info',
-		'Wait List'		   => 'wait-list',
-		'Draft' 	  	   => 'draft',
-);*/
-
-
-/**
- * Returns the URL to an image resized and cropped to the given dimensions.
- *
- * You can use this image URL directly -- it's cached and such by our servers.
- * Please use this function to generate the URL rather than doing it yourself as
- * this function uses staticize_subdomain() makes it serve off our CDN network.
- *
- * Somewhat contrary to the function's name, it can be used for ANY image URL, hosted by us or not.
- * So even though it says "remote", you can use it for attachments hosted by us, etc.
- *
- * @link http://vip.wordpress.com/documentation/image-resizing-and-cropping/ Image Resizing And Cropping
- * @param string $url The raw URL to the image (URLs that redirect are currently not supported with the exception of http://foobar.wordpress.com/files/ type URLs)
- * @param int $width The desired width of the final image
- * @param int $height The desired height of the final image
- * @param bool $escape Optional. If true (the default), the URL will be run through esc_url(). Set this to false if you need the raw URL.
- * @return string
- */
-function wp_get_resized_remote_image_url( $url, $width, $height, $escape = true ) {
-	$width = (int) $width;
-	$height = (int) $height;
-
-	// Photon doesn't support redirects, so help it out by doing http://foobar.wordpress.com/files/ to http://foobar.files.wordpress.com/
-	if ( function_exists( 'new_file_urls' ) )
-		$url = new_file_urls( $url );
-
-	$thumburl = jetpack_photon_url( $url, array( 'resize' => array( $width, $height ) ) );
-
-	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
-}
-
-/* Gravity Forms Specific Section*/
-
-function add_grav_forms(){
-	$role = get_role('editor');
-	$role->add_cap('gform_full_access');
-}
-add_action('admin_init','add_grav_forms');
-
-add_filter( 'gform_next_button', 'gform_next_button_markup' );
-function gform_next_button_markup( $next_button ) {
-
-	$next_button = '<span class="container-gnb">'. $next_button . '</span>';
-
-	return $next_button;
-}
-
-add_filter( 'gform_previous_button', 'gform_previous_button_markup' );
-function gform_previous_button_markup( $previous_button ) {
-
-	$previous_button = '<span class="container-gpb">'. $previous_button . '</span>';
-
-	return $previous_button;
-}
 
 
 
-add_filter('gform_submit_button','form_submit_button');
-function form_submit_button($button){
-return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';	
-}
-
-add_action( 'admin_head', 'remove_gf_form_toolbar' );
-
-function remove_gf_form_toolbar(){ ?>
-     <style>
-     #gf_form_toolbar {
-		    display:none;
-		    		}
-     </style>
-<?php
-}
-
-add_action( 'admin_bar_menu', 'toolbar_link_to_mypage', 999 );
-
-function toolbar_link_to_mypage( $wp_admin_bar ) {
-$locations = get_registered_nav_menus();
-$menus = wp_get_nav_menus();
-$menu_locations = get_nav_menu_locations();
-
-$location_id = 'mf-admin-bayarea-register-menu';
-if (isset($menu_locations[ $location_id ])) {
-	foreach ($menus as $menu) {
-		// If the ID of this menu is the ID associated with the location we're searching for
-		if ($menu->term_id == $menu_locations[ $location_id ]) {
-			// This is the correct menu
-			$menu_items = wp_get_nav_menu_items($menu);
-
-$args = array(
-		'id'    => 'mf_admin_parent',
-		'title' => 'MF Admin',
-		'meta'  => array( 'class' => 'my-toolbar-page' ),
-);
-
-$wp_admin_bar->add_node( $args );
-
-$args = array(
-		'id'    => 'mf_admin_parent_bayarea',
-		'title' => 'Bay Area',
-			'meta'  => array( 'class' => 'my-toolbar-page' ),
-		'parent' => 'mf_admin_parent'
-);
-
-$wp_admin_bar->add_node( $args );
-
-foreach ( (array) $menu_items as $key => $menu_item ) {
-	$args = array(
-		'id'    => $menu_item->object_id,
-		'title' => $menu_item->title,
-		'href'  => $menu_item->url,
-		'meta'  => array( 'class' => 'my-toolbar-page' ),
-		'parent' => 'mf_admin_parent_bayarea'
-	);
-
-	$wp_admin_bar->add_node( $args );
-	}
-	}
-	}
-	}
-}

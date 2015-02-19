@@ -67,8 +67,8 @@ if ( $type == 'schedule' ) {
 		$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
 		$app_image = mf_get_the_maker_image( $post_content );
 
-		$schedule['thumb_img_url'] = esc_url( wp_get_resized_remote_image_url( $app_image, '80', '80' ) );
-		$schedule['large_img_url'] = esc_url( wp_get_resized_remote_image_url( $app_image, '600', '600' ) );
+		$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
+		$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 
 
 		// A list of applications assigned to this event (should only be one really...)

@@ -1,4 +1,5 @@
 <?php
+// Adding Entry Detail
 add_action("gform_entry_detail_content_before", "add_main_text_before", 10, 2);
 function add_main_text_before($form, $lead){
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
@@ -9,6 +10,7 @@ function add_main_text_before($form, $lead){
 	
 }
 
+//Summary Notes to be shown
 function gf_summary_adminNotes($form,$lead) {
 	$is_editable = true;
 	
@@ -103,6 +105,9 @@ function gf_summary_adminNotes($form,$lead) {
 				</tbody>
 			</table><?php 
 }
+
+
+/* Adding Gravity Forms Summary */
 
 function gf_summary_metabox($form, $lead)
 {
@@ -275,7 +280,7 @@ if ( isset( $long_description ) ) {
 } //end function
 
 
-
+/* Modify Set Entry Status */
 function set_entry_status_content(){
 	$location_change=$_POST['entry_info_location_change'];
 	$status_change=$_POST['entry_info_status_change'];
@@ -303,6 +308,8 @@ function set_entry_status_content(){
 	}
 }
 
+
+/* This is where we run code on the entry info screen.  Logic for action handling goes here */
 add_action("gform_entry_info", "my_entry_info", 10, 2);
 function my_entry_info($form_id, $lead) {
 	switch ( RGForms::post( 'action' ) ) {
@@ -310,13 +317,12 @@ function my_entry_info($form_id, $lead) {
 		set_entry_status_content();
 		$lead = RGFormsModel::get_lead( $lead['id'] );
 		break;
-}
-$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+	}
+	
+	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;
 	
-	
-	//print_r( $lead);
-	
+	// Load Fields to show on entry info
 	$form = GFAPI::get_form($form_id);
 	
 	$field302=RGFormsModel::get_field($form,'302');
@@ -344,9 +350,11 @@ $mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 		echo('<input type="checkbox" '.$selected.' name="entry_info_location_change[]" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
 	}
 	
-	
+	//Add the button for updating entry info
 	echo ('		<input type="submit" onclick="jQuery(\'#action\').val(\'status_update\'); jQuery(\'#screen_mode\').val(\'view\');" name="save" value="Save Changes" tabindex="4" class="button button-large button-primary" id="gform_update_button">&nbsp;&nbsp;');	
 }
+
+/* A function to determine status counts */
 
 function get_makerfaire_status_counts( $form_id ) {
 	global $wpdb;
@@ -364,3 +372,231 @@ function get_makerfaire_status_counts( $form_id ) {
 	return $results[0];
 
 }
+
+add_action("gform_entry_detail_sidebar_before", "add_sidebar_text_before", 10,2);
+function add_sidebar_text_before($form, $lead){
+	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+
+	?>	<!-- INFO BOX -->
+		<div id="infoboxdiv" class="stuffbox">
+			<h3>
+				<span class="hndle"><?php _e( 'Entry', 'gravityforms' ); ?></span>
+			</h3>
+
+			<div class="inside">
+				<div id="submitcomment" class="submitbox">
+					<div id="minor-publishing" style="padding:10px;">
+						<br />
+						<?php _e( 'Entry Id', 'gravityforms' ); ?>: <?php echo absint( $lead['id'] ) ?><br /><br />
+						<?php _e( 'Submitted on', 'gravityforms' ); ?>: <?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?>
+						
+						<?php 
+						do_action( 'gform_entry_info', $form['id'], $lead );
+
+						?>
+					</div>
+						<div id="publishing-action">
+						<div id="delete-action">
+							<?php
+							switch ( $lead['status'] ) {
+								case 'spam' :
+									if ( GFCommon::spam_enabled( $form['id'] ) ) {
+										?>
+										<a onclick="jQuery('#action').val('unspam'); jQuery('#entry_form').submit()" href="#"><?php _e( 'Not Spam', 'gravityforms' ) ?></a>
+										<?php
+										echo GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ? '|' : '';
+									}
+									if ( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
+										?>
+										<a class="submitdelete deletion" onclick="if ( confirm('<?php _e( "You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.", 'gravityforms' ) ?>') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;" href="#"><?php _e( 'Delete Permanently', 'gravityforms' ) ?></a>
+									<?php
+									}
+
+									break;
+
+								case 'trash' :
+									?>
+									<a onclick="jQuery('#action').val('restore'); jQuery('#entry_form').submit()" href="#"><?php _e( 'Restore', 'gravityforms' ) ?></a>
+									<?php
+									if ( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
+										?>
+										|
+										<a class="submitdelete deletion" onclick="if ( confirm('<?php _e( "You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.", 'gravityforms' ) ?>') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;" href="#"><?php _e( 'Delete Permanently', 'gravityforms' ) ?></a>
+									<?php
+									}
+
+									break;
+
+								default :
+									if ( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
+										?>
+										<a class="submitdelete deletion" onclick="jQuery('#action').val('trash'); jQuery('#entry_form').submit()" href="#"><?php _e( 'Move to Trash', 'gravityforms' ) ?></a>
+										<?php
+										echo GFCommon::spam_enabled( $form['id'] ) ? '|' : '';
+									}
+									if ( GFCommon::spam_enabled( $form['id'] ) ) {
+										?>
+										<a class="submitdelete deletion" onclick="jQuery('#action').val('spam'); jQuery('#entry_form').submit()" href="#"><?php _e( 'Mark as Spam', 'gravityforms' ) ?></a>
+									<?php
+									}
+							}
+
+							?>
+						</div>
+						
+							<?php
+							if ( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) && $lead['status'] != 'trash' ) {
+								$button_text      = $mode == 'view' ? __( 'Edit', 'gravityforms' ) : __( 'Update', 'gravityforms' );
+								$disabled         = $mode == 'view' ? '' : ' disabled="disabled" ';
+								$update_button_id = $mode == 'view' ? 'gform_edit_button' : 'gform_update_button';
+								$button_click     = $mode == 'view' ? "jQuery('#screen_mode').val('edit');" : "jQuery('#action').val('update'); jQuery('#screen_mode').val('view');";
+								$update_button    = '<input id="' . $update_button_id . '" ' . $disabled . ' class="button button-large button-primary" type="submit" tabindex="4" value="' . $button_text . '" name="save" onclick="' . $button_click . '"/>';
+								echo apply_filters( 'gform_entrydetail_update_button', $update_button );
+								if ( $mode == 'edit' ) {
+									echo '&nbsp;&nbsp;<input class="button button-large" type="submit" tabindex="5" value="' . __( 'Cancel', 'gravityforms' ) . '" name="cancel" onclick="jQuery(\'#screen_mode\').val(\'view\');"/>';
+								}
+							}
+							?>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			
+				<div class="postbox">
+						<h3>
+							<label for="name"><?php _e( 'Notes', 'gravityforms' ); ?></label>
+						</h3>
+
+						<form method="post">
+							<?php wp_nonce_field( 'gforms_update_note', 'gforms_update_note' ) ?>
+							<div class="inside">
+								<?php
+								$notes = RGFormsModel::get_lead_notes( $lead['id'] );
+
+								//getting email values
+								$email_fields = GFCommon::get_email_fields( $form );
+								$emails = array();
+
+								foreach ( $email_fields as $email_field ) {
+									if ( ! empty( $lead[ $email_field->id ] ) ) {
+										$emails[] = $lead[ $email_field->id ];
+									}
+								}
+								//displaying notes grid
+								$subject = '';
+								notes_grid( $notes, true, $emails, $subject );
+								?>
+							</div>
+						</form>
+					</div>
+			
+	<?php 
+	echo "<div class='stuffbox'><h3><span class='hndle'>Extra Cool Stuff</span></h3><div class='inside'>text added before!<br/></div></div>";
+}
+
+
+function notes_grid( $notes, $is_editable, $emails = null, $subject = '' ) {
+	if ( sizeof( $notes ) > 0 && $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+		?>
+			<div class="alignleft actions" style="padding:3px 0;">
+				<label class="hidden" for="bulk_action"><?php _e( ' Bulk action', 'gravityforms' ) ?></label>
+				<select name="bulk_action" id="bulk_action">
+					<option value=''><?php _e( ' Bulk action ', 'gravityforms' ) ?></option>
+					<option value='delete'><?php _e( 'Delete', 'gravityforms' ) ?></option>
+				</select>
+				<?php
+				$apply_button = '<input type="submit" class="button" value="' . __( 'Apply', 'gravityforms' ) . '" onclick="jQuery(\'#action\').val(\'bulk\');" style="width: 50px;" />';
+				echo apply_filters( 'gform_notes_apply_button', $apply_button );
+				?>
+			</div>
+		<?php
+		}
+		?>
+		<table class="widefat fixed entry-detail-notes" cellspacing="0">
+			<?php
+			if ( ! $is_editable ) {
+				?>
+				<thead>
+				<tr>
+					<th id="notes">Notes</th>
+				</tr>
+				</thead>
+			<?php
+			}
+			?>
+			<tbody id="the-comment-list" class="list:comment">
+			<?php
+			$count = 0;
+			$notes_count = sizeof( $notes );
+			foreach ( $notes as $note ) {
+				$count ++;
+				$is_last = $count >= $notes_count ? true : false;
+				?>
+				<tr valign="top">
+					<?php
+					if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+					?>
+					<th class="check-column" scope="row" style="padding:9px 3px 0 0">
+						<input type="checkbox" value="<?php echo $note->id ?>" name="note[]" />
+					</th>
+					<td colspan="2">
+						<?php
+						}
+						else {
+						?>
+					<td class="entry-detail-note<?php echo $is_last ? ' lastrow' : '' ?>">
+						<?php
+						}
+						$class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
+						?>
+						<div style="margin-top:4px;">
+							<div class="note-avatar"><?php echo apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ); ?></div>
+							<h6 class="note-author"><?php echo esc_html( $note->user_name ) ?></h6>
+							<p class="note-email">
+								<a href="mailto:<?php echo esc_attr( $note->user_email ) ?>"><?php echo esc_html( $note->user_email ) ?></a><br />
+								<?php _e( 'added on', 'gravityforms' ); ?> <?php echo esc_html( GFCommon::format_date( $note->date_created, false ) ) ?>
+							</p>
+						</div>
+						<div class="detail-note-content<?php echo $class ?>"><?php echo esc_html( $note->value ) ?></div>
+					</td>
+
+				</tr>
+			<?php
+			}
+			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+				?>
+				<tr>
+					<td colspan="3" style="padding:10px;" class="lastrow">
+						<textarea name="new_note" style="width:100%; height:50px; margin-bottom:4px;"></textarea>
+						<?php
+						$note_button = '<input type="submit" name="add_note" value="' . __( 'Add Note', 'gravityforms' ) . '" class="button" style="width:auto;padding-bottom:2px;" onclick="jQuery(\'#action\').val(\'add_note\');"/>';
+						echo apply_filters( 'gform_addnote_button', $note_button );
+
+						if ( ! empty( $emails ) ) {
+							?>
+							&nbsp;&nbsp;
+							<span>
+                                <select name="gentry_email_notes_to" onchange="if(jQuery(this).val() != '') {jQuery('#gentry_email_subject_container').css('display', 'inline');} else{jQuery('#gentry_email_subject_container').css('display', 'none');}">
+									<option value=""><?php _e( 'Also email this note to', 'gravityforms' ) ?></option>
+									<?php foreach ( $emails as $email ) { ?>
+										<option value="<?php echo $email ?>"><?php echo $email ?></option>
+									<?php } ?>
+								</select>
+                                &nbsp;&nbsp;
+
+                                <span id='gentry_email_subject_container' style="display:none;">
+                                    <label for="gentry_email_subject"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
+                                    <input type="text" name="gentry_email_subject" id="gentry_email_subject" value="" style="width:35%" />
+                                </span>
+                            </span>
+						<?php } ?>
+					</td>
+				</tr>
+			<?php
+			}
+			?>
+			</tbody>
+		</table>
+	<?php
+	}

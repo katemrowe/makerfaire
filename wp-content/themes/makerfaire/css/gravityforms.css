@@ -115,3 +115,7 @@ a.gform_save_link {
 #gf_form_toolbar {
 	display:none;
 }
+
+#notifications_container {
+	display:none;
+}

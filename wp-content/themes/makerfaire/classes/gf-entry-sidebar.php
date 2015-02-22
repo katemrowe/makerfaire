@@ -1,311 +1,9 @@
 <?php
-
-
-// Adding Entry Detail and checking for Processing Posts
-add_action("gform_entry_detail_content_before", "add_main_text_before", 10, 2);
-function add_main_text_before($form, $lead){
-	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
-	if ($mode != "view") return;
-	echo gf_summary_metabox($form, $lead);
-}
-
-//Summary Notes to be shown
-function gf_summary_adminNotes($form,$lead) {
-	$is_editable = true;
-	
-	print_r(get_makerfaire_status_counts($form['id']));
-	
-	$notes = RGFormsModel::get_lead_notes( $lead['id'] );?>
-
-<table class="widefat fixed entry-detail-notes" cellspacing="0">
-	<?php
-	if ( ! $is_editable && !($mode == "edit") ) {
-		?>
-	<thead>
-		<tr>
-			<th id="notes">Notes</th>
-		</tr>
-	</thead>
-	<?php
-				}
-				?>
-	<tbody id="the-comment-list" class="list:comment">
-		<?php
-				$count = 0;
-				$notes_count = sizeof( $notes );
-				foreach ( $notes as $note ) {
-					$count ++;
-					$is_last = $count >= $notes_count ? true : false;
-					?>
-		<tr valign="top">
-			<?php
-						if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-						?>
-			<th class="check-column" scope="row" style="padding: 9px 3px 0 0">
-				<input type="checkbox" value="&lt;?php echo $note-&gt;id ?&gt;"
-				name="note[]" />
-			</th>
-			<td colspan="2"><?php
-							}
-							else {
-							?></td>
-			<td
-				class="entry-detail-note&lt;?php echo $is_last ? ' lastrow' : '' ?&gt;">
-				<?php
-							}
-							$class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
-							?>
-				<div style="margin-top: 4px;">
-					<div class="note-avatar">
-						<?php echo apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ); ?>
-					</div>
-					<h6 class="note-author">
-						<?php echo esc_html( $note->user_name ) ?>
-					</h6>
-					<p class="note-email">
-						<a
-							href="mailto:&lt;?php echo esc_attr( $note-&gt;user_email ) ?&gt;"><?php echo esc_html( $note->user_email ) ?></a><br />
-						<?php _e( 'added on', 'gravityforms' ); ?>
-						<?php echo esc_html( GFCommon::format_date( $note->date_created, false ) ) ?>
-					</p>
-				</div>
-				<div class="detail-note-content&lt;?php echo $class ?&gt;">
-					<?php echo esc_html( $note->value ) ?>
-				</div>
-			</td>
-
-		</tr>
-		<?php
-				}
-				if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-					?>
-		<tr>
-			<td colspan="3" style="padding: 10px;" class="lastrow"><textarea
-					name="admin_note"
-					style="width: 100%; height: 50px; margin-bottom: 4px;" cols=""
-					rows=""></textarea> <?php
-							$note_button = '<input type="submit" name="add_note" value="' . __( 'Add Note', 'gravityforms' ) . '" class="button" style="width:auto;padding-bottom:2px;" onclick="jQuery(\'#action\').val(\'add_note\');"/>';
-							echo apply_filters( 'gform_addnote_button', $note_button );
-							$blogusers = get_users( 'blog_id=1&orderby=nicename&role=administrator' );
-							// Array of WP_User objects.
-							
-							?>
-				&nbsp;&nbsp; <span> <select name="gentry_email_notes_to"
-					onchange="if(jQuery(this).val() != '') {jQuery('#gentry_email_subject_container').css('display', 'inline');} else{jQuery('#gentry_email_subject_container').css('display', 'none');}">
-						<option value="">
-							<?php _e( 'Also email this note to', 'gravityforms' ) ?>
-						</option>
-						<?php foreach ( $blogusers as $user ) {
-										echo '<option  value="' . esc_html( $user->user_email ) . '" >'. esc_html( $user->display_name ) . '</option>';
-										}?>
-
-				</select> &nbsp;&nbsp; <span id='gentry_email_subject_container'
-					style="display: none;"> <label for="gentry_email_subject"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
-						<input type="text" name="gentry_email_subject"
-						id="gentry_email_subject" value="" style="width: 35%" />
-				</span>
-			</span></td>
-		</tr>
-		<?php
-				}
-				?>
-	</tbody>
-</table>
-<?php 
-}
-
-
-/* Adding Gravity Forms Summary */
-
-function gf_summary_metabox($form, $lead)
-{
-	
-$jdb_success = gform_get_meta( $lead['id'], 'mf_jdb_sync');
-
-if ( $jdb_success == '' ) {
-	$jdb_fail = gform_get_meta( $lead['id'], 'mf_jdb_sync_fail', true );
-	$jdb      = '[FAILED] : N/A';
-	if ( $jdb_success == '' )
-		$jdb  = '[FAILED] : ' . date( 'M jS, Y g:i A', $jdb_fail - ( 7 * 3600 ) );
-} else {
-	$jdb = '[SUCCESS] : ' . date( 'M jS, Y g:i A', $jdb_success - ( 7 * 3600 ) );
-}
-
-$entry_id = $lead['id'];
-$photo = $lead['22'];
-$short_description = $lead['16'];
-$long_description = $lead['21'];
-$project_name = $lead['151'];
-$entry_form_type = $form['title'];
-$entry_form_status = $lead['303'];
-$wkey = $lead['27'];
-$vkey = $lead['32'];
-
-
-$main_description = '';
-
-// Check if we are loading the public description or a short description
-if ( isset( $long_description ) ) {
-	$main_description = $long_description;
-} else if ( isset($short_description ) ) {
-	$main_description = $short_description;
-}
-?>
-<table class="fixed entry-detail-view">
-	<thead>
-		<th colspan="2" style="text-align: left" id="header">
-			<h1>
-				<?php echo esc_html($project_name); ?>
-			</h1>
-		</th>
-	</thead>
-	<tbody>
-		<tr>
-			<td valign="top"><img
-				src="&lt;?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?&gt;"
-				width="300" alt="" /></td>
-			<td valign="top">
-				<table>
-					<tr>
-						<td colspan="2">
-							<p>
-								<?php echo stripslashes( nl2br( $main_description, "\n" )  ); ?>
-							</p>
-						</td>
-					</tr>
-					<tr>
-
-						<td style="width: 80px;" valign="top"><strong>Type:</strong></td>
-						<td valign="top"><?php echo esc_attr( ucfirst( $entry_form_type ) ); ?></td>
-					</tr>
-					<tr>
-						<td style="width: 80px;" valign="top"><strong>Status:</strong></td>
-						<td valign="top"><?php echo esc_attr( $entry_form_status ); ?></td>
-					</tr>
-					<?php
-							?>
-					<tr>
-						<td style="width: 80px;" valign="top"><strong>Website:</strong></td>
-						<td valign="top"><a
-							href="<?php echo esc_url(  $wkey ); ?>" target="_blank"><?php echo esc_url( $wkey ); ?></a></td>
-					</tr>
-					<tr>
-						<td valign="top"><strong>Video:</strong></td>
-						<td><?php
-								  echo ( isset( $vkey ) ) ? '<a href="' . esc_url( $vkey ) . '" target="_blank">' . esc_url( $vkey ) . '</a><br/>' : '' ;
-								?>
-						</td>
-					</tr>
-					<?php
-
-								// Store the current application ID so we can return it within the loop
-								//$parent_post_id = $lead['id'];
-
-								$args = array(
-									'post_type'		=> 'event-items',
-									'orderby' 		=> 'meta_value',
-									'meta_key'		=> 'mfei_start',
-									'order'			=> 'asc',
-									'posts_per_page'=> '30',
-									'meta_query' 	=> array(
-										array(
-											'key' 	=> 'mfei_record',
-											'value'	=> $entry_id
-									   ),
-									)
-								);
-								$get_events = new WP_Query( $args );
-
-								// Check that we have returned our query of events, if not, give the option to schedule the event
-								if ( $get_events->found_posts >= 1 ) { ?>
-					<tr>
-						<td style="width: 80px;"><strong>Scheduled:</strong></td>
-						<td valign="top">Yes<a></a>
-						</td>
-					</tr>
-					<?php // Loop through theme
-									while ( $get_events->have_posts() ) : $get_events->the_post();
-
-										// Get an array of our event data
-										$event_record = get_post_meta( get_the_ID() );
-
-										// Setup the edit URL and add an edit link to the admin area
-										$edit_event_url = get_edit_post_link();
-
-										// Check that fields are set, and display them as needed.
-										if ( ! empty( $event_record['mfei_day'][0] ) ) : ?>
-					<tr <?php post_class(); ?>>
-						<td style="width: 80px;" valign="top"><strong>Day:</strong></td>
-						<td valign="top"><?php echo esc_html( $event_record['mfei_day'][0] ); ?></td>
-					</tr>
-					<?php endif; if ( ! empty( $event_record['mfei_start'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
-						<td style="width: 80px;" valign="top"><strong>Start
-								Time:</strong></td>
-						<td valign="top"><?php echo esc_html( $event_record['mfei_start'][0] ); ?></td>
-					</tr>
-					<?php endif; if ( ! empty( $event_record['mfei_stop'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
-						<td style="width: 80px;" valign="top"><strong>Stop
-								Time:</strong></td>
-						<td valign="top"><?php echo esc_html( $event_record['mfei_stop'][0] ); ?></td>
-					</tr>
-					<?php endif; if ( ! empty( $event_record['mfei_schedule_completed'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
-						<td style="width: 80px;" valign="top"><strong>Schedule
-								Completed:</strong></td>
-						<td valign="top"><?php echo esc_html( $event_record['mfei_schedule_completed'][0] ); ?></td>
-					</tr>
-					<?php endif; ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
-						<td valign="top"><strong>Edit</strong></td>
-						<td><a href="&lt;?php echo esc_url( $edit_event_url ); ?&gt;"
-							class="button" target="_blank">Edit the Time and Date</a>
-							<button href=""
-								class="deleteme button-small button-secondary delete"
-								data-key="mfei_record"
-								data-nonce="&lt;?php echo esc_attr( wp_create_nonce( 'delete_scheduled_post' ) ); ?&gt;"
-								data-postid="&lt;?php echo esc_attr( get_the_id() ); ?&gt;"
-								data-value="&lt;?php echo esc_attr( $event_record['mfei_record'][0] ); ?&gt;"
-								title="">Delete Scheduled Event</button></td>
-					</tr>
-
-					<?php endwhile; ?>
-					<tr>
-						<td style="width: 80px;" valign="top"><strong>Schedule:</strong><a></a></td>
-						<td valign="top"><a
-							href="&lt;?php echo admin_url(); ?&gt;post-new.php?post_type=event-items&amp;refer_id=&lt;?php echo absint( $entry_id ); ?&gt;">Schedule
-								Another Event</a></td>
-					</tr>
-					<?php } else { ?>
-					<tr>
-						<td style="width: 80px;" valign="top"><strong>Scheduled:</strong><a></a></td>
-						<td valign="top"><a
-							href="&lt;?php echo admin_url(); ?&gt;post-new.php?post_type=event-items&amp;refer_id=&lt;?php echo $entry_id; ?&gt;">Schedule
-								This Event</a></td>
-					</tr>
-					<?php }
-							?>
-				</table>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<?php
-					
-} //end function
-
-
-
-
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
-
-function my_entry_info($form_id, $lead) {
+function mf_sidebar_entry_info($form_id, $lead) {
 	// Load Fields to show on entry info
 	$form = GFAPI::get_form($form_id);
 	
-		
 	$field302=RGFormsModel::get_field($form,'302');
 	$field303=RGFormsModel::get_field($form,'303');
 	$field304=RGFormsModel::get_field($form,'304');
@@ -466,12 +164,15 @@ if ($mode != 'view') return;
 	<label class="detail-label">Entry Management:</label>
 </h4>
 
-<?php my_entry_info( $form['id'], $lead );
+<?php
+// Load Entry Sidebar details
+mf_sidebar_entry_info( $form['id'], $lead );
 
-$note_button = '<input type="submit" name="update_management" value="Update Management" class="button"
+// Create Update button for sidebar entry management
+$entry_sidebar_button = '<input type="submit" name="update_management" value="Update Management" class="button"
 	 style="width:auto;padding-bottom:2px;" 
 	onclick="jQuery(\'#action\').val(\'update_entry_management\');"/>';
-				echo $note_button;	?>
+echo $entry_sidebar_button;	?>
 </div>
 
 <?php /* Notes Sidebar Area */?>
@@ -598,62 +299,50 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 }
 
 
-// Adding Entry Detail and checking for Processing Posts
+// This is where our custom post action handing occurs
 add_action("gform_admin_pre_render", "mf_admin_pre_render", 10, 2);
 function mf_admin_pre_render($form){
-	$mfAction=RGForms::post( 'action' );
-	error_log(print_r($_POST,true));
-	print_r($mfAction);
-	if (!empty($mfAction))
-	{
-		global $current_user;
-		$entry_info_entry_id=$_POST['entry_info_entry_id'];
-		$lead = GFAPI::get_entry( $entry_info_entry_id );
-		
-		$entry_info_entry_id=$_POST['entry_info_entry_id'];
-		switch ($mfAction ) {
-			case 'update_entry_management' :
-				set_entry_status_content();
-				break;
-				
-			case 'add_note_sidebar' :
-				$user_data = get_userdata( $current_user->ID );
-				RGFormsModel::add_note( $lead['id'], $current_user->ID, $user_data->display_name, stripslashes( $_POST['new_note_sidebar'] ) );
+//Get the current action
+$mfAction=RGForms::post( 'action' );
 
-				//emailing notes if configured
-				if ( rgpost( 'gentry_email_notes_to' ) ) {
-					GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Preparing to email entry notes.' );
-					$email_to      = $_POST['gentry_email_notes_to_sidebar'];
-					$email_from    = $current_user->user_email;
-					$email_subject = stripslashes( $_POST['gentry_email_subject_sidebar'] );
-					$body = stripslashes( $_POST['new_note_sidebar'] );
-
-					$headers = "From: \"$email_from\" <$email_from> \r\n";
-					GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
-					$result  = wp_mail( $email_to, $email_subject, $body, $headers );
-					GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Result from wp_mail(): {$result}" );
-					if ( $result ) {
-						GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Mail was passed from WordPress to the mail server.' );
-					} else {
-						GFCommon::log_error( 'GFEntryDetail::lead_detail_page(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
-					}
-				}
-				break;
-				
-		}
+//Only process if there was a gravity forms action
+if (!empty($mfAction))
+{
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	$lead = GFAPI::get_entry( $entry_info_entry_id );
+	switch ($mfAction ) {
+		// Entry Management Update
+		case 'update_entry_management' :
+			set_entry_status_content($lead,$form);
+			break;
+		//Sidebar Note Add
+		case 'add_note_sidebar' :
+			add_note_sidebar($lead, $form);
+			break;
+			
 	}
-	return $form;
+}
+
+// Return the original form which is required for the filter we're including for our custom processing.
+return $form;
 }
 
 /* Modify Set Entry Status */
-function set_entry_status_content(){
+function set_entry_status_content($lead,$form){
 	error_log(print_r($_POST,true));
 	$location_change=$_POST['entry_info_location_change'];
 	$flags_change=$_POST['entry_info_flags_change'];
 	$location_comment_change=$_POST['entry_location_comment'];
-	$status_change=$_POST['entry_info_status_change'];
+	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
-
+	$acceptance_current_status = $lead['303'];
+	
+	error_log('$$acceptance_current_status='.$acceptance_current_status);
+				error_log('$$acceptance_status_change='.$acceptance_status_change);
+			$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
+	
+			error_log('$$$is_acceptance_status_changed='.$is_acceptance_status_changed);
+				
 	if (!empty($entry_info_entry_id))
 	{
 		if (!empty($location_change))
@@ -681,12 +370,28 @@ function set_entry_status_content(){
 			GFAPI::update_entry_field($entry_info_entry_id,'307',$location_comment_change);
 
 		}
-		if (!empty($status_change))
+		if (!empty($acceptance_status_change))
 		{
-			$entry_info_entry['303'] = $status_change;
-			GFAPI::update_entry_field($entry_info_entry_id,'303',$status_change);
-
-		}
+				//Handle acceptance status changes
+			if ($is_acceptance_status_changed )
+			{
+				error_log('$is_acceptance_status_changed='.$is_acceptance_status_changed);
+				//Create a note of the status change.
+				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
+				//Handle notifications for acceptance
+				if ($acceptance_status_change=='Accepted')
+				{
+					$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
+					foreach ( $notifications_to_send as $notification ) {
+						GFCommon::send_notification( $notification, $form, $entry );
+					}
+				}
+						
+			}
+			//Update Field for Acceptance Status
+			$entry_info_entry['303'] = $acceptance_status_change;
+			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
+		 }
 		
 		
 	}
@@ -694,5 +399,39 @@ function set_entry_status_content(){
 
 
 
+function add_note_sidebar($lead, $form)
+{
+	global $current_user;
+	
+	$user_data = get_userdata( $current_user->ID );
+	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ) );
+	
+	//emailing notes if configured
+	if ( rgpost( 'gentry_email_notes_to' ) ) {
+		GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Preparing to email entry notes.' );
+		$email_to      = $_POST['gentry_email_notes_to_sidebar'];
+		$email_from    = $current_user->user_email;
+		$email_subject = stripslashes( $_POST['gentry_email_subject_sidebar'] );
+		$body = stripslashes( $_POST['new_note_sidebar'] );
+	
+		$headers = "From: \"$email_from\" <$email_from> \r\n";
+		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
+		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
+		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Result from wp_mail(): {$result}" );
+		if ( $result ) {
+			GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Mail was passed from WordPress to the mail server.' );
+		} else {
+			GFCommon::log_error( 'GFEntryDetail::lead_detail_page(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
+		}
+	}
+}
 
 
+
+function mf_add_note($leadid,$notetext)
+{
+	global $current_user;
+		
+	$user_data = get_userdata( $current_user->ID );
+	RGFormsModel::add_note( $leadid, $current_user->ID, $user_data->display_name, $notetext );
+}

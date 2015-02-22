@@ -533,37 +533,7 @@ class GFEntryDetail {
 
 				do_action( 'gform_entry_detail', $form, $lead );
 
-				if ( GFCommon::current_user_can_any( 'gravityforms_view_entry_notes' ) ) {
-					?>
-					<div class="postbox">
-						<h3>
-							<label for="name"><?php _e( 'Notes', 'gravityforms' ); ?></label>
-						</h3>
-
-						<form method="post">
-							<?php wp_nonce_field( 'gforms_update_note', 'gforms_update_note' ) ?>
-							<div class="inside">
-								<?php
-								$notes = RGFormsModel::get_lead_notes( $lead['id'] );
-
-								//getting email values
-								$email_fields = GFCommon::get_email_fields( $form );
-								$emails = array();
-
-								foreach ( $email_fields as $email_field ) {
-									if ( ! empty( $lead[ $email_field->id ] ) ) {
-										$emails[] = $lead[ $email_field->id ];
-									}
-								}
-								//displaying notes grid
-								$subject = '';
-								self::notes_grid( $notes, true, $emails, $subject );
-								?>
-							</div>
-						</form>
-					</div>
-				<?php
-				}
+				
 				do_action( 'gform_entry_detail_content_after', $form, $lead );
 				?>
 			</div>

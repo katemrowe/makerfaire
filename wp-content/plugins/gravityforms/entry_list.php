@@ -758,7 +758,7 @@ class GFEntryList {
 			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span></span>
 		</h2>
 
-		<?php // RGForms::top_toolbar() ?>
+		<?php RGForms::top_toolbar() ?>
 
 		<form id="lead_form" method="post">
 		<?php wp_nonce_field( 'gforms_entry_list', 'gforms_entry_list' ) ?>

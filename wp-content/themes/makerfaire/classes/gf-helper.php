@@ -33,9 +33,13 @@ function form_submit_button($button){
 /* Styles to adjust admin screen go here */
 add_action( 'admin_head', 'remove_gf_form_toolbar' );
 
-function remove_gf_form_toolbar(){ ?>
+function remove_gf_form_toolbar(){ 
+	?>
      <style>
-     #gf_form_toolbar {
+      		#gf_form_toolbar li.gf_form_toolbar_editor {
+		   	    display:none;
+		    		}
+		    		#gf_form_toolbar li.gf_form_toolbar_settings {
 		    display:none;
 		    		}
 	 #notifications_container {

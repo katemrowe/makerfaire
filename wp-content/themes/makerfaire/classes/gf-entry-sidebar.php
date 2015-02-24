@@ -261,7 +261,9 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				<?php 
 				$emailto = array(
    				"rich@makermedia.com" => "rich@makermedia.com",
-					 "admin@makerfaire.com" => "admin@makerfaire.com",
+				"rich@groundrunningsolutions.com" => "rich@groundrunningsolutions.com",
+				"rich.haynie@gmail.com" => "rich.haynie@gmail.com",
+	 			"admin@makerfaire.com" => "admin@makerfaire.com",
 				  "Brian Jepson" => "bjepson@makermedia.com",
 				  "Bridgette Vanderlaan" => "bvanderlaan@mac.com",
 				  "Editorial Make" => "onlineeditors@makezine.com",

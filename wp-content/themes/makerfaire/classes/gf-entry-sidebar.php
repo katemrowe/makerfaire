@@ -413,7 +413,9 @@ function add_note_sidebar($lead, $form)
 		$email_subject = stripslashes( 'New Note (Response Required): '.$lead['id']);
 		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
 		
-		$body = stripslashes( $_POST['new_note_sidebar'] . '\r\nView Entry:<a href="'.$entry_url.'>'.$entry_url.'</a>\r\n');
+		$body = stripslashes( $_POST['new_note_sidebar'] . '
+
+		Click Here to See Entry:'.$entry_url);
 	
 		$headers = "From: \"$email_from\" <$email_from> \r\n";
 		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );

@@ -100,7 +100,7 @@ function add_sidebar_text_before($form, $lead){
 									if ( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
 										?>
 				<a class="submitdelete deletion"
-					onclick="if ( confirm('&lt;?php _e( &quot;You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.&quot;, 'gravityforms' ) ?&gt;') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;"
+					onclick="if ( confirm('<?php _e( ';You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.', 'gravityforms' ) ?>') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;"
 					href="#"><?php _e( 'Delete Permanently', 'gravityforms' ) ?></a>
 				<?php
 									}
@@ -116,7 +116,7 @@ function add_sidebar_text_before($form, $lead){
 									if ( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
 										?>
 				| <a class="submitdelete deletion"
-					onclick="if ( confirm('&lt;?php _e( &quot;You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.&quot;, 'gravityforms' ) ?&gt;') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;"
+					onclick="if ( confirm('<?php _e('You are about to delete this entry. \'Cancel\' to stop, \'OK\' to delete.', 'gravityforms' ) ?>') ) {jQuery('#action').val('delete'); jQuery('#entry_form').submit(); return true;} return false;"
 					href="#"><?php _e( 'Delete Permanently', 'gravityforms' ) ?></a>
 				<?php
 									}
@@ -336,13 +336,9 @@ function set_entry_status_content($lead,$form){
 	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	$acceptance_current_status = $lead['303'];
+
+	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
 	
-	error_log('$$acceptance_current_status='.$acceptance_current_status);
-				error_log('$$acceptance_status_change='.$acceptance_status_change);
-			$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
-	
-			error_log('$$$is_acceptance_status_changed='.$is_acceptance_status_changed);
-				
 	if (!empty($entry_info_entry_id))
 	{
 		if (!empty($location_change))
@@ -378,9 +374,9 @@ function set_entry_status_content($lead,$form){
 				//Create a note of the status change.
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
-				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
+				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $lead );
 					foreach ( $notifications_to_send as $notification ) {
-						GFCommon::send_notification( $notification, $form, $entry );
+						GFCommon::send_notification( $notification, $form, $lead );
 				}
 						
 			}

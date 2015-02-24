@@ -53,7 +53,7 @@ if ( isset( $long_description ) ) {
 	<tbody>
 		<tr>
 			<td valign="top"><img
-				src="&lt;?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?&gt;"
+				src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>"
 				width="300" alt="" /></td>
 			<td valign="top">
 				<table>
@@ -130,34 +130,34 @@ if ( isset( $long_description ) ) {
 						<td valign="top"><?php echo esc_html( $event_record['mfei_day'][0] ); ?></td>
 					</tr>
 					<?php endif; if ( ! empty( $event_record['mfei_start'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
+					<tr class="<?php post_class(); ?>">
 						<td style="width: 80px;" valign="top"><strong>Start
 								Time:</strong></td>
 						<td valign="top"><?php echo esc_html( $event_record['mfei_start'][0] ); ?></td>
 					</tr>
 					<?php endif; if ( ! empty( $event_record['mfei_stop'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
+					<tr class="<?php post_class(); ?>">
 						<td style="width: 80px;" valign="top"><strong>Stop
 								Time:</strong></td>
 						<td valign="top"><?php echo esc_html( $event_record['mfei_stop'][0] ); ?></td>
 					</tr>
 					<?php endif; if ( ! empty( $event_record['mfei_schedule_completed'][0] ) ) : ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
+					<tr class="<?php post_class(); ?>">
 						<td style="width: 80px;" valign="top"><strong>Schedule
 								Completed:</strong></td>
 						<td valign="top"><?php echo esc_html( $event_record['mfei_schedule_completed'][0] ); ?></td>
 					</tr>
 					<?php endif; ?>
-					<tr class="&lt;?php post_class(); ?&gt;">
+					<tr class="<?php post_class(); ?>">
 						<td valign="top"><strong>Edit</strong></td>
-						<td><a href="&lt;?php echo esc_url( $edit_event_url ); ?&gt;"
+						<td><a href="<?php echo esc_url( $edit_event_url ); ?>"
 							class="button" target="_blank">Edit the Time and Date</a>
 							<button href=""
 								class="deleteme button-small button-secondary delete"
 								data-key="mfei_record"
-								data-nonce="&lt;?php echo esc_attr( wp_create_nonce( 'delete_scheduled_post' ) ); ?&gt;"
-								data-postid="&lt;?php echo esc_attr( get_the_id() ); ?&gt;"
-								data-value="&lt;?php echo esc_attr( $event_record['mfei_record'][0] ); ?&gt;"
+								data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete_scheduled_post' ) ); ?>"
+								data-postid="<?php echo esc_attr( get_the_id() ); ?>"
+								data-value="<?php echo esc_attr( $event_record['mfei_record'][0] ); ?>"
 								title="">Delete Scheduled Event</button></td>
 					</tr>
 
@@ -165,14 +165,14 @@ if ( isset( $long_description ) ) {
 					<tr>
 						<td style="width: 80px;" valign="top"><strong>Schedule:</strong><a></a></td>
 						<td valign="top"><a
-							href="&lt;?php echo admin_url(); ?&gt;post-new.php?post_type=event-items&amp;refer_id=&lt;?php echo absint( $entry_id ); ?&gt;">Schedule
+							href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo absint( $entry_id ); ?>">Schedule
 								Another Event</a></td>
 					</tr>
 					<?php } else { ?>
 					<tr>
 						<td style="width: 80px;" valign="top"><strong>Scheduled:</strong><a></a></td>
 						<td valign="top"><a
-							href="&lt;?php echo admin_url(); ?&gt;post-new.php?post_type=event-items&amp;refer_id=&lt;?php echo $entry_id; ?&gt;">Schedule
+							href="<?php echo admin_url(); ?>post-new.php?post_type=event-items&amp;refer_id=<?php echo $entry_id; ?>">Schedule
 								This Event</a></td>
 					</tr>
 					<?php } ?>

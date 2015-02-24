@@ -412,6 +412,7 @@ function add_note_sidebar($lead, $form)
 	
 		$headers = "From: \"$email_from\" <$email_from> \r\n";
 		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
+		error_log( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
 		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Result from wp_mail(): {$result}" );
 		if ( $result ) {

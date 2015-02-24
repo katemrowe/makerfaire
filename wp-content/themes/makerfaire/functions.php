@@ -48,6 +48,7 @@ include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-sidebar.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-summary.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-notifications.php';
+include_once TEMPLATEPATH. '/classes/gf-entry-datatables.php';
 include_once TEMPLATEPATH. '/classes/gf-helper.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls

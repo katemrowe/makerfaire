@@ -428,12 +428,10 @@ class GV_Extension_DataTables_Data {
 					}
 				}
 			}
-
 			// filter init DataTables options
 			$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config, $view_data['id'], $post );
-
 			$dt_configs[] = $dt_config;
-
+			
 		} // major FOREACH just to test
 
 

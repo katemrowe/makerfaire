@@ -136,7 +136,7 @@ class GV_Extension_DataTables_TableTools extends GV_DataTables_Extension {
 		if( !$this->is_enabled( $view_id ) ) { return $dt_config; }
 
 		// init TableTools
-		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'T<"clear">lfrtip' : 'T<"clear">'. $dt_config['dom'];
+		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'Tp<"clear">lfrtip' : 'T<"clear">'. $dt_config['dom'];
 		$dt_config['tableTools']['sSwfPath'] = plugins_url( 'assets/datatables-tabletools/swf/copy_csv_xls_pdf.swf', GV_DT_FILE );
 
 		// row selection mode option

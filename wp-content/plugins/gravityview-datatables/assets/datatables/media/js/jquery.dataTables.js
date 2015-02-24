@@ -11510,8 +11510,7 @@
 		 *    } );
 		 */
 		"sDom": "lfrtip",
-	
-	
+		
 		/**
 		 * Search delay option. This will throttle full table searches that use the
 		 * DataTables provided search input element (it does not effect calls to

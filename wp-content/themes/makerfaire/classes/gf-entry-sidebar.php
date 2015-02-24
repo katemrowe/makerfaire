@@ -285,7 +285,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				  "Dale Dougherty" => "dale@makermedia.com");
 				?>
 				<?php foreach ( $emailto as $name => $email ) { 
-					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar" style="margin: 3px;" value="'.$email.'" />'.$name.' <br />');
+					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" />'.$name.' <br />');
 					 } ?>&nbsp;&nbsp; <span id='gentry_email_subject_container_sidebar'
 					style="display: none;"> <label for="gentry_email_subject_sidebar"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
 						<input type="text" name="gentry_email_subject_sidebar"
@@ -375,16 +375,12 @@ function set_entry_status_content($lead,$form){
 				//Handle acceptance status changes
 			if ($is_acceptance_status_changed )
 			{
-				error_log('$is_acceptance_status_changed='.$is_acceptance_status_changed);
 				//Create a note of the status change.
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
-				if ($acceptance_status_change=='Accepted')
-				{
-					$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
+				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
 					foreach ( $notifications_to_send as $notification ) {
 						GFCommon::send_notification( $notification, $form, $entry );
-					}
 				}
 						
 			}

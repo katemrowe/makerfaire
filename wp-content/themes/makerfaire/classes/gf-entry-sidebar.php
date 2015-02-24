@@ -370,21 +370,24 @@ function set_entry_status_content($lead,$form){
 		}
 		if (!empty($acceptance_status_change))
 		{
-				//Handle acceptance status changes
+			//Update Field for Acceptance Status
+			$entry_info_entry['303'] = $acceptance_status_change;
+			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
+			//Reload entry to get any changes in status
+			$entry = GFAPI::get_entry( $entry_info_entry_id );
+			
+			//Handle acceptance status changes
 			if ($is_acceptance_status_changed )
 			{
 				//Create a note of the status change.
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
-				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $lead );
+				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
 					foreach ( $notifications_to_send as $notification ) {
-						GFCommon::send_notification( $notification, $form, $lead );
+						GFCommon::send_notification( $notification, $form, $entry );
 				}
 						
 			}
-			//Update Field for Acceptance Status
-			$entry_info_entry['303'] = $acceptance_status_change;
-			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
 		 }
 		
 		

@@ -25,10 +25,10 @@ function gform_previous_button_markup( $previous_button ) {
 
 
 
-add_filter('gform_submit_button','form_submit_button');
-function form_submit_button($button){
-	return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';
-}
+//add_filter('gform_submit_button','form_submit_button');
+//function form_submit_button($button){
+//	return '<input id="gform_submit_button_' . $form['id'] . '" class="gform_button gform_submit_button button" type="submit" onclick="if(window["gf_submitting_' . $form['id'] . '"]){return false;} if( !jQuery("#gform_' . $form['id'] . '")[0].checkValidity || jQuery("#gform_' . $form['id'] . '")[0].checkValidity()){window["gf_submitting_' . $form['id'] . '"]=true;} " value="Submit">';
+//}
 
 /* Styles to adjust admin screen go here */
 add_action( 'admin_head', 'remove_gf_form_toolbar' );

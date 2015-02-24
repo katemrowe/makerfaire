@@ -407,18 +407,21 @@ function add_note_sidebar($lead, $form)
 	
 	//emailing notes if configured
 	if ( !empty($email_to) ) {
+		
 		GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Preparing to email entry notes.' );
 		$email_to      = $_POST['gentry_email_notes_to_sidebar'];
 		$email_from    = $current_user->user_email;
 		$email_subject = stripslashes( 'New Note (Response Required): '.$lead['id']);
 		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
 		
-		$body = stripslashes( $_POST['new_note_sidebar'] ). '\r\nEntry:'.$entry_url;
+		$body = stripslashes( $_POST['new_note_sidebar'] ). '<br />Entry:<a href="'.$entry_url.'">'.$entry_url.'</a>';
 	
 		$headers = "From: \"$email_from\" <$email_from> \r\n";
 		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
 		error_log( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
+		add_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
+		remove_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Result from wp_mail(): {$result}" );
 		if ( $result ) {
 			GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Mail was passed from WordPress to the mail server.' );
@@ -427,6 +430,14 @@ function add_note_sidebar($lead, $form)
 		}
 	}
 }
+
+
+
+
+function wpse27856_set_content_type(){
+	return "text/html";
+}
+
 
 
 

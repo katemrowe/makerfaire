@@ -281,15 +281,16 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 		"Travis Good" => "travisgood@gmail.com");
 
 $emailtoaliases = array(
-		"editor@makezine.com" => "editor@makezine.com",
-		"makers@makerfaire.com" => "makers@makerfaire.com",
-		"marketing@makermedia.com" => "marketing@makermedia.com",
-		"pr@makerfaire.com" => "pr@makerfaire.com",
-		"shed" => "shedmakers@makermedia.com",
-		"edu" => "education@makermdedia.com",
-		"sales" => "sales@makerfaire.com",
+		"Editors" => "editor@makezine.com",
+		"Maker Relations" => "makers@makerfaire.com",
+		"Marketing" => "marketing@makermedia.com",
+		"PR" => "pr@makerfaire.com",
+		"Shed" => "shedmakers@makermedia.com",
+		"Education" => "education@makermdedia.com",
+		"Sales" => "sales@makerfaire.com",
 		"MakerCon" => "makercon@makermedia.com");
 				?>
+				Aliases: <br />
 				<?php foreach ( $emailtoaliases as $name => $email ) { 
 					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" /><strong>'.$name.'</strong> <br />');
 					 } ?> 

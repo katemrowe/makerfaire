@@ -260,10 +260,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				<label >Email Note To:</label><br />
 				<?php 
 				$emailto = array(
-   				"rich@makermedia.com" => "rich@makermedia.com",
-				"rich@groundrunningsolutions.com" => "rich@groundrunningsolutions.com",
-				"rich.haynie@gmail.com" => "rich.haynie@gmail.com",
-	 			"admin@makerfaire.com" => "admin@makerfaire.com",
+   				  "admin@makerfaire.com" => "admin@makerfaire.com",
 				  "Brian Jepson" => "bjepson@makermedia.com",
 				  "Bridgette Vanderlaan" => "bvanderlaan@mac.com",
 				  "Editorial Make" => "onlineeditors@makezine.com",
@@ -274,13 +271,13 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				  "Kerry Moore" => "kerry@contextfurniture.com",
 				  "Louise Glasgow" => "lglasgow@makermedia.com",
 				  "Maker Relations" => "makers@makerfaire.com",
+				  "Maker Shed" => "shedmakers@makermeda.com",
 				  "Marketing Make" => "marketing@makermedia.com",
 				  "Michelle Hlubinka" => "mhlubinka@makermedia.com",
 				  "Miranda Mota" => "miranda@makermedia.com",
 				  "Nick Normal" => "nicknormal@gmail.com",
 				  "PR MakerFaire" => "pr@makerfaire.com",
 				  "Sabrina Merlo" => "smerlo@makermedia.com",
-				  "Shed Make" => "makershed@makerfaire.com",
 				  "Sherry Huss" => "sherry@makermedia.com",
 				  "Sponsor Sales" => "sales@makerfaire.com",
 				  "Tami Jo Benson" => "tj@tamijo.com",

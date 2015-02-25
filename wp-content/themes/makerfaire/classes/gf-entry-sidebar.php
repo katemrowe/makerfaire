@@ -401,9 +401,11 @@ function add_note_sidebar($lead, $form)
 	global $current_user;
 	
 	$user_data = get_userdata( $current_user->ID );
-	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ) );
+	$short_description = $lead['16'];
 	
 	$email_to      = $_POST['gentry_email_notes_to_sidebar'];
+	
+	$email_note_info = '';
 	
 	//emailing notes if configured
 	if ( !empty($email_to) ) {
@@ -411,7 +413,7 @@ function add_note_sidebar($lead, $form)
 		GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Preparing to email entry notes.' );
 		$email_to      = $_POST['gentry_email_notes_to_sidebar'];
 		$email_from    = $current_user->user_email;
-		$email_subject = stripslashes( 'New Note (Response Required): '.$lead['id']);
+		$email_subject = stripslashes( 'Note Response Required: '.$lead['id'].' '.$short_description);
 		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
 		
 		$body = stripslashes( $_POST['new_note_sidebar'] ). '<br />Entry:<a href="'.$entry_url.'">'.$entry_url.'</a>';
@@ -428,7 +430,11 @@ function add_note_sidebar($lead, $form)
 		} else {
 			GFCommon::log_error( 'GFEntryDetail::lead_detail_page(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
 		}
+		$email_note_info = '  Note emailed to '.implode(",", $email_to);
 	}
+	
+	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ).$email_note_info );
+	
 }
 
 

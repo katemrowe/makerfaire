@@ -694,7 +694,11 @@ function make_cpt_icons() { ?>
 			content: '\f111';
 		}
 	</style>
-<?php }
+	
+<?php
+	wp_enqueue_script('thickbox');
+	wp_enqueue_style('thickbox');
+ }
 
 /**
  * Adds footer copyright information
@@ -758,6 +762,4 @@ function create_post_type() {
 	)
 	);
 }
-
-
 

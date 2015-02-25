@@ -430,7 +430,7 @@ function add_note_sidebar($lead, $form)
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
 		//Remove HTML Email Formatting
 		remove_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
-		$email_note_info = '  <br /><br /><strong>Sent To:</strong>'.implode(",", $email_to);
+		$email_note_info = 'Sent To:'.implode(",", $email_to);
 	}
 	
 	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ).$email_note_info );

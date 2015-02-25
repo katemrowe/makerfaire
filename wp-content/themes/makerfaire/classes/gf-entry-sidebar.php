@@ -371,7 +371,7 @@ function set_entry_status_content($lead,$form){
 			$entry_info_entry['303'] = $acceptance_status_change;
 			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
 			//Reload entry to get any changes in status
-			$lead['307'] = $acceptance_status_change;
+			$lead['303'] = $acceptance_status_change;
 			
 			//Handle acceptance status changes
 			if ($is_acceptance_status_changed )

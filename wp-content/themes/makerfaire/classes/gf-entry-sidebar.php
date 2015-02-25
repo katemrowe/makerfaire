@@ -374,7 +374,7 @@ function set_entry_status_content($lead,$form){
 			$entry_info_entry['303'] = $acceptance_status_change;
 			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
 			//Reload entry to get any changes in status
-			$entry = GFAPI::get_entry( $entry_info_entry_id );
+			$lead['307'] = $acceptance_status_change;
 			
 			//Handle acceptance status changes
 			if ($is_acceptance_status_changed )
@@ -382,9 +382,9 @@ function set_entry_status_content($lead,$form){
 				//Create a note of the status change.
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
-				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $entry );
+				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $lead );
 					foreach ( $notifications_to_send as $notification ) {
-						GFCommon::send_notification( $notification, $form, $entry );
+						GFCommon::send_notification( $notification, $form, $lead );
 				}
 						
 			}
@@ -415,21 +415,13 @@ function add_note_sidebar($lead, $form)
 		$email_from    = $current_user->user_email;
 		$email_subject = stripslashes( 'Note Response Required: '.$lead['id'].' '.$short_description);
 		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
-		
 		$body = stripslashes( $_POST['new_note_sidebar'] ). '<br />Entry:<a href="'.$entry_url.'">'.$entry_url.'</a>';
-	
 		$headers = "From: \"$email_from\" <$email_from> \r\n";
-		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
-		error_log( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
+		//Enable HTML Email Formatting in the body
 		add_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
+		//Remove HTML Email Formatting
 		remove_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
-		GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Result from wp_mail(): {$result}" );
-		if ( $result ) {
-			GFCommon::log_debug( 'GFEntryDetail::lead_detail_page(): Mail was passed from WordPress to the mail server.' );
-		} else {
-			GFCommon::log_error( 'GFEntryDetail::lead_detail_page(): The mail message was passed off to WordPress for processing, but WordPress was unable to send the message.' );
-		}
 		$email_note_info = '  Note emailed to '.implode(",", $email_to);
 	}
 	

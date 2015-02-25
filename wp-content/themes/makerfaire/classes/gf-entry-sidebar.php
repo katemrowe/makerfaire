@@ -259,32 +259,44 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				<br />
 				<label >Email Note To:</label><br />
 				<?php 
-				$emailto = array(
-   				  "editor@makezine.com" => "editor@makezine.com",
-				  "makers@makerfaire.com" => "makers@makerfaire.com",
-				  "marketing@makermedia.com" => "marketing@makermedia.com",
-				  "pr@makerfaire.com" => "pr@makerfaire.com",
-				  "shedmakers@makermedia.com" => "shedmakers@makermedia.com",
-				  "Brian Jepson" => "bjepson@makermedia.com",
-				  "Bridgette Vanderlaan" => "bvanderlaan@mac.com",
-				  "Jason Babler" => "jbabler@makermedia.com",
-				  "Jay Kravitz" => "jay@thecrucible.org",
-				  "Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
-				  "Kate Rowe" => "krowe@makermedia.com",
-				  "Kerry Moore" => "kerry@contextfurniture.com",
-				  "Louise Glasgow" => "lglasgow@makermedia.com",
-				  "Michelle Hlubinka" => "mhlubinka@makermedia.com",
-				  "Miranda Mota" => "miranda@makermedia.com",
-				  "Nick Normal" => "nicknormal@gmail.com",
-				  "Sabrina Merlo" => "smerlo@makermedia.com",
-				  "Sherry Huss" => "sherry@makermedia.com",
-				  "Sponsor Sales" => "sales@makerfaire.com",
-				  "Tami Jo Benson" => "tj@tamijo.com",
-				  "Dale Dougherty" => "dale@makermedia.com");
+				$emailto = array("Alasdair Allan" => "alasdair@makezine.com",
+		"Brian Jepson" => "bjepson@makermedia.com",
+		"Bridgette Vanderlaan" => "bvanderlaan@mac.com",
+		"Dale Dougherty" => "dale@makermedia.com",
+		"DC Denison" => "dcdenison@makermedia.com",
+		"Jason Babler" => "jbabler@makermedia.com",
+		"Jay Kravitz" => "jay@thecrucible.org",
+		"Jess Hobbs" => "jessica@jesshobbs.com",
+		"Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
+		"Kate Rowe" => "krowe@makermedia.com",
+		"Kerry Moore" => "kerry@contextfurniture.com",
+		"Louise Glasgow" => "lglasgow@makermedia.com",
+		"Michelle Hlubinka" => "mhlubinka@makermedia.com",
+		"Miranda Mota" => "miranda@makermedia.com",
+		"Nick Normal" => "nicknormal@gmail.com",
+		"Rob Bullington" => "rbullington@makermedia.com",
+		"Sabrina Merlo" => "smerlo@makermedia.com",
+		"Sherry Huss" => "sherry@makermedia.com",
+		"Tami Jo Benson" => "tj@tamijo.com",
+		"Travis Good" => "travisgood@gmail.com");
+
+$emailtoaliases = array(
+		"editor@makezine.com" => "editor@makezine.com",
+		"makers@makerfaire.com" => "makers@makerfaire.com",
+		"marketing@makermedia.com" => "marketing@makermedia.com",
+		"pr@makerfaire.com" => "pr@makerfaire.com",
+		"shed" => "shedmakers@makermedia.com",
+		"edu" => "education@makermdedia.com",
+		"sales" => "sales@makerfaire.com",
+		"MakerCon" => "makercon@makermedia.com");
 				?>
+				<?php foreach ( $emailtoaliases as $name => $email ) { 
+					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" /><strong>'.$name.'</strong> <br />');
+					 } ?> 
+			    People: <br/>
 				<?php foreach ( $emailto as $name => $email ) { 
 					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" />'.$name.' <br />');
-					 } ?>&nbsp;&nbsp; <span id='gentry_email_subject_container_sidebar'
+					 } ?>&nbsp;&nbsp;<span id='gentry_email_subject_container_sidebar'
 					style="display: none;"> <label for="gentry_email_subject_sidebar"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
 						<input type="text" name="gentry_email_subject_sidebar"
 						id="gentry_email_subject_sidebar" value="" style="width: 35%" />

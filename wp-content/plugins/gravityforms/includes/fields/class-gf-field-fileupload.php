@@ -372,7 +372,7 @@ class GF_Field_FileUpload extends GF_Field {
 			//displaying thumbnail (if file is an image) or an icon based on the extension
 			$thumb     = GFEntryList::get_icon_url( $file_path );
 			$file_path = esc_attr( $file_path );
-			$value     = "<a href='$file_path' target='_blank' title='" . __( 'Click to view', 'gravityforms' ) . "'><img src='$file_path'/></a>";
+			$value     = "<a href='$file_path' target='_blank' title='" . __( 'Click to view', 'gravityforms' ) . "'><img style='width:300px' src='$file_path'/></a>";
 		}
 		return $value;
 	}

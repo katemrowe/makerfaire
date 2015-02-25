@@ -52,9 +52,10 @@ if ( isset( $long_description ) ) {
 	</thead>
 	<tbody>
 		<tr>
-			<td valign="top"><img
-				src="<?php echo esc_url($photo);// get_resized_remote_image_url( $photo, 200, 200 ) ); ?>"
-				width="300" alt="" /></td>
+			<td valign="top">
+				<a href="<?php echo esc_url($photo);?>" class='thickbox'>
+				<img src="<?php echo esc_url($photo);?>" width="300" alt="" /></a>
+			</td>
 			<td valign="top">
 				<table>
 					<tr>

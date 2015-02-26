@@ -65,7 +65,7 @@ if ( isset( $long_description ) ) {
 	<tbody>
 		<tr>
 			<td valign="top">
-				<a href="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" class='thickbox'>
+				<a href="<?php echo legacy_get_resized_remote_image_url($photo, 750, 750);?>" class='thickbox'>
 				<img src="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" alt="" /></a>
 			</td>
 			<td valign="top">

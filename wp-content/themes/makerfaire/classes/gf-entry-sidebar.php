@@ -20,7 +20,9 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	
 		echo('<option '.$selected.' value="'.$choice['text'].'">'.$choice['text'].'</option>');
 	}
-	echo('</select><br />');
+	echo('</select><input type="submit" name="update_management" value="Save" class="button"
+	 style="width:auto;padding-bottom:2px;" 
+	onclick="jQuery(\'#action\').val(\'update_entry_status\');"/><br />');
 
 	
 	echo ('<h4><label class="detail-label">Flags:</label></h4>');
@@ -326,6 +328,9 @@ if (!empty($mfAction))
 		case 'update_entry_management' :
 			set_entry_status_content($lead,$form);
 			break;
+		case 'update_entry_status' :
+			set_entry_status($lead,$form);
+			break;
 		//Sidebar Note Add
 		case 'add_note_sidebar' :
 			add_note_sidebar($lead, $form);
@@ -340,7 +345,6 @@ return $form;
 
 /* Modify Set Entry Status */
 function set_entry_status_content($lead,$form){
-	error_log(print_r($_POST,true));
 	$location_change=$_POST['entry_info_location_change'];
 	$flags_change=$_POST['entry_info_flags_change'];
 	$location_comment_change=$_POST['entry_location_comment'];
@@ -377,6 +381,23 @@ function set_entry_status_content($lead,$form){
 			GFAPI::update_entry_field($entry_info_entry_id,'307',$location_comment_change);
 
 		}
+			
+	}
+}
+
+/* Modify Set Entry Status */
+function set_entry_status($lead,$form){
+	$location_change=$_POST['entry_info_location_change'];
+	$flags_change=$_POST['entry_info_flags_change'];
+	$location_comment_change=$_POST['entry_location_comment'];
+	$acceptance_status_change=$_POST['entry_info_status_change'];
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	$acceptance_current_status = $lead['303'];
+
+	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
+
+	if (!empty($entry_info_entry_id))
+	{
 		if (!empty($acceptance_status_change))
 		{
 			//Update Field for Acceptance Status
@@ -384,7 +405,7 @@ function set_entry_status_content($lead,$form){
 			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
 			//Reload entry to get any changes in status
 			$lead['303'] = $acceptance_status_change;
-			
+				
 			//Handle acceptance status changes
 			if ($is_acceptance_status_changed )
 			{
@@ -392,14 +413,14 @@ function set_entry_status_content($lead,$form){
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
 				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $lead );
-					foreach ( $notifications_to_send as $notification ) {
-						GFCommon::send_notification( $notification, $form, $lead );
+				foreach ( $notifications_to_send as $notification ) {
+					GFCommon::send_notification( $notification, $form, $lead );
 				}
-						
+
 			}
-		 }
-		
-		
+		}
+
+
 	}
 }
 

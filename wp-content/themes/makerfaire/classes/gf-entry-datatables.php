@@ -31,6 +31,7 @@ return '//cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/js/TableToo
 function tabletools_css() {
 return '//cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/css/TableTools.css';
 }
+
 /**
  * Add Javascript specific config data based on admin settings
  */

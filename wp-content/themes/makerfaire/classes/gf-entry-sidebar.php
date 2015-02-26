@@ -89,6 +89,9 @@ function add_sidebar_text_before($form, $lead){
 	$state = $lead["101.4"];
 	$zip = $lead["101.5"];
 	$country = $lead["101.6"];
+	$email = $lead["98"];
+	$phone = $lead["99"];
+	$phonetype = $lead["148"];
 	?>
 <div id="infoboxdiv" class="postbox">
 	<div id="minor-publishing" style="padding: 10px;">
@@ -98,6 +101,9 @@ function add_sidebar_text_before($form, $lead){
 				<?php echo $street2; ?>
 				<?php echo $city; ?>, <?php echo $state; ?>  <?php echo $zip; ?><br />
 				<?php echo $country; ?><br />
+				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a><br />
+				<?php echo $phonetype; ?>:  <?php echo $phone; ?><br />
+				
 				</div>
 			<?php _e( 'Filled out: ', 'gravityforms' ); ?>:<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
 			</div>
@@ -462,7 +468,7 @@ function add_note_sidebar($lead, $form)
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
 		//Remove HTML Email Formatting
 		remove_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
-		$email_note_info = 'Sent To:'.implode(",", $email_to);
+		$email_note_info = '  :SENT TO:['.implode(",", $email_to).']';
 	}
 	
 	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ).$email_note_info );

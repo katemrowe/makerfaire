@@ -32,6 +32,18 @@ $entry_form_status = $lead['303'];
 $wkey = $lead['27'];
 $vkey = $lead['32'];
 
+$makerfirstname1=$lead['160.3'];$makerlastname1=$lead['160.6'];
+$makerfirstname2=$lead['158.3'];$makerlastname2=$lead['158.6'];
+$makerfirstname3=$lead['155.3'];$makerlastname3=$lead['155.6'];
+$makerfirstname4=$lead['156.3'];$makerlastname4=$lead['156.6'];
+$makerfirstname5=$lead['157.3'];$makerlastname5=$lead['157.6'];
+$makerfirstname6=$lead['159.3'];$makerlastname6=$lead['159.6'];
+$makerfirstname7=$lead['154.3'];$makerlastname7=$lead['154.6'];
+$makergroupname=$lead['109'];
+$field55=RGFormsModel::get_field($form,'55');
+$whatareyourplansvalues=$field55['choices'];
+foreach($location_change as $location_entry)
+
 
 $main_description = '';
 
@@ -53,8 +65,8 @@ if ( isset( $long_description ) ) {
 	<tbody>
 		<tr>
 			<td valign="top">
-				<a href="<?php echo esc_url($photo);?>" class='thickbox'>
-				<img src="<?php echo esc_url($photo);?>" width="300" alt="" /></a>
+				<a href="<?php echo legacy_get_resized_remote_image_url($photo);?>" class='thickbox'>
+				<img src="<?php echo legacy_get_resized_remote_image_url($photo);?>" width="300" alt="" /></a>
 			</td>
 			<td valign="top">
 				<table>
@@ -177,6 +189,33 @@ if ( isset( $long_description ) ) {
 								This Event</a></td>
 					</tr>
 					<?php } ?>
+					<tr>
+						<td style="width: 80px;" valign="top"><strong>Maker Names:</strong></td>
+						<td valign="top"><?php echo !empty($makergroupname) ? $makergroupname.'(Group)</br>' : ''; ?> 
+						<?php echo !empty($makerfirstname1) ?  $makerfirstname1.' '.$makerlastname1.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname2) ?  $makerfirstname2.' '.$makerlastname2.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname3) ?  $makerfirstname3.' '.$makerlastname3.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname4) ?  $makerfirstname4.' '.$makerlastname4.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname5) ?  $makerfirstname5.' '.$makerlastname5.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname6) ?  $makerfirstname6.' '.$makerlastname6.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname7) ?  $makerfirstname6.' '.$makerlastname7.'</br>' : '' ; ?>
+												
+</td>
+					</tr>
+					<tr>
+						<td style="width: 80px;" valign="top"><strong>What are your plans:</strong></td>
+						
+						
+						<td valign="top">
+						<?php 
+						for ($i=0; $i < count($whatareyourplansvalues); $i++)
+						{	
+							echo $lead['55.'.$i].'<br />';
+						}
+?>
+												
+</td>
+					</tr>
 				</table>
 			</td>
 		</tr>

@@ -65,8 +65,8 @@ if ( isset( $long_description ) ) {
 	<tbody>
 		<tr>
 			<td valign="top">
-				<a href="<?php echo esc_url($photo);?>" class='thickbox'>
-				<img src="<?php echo esc_url($photo);?>" width="300" alt="" /></a>
+				<a href="<?php echo legacy_get_resized_remote_image_url($photo, 300);?>" class='thickbox'>
+				<img src="<?php echo legacy_get_resized_remote_image_url($photo, 300);?>" width="300" alt="" /></a>
 			</td>
 			<td valign="top">
 				<table>
@@ -210,7 +210,7 @@ if ( isset( $long_description ) ) {
 						<?php 
 						for ($i=0; $i < count($whatareyourplansvalues); $i++)
 						{	
-							echo $lead['55.'.$i].'<br />';
+							echo (!empty($lead['55.'.$i])) ? $lead['55.'.$i].'<br />' : '';
 						}
 ?>
 												

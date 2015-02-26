@@ -87,7 +87,6 @@ function add_sidebar_text_before($form, $lead){
 <div id="infoboxdiv" class="postbox">
 	<div id="minor-publishing" style="padding: 10px;">
 			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?><br/>
-			<?php _e( 'Entry Id', 'gravityforms' ); ?>:<?php echo absint( $lead['id'] ) ?><br />
 			<?php _e( 'Submitted on', 'gravityforms' ); ?>:<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
 			</div>
 			<div id="delete-action" style="float:none;padding: 10px;">

@@ -9,21 +9,6 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	$field304=RGFormsModel::get_field($form,'304');
 	$field307=RGFormsModel::get_field($form,'307');
 	
-	echo ('<input type="hidden" name="entry_info_entry_id" value="'.$lead['id'].'">');
-	echo ('<h4><label class="detail-label" for="entry_info_status_change">Status:</label></h4>');
-	echo ('<select name="entry_info_status_change">');
-	foreach( $field303['choices'] as $choice )
-	{
-		$selected = '';
-	
-		if ($lead[$field303['id']] == $choice['text']) $selected=' selected ';
-	
-		echo('<option '.$selected.' value="'.$choice['text'].'">'.$choice['text'].'</option>');
-	}
-	echo('</select><input type="submit" name="update_management" value="Save" class="button"
-	 style="width:auto;padding-bottom:2px;" 
-	onclick="jQuery(\'#action\').val(\'update_entry_status\');"/><br />');
-
 	
 	echo ('<h4><label class="detail-label">Flags:</label></h4>');
 	foreach(   $field304['inputs'] as $choice)
@@ -49,6 +34,31 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	
 
 }
+
+function mf_sidebar_entry_status($form_id, $lead) {
+	// Load Fields to show on entry info
+	$form = GFAPI::get_form($form_id);
+
+	$field303=RGFormsModel::get_field($form,'303');
+	
+	echo ('<input type="hidden" name="entry_info_entry_id" value="'.$lead['id'].'">');
+	echo ('<h4><label class="detail-label" for="entry_info_status_change">Status:</label></h4>');
+	echo ('<select name="entry_info_status_change">');
+	foreach( $field303['choices'] as $choice )
+	{
+		$selected = '';
+
+		if ($lead[$field303['id']] == $choice['text']) $selected=' selected ';
+
+		echo('<option '.$selected.' value="'.$choice['text'].'">'.$choice['text'].'</option>');
+	}
+	echo('</select><input type="submit" name="update_management" value="Save" class="button"
+	 style="width:auto;padding-bottom:2px;"
+	onclick="jQuery(\'#action\').val(\'update_entry_status\');"/><br />');
+
+
+}
+
 
 /* A function to determine status counts */
 
@@ -85,7 +95,9 @@ function add_sidebar_text_before($form, $lead){
 			<?php echo absint( $lead['id'] ) ?><br />
 			<?php _e( 'Submitted on', 'gravityforms' ); ?>
 			:<br />
-			<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?>
+		
+			<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
+			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?>
 			</div>
 			<div id="delete-action" style="float:none;padding: 10px;">
 				<?php

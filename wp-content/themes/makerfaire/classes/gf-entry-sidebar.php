@@ -237,32 +237,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				$count ++;
 				$is_last = $count >= $notes_count ? true : false;
 				?>
-		<tr valign="top">
-			<td
-				class="entry-detail-note<?php echo $is_last ? ' lastrow' : '' ?>">
 				<?php
-						$class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
-						?>
-				<div style="margin-top: 4px;">
-					<div class="note-avatar">
-						<?php echo apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ); ?>
-					</div>
-					<h6 class="note-author">
-						<?php echo esc_html( $note->user_name ) ?>
-					</h6>
-					<p class="note-email">
-						<a href="mailto:<?php echo esc_attr( $note->user_email ) ?>"><?php echo esc_html( $note->user_email ) ?></a><br />
-						<?php _e( 'added on', 'gravityforms' ); ?>
-						<?php echo esc_html( GFCommon::format_date( $note->date_created, false ) ) ?>
-					</p>
-				</div>
-				<div class="detail-note-content<?php echo $class ?>">
-					<?php echo esc_html( $note->value ) ?>
-				</div>
-			</td>
-
-		</tr>
-		<?php
 			}
 			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 				?>
@@ -324,6 +299,32 @@ $emailtoaliases = array(
 				</span>
 			</span> <?php } ?></td>
 		</tr>
+		<tr valign="top">
+			<td
+				class="entry-detail-note<?php echo $is_last ? ' lastrow' : '' ?>">
+				<?php
+						$class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
+						?>
+				<div style="margin-top: 4px;">
+					<div class="note-avatar">
+						<?php echo apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ); ?>
+					</div>
+					<h6 class="note-author">
+						<?php echo esc_html( $note->user_name ) ?>
+					</h6>
+					<p class="note-email">
+						<a href="mailto:<?php echo esc_attr( $note->user_email ) ?>"><?php echo esc_html( $note->user_email ) ?></a><br />
+						<?php _e( 'added on', 'gravityforms' ); ?>
+						<?php echo esc_html( GFCommon::format_date( $note->date_created, false ) ) ?>
+					</p>
+				</div>
+				<div class="detail-note-content<?php echo $class ?>">
+					<?php echo esc_html( $note->value ) ?>
+				</div>
+			</td>
+
+		</tr>
+		
 	</tbody>
 </table>
 <?php

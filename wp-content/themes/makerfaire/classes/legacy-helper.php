@@ -47,15 +47,15 @@ function legacy_is_valid_domain( $url, $whitelisted_domains ) {
  * @param bool $escape Optional. If true (the default), the URL will be run through esc_url(). Set this to false if you need the raw URL.
  * @return string
  */
-function legacy_get_resized_remote_image_url( $url, $width, $height='', $escape = true ) {
+function legacy_get_resized_remote_image_url( $url, $width, $height, $escape = true ) {
 	$width = (int) $width;
-	//$height = (int) $height;
+	$height = (int) $height;
 
 	// Photon doesn't support redirects, so help it out by doing http://foobar.wordpress.com/files/ to http://foobar.files.wordpress.com/
 	if ( function_exists( 'new_file_urls' ) )
 		$url = new_file_urls( $url );
 
-	$thumburl = jetpack_photon_url( $url, array( 'resize' => array( $width ) ) );
+	$thumburl = jetpack_photon_url( $url, array( 'resize' => array( $width, $height ) ) );
 
 	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
 }

@@ -177,21 +177,6 @@ function add_sidebar_text_before($form, $lead){
 	</div>
 </div>
 		
-<?php 
-if ($mode != 'view') return;
-
-/* Entry Management Sidebar Area */?>
-<div class='postbox' style="float:none;padding: 10px;">
-<?php
-// Load Entry Sidebar details
-mf_sidebar_entry_info( $form['id'], $lead );
-
-// Create Update button for sidebar entry management
-$entry_sidebar_button = '<input type="submit" name="update_management" value="Update Management" class="button"
-	 style="width:auto;padding-bottom:2px;" 
-	onclick="jQuery(\'#action\').val(\'update_entry_management\');"/>';
-echo $entry_sidebar_button;	?>
-</div>
 
 <?php /* Notes Sidebar Area */?>
 <div class="postbox" style="float:none;padding: 10px;">
@@ -221,6 +206,22 @@ echo $entry_sidebar_button;	?>
 </div>
 
 <?php 
+/* Entry Management Sidebar Area */
+if ($mode == 'view') {
+	?>
+	<div class='postbox' style="float:none;padding: 10px;">
+	<?php
+	// Load Entry Sidebar details
+	mf_sidebar_entry_info( $form['id'], $lead );
+	
+	// Create Update button for sidebar entry management
+	$entry_sidebar_button = '<input type="submit" name="update_management" value="Update Management" class="button"
+		 style="width:auto;padding-bottom:2px;" 
+		onclick="jQuery(\'#action\').val(\'update_entry_management\');"/>';
+	echo $entry_sidebar_button;	?>
+	</div>
+	<?php 
+	}
 }
 
 

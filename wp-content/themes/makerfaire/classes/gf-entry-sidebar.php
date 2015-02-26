@@ -262,7 +262,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 			</td>
 
 		</tr>
-		
+		<?php }?>
 	</tbody>
 </table>
 <?php

@@ -7,6 +7,12 @@ function add_main_text_before($form, $lead){
 	echo gf_summary_metabox($form, $lead);
 }
 
+add_filter( 'gform_toolbar_menu', array( $this, 'add_toolbar_menu_item' ), 10, 2 );
+function add_toolbar_menu_item( $menu_items, $form_id ) {
+	$menu_items;
+	return $menu_items."HELLO WORLD!";
+}
+
 // Summary Metabox
 function gf_summary_metabox($form, $lead)
 {
@@ -130,16 +136,11 @@ if ( isset( $long_description ) ) {
 				</table>
 			</td>
 		</tr>
-		<?php
-			}
-			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-				?>
 		<tr>
-			<td style="padding: 10px;" class="lastrow">
-				
+			<td>
 				<label >Email Note To:</label><br />
 				<?php 
-				$emailto = array("Alasdair Allan" => "alasdair@makezine.com",
+				$emailto1 = array("Alasdair Allan" => "alasdair@makezine.com",
 		"Brian Jepson" => "bjepson@makermedia.com",
 		"Bridgette Vanderlaan" => "bvanderlaan@mac.com",
 		"Dale Dougherty" => "dale@makermedia.com",
@@ -149,7 +150,8 @@ if ( isset( $long_description ) ) {
 		"Jess Hobbs" => "jessica@jesshobbs.com",
 		"Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
 		"Kate Rowe" => "krowe@makermedia.com",
-		"Kerry Moore" => "kerry@contextfurniture.com",
+		"Kerry Moore" => "kerry@contextfurniture.com");
+$emailto2 = array(
 		"Kim Dow" => "dow@dowhouse.com",
 		"Louise Glasgow" => "lglasgow@makermedia.com",
 		"Michelle Hlubinka" => "mhlubinka@makermedia.com",
@@ -171,22 +173,25 @@ $emailtoaliases = array(
 		"Sales" => "sales@makerfaire.com",
 		"MakerCon" => "makercon@makermedia.com");
 				?>
-				Aliases: <br />
+				<div style="float:left">
 				<?php foreach ( $emailtoaliases as $name => $email ) { 
 					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" /><strong>'.$name.'</strong> <br />');
 					 } ?> 
-			    People: <br/>
-				<?php foreach ( $emailto as $name => $email ) { 
+					 </div>
+			   <div style="float:left">
+				<?php foreach ( $emailto1 as $name => $email ) { 
+					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" />'.$name.'<br />');
+					 } ?> 
+					 </div>
+			   <div style="float:right">
+				<?php foreach ( $emailto2 as $name => $email ) { 
 					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" />'.$name.' <br />');
-					 } ?>&nbsp;&nbsp;<span id='gentry_email_subject_container_sidebar'
-					style="display: none;"> <label for="gentry_email_subject_sidebar"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
-						<input type="text" name="gentry_email_subject_sidebar"
-						id="gentry_email_subject_sidebar" value="" style="width: 35%" />
-				</span>
-			</span> <?php } ?></td>
-			<td><textarea
+					 } ?>
+				</div>
+				</td>
+			<td style="vertical-align: top;"><textarea
 					name="new_note_sidebar"
-					style="width: 100%; height: 50px; margin-bottom: 4px;" cols=""
+					style="width: 100%; height: 240px; margin-bottom: 4px;" cols=""
 					rows=""></textarea> 
 					<?php
 						$note_button = '<input type="submit" name="add_note_sidebar" value="' . __( 'Add Note', 'gravityforms' ) . '" class="button" style="width:auto;padding-bottom:2px;" onclick="jQuery(\'#action\').val(\'add_note_sidebar\');"/>';

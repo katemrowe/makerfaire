@@ -164,10 +164,6 @@ if ($mode != 'view') return;
 
 /* Entry Management Sidebar Area */?>
 <div class='postbox' style="float:none;padding: 10px;">
-<h4>
-	<label class="detail-label">Entry Management:</label>
-</h4>
-
 <?php
 // Load Entry Sidebar details
 mf_sidebar_entry_info( $form['id'], $lead );

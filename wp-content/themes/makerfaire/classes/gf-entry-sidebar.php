@@ -85,9 +85,6 @@ function add_sidebar_text_before($form, $lead){
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	?>
 <div id="infoboxdiv" class="postbox">
-	<h3>
-		<span class="hndle"><?php _e( 'Entry', 'gravityforms' ); ?></span>
-	</h3>
 	<div id="minor-publishing" style="padding: 10px;">
 			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?><br/>
 			<?php _e( 'Entry Id', 'gravityforms' ); ?>:<?php echo absint( $lead['id'] ) ?><br />

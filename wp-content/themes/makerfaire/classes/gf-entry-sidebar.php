@@ -305,7 +305,7 @@ $emailtoaliases = array(
 		"Marketing" => "marketing@makermedia.com",
 		"PR" => "pr@makerfaire.com",
 		"Shed" => "shedmakers@makermedia.com",
-		"Education" => "education@makermdedia.com",
+		"Education" => "education@makermedia.com",
 		"Sales" => "sales@makerfaire.com",
 		"MakerCon" => "makercon@makermedia.com");
 				?>

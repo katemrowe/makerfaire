@@ -83,10 +83,22 @@ function get_makerfaire_status_counts( $form_id ) {
 add_action("gform_entry_detail_sidebar_before", "add_sidebar_text_before", 10,2);
 function add_sidebar_text_before($form, $lead){
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
+	$street = $lead['101.1'];
+	$street2 = (!empty($lead["101.2"])) ? $lead["101.2"].'<br />' : '' ;
+	$city = $lead["101.3"];
+	$state = $lead["101.4"];
+	$zip = $lead["101.5"];
+	$country = $lead["101.6"];
 	?>
 <div id="infoboxdiv" class="postbox">
 	<div id="minor-publishing" style="padding: 10px;">
 			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?><br/>
+			Contact:<div style="padding:5px"><?php echo $lead['96.3'];  ?> <?php echo $lead['96.6'];  ?><br />
+				<?php echo $street; ?><br />
+				<?php echo $street2; ?>
+				<?php echo $city; ?>, <?php echo $state; ?>  <?php echo $zip; ?><br />
+				<?php echo $country; ?><br />
+				</div>
 			<?php _e( 'Filled out: ', 'gravityforms' ); ?>:<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
 			</div>
 			<div id="delete-action" style="float:none;padding: 10px;">
@@ -350,7 +362,7 @@ function set_entry_status_content($lead,$form){
 	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	$acceptance_current_status = $lead['303'];
-
+	
 	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
 	
 	if (!empty($entry_info_entry_id))

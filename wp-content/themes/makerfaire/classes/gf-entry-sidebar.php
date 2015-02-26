@@ -87,7 +87,7 @@ function add_sidebar_text_before($form, $lead){
 <div id="infoboxdiv" class="postbox">
 	<div id="minor-publishing" style="padding: 10px;">
 			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?><br/>
-			<?php _e( 'Submitted on', 'gravityforms' ); ?>:<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
+			<?php _e( 'Filled out: ', 'gravityforms' ); ?>:<?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?><br />
 			</div>
 			<div id="delete-action" style="float:none;padding: 10px;">
 				<?php
@@ -270,6 +270,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 		"Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
 		"Kate Rowe" => "krowe@makermedia.com",
 		"Kerry Moore" => "kerry@contextfurniture.com",
+		"Kim Dow" => "dow@dowhouse.com",
 		"Louise Glasgow" => "lglasgow@makermedia.com",
 		"Michelle Hlubinka" => "mhlubinka@makermedia.com",
 		"Miranda Mota" => "miranda@makermedia.com",

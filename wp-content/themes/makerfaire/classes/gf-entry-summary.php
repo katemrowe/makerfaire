@@ -130,6 +130,69 @@ if ( isset( $long_description ) ) {
 				</table>
 			</td>
 		</tr>
+		<?php
+			}
+			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+				?>
+		<tr>
+			<td style="padding: 10px;" class="lastrow">
+				
+				<label >Email Note To:</label><br />
+				<?php 
+				$emailto = array("Alasdair Allan" => "alasdair@makezine.com",
+		"Brian Jepson" => "bjepson@makermedia.com",
+		"Bridgette Vanderlaan" => "bvanderlaan@mac.com",
+		"Dale Dougherty" => "dale@makermedia.com",
+		"DC Denison" => "dcdenison@makermedia.com",
+		"Jason Babler" => "jbabler@makermedia.com",
+		"Jay Kravitz" => "jay@thecrucible.org",
+		"Jess Hobbs" => "jessica@jesshobbs.com",
+		"Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
+		"Kate Rowe" => "krowe@makermedia.com",
+		"Kerry Moore" => "kerry@contextfurniture.com",
+		"Kim Dow" => "dow@dowhouse.com",
+		"Louise Glasgow" => "lglasgow@makermedia.com",
+		"Michelle Hlubinka" => "mhlubinka@makermedia.com",
+		"Miranda Mota" => "miranda@makermedia.com",
+		"Nick Normal" => "nicknormal@gmail.com",
+		"Rob Bullington" => "rbullington@makermedia.com",
+		"Sabrina Merlo" => "smerlo@makermedia.com",
+		"Sherry Huss" => "sherry@makermedia.com",
+		"Tami Jo Benson" => "tj@tamijo.com",
+		"Travis Good" => "travisgood@gmail.com");
+
+$emailtoaliases = array(
+		"Editors" => "editor@makezine.com",
+		"Maker Relations" => "makers@makerfaire.com",
+		"Marketing" => "marketing@makermedia.com",
+		"PR" => "pr@makerfaire.com",
+		"Shed" => "shedmakers@makermedia.com",
+		"Education" => "education@makermedia.com",
+		"Sales" => "sales@makerfaire.com",
+		"MakerCon" => "makercon@makermedia.com");
+				?>
+				Aliases: <br />
+				<?php foreach ( $emailtoaliases as $name => $email ) { 
+					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" /><strong>'.$name.'</strong> <br />');
+					 } ?> 
+			    People: <br/>
+				<?php foreach ( $emailto as $name => $email ) { 
+					echo('<input type="checkbox"  name="gentry_email_notes_to_sidebar[]" style="margin: 3px;" value="'.$email.'" />'.$name.' <br />');
+					 } ?>&nbsp;&nbsp;<span id='gentry_email_subject_container_sidebar'
+					style="display: none;"> <label for="gentry_email_subject_sidebar"><?php _e( 'Subject:', 'gravityforms' ) ?></label>
+						<input type="text" name="gentry_email_subject_sidebar"
+						id="gentry_email_subject_sidebar" value="" style="width: 35%" />
+				</span>
+			</span> <?php } ?></td>
+			<td><textarea
+					name="new_note_sidebar"
+					style="width: 100%; height: 50px; margin-bottom: 4px;" cols=""
+					rows=""></textarea> 
+					<?php
+						$note_button = '<input type="submit" name="add_note_sidebar" value="' . __( 'Add Note', 'gravityforms' ) . '" class="button" style="width:auto;padding-bottom:2px;" onclick="jQuery(\'#action\').val(\'add_note_sidebar\');"/>';
+						echo apply_filters( 'gform_addnote_button', $note_button );	?>
+			</td>
+		</tr>
 	</tbody>
 </table>
 <?php				

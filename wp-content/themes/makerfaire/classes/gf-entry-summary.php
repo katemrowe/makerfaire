@@ -1,5 +1,6 @@
 <?php
 // Adding Entry Detail and checking for Processing Posts
+
 add_action("gform_entry_detail_content_before", "add_main_text_before", 10, 2);
 function add_main_text_before($form, $lead){
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
@@ -7,11 +8,7 @@ function add_main_text_before($form, $lead){
 	echo gf_summary_metabox($form, $lead);
 }
 
-add_filter( 'gform_toolbar_menu', array( $this, 'add_toolbar_menu_item' ), 10, 2 );
-function add_toolbar_menu_item( $menu_items, $form_id ) {
-	$menu_items;
-	return $menu_items."HELLO WORLD!";
-}
+
 
 // Summary Metabox
 function gf_summary_metabox($form, $lead)
@@ -48,17 +45,16 @@ $makerfirstname7=$lead['154.3'];$makerlastname7=$lead['154.6'];
 $makergroupname=$lead['109'];
 $field55=RGFormsModel::get_field($form,'55');
 $whatareyourplansvalues=$field55['choices'];
-foreach($location_change as $location_entry)
-
 
 $main_description = '';
-
 // Check if we are loading the public description or a short description
 if ( isset( $long_description ) ) {
 	$main_description = $long_description;
 } else if ( isset($short_description ) ) {
 	$main_description = $short_description;
 }
+
+
 ?>
 <table class="fixed entry-detail-view">
 	<thead>

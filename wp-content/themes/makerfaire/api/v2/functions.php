@@ -33,3 +33,19 @@ function get_makers_from_app($app_id = 0) {
 
   return $maker_ids;
 }
+
+function get_makerfaire_status_counts( $form_id ) {
+	global $wpdb;
+	$lead_details_table_name = RGFormsModel::get_lead_details_table_name();
+	$sql             = $wpdb->prepare(
+			"SELECT count(0) as entries,value as label FROM $lead_details_table_name
+			where field_number='303'
+			and form_id=%d
+			group by value",
+			$form_id
+	);
+
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+	return $results;
+
+}

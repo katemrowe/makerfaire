@@ -755,10 +755,15 @@ class GFEntryList {
 
 		<div class="wrap <?php echo GFCommon::get_browser_class() ?>">
 		<h2 class="gf_admin_page_title">
-			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span></span>
+			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span>
+			<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
+				 foreach($statuscount as $statuscount)
+				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
+					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
+				</span>		
 		</h2>
 
-		<?php // RGForms::top_toolbar() ?>
+		<?php RGForms::top_toolbar() ?>
 
 		<form id="lead_form" method="post">
 		<?php wp_nonce_field( 'gforms_entry_list', 'gforms_entry_list' ) ?>

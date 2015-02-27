@@ -10,7 +10,8 @@ class GFEntryList {
 		if ( ! GFCommon::ensure_wp_version() ) {
 			return;
 		}
-
+		
+		$all_forms  = empty( $_GET['allforms'] ) ? 0 : $_GET['allforms'];
 		$forms = RGFormsModel::get_forms( null, 'title' );
 		$id    = RGForms::get( 'id' );
 
@@ -46,7 +47,8 @@ class GFEntryList {
 		$read       = $filter == 'unread' ? 0 : null;
 		$status     = in_array( $filter, array( 'trash', 'spam' ) ) ? $filter : 'active';
 		$form       = RGFormsModel::get_form_meta( $form_id );
-
+		$all_forms      = empty( $_GET['allforms'] ) ? 0 : $_GET['allforms'];
+		
 		$search_criteria['status'] = $status;
 
 		if ( $star ) {
@@ -196,8 +198,16 @@ class GFEntryList {
 		$paging      = array( 'offset' => $first_item_index, 'page_size' => $page_size );
 		$total_count = 0;
 
+		
+		if ($all_forms=="0")
+		{
+		$leads = GFAPI::get_entries( 0, $search_criteria, $sorting, $paging, $total_count );
+		}
+		else
+		{
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-
+		}
+		
 		$summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];
@@ -754,9 +764,20 @@ class GFEntryList {
 
 
 		<div class="wrap <?php echo GFCommon::get_browser_class() ?>">
+		<?php  if (($all_forms)) : ?>
 		<h2 class="gf_admin_page_title">
-			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span></span>
+			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span>
+			<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
+				 foreach($statuscount as $statuscount)
+				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
+					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
+				</span>		
 		</h2>
+		<?php else:?>
+		<h2 class="gf_admin_page_title">
+			<span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">All Forms</span>		
+		</h2>
+		<?php endif;?>
 
 		<?php RGForms::top_toolbar() ?>
 
@@ -1098,7 +1119,7 @@ class GFEntryList {
 									case 'trash' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $search_qs . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $search_qs . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>&allforms=<?php echo $all_forms; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 

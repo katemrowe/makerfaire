@@ -6,6 +6,22 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 class GFEntryDetail {
 
+	function get_makerfaire_status_counts( $form_id ) {
+		global $wpdb;
+		$lead_details_table_name = RGFormsModel::get_lead_details_table_name();
+		$sql             = $wpdb->prepare(
+				"SELECT count(0) as entries,value as label FROM $lead_details_table_name
+				where field_number='303'
+				and form_id=%d
+				group by value",
+				$form_id
+		);
+	
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+		return $results;
+	
+	}
+	
 	public static function lead_detail_page() {
 		global $current_user;
 
@@ -29,7 +45,8 @@ class GFEntryDetail {
 		$sort_field      = empty( $_GET['sort'] ) ? 0 : $_GET['sort'];
 		$sort_field_meta = RGFormsModel::get_field( $form, $sort_field );
 		$is_numeric      = $sort_field_meta['type'] == 'number';
-
+		$all_forms      = empty( $_GET['allforms'] ) ? 0 : $_GET['allforms'];
+		
 		$star = $filter == 'star' ? 1 : null;
 		$read = $filter == 'unread' ? 0 : null;
 
@@ -76,8 +93,14 @@ class GFEntryDetail {
 			$sorting = array();
 		}
 		$total_count = 0;
-		$leads       = GFAPI::get_entries( $form['id'], $search_criteria, $sorting, $paging, $total_count );
-
+	if ($all_forms=="0")
+		{
+		$leads = GFAPI::get_entries( 0, $search_criteria, $sorting, $paging, $total_count );
+		}
+		else
+		{
+		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
+		}	
 		$prev_pos = ! rgblank( $position ) && $position > 0 ? $position - 1 : false;
 		$next_pos = ! rgblank( $position ) && $position < $total_count - 1 ? $position + 1 : false;
 
@@ -341,8 +364,14 @@ class GFEntryDetail {
 		<h2 class="gf_admin_page_title">
 			<span><?php echo __( 'Entry #', 'gravityforms' ) . absint( $lead['id'] ); ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class='gf_admin_page_formname'><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title'];
 				$gf_entry_locking = new GFEntryLocking();
-				$gf_entry_locking->lock_info( $lead_id ); ?></span></span></h2>
-
+				$gf_entry_locking->lock_info( $lead_id ); ?>
+				</span>
+				<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
+				 foreach($statuscount as $statuscount)
+				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
+					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
+				</span></h2>
+		
 		<?php if ( isset( $_GET['pos'] ) ) { ?>
 			<div class="gf_entry_detail_pagination">
 				<ul>

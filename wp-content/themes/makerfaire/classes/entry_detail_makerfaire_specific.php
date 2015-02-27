@@ -6,6 +6,22 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 class GFEntryDetail {
 
+	function get_makerfaire_status_counts( $form_id ) {
+		global $wpdb;
+		$lead_details_table_name = RGFormsModel::get_lead_details_table_name();
+		$sql             = $wpdb->prepare(
+				"SELECT count(0) as entries,value as label FROM $lead_details_table_name
+				where field_number='303'
+				and form_id=%d
+				group by value",
+				$form_id
+		);
+	
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+		return $results;
+	
+	}
+	
 	public static function lead_detail_page() {
 		global $current_user;
 
@@ -341,8 +357,14 @@ class GFEntryDetail {
 		<h2 class="gf_admin_page_title">
 			<span><?php echo __( 'Entry #', 'gravityforms' ) . absint( $lead['id'] ); ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class='gf_admin_page_formname'><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title'];
 				$gf_entry_locking = new GFEntryLocking();
-				$gf_entry_locking->lock_info( $lead_id ); ?></span></span></h2>
-
+				$gf_entry_locking->lock_info( $lead_id ); ?>
+				</span>
+				<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
+				 foreach($statuscount as $statuscount)
+				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
+					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
+				</span></h2>
+		
 		<?php if ( isset( $_GET['pos'] ) ) { ?>
 			<div class="gf_entry_detail_pagination">
 				<ul>
@@ -370,8 +392,6 @@ class GFEntryDetail {
 			<div class="inside">
 				<div id="submitcomment" class="submitbox">
 					<div id="minor-publishing" style="padding:10px;">
-						<br />
-						<?php _e( 'Entry Id', 'gravityforms' ); ?>: <?php echo absint( $lead['id'] ) ?><br /><br />
 						<?php _e( 'Submitted on', 'gravityforms' ); ?>: <?php echo esc_html( GFCommon::format_date( $lead['date_created'], false, 'Y/m/d' ) ) ?>
 						
 						<?php 
@@ -535,37 +555,7 @@ class GFEntryDetail {
 
 				do_action( 'gform_entry_detail', $form, $lead );
 
-				if ( GFCommon::current_user_can_any( 'gravityforms_view_entry_notes' ) ) {
-					?>
-					<div class="postbox">
-						<h3>
-							<label for="name"><?php _e( 'Notes', 'gravityforms' ); ?></label>
-						</h3>
-
-						<form method="post">
-							<?php wp_nonce_field( 'gforms_update_note', 'gforms_update_note' ) ?>
-							<div class="inside">
-								<?php
-								$notes = RGFormsModel::get_lead_notes( $lead['id'] );
-
-								//getting email values
-								$email_fields = GFCommon::get_email_fields( $form );
-								$emails = array();
-
-								foreach ( $email_fields as $email_field ) {
-									if ( ! empty( $lead[ $email_field->id ] ) ) {
-										$emails[] = $lead[ $email_field->id ];
-									}
-								}
-								//displaying notes grid
-								$subject = '';
-								self::notes_grid( $notes, true, $emails, $subject );
-								?>
-							</div>
-						</form>
-					</div>
-				<?php
-				}
+				
 				do_action( 'gform_entry_detail_content_after', $form, $lead );
 				?>
 			</div>

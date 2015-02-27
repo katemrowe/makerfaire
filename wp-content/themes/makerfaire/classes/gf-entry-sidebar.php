@@ -9,7 +9,6 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	$field304=RGFormsModel::get_field($form,'304');
 	$field307=RGFormsModel::get_field($form,'307');
 	
-	
 	echo ('<h4><label class="detail-label">Flags:</label></h4>');
 	foreach(   $field304['inputs'] as $choice)
 	{
@@ -60,24 +59,6 @@ function mf_sidebar_entry_status($form_id, $lead) {
 }
 
 
-/* A function to determine status counts */
-
-function get_makerfaire_status_counts( $form_id ) {
-	global $wpdb;
-	$lead_details_table_name = self::get_lead_details_tablename();
-	$sql             = $wpdb->prepare(
-			"SELECT entries=count(0),label=value FROM $lead_details_table_name
-			where field_number='303'
-			and form_id=%d
-			group by value",
-			$form_id
-	);
-
-	$results = $wpdb->get_results( $sql, ARRAY_A );
-
-	return $results[0];
-
-}
 
 /* Side bar Layout */
 add_action("gform_entry_detail_sidebar_before", "add_sidebar_text_before", 10,2);
@@ -93,6 +74,7 @@ function add_sidebar_text_before($form, $lead){
 	$phone = $lead["99"];
 	$phonetype = $lead["148"];
 	?>
+	
 <div id="infoboxdiv" class="postbox">
 	<div id="minor-publishing" style="padding: 10px;">
 			<?php mf_sidebar_entry_status( $form['id'], $lead ); ?><br/>
@@ -257,7 +239,7 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 					</p>
 				</div>
 				<div class="detail-note-content<?php echo $class ?>">
-					<?php echo esc_html( $note->value ) ?>
+					<?php echo html_entity_decode( $note->value ) ?>
 				</div>
 			</td>
 
@@ -308,11 +290,23 @@ function set_entry_status_content($lead,$form){
 	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	$acceptance_current_status = $lead['303'];
+	$field302=RGFormsModel::get_field($form,'302');
+	$field304=RGFormsModel::get_field($form,'304');
 	
 	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
 	
 	if (!empty($entry_info_entry_id))
 	{
+		/* Clear out old choices */
+		foreach(   $field304['inputs'] as $choice)
+		{
+			GFAPI::update_entry_field($entry_info_entry_id,$choice['id'],'');
+		}
+		foreach(   $field302['inputs'] as $choice)
+		{
+			GFAPI::update_entry_field($entry_info_entry_id,$choice['id'],'');
+		}
+		/* Save entries */	
 		if (!empty($location_change))
 		{
 			foreach($location_change as $location_entry)
@@ -408,10 +402,10 @@ function add_note_sidebar($lead, $form)
 		$result  = wp_mail( $email_to, $email_subject, $body, $headers );
 		//Remove HTML Email Formatting
 		remove_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
-		$email_note_info = '  :SENT TO:['.implode(",", $email_to).']';
+		$email_note_info = '<br /><br />:SENT TO:['.implode(",", $email_to).']';
 	}
 	
-	mf_add_note( $lead['id'], stripslashes( $_POST['new_note_sidebar'] ).$email_note_info );
+	mf_add_note( $lead['id'],  nl2br($_POST['new_note_sidebar'].$email_note_info));
 	
 }
 

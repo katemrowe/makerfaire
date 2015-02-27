@@ -199,14 +199,7 @@ class GFEntryList {
 		$total_count = 0;
 
 		
-		if ($all_forms=="0")
-		{
-		$leads = GFAPI::get_entries( 0, $search_criteria, $sorting, $paging, $total_count );
-		}
-		else
-		{
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		}
 		
 		$summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];

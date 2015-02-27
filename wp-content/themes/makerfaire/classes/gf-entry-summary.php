@@ -66,11 +66,11 @@ if ( isset( $long_description ) ) {
 	</thead>
 	<tbody>
 		<tr>
-			<td valign="top">
+			<td style="width:420px" valign="top">
 				<a href="<?php echo $photo;?>" class='thickbox'>
-				<img src="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" alt="" /></a>
+				<img width="400px" src="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" alt="" /></a>
 			</td>
-			<td valign="top">
+			<td style="width:350px" valign="top">
 				<table>
 					<tr>
 						<td colspan="2">
@@ -185,9 +185,9 @@ $emailtoaliases = array(
 					 } ?>
 				</div>
 				</td>
-			<td style="vertical-align: top;"><textarea
+			<td style="vertical-align: top; padding: 10px;"><textarea
 					name="new_note_sidebar"
-					style="width: 100%; height: 240px; margin-bottom: 4px;" cols=""
+					style="width: 90%; height: 140px;" cols=""
 					rows=""></textarea> 
 					<?php
 						$note_button = '<input type="submit" name="add_note_sidebar" value="' . __( 'Add Note', 'gravityforms' ) . '" class="button" style="width:auto;padding-bottom:2px;" onclick="jQuery(\'#action\').val(\'add_note_sidebar\');"/>';

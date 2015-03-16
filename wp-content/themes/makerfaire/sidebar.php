@@ -1,6 +1,6 @@
 
 <div class="span4">
-	
+
 	<div class="sidebar-bordered">
 
                 <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
@@ -20,21 +20,15 @@
                                         });
                                 });
                         </script>
+            	</div>
 	</div>
-	</div>
-	
+
 	<div class="center">
 		<a href="https://mfba2015.eventbrite.com/" target="_blank">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF-300x250_BuyTickets.gif" />
 		</a>
-	</div>	
-	
-	<div class="center" style="margin-top:10px;">
-		<a href="http://makerfaire.com/bay-area-2015/call-for-makers/" target="_blank">
-			<img src="http://makerfaire.com/wp-content/uploads/2015/01/MF-300x250_CallForMakers.gif" />
-		</a>
 	</div>
-  
+
           <div class="sidebar-bordered sponsored">
 
                <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Presenting Sponsor</a></h3>
@@ -54,27 +48,25 @@
                                <?php echo mf_sponsor_carousel( 'Goldsmith Sponsor' ); ?>
                        </div>
                </div>
- 
+
                <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Silversmith Sponsors</a></h3>
- 
+
                <div id="myCarousel" class="carousel slide">
                        <div class="carousel-inner">
                                <?php echo mf_sponsor_carousel( 'Silversmith Sponsor' ); ?>
                        </div>
                </div>
- 
+
                <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Coppersmith Sponsors</a></h3>
- 
+
                <div id="myCarousel" class="carousel slide">
                        <div class="carousel-inner">
                                <?php echo mf_sponsor_carousel( 'Coppersmith Sponsor' ); ?>
                        </div>
-               
+
                </div>
- 
+
        </div>
-  
-  
 
          <div class="center twitter">
 	          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

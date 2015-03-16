@@ -57,7 +57,7 @@ Topbar
 		<div class="nav-collapse">
 			<ul class="nav">
 				<li class="red"><a  class="red" href="http://makezine.com">MAKE</a></li>
-							<li class=""><a href="http://blog.makezine.com">Blog</a></li>
+							<li class=""><a href="http://makezine.com/blog/">Blog</a></li>
 							<li class=""><a href="http://makezine.com/magazine">Magazine</a></li>
 							<li class=""><a href="http://makerfaire.com">Maker Faire</a></li>
 							<li class=""><a href="http://makezine.com">Make: Projects</a></li>
@@ -66,7 +66,7 @@ Topbar
 			</ul>
 			<ul class="nav pull-right">
 				<li>
-					<form action="http://blog.makezine.com/search/" class="form-horizontal form-search">
+					<form action="http://makezine.com/search/" class="form-horizontal form-search">
 						<input type="hidden" name="as_sitesearch" value="makerfaire.com" />
 						<input type="text" name="q" class="span2" />
 						<input type="submit" class="btn btn-primary" value="Search" />

@@ -88,8 +88,8 @@
 						<ul id="horizontal-list">
 
 							<li><a href="http://makerfaire.com/makerfairehistory/">About</a></li>
-							<li><a href="http://blog.makezine.com/tag/maker-faire/">Blog</a></li>
-							<li><a href="http://makerfaire.com/contact/">Contact Us</a></li>
+							<li><a href="http://makezine.com/tag/maker-faire/">Blog</a></li>
+							<li><a href="https://help.makermedia.com" target="_blank">Help</a></li>
 							<li><a href="http://makerfaire.com/newsletter/">Newsletter</a></li>
 							<li><a href="http://makermedia.com/privacy/">Privacy Policy</a></li>
 							<li><a href="http://makerfaire.com/sponsors/">Sponsors</a></li>

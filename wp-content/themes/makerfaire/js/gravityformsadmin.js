@@ -17,7 +17,7 @@ jQuery( document ).ready(function() {
 		    	
 		    	
 	
-	 
+	 jQuery('#datetimepicker').datetimepicker();
 	 jQuery('#gf_admin_page_title').click(
 			 function() {
 				 window.location="/wp-admin/admin.php?page=gf_entries&view=entry&id=20&lid="+prompt('Enter your ID!', ' ');

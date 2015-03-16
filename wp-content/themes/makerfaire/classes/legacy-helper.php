@@ -59,5 +59,20 @@ function legacy_get_resized_remote_image_url( $url, $width, $height, $escape = t
 
 	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
 }
+/**
+ * Returns the body from a requested url
+ *
+ * @param string $url The url for the remote request
+ * @return string
+ */
 
+function legacy_file_get_contents ($url)
+{
+	//Move to wp_remote_get
+	$request =   wp_remote_get($url);
+	// Get the body of the response
+	$json = wp_remote_retrieve_body( $request );
+	//$json = wpcom_vip_file_get_contents( $url );
 
+	return $json;
+}

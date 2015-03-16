@@ -1,4 +1,22 @@
 <?php
+
+function mf_sidebar_entry_schedule($form_id, $lead) {
+	// Load Fields to show on entry info
+	
+	echo ('<textarea name="entry_schedule_change" id="entry_schedule_change"
+					style="width: 100%; height: 50px; margin-bottom: 4px;" cols=""
+					rows=""></textarea>
+			<input type="text" value="2014/03/15 05:06" id="datetimepicker">
+			<input type="text" value="2014/03/15 05:06" id="datetimepicker">
+			');
+
+	// Create Update button for sidebar entry management
+	$entry_sidebar_button = '<input type="submit" name="update_schedule" value="Update Schedule" class="button"
+			 style="width:auto;padding-bottom:2px;"
+			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/>';
+			echo $entry_sidebar_button;	
+
+}
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
 function mf_sidebar_entry_info($form_id, $lead) {
 	// Load Fields to show on entry info
@@ -13,7 +31,7 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	foreach(   $field304['inputs'] as $choice)
 	{
 		$selected = '';
-		if ($lead[$choice['id']] == $choice['label']) $selected=' checked ';
+		if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
 		echo('<input type="checkbox" '.$selected.' name="entry_info_flags_change[]" style="margin: 3px;" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
 	}
 	
@@ -22,7 +40,7 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	foreach(   $field302['inputs'] as $choice)
 	{
 		$selected = '';
-		if ($lead[$choice['id']] == $choice['label']) $selected=' checked ';
+		if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
 		echo('<input type="checkbox" '.$selected.' name="entry_info_location_change[]" style="margin: 3px;" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
 	}
 	
@@ -54,6 +72,26 @@ function mf_sidebar_entry_status($form_id, $lead) {
 	echo('</select><input type="submit" name="update_management" value="Save" class="button"
 	 style="width:auto;padding-bottom:2px;"
 	onclick="jQuery(\'#action\').val(\'update_entry_status\');"/><br />');
+
+
+}
+
+function mf_sidebar_forms($form_id, $lead) {
+	// Load Fields to show on entry info
+	$forms = GFAPI::get_forms(true,false);
+	echo ('<h4><label class="detail-label" for="entry_form_change">Form:</label></h4>');
+	echo ('<select style="width:250px" name="entry_form_change">');
+	foreach( $forms as $choice )
+	{
+		$selected = '';
+
+		if ($choice['id'] == $lead['form_id']) $selected=' selected ';
+
+		echo('<option '.$selected.' value="'.$choice['id'].'">'.$choice['title'].'</option>');
+	}
+	echo('</select><input type="submit" name="change_form_id" value="Change Form" class="button"
+	 style="width:auto;padding-bottom:2px;"
+	onclick="jQuery(\'#action\').val(\'change_form_id\');"/><br />');
 
 
 }
@@ -193,10 +231,15 @@ if ($mode == 'view') {
 	?>
 	<div class='postbox' style="float:none;padding: 10px;">
 	<?php
+	mf_sidebar_forms($form['id'], $lead );
+	?>
+	</div>
+	<div class='postbox' style="float:none;padding: 10px;">
+	<?php
 	// Load Entry Sidebar details
 	mf_sidebar_entry_info( $form['id'], $lead );
-	
-	// Create Update button for sidebar entry management
+	?>
+	<?php // Create Update button for sidebar entry management
 	$entry_sidebar_button = '<input type="submit" name="update_management" value="Update Management" class="button"
 		 style="width:auto;padding-bottom:2px;" 
 		onclick="jQuery(\'#action\').val(\'update_entry_management\');"/>';
@@ -204,6 +247,15 @@ if ($mode == 'view') {
 	</div>
 	<?php 
 	}
+	/* Shceduling Management Sidebar Area */
+	if ($mode == 'view') {
+		?>
+		<?php
+		// Load Entry Sidebar details
+		//mf_sidebar_entry_schedule( $form['id'], $lead );
+		?>
+		<?php 
+		}
 }
 
 
@@ -252,8 +304,8 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 
 
 // This is where our custom post action handing occurs
-add_action("gform_admin_pre_render", "mf_admin_pre_render", 10, 2);
-function mf_admin_pre_render($form){
+add_action("gform_admin_pre_render_action", "mf_admin_pre_render");
+function mf_admin_pre_render(){
 //Get the current action
 $mfAction=RGForms::post( 'action' );
 
@@ -262,6 +314,9 @@ if (!empty($mfAction))
 {
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	$lead = GFAPI::get_entry( $entry_info_entry_id );
+	$form_id    =  isset($lead['form_id']) ? $lead['form_id'] : 0;
+	$form = RGFormsModel::get_form_meta($form_id);
+	
 	switch ($mfAction ) {
 		// Entry Management Update
 		case 'update_entry_management' :
@@ -270,12 +325,18 @@ if (!empty($mfAction))
 		case 'update_entry_status' :
 			set_entry_status($lead,$form);
 			break;
+		case 'update_entry_schedule' :
+			set_entry_schedule($lead,$form);
+			break;
+		case 'change_form_id' :
+			set_form_id($lead,$form);
+			break;
 		//Sidebar Note Add
 		case 'add_note_sidebar' :
 			add_note_sidebar($lead, $form);
 			break;
-			
 	}
+	
 }
 
 // Return the original form which is required for the filter we're including for our custom processing.
@@ -375,7 +436,79 @@ function set_entry_status($lead,$form){
 	}
 }
 
+/* Modify Form Id Status */
+function set_form_id($lead,$form){
+	$form_change=$_POST['entry_form_change'];
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	
+	error_log('$form_change='.$form_change);
+	error_log('$$entry_info_entry_id='.$entry_info_entry_id);
+	$entry=GFAPI:: get_entry($entry_info_entry_id);
+	
+	$is_form_id_changed = (strcmp($entry['form_id'], $form_change) != 0);
 
+	if (!empty($entry_info_entry_id))
+	{
+		if (!empty($is_form_id_changed))
+		{
+			//Update Field for Acceptance Status
+			$result = update_entry_form_id($entry,$form_change);
+			error_log('UPDATE RESULTS = '.print_r($result,true));
+			
+		}
+	}
+}
+/**
+ * Updates a form id of an entry.
+ *
+ * @param int    $entry_id The ID of the Entry object
+ * @param int    $form_id The Form ID of the Entry object
+  *
+ * @param mixed  $value    The value to which the field should be set
+ *
+ * @return bool Whether the entry property was updated successfully
+ */
+ function update_entry_form_id( $entry_id, $form_id ) {
+	global $wpdb;
+	
+	$lead_table = GFFormsModel::get_lead_table_name();
+	$lead_detail_table = GFFormsModel::get_lead_details_table_name();
+	$lead_meta_table = GFFormsModel::get_lead_meta_table_name();
+	$result     = $wpdb->query(
+			$wpdb->prepare( "UPDATE $lead_table SET form_id={$form_id} WHERE id=%d ", $entry_id)
+	);
+	$wpdb->query(
+		$wpdb->prepare( "UPDATE $lead_detail_table SET form_id={$form_id} WHERE lead_id=%d ", $entry_id)
+	);
+	$wpdb->query(
+			$wpdb->prepare( "UPDATE $lead_meta_table SET form_id={$form_id} WHERE lead_id=%d ", $entry_id)
+	);
+
+	
+	return $result;
+}
+
+
+
+/* Modify Set Entry Status */
+function set_entry_schedule($lead,$form){
+	$entry_schedule_change=$_POST['entry_schedule_change'];
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	
+	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
+
+	if (!empty($entry_info_entry_id))
+	{
+		if (!empty($entry_schedule_change))
+		{
+			$form = GFAPI::get_form($form_id);
+					$schedule=array('schedule1'=>'01012014,02022014','schedule2'=>'01012014,02022014');
+					$schedule['schedule'] = $entry_schedule_change;
+					gform_update_meta( $lead['id'], 'schedule', json_encode($schedule) );
+			
+		}	
+	}
+}
 
 function add_note_sidebar($lead, $form)
 {
@@ -405,7 +538,7 @@ function add_note_sidebar($lead, $form)
 		$email_note_info = '<br /><br />:SENT TO:['.implode(",", $email_to).']';
 	}
 	
-	mf_add_note( $lead['id'],  nl2br($_POST['new_note_sidebar'].$email_note_info));
+	mf_add_note( $lead['id'],  nl2br(stripslashes($_POST['new_note_sidebar'].$email_note_info)));
 	
 }
 

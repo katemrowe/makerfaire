@@ -58,6 +58,7 @@ wp-content/mysql.sql
 /wp-admin
 /wp-includes
 /wp-content/index.php
+/wp-content/plugins
 /wp-content/themes/twentyten
 /wp-content/themes/index.php
 /wp-content/plugins/index.php

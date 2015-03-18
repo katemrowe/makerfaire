@@ -293,7 +293,7 @@ class MAKER_FAIRE_FORM {
 			'not_found'          => __( 'No forms found' ),
 			'not_found_in_trash' => __( 'No forms found in Trash' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Applications' )
+			'menu_name'          => __( 'Archives' )
 		);
 
 		$args =   array(

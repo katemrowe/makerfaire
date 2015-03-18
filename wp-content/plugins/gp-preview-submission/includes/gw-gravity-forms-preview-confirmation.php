@@ -128,6 +128,7 @@ class GWPreviewConfirmation {
             if( ! $has_value || self::get_page_progression( $form['id'] ) < $current_page )
                 $_POST[$key] = $value;
         } else {
+            $value = str_replace( "'", '&#39;', $value );
             add_filter( "gform_field_value_{$name}", create_function( "", "return '$value';" ) );
         }
 
@@ -166,7 +167,7 @@ class GWPreviewConfirmation {
 
         if( is_array( rgar( $field, 'inputs' ) ) ) {
             $value = GFFormsModel::get_lead_field_value( $entry, $field );
-            return GFCommon::get_lead_field_display( $field, $value, $currency );
+            return GFCommon::get_lead_field_display( $field, $value, $currency, true );
         }
 
         switch( $input_type ) {
@@ -177,16 +178,18 @@ class GWPreviewConfirmation {
                 if( $is_multi_upload_field ) {
 
                     if( is_a( $field, 'GF_Field' ) ) {
-                        $value = $field->get_value_entry_detail( json_encode( $value ) );
+                        $value = $field->get_value_entry_detail( json_encode( array_filter( (array) $value ) ) );
                     } else {
                         $value = GFCommon::get_lead_field_display( $field, json_encode( $value ) );
                     }
 
                     $input_name = "input_" . str_replace('.', '_', $field['id']);
-                    $file_info  = (array) rgar( GFFormsModel::get_temp_filename( $form['id'], $input_name ), 'uploaded_filename' );
+                    $file_info  = self::get_uploaded_file_info( $form['id'], $input_name, $field );
 
-                    foreach( $file_info as $file ) {
-                        $value = str_replace( '>' . $file['temp_filename'], '>' . $file['uploaded_filename'], $value );
+                    if( $file_info ) {
+                        foreach ( $file_info as $file ) {
+                            $value = str_replace( '>' . $file['temp_filename'], '>' . $file['uploaded_filename'], $value );
+                        }
                     }
 
                 } else {
@@ -210,9 +213,11 @@ class GWPreviewConfirmation {
 
     public static function preview_image_value( $input_name, $field, $form, $entry ) {
 
-        $field_id  = $field['id'];
-        $file_info = GFFormsModel::get_temp_filename( $form['id'], $input_name );
-        $source    = GFFormsModel::get_upload_url( $form['id'] ) . '/tmp/' . $file_info['temp_filename'];
+        $file_info = self::get_uploaded_file_info( $form['id'], $input_name, $field );
+
+        if( ! self::is_multi_file_field( $field ) ) {
+            $source = GFFormsModel::get_upload_url( $form['id'] ) . '/tmp/' . $file_info['temp_filename'];
+        }
 
         if( ! $file_info ) {
             return '';
@@ -227,7 +232,7 @@ class GWPreviewConfirmation {
 
             case "fileupload" :
                 if( rgar( $field, 'multipleFiles' ) ) {
-                    $file_names = wp_list_pluck( $file_info['uploaded_filename'], 'temp_filename' );
+                    $file_names = wp_list_pluck( $file_info, 'temp_filename' );
                     $value = array();
                     foreach( $file_names as $file_name ) {
                         $value[] = GFFormsModel::get_upload_url( $form['id'] ) . '/tmp/' . $file_name;
@@ -253,8 +258,8 @@ class GWPreviewConfirmation {
             $file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
             $value = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $file_info['uploaded_filename'] . "</a>";
         }
-        return $value;
 
+        return $value;
     }
 
     /**
@@ -273,8 +278,9 @@ class GWPreviewConfirmation {
 
                 switch( $input_type ) {
                     case 'signature':
-                        if( empty( self::$entry[$field['id']] ) )
+                        if( empty( self::$entry[$field['id']] ) ) {
                             self::$entry[$field['id']] = rgpost( "input_{$form['id']}_{$field['id']}_signature_filename" );
+                        }
                         break;
                 }
 
@@ -327,7 +333,7 @@ class GWPreviewConfirmation {
      */
     public static function product_summary_merge_tag( $text, $form, $entry ) {
 
-        if( ! $text ) {
+        if( ! $text || ! $form || ! $entry ) {
             return $text;
         }
 
@@ -359,6 +365,17 @@ class GWPreviewConfirmation {
         return str_replace( $tags, $product_summary, $text );
     }
 
+    public static function get_uploaded_file_info( $form_id, $input_name, $field ) {
+
+        $uploaded_files = isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] : array();
+        $file_info      = self::is_multi_file_field( $field ) ? $uploaded_files : GFFormsModel::get_temp_filename( $form_id, $input_name );
+
+        return $file_info;
+    }
+
+    public static function is_multi_file_field( $field ) {
+        return rgar( $field, 'multipleFiles' ) == true;
+    }
 
 }
 

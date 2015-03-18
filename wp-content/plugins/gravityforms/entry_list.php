@@ -10,8 +10,7 @@ class GFEntryList {
 		if ( ! GFCommon::ensure_wp_version() ) {
 			return;
 		}
-		
-		$all_forms  = empty( $_GET['allforms'] ) ? 0 : $_GET['allforms'];
+
 		$forms = RGFormsModel::get_forms( null, 'title' );
 		$id    = RGForms::get( 'id' );
 
@@ -47,8 +46,7 @@ class GFEntryList {
 		$read       = $filter == 'unread' ? 0 : null;
 		$status     = in_array( $filter, array( 'trash', 'spam' ) ) ? $filter : 'active';
 		$form       = RGFormsModel::get_form_meta( $form_id );
-		$all_forms      = empty( $_GET['allforms'] ) ? 0 : $_GET['allforms'];
-		
+
 		$search_criteria['status'] = $status;
 
 		if ( $star ) {
@@ -198,9 +196,8 @@ class GFEntryList {
 		$paging      = array( 'offset' => $first_item_index, 'page_size' => $page_size );
 		$total_count = 0;
 
-		
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		
+
 		$summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];
@@ -757,20 +754,9 @@ class GFEntryList {
 
 
 		<div class="wrap <?php echo GFCommon::get_browser_class() ?>">
-		<?php  if ($all_forms==0) : ?>
 		<h2 class="gf_admin_page_title">
-			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span>
-			<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
-				 foreach($statuscount as $statuscount)
-				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
-					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
-				</span>		
+			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span></span>
 		</h2>
-		<?php else:?>
-		<h2 class="gf_admin_page_title">
-			<span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">All Forms</span>		
-		</h2>
-		<?php endif;?>
 
 		<?php RGForms::top_toolbar() ?>
 
@@ -784,15 +770,15 @@ class GFEntryList {
 
 		<ul class="subsubsub">
 			<li>
-				<a class="<?php echo empty( $filter ) ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>"><?php _e( 'All', 'gravityforms' ); ?>
+				<a class="<?php echo empty( $filter ) ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>"><?php _ex( 'All', 'Entry List', 'gravityforms' ); ?>
 					<span class="count">(<span id="all_count"><?php echo $active_lead_count ?></span>)</span></a> |
 			</li>
 			<li>
-				<a class="<?php echo $read !== null ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>&filter=unread"><?php _e( 'Unread', 'gravityforms' ); ?>
+				<a class="<?php echo $read !== null ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>&filter=unread"><?php _ex( 'Unread', 'Entry List', 'gravityforms' ); ?>
 					<span class="count">(<span id="unread_count"><?php echo $unread_count ?></span>)</span></a> |
 			</li>
 			<li>
-				<a class="<?php echo $star !== null ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>&filter=star"><?php _e( 'Starred', 'gravityforms' ); ?>
+				<a class="<?php echo $star !== null ? 'current' : '' ?>" href="?page=gf_entries&view=entries&id=<?php echo $form_id ?>&filter=star"><?php _ex( 'Starred', 'Entry List', 'gravityforms' ); ?>
 					<span class="count">(<span id="star_count"><?php echo $starred_count ?></span>)</span></a> |
 			</li>
 			<?php
@@ -886,7 +872,9 @@ class GFEntryList {
 
 								<?php
 
-								if ( ! is_array( $form['notifications'] ) || count( $form['notifications'] ) <= 0 ) {
+								$notifications = GFCommon::get_notifications( 'resend_notifications', $form );
+
+								if ( ! is_array( $notifications ) || count( $form['notifications'] ) <= 0 ) {
 									?>
 									<p class="description"><?php _e( 'You cannot resend notifications for these entries because this form does not currently have any notifications configured.', 'gravityforms' ); ?></p>
 
@@ -896,7 +884,7 @@ class GFEntryList {
 									?>
 									<p class="description"><?php _e( 'Specify which notifications you would like to resend for the selected entries.', 'gravityforms' ); ?></p>
 									<?php
-									foreach ( $form['notifications'] as $notification ) {
+									foreach ( $notifications as $notification ) {
 										?>
 										<input type="checkbox" class="gform_notifications" value="<?php echo $notification['id'] ?>" id="notification_<?php echo $notification['id'] ?>" onclick="toggleNotificationOverride();" />
 										<label for="notification_<?php echo $notification['id'] ?>"><?php echo $notification['name'] ?></label>
@@ -1112,7 +1100,7 @@ class GFEntryList {
 									case 'trash' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $search_qs . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>&allforms=<?php echo $all_forms; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $search_qs . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 

@@ -1,6 +1,18 @@
 
 # Changelog
 
+## 1.1.3
+
+    - Fixed several issues relating to changes with multi-file uploads in GF 1.9
+
+## 1.1.2
+
+    - Updated multi-input merge tag support to always show text rather than value
+
+## 1.1.1
+
+    - Fixed issue with when dynamically populating value containing a single quote
+
 ## 1.1
 
     - Added support for multi-file uploads

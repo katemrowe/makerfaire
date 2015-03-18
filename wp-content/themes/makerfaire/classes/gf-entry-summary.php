@@ -30,6 +30,8 @@ $photo = $lead['22'];
 $short_description = $lead['16'];
 $long_description = $lead['21'];
 $project_name = $lead['151'];
+$size_request = $lead['60'];
+$size_request_other = $lead['61'];
 $entry_form_type = $form['title'];
 $entry_form_status = $lead['303'];
 $wkey = $lead['27'];
@@ -129,6 +131,14 @@ if ( isset( $long_description ) ) {
 												
 </td>
 					</tr>
+					<tr>
+						<td valign="top"><strong>Size Request:</strong></td>
+						<td>
+						<? echo ( isset( $size_request ) ) ? $size_request : '' ; ?>
+						<? echo ( isset( $size_request_other ) ) ? 'Other: '.$size_request_other : '' ; ?>
+						</td>
+					</tr>
+					
 				</table>
 			</td>
 		</tr>

@@ -134,8 +134,8 @@ if ( isset( $long_description ) ) {
 					<tr>
 						<td valign="top"><strong>Size Request:</strong></td>
 						<td>
-						<? echo ( isset( $size_request ) ) ? $size_request : '' ; ?>
-						<? echo ( isset( $size_request_other ) ) ? 'Other: '.$size_request_other : '' ; ?>
+						<?php echo ( isset( $size_request ) ) ? $size_request : 'Not Filled out' ; ?>
+						<?php echo ( isset( $size_request_other ) ) ? 'Other: '.$size_request_other : '' ; ?>
 						</td>
 					</tr>
 					

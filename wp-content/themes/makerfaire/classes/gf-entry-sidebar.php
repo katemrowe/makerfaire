@@ -594,7 +594,7 @@ function gravityforms_send_entry_to_jdb ($id)
 	{
 		$entry_id=$row[0];
 		$entry = GFAPI::get_entry($row[0]);
-		$jdb_encoded_entry = json_encode(gravityforms_to_jdb_record($entry,$row[0],$row[1]));
+		$jdb_encoded_entry = http_build_query(gravityforms_to_jdb_record($entry,$row[0],$row[1]));
 		$synccontents = '"'.$mysqli->real_escape_string($jdb_encoded_entry).'"';
 		$results_on_send = gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
 		$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';

@@ -4330,7 +4330,8 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 	* @param int $id Post id to SYNC
 	* =====================================================================*/
 	private function sync_jdb( $id = 0 ) {
-
+		self::gravityforms_sync_jdb();
+		/*
 		// Setup a list of our local servers...
 		$local_server = array( 'localhost', 'make.com', 'vip.dev', 'staging.makerfaire.com' );
 
@@ -4356,7 +4357,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		foreach ( $posts as $post ) {
 			$form = (array) json_decode( str_replace( "\'", "'", $post->post_content ) );
 			$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', array( 'body' => array_merge( array( 'eid' => $post->ID, 'mid' => $form['uid'] ), (array) $form ) ) );
-
+			
 			if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 				$body = json_decode( $res['body'] );
 				if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {
@@ -4372,6 +4373,8 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 
 		if ( ! $id )
 			update_option( 'mf_full_jdb_sync', date( 'M jS, Y g:s A', ( time() - ( 3600 * 7 ) ) ) );
+	
+		*/
 	}
 	/*
 	* Sync MakerFaire Application Statuses
@@ -5041,6 +5044,134 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		}
 
 	}
+	
+	
+	public function gravityforms_sync_jdb ()
+	{
+
+		$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+		if ($mysqli->connect_errno) {
+			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+		}
+		
+		$result = $mysqli->query("Select  id,form_id from wp_rg_lead WHERE ID =50188");
+		echo 'result ='.print_r($result);
+		
+		while($row = $result->fetch_row())
+		{
+			$entry_id=$row[0];
+			$entry = GFAPI::get_entry($row[0]);
+			$synccontents = json_encode(self::gravityforms_to_jdb_record($entry,$row[0],$row[1]));
+			$synccontents = '"'.$mysqli->real_escape_string($synccontents).'"';
+			
+			//MySqli Insert Query
+			$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`) VALUES ($entry_id,$synccontents)");
+			
+			if($insert_row){
+			    print 'Success! ID of last inserted record is : ' .$mysqli->insert_id .'<br />';
+			}else{
+			    die('Error : ('. $mysqli->errno .') '. $mysqli->error);
+			};
+		}
+	}
+	
+    public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
+	{
+		
+		//'private_address2' => $lead['(see private_address below: address is one field now)'],
+		//
+		//'m_maker_bio' => $lead[' (Depends on Contact vs. Maker issue?)'],
+		//'private_zip' => $lead['95472']) ? lead[' ']  : '',// (see private_address below: address is one field now)
+		
+		$jdb_entry_data = array(
+				'form_type' => $form_id, //(Form ID)
+				'noise' => isset($lead['72']) ? $lead['72'] : '',
+				'radio' => isset($lead['78']) ? $lead['78'] : '',
+				'hands_on' => isset($lead['66']) ? $lead['66'] : '',
+				'referrals' => isset($lead['127']) ? $lead['127']  : '',
+				'food_details' => isset($lead['144']) ? $lead['144']  : '',
+				'fire' =>  isset($lead['83']) ? $lead['83']  : '',
+				'booth_size_details' => isset($lead['61']) ? $lead['61']  : '',
+				'layout' => isset($lead['65']) ? $lead['65']  : '',
+				'amps_details' =>  isset($lead['76']) ? $lead['76']  : '',
+				'booth_size' => isset($lead['60']) ? $lead['60']  : '',
+				'group_bio' => isset($lead['110']) ? $lead['110']  : '',
+				'group_website' => isset($lead['112']) ? $lead['112']  : '',
+				'hear_about' => isset($lead['128']) ? $lead['128']  : '',
+				'maker_faire' => isset($lead['131']) ? $lead['131']  : '',
+				'project_website' => isset($lead['27']) ? $lead['27']  : '',
+				'supporting_documents' => isset($lead['122']) ? $lead['122']  : '',
+				'tables_chairs' => isset($lead['62']) ? $lead['62']  : '', //(values triggers to resources)
+				'project_video' => isset($lead['32']) ? $lead['32']  : '',
+				'cats' => isset($lead['147']) ? $lead['147']  : '',// (categories updated)
+				'booth_location' => isset($lead['69']) ? $lead['69']  : '',
+				'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
+				'internet' => isset($lead['77']) ? $lead['77']  : '',
+				//'performance' => isset($lead['No']) ? $lead['999']  : '', // (No match)
+				'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
+				//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
+				'email' => 'monkey@sooch.com', //(Depends on Contact vs. Maker issue?)
+				'project_photo' => isset($lead['22']) ? $lead['22']  : '',
+				//'m_maker_photo' => isset($lead['']) ? $lead['999']  : '', //'(Depends on Contact vs. Maker issue?)',
+				'project_name' => isset($lead['151']) ? $lead['151']  : '',
+				'first_time' => isset($lead['130']) ? $lead['130']  : '',
+				'maker_email' => isset($lead['161']) ? $lead['161']  : '',
+				'power' => isset($lead['73']) ? $lead['73']  : '',
+				//'tags' => isset($lead['3d-imaging, alternative-energy, art, art-cars, bicycles, biology, chemistry, circuit-bending, computers']) ? $lead['999']  : '',// (No Match)
+				'food' => isset($lead['44']) ? $lead['44']  : '',
+				'safety_details' => isset($lead['85']) ? $lead['85']  : '',
+				'anything_else' => isset($lead['134']) ? $lead['134']  : '',
+				'phone1_type' => isset($lead['148']) ? $lead['148']  : '',
+				'maker_bio' => isset($lead['234']) ? $lead['234']  : '',
+				'group_photo' => isset($lead['111']) ? $lead['111']  : '',
+				'lighting' => isset($lead['71']) ? $lead['71']  : '',
+				//'private_country' => isset($lead['US']) ? $lead['999']  : '',
+				'phone1' => isset($lead['99']) ? $lead['99']  : '',
+				'project_photo_thumb' => '',
+				'm_maker_name' => isset($lead['96']) ? $lead['96']  : '',
+				'group_name' => isset($lead['109']) ? $lead['109']  : '',
+				//'group_photo_thumb' => isset($lead['']) ? $lead['999']  : '',// (No Match)
+				//'large_non_profit' => isset($lead['I am a large non-profit.']) ? $lead['999']  : '',// (No Match)
+				//'private_state' => isset($lead['CA']) ? $lead['999']  : '',// (see private_address below: address is one field now)
+				//'private_city' => isset($lead['Sebastopol']) ? $lead['999']  : '',// (see private_address below: address is one field now)
+				'placement' => isset($lead['68']) ? $lead['68']  : '',
+				'name' => '', //isset($lead['Kendra Markle']) ? $lead['999']  : '',// (Depends on Contact vs. Maker issue?)
+				'phone2_type' => isset($lead['149']) ? $lead['149']  : '',
+				'maker_name' => isset($lead['160']) ? $lead['160']  : '',
+				'radio_frequency' => isset($lead['79']) ? $lead['79']  : '',
+				'what_are_you_powering' => isset($lead['74']) ? $lead['74']  : '',
+				//'maker_photo_thumb' => '', //$lead['http://mf.insourcecode.com/wp-content/uploads/2013/02/IMG_1823_crop1-362x500.jpg (No Match)']
+				'private_description' => isset($lead['11']) ? $lead['11']  : '',
+				'private_address' => isset($lead['101']) ? $lead['101']  : '',
+				'org_type' => isset($lead['45']) ? $lead['45']  : '',
+				'public_description' => isset($lead['16']) ? $lead['16']  : '',
+				'activity' => isset($lead['84']) ? $lead['84']  : '',
+				'amps' => isset($lead['75']) ? $lead['75']  : '',
+				'sales_details' => isset($lead['52']) ? $lead['52']  : '',
+				'phone2' => isset($lead['100']) ? $lead['100']  : '',
+				'maker' => isset($lead['105']) ? $lead['105']  : '',
+				//'ignore' => isset($lead['']) ? $lead['999']  : '',
+				'non_profit_desc' => isset($lead['47']) ? $lead['47']  : '',
+				'plans' => isset($lead['55']) ? $lead['55']  : '', //(multiple values)
+				'launch_details' => isset($lead['54']) ? $lead['54']  : '',
+				'crowdfunding' => isset($lead['56']) ? $lead['56']  : '',
+				'crowdfunding_details' => isset($lead['59']) ? $lead['59']  : '',
+				'special_request' => isset($lead['64']) ? $lead['64']  : '',
+				'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
+				'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
+				'outdoor_detail' => isset($lead['70']) ? $lead['70']  : '',// (dump in the comments of the Exposure line in Resources)
+				'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
+				'18_years' => isset($lead['295']) ? $lead['295']  : '',
+				'CS_ID' => $lead_id
+				);
+				
+				return $jdb_entry_data;
+				
+				
+	}
+	
+	
+	
 }
 
 $mfform = new MAKER_FAIRE_FORM();

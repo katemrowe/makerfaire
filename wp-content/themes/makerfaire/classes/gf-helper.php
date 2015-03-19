@@ -103,3 +103,4 @@ foreach ( (array) $menu_items as $key => $menu_item ) {
 	}
 	}
 }
+

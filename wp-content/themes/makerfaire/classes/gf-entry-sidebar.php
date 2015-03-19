@@ -256,15 +256,23 @@ if ($mode == 'view') {
 		<?php
 		// Load Entry Sidebar details
 		mf_sidebar_entry_schedule( $form['id'], $lead );
-		?>
-		</div>
-			<?php $entry_sidebar_button = '<input type="submit" name="sync_jdb" value="Send to JDB" class="button"
-			 style="width:auto;padding-bottom:2px;"
-			onclick="jQuery(\'#action\').val(\'sync_jdb\');"/>';
-				echo $entry_sidebar_button;	?>
-			<?php 
+		
 		}
 		
+		?>
+			</div>
+		<div class='postbox' style="float:none;padding: 10px;">
+	<?php
+	mf_sidebar_forms($form['id'], $lead );
+	?>
+	</div>
+	<div class="detail-view-print">
+				<?php $entry_sidebar_button = '<input type="submit" name="sync_jdb" value="Send to JDB" class="button"
+				 style="width:auto;padding-bottom:2px;"
+				onclick="jQuery(\'#action\').val(\'sync_jdb\');"/>';
+					echo $entry_sidebar_button;	?>
+					</div>
+				<?php 
 }
 
 
@@ -581,20 +589,20 @@ function gravityforms_send_entry_to_jdb ($id)
 	}
 
 	$result = $mysqli->query("Select  id,form_id from wp_rg_lead where id = $id");
-	echo 'result ='.print_r($result);
-
+	
 	while($row = $result->fetch_row())
 	{
 		$entry_id=$row[0];
 		$entry = GFAPI::get_entry($row[0]);
 		$jdb_encoded_entry = json_encode(gravityforms_to_jdb_record($entry,$row[0],$row[1]));
 		$synccontents = '"'.$mysqli->real_escape_string($jdb_encoded_entry).'"';
-			
+		$results_on_send = gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
+		$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
+		
 		//MySqli Insert Query
-		$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`) VALUES ($entry_id,$synccontents)");
-		gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
+		$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($entry_id,$synccontents, $results_on_send_prepared)");
 		if($insert_row){
-			print 'Success! ID of last inserted record is : ' .$mysqli->insert_id .'<br />';
+			print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
 		}else{
 			die('Error : ('. $mysqli->errno .') '. $mysqli->error);
 		};
@@ -706,14 +714,14 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 
 
 	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $jdb_encoded_record  );
-	print_r($res);
 	if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 		$body = json_decode( $res['body'] );
 		if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {
-			gform_update_meta( $entry_id, 'mf_jdb_sync', time() );
+			gform_update_meta( $entry_id, 'mf_jdb_sync', 'fail' );
 		} else {
-			update_post_meta( $post->ID, 'mf_jdb_sync', 'fail' );
+			update_post_meta( $post->ID, 'mf_jdb_sync', time() );
 		}
 	}
+	return ($res['body']);
 
 }

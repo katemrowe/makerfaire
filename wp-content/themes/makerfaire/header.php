@@ -122,40 +122,6 @@ Topbar
 ======
 -->
 
-<div class="navbar">
-	<div class="navbar-inner">
-		<div class="container">
-		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-			<span class="i-bar"></span>
-			<span class="i-bar"></span>
-			<span class="i-bar"></span>
-		</a>
-		<div class="nav-collapse">
-			<ul class="nav main-nav">
-				<li><a class="red" href="http://makezine.com">MAKE</a></li>
-				<li><a href="http://makezine.com/blog/">Blog</a></li>
-				<li><a href="http://makezine.com/magazine/">Magazine</a></li>
-				<li><a href="http://makerfaire.com">Maker Faire</a></li>
-				<li><a href="http://makezine.com/projects/">Make: Projects</a></li>
-				<li><a href="http://makershed.com">Maker Shed</a></li>
-				<li><a href="http://kits.makezine.com">Kits</a></li>
-			</ul>
-			<ul class="nav pull-right">
-				<li>
-					<form action="http://makezine.com/search/" class="form-horizontal form-search">
-						<input type="hidden" name="as_sitesearch" value="makerfaire.com" />
-						<input type="text" name="q" class="span2" />
-						<input type="submit" class="btn btn-primary" value="Search" />
-					</form>
-				</li>
-			</ul>
-		</div>
-
-
-		</div>
-	</div>
-</div>
-
 <header id="header">
 
 	<div class="container">

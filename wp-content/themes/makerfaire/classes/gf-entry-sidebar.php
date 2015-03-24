@@ -717,8 +717,8 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 			'headers' => array(),
 			'body' => $jdb_encoded_record);
 	
-	//$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
-	$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
+	//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
 	if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 		$body = json_decode( $res['body'] );
 		if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {

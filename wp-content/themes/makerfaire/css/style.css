@@ -343,6 +343,7 @@ footer .pills a {
 .sidebar-bordered.sponsored {
   text-align: center;
   padding-top: 20px;
+  margin-top:20px;
 }
 .sidebar-bordered.sponsored h3 {
   margin-top: 0;
@@ -369,7 +370,7 @@ footer .pills a {
   font-family: "Helvetica Neue", sans-serif;
   color: #898989;
   font-weight: 400;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .sidebar-bordered label {
   font-size: 16px;

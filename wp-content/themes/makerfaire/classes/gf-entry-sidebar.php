@@ -594,9 +594,8 @@ function gravityforms_send_entry_to_jdb ($id)
 	{
 		$entry_id=$row[0];
 		$entry = GFAPI::get_entry($row[0]);
-		$jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
-		
-		//$jdb_encoded_entry = http_build_query(gravityforms_to_jdb_record($entry,$row[0],$row[1]));
+		//$jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
+		$jdb_encoded_entry = http_build_query(gravityforms_to_jdb_record($entry,$row[0],$row[1]));
 		$synccontents = '"'.$mysqli->real_escape_string($jdb_encoded_entry).'"';
 		$results_on_send = gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
 		$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
@@ -707,28 +706,19 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 }
 
 function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
-	$local_server = array( 'localhost', 'make.com', 'vip.dev', 'staging.makerfaire.com' );
-
 	// Don't sync from any of our testing locations.
+	$local_server = array( 'localhost', 'make.com', 'vip.dev', 'staging.makerfaire.com' );
 	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 		return false;
-	//ORIGINAL CALL:$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', array( 'body' => array_merge( array( 'eid' => $post->ID, 'mid' => $form['uid'] ), $jdb_encoded_record ) ) );
-
+	
 	$post_body = array(
 			'method' => 'POST',
 			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => true,
 			'headers' => array(),
-			'body' => $jdb_encoded_record,
-			'cookies' => array());
+			'body' => $jdb_encoded_record);
 	
-	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
-	//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $jdb_encoded_record  );
-	
-	print_r($res);
-	
+	//$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
+	$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
 	if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 		$body = json_decode( $res['body'] );
 		if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {
@@ -738,5 +728,4 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 		}
 	}
 	return ($res['body']);
-
 }

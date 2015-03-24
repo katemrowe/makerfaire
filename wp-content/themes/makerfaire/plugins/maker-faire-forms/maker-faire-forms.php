@@ -5075,100 +5075,141 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		}
 	}
 	
-	public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
+
+public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
+{
+	//load form
+	$form = GFAPI::get_form($form_id);
+	// Load Names
+	$allmakername='';
+	$makerfirstname1=$lead['160.3'];$makerlastname1=$lead['160.6'];
+	$makerfirstname2=$lead['158.3'];$makerlastname2=$lead['158.6'];
+	$makerfirstname3=$lead['155.3'];$makerlastname3=$lead['155.6'];
+	$makerfirstname4=$lead['156.3'];$makerlastname4=$lead['156.6'];
+	$makerfirstname5=$lead['157.3'];$makerlastname5=$lead['157.6'];
+	$makerfirstname6=$lead['159.3'];$makerlastname6=$lead['159.6'];
+	$makerfirstname7=$lead['154.3'];$makerlastname7=$lead['154.6'];
+	$allmakername = $allmakername + !empty($makerfirstname1) ?  $makerfirstname1.' '.$makerlastname1 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname2) ?  ', '.$makerfirstname2.' '.$makerlastname2 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname3) ?  ', '.$makerfirstname3.' '.$makerlastname3 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname4) ?  ', '.$makerfirstname4.' '.$makerlastname4 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname5) ?  ', '.$makerfirstname5.' '.$makerlastname5 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname6) ?  ', '.$makerfirstname6.' '.$makerlastname6 : '' ;
+	$allmakername = $allmakername + !empty($makerfirstname7) ?  ', '.$makerfirstname7.' '.$makerlastname7 : '' ;
+	// Load Categories
+	$fieldtopics=RGFormsModel::get_field($form,'147');
+	$topicsarray = array();
+	foreach($fieldtopics['inputs'] as $topic)
 	{
-	
-		//'private_address2' => $lead['(see private_address below: address is one field now)'],
-		//
-		//'m_maker_bio' => $lead[' (Depends on Contact vs. Maker issue?)'],
-		//'private_zip' => $lead['95472']) ? lead[' ']  : '',// (see private_address below: address is one field now)
-	
-		$jdb_entry_data = array(
-				'form_type' => $form_id, //(Form ID)
-				'noise' => isset($lead['72']) ? $lead['72'] : '',
-				'radio' => isset($lead['78']) ? $lead['78'] : '',
-				'hands_on' => isset($lead['66']) ? $lead['66'] : '',
-				'referrals' => isset($lead['127']) ? $lead['127']  : '',
-				'food_details' => isset($lead['144']) ? $lead['144']  : '',
-				'fire' =>  isset($lead['83']) ? $lead['83']  : '',
-				'booth_size_details' => isset($lead['61']) ? $lead['61']  : '',
-				'layout' => isset($lead['65']) ? $lead['65']  : '',
-				'amps_details' =>  isset($lead['76']) ? $lead['76']  : '',
-				'booth_size' => isset($lead['60']) ? $lead['60']  : '',
-				'group_bio' => isset($lead['110']) ? $lead['110']  : '',
-				'group_website' => isset($lead['112']) ? $lead['112']  : '',
-				'hear_about' => isset($lead['128']) ? $lead['128']  : '',
-				'maker_faire' => isset($lead['131']) ? $lead['131']  : '',
-				'project_website' => isset($lead['27']) ? $lead['27']  : '',
-				'supporting_documents' => isset($lead['122']) ? $lead['122']  : '',
-				'tables_chairs' => isset($lead['62']) ? $lead['62']  : '', //(values triggers to resources)
-				'project_video' => isset($lead['32']) ? $lead['32']  : '',
-				'cats' => isset($lead['147']) ? $lead['147']  : '',// (categories updated)
-				'booth_location' => isset($lead['69']) ? $lead['69']  : '',
-				'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
-				'internet' => isset($lead['77']) ? $lead['77']  : '',
-				//'performance' => isset($lead['No']) ? $lead['999']  : '', // (No match)
-		'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
-		//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
-		'email' => isset($lead['161']) ? $lead['161']  : '', //(Depends on Contact vs. Maker issue?)
-		'project_photo' => isset($lead['22']) ? $lead['22']  : '',
-		//'m_maker_photo' => isset($lead['']) ? $lead['999']  : '', //'(Depends on Contact vs. Maker issue?)',
-		'project_name' => isset($lead['151']) ? $lead['151']  : '',
-		'first_time' => isset($lead['130']) ? $lead['130']  : '',
-		'maker_email' => isset($lead['161']) ? $lead['161']  : '',
-		'power' => isset($lead['73']) ? $lead['73']  : '',
-		//'tags' => isset($lead['3d-imaging, alternative-energy, art, art-cars, bicycles, biology, chemistry, circuit-bending, computers']) ? $lead['999']  : '',// (No Match)
-		'food' => isset($lead['44']) ? $lead['44']  : '',
-		'safety_details' => isset($lead['85']) ? $lead['85']  : '',
-		'anything_else' => isset($lead['134']) ? $lead['134']  : '',
-		'phone1_type' => isset($lead['148']) ? $lead['148']  : '',
-		'maker_bio' => isset($lead['234']) ? $lead['234']  : '',
-		'group_photo' => isset($lead['111']) ? $lead['111']  : '',
-		'lighting' => isset($lead['71']) ? $lead['71']  : '',
-		//'private_country' => isset($lead['US']) ? $lead['999']  : '',
-		'phone1' => isset($lead['99']) ? $lead['99']  : '',
-		'project_photo_thumb' => '',
-		'm_maker_name' => isset($lead['96']) ? $lead['96']  : '',
-		'group_name' => isset($lead['109']) ? $lead['109']  : '',
-		//'group_photo_thumb' => isset($lead['']) ? $lead['999']  : '',// (No Match)
-		//'large_non_profit' => isset($lead['I am a large non-profit.']) ? $lead['999']  : '',// (No Match)
-		//'private_state' => isset($lead['CA']) ? $lead['999']  : '',// (see private_address below: address is one field now)
-		//'private_city' => isset($lead['Sebastopol']) ? $lead['999']  : '',// (see private_address below: address is one field now)
-		'placement' => isset($lead['68']) ? $lead['68']  : '',
-		'name' => '', //isset($lead['Kendra Markle']) ? $lead['999']  : '',// (Depends on Contact vs. Maker issue?)
-		'phone2_type' => isset($lead['149']) ? $lead['149']  : '',
-		'maker_name' => isset($lead['160']) ? $lead['160']  : '',
-		'radio_frequency' => isset($lead['79']) ? $lead['79']  : '',
-		'what_are_you_powering' => isset($lead['74']) ? $lead['74']  : '',
-		//'maker_photo_thumb' => '', //$lead['http://mf.insourcecode.com/wp-content/uploads/2013/02/IMG_1823_crop1-362x500.jpg (No Match)']
-		'private_description' => isset($lead['11']) ? $lead['11']  : '',
-		'private_address' => isset($lead['101']) ? $lead['101']  : '',
-		'org_type' => isset($lead['45']) ? $lead['45']  : '',
-		'public_description' => isset($lead['16']) ? $lead['16']  : '',
-		'activity' => isset($lead['84']) ? $lead['84']  : '',
-		'amps' => isset($lead['75']) ? $lead['75']  : '',
-		'sales_details' => isset($lead['52']) ? $lead['52']  : '',
-		'phone2' => isset($lead['100']) ? $lead['100']  : '',
-		'maker' => isset($lead['105']) ? $lead['105']  : '',
-		//'ignore' => isset($lead['']) ? $lead['999']  : '',
-		'non_profit_desc' => isset($lead['47']) ? $lead['47']  : '',
-		'plans' => isset($lead['55']) ? $lead['55']  : '', //(multiple values)
-		'launch_details' => isset($lead['54']) ? $lead['54']  : '',
-		'crowdfunding' => isset($lead['56']) ? $lead['56']  : '',
-		'crowdfunding_details' => isset($lead['59']) ? $lead['59']  : '',
-		'special_request' => isset($lead['64']) ? $lead['64']  : '',
-		'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
-		'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
-		'outdoor_detail' => isset($lead['70']) ? $lead['70']  : '',// (dump in the comments of the Exposure line in Resources)
-		'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
-		'under_18' => isset($lead['295']) ? $lead['295']  : '',
-		'CS_ID' => $lead_id
-		);
-	
-		return $jdb_entry_data;
-	
-	
+		if (strlen($lead[$topic['id']]) > 0)  $topicsarray[] = $lead[$topic['id']];
 	}
+	// Load Plans
+	$fieldplans=RGFormsModel::get_field($form,'55');
+	$plansarray = array();
+	foreach($fieldplans['inputs'] as $plan)
+	{
+		if (strlen($lead[$plan['id']]) > 0)  $plansarray[] = $lead[$plan['id']];
+	}
+	// Load Loctations
+	
+	$fieldlocations=RGFormsModel::get_field($form,'302');
+	$locationsarray = array();
+	foreach($fieldlocations['inputs'] as $location)
+	{
+		if (strlen($lead[$location['id']]) > 0)  $locationsarray[] = $lead[$location['id']];
+	}
+	//
+	$jdb_entry_data = array(
+			'form_type' => $form_id, //(Form ID)
+			'noise' => isset($lead['72']) ? $lead['72'] : '',
+			'radio' => isset($lead['78']) ? $lead['78'] : '',
+			'hands_on' => isset($lead['66']) ? $lead['66'] : '',
+			'referrals' => isset($lead['127']) ? $lead['127']  : '',
+			'food_details' => isset($lead['144']) ? $lead['144']  : '',
+			'fire' =>  isset($lead['83']) ? $lead['83']  : '',
+			'booth_size_details' => isset($lead['61']) ? $lead['61']  : '',
+			'layout' => isset($lead['65']) ? $lead['65']  : '',
+			'amps_details' =>  isset($lead['76']) ? $lead['76']  : '',
+			'booth_size' => isset($lead['60']) ? $lead['60']  : '',
+			'group_bio' => isset($lead['110']) ? $lead['110']  : '',
+			'group_website' => isset($lead['112']) ? $lead['112']  : '',
+			'hear_about' => isset($lead['128']) ? $lead['128']  : '',
+			'maker_faire' => isset($lead['131']) ? $lead['131']  : '',
+			'project_website' => isset($lead['27']) ? $lead['27']  : '',
+			'supporting_documents' => isset($lead['122']) ? $lead['122']  : '',
+			'tables_chairs' => isset($lead['62']) ? $lead['62']  : '',
+			'project_video' => isset($lead['32']) ? $lead['32']  : '',
+			'cats' => isset($topicsarray) ? $topicsarray  : '',
+			'booth_location' => isset($locationsarray) ? $locationsarray : '',
+			'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
+			'internet' => isset($lead['77']) ? $lead['77']  : '',
+			'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
+			'email' => isset($lead['161']) ? $lead['161']  : '', 
+			'project_photo' => isset($lead['22']) ? $lead['22']  : '',
+			'project_name' => isset($lead['151']) ? $lead['151']  : '',
+			'first_time' => isset($lead['130']) ? $lead['130']  : '',
+			'power' => isset($lead['73']) ? $lead['73']  : '',
+			'food' => isset($lead['44']) ? $lead['44']  : '',
+			'safety_details' => isset($lead['85']) ? $lead['85']  : '',
+			'anything_else' => isset($lead['134']) ? $lead['134']  : '',
+			'phone1_type' => isset($lead['148']) ? $lead['148']  : '',
+			'maker_bio' => isset($lead['234']) ? $lead['234']  : '',
+			'group_photo' => isset($lead['111']) ? $lead['111']  : '',
+			'lighting' => isset($lead['71']) ? $lead['71']  : '',
+			'phone1' => isset($lead['99']) ? $lead['99']  : '',
+			'project_photo_thumb' => '',
+			'group_name' => isset($lead['109']) ? $lead['109']  : '',
+			'private_address' => isset($lead['101.1']) ? $lead['101.1']  : '',
+			'private_state' => isset($lead['101.4']) ? $lead['101.4']  : '',
+			'private_city' => isset($lead['101.3']) ? $lead['101.3']  : '',
+			'private_address2' => isset($lead['101.2']) ? $lead['101.2']  : '',
+			'private_country' => isset($lead['101.6']) ? $lead['101.6']  : '',
+			'private_zip' => isset($lead['101.5']) ? $lead['101.5']  : '',
+			'placement' => isset($lead['68']) ? $lead['68']  : '',
+			'firstname' => isset($lead['96.3']) ? $lead['96.3']  : '',
+			'lastname' => isset($lead['96.6']) ? $lead['96.6']  : '',
+			'phone2_type' => isset($lead['149']) ? $lead['149']  : '',
+			'maker_name' => isset($allmakername) ? $allmakername  : '', 
+			'radio_frequency' => isset($lead['79']) ? $lead['79']  : '',
+			'what_are_you_powering' => isset($lead['74']) ? $lead['74']  : '',
+			'private_description' => isset($lead['11']) ? $lead['11']  : '',
+			'org_type' => isset($lead['45']) ? $lead['45']  : '',
+			'public_description' => isset($lead['16']) ? $lead['16']  : '',
+			'activity' => isset($lead['84']) ? $lead['84']  : '',
+			'amps' => isset($lead['75']) ? $lead['75']  : '',
+			'sales_details' => isset($lead['52']) ? $lead['52']  : '',
+			'phone2' => isset($lead['100']) ? $lead['100']  : '',
+			'maker' => isset($lead['105']) ? $lead['105']  : '',
+			'non_profit_desc' => isset($lead['47']) ? $lead['47']  : '',
+			'plans' => isset($plansarray) ? $plansarray  : '',
+			'launch_details' => isset($lead['54']) ? $lead['54']  : '',
+			'crowdfunding' => isset($lead['56']) ? $lead['56']  : '',
+			'crowdfunding_details' => isset($lead['59']) ? $lead['59']  : '',
+			'special_request' => isset($lead['64']) ? $lead['64']  : '',
+			'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
+			'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
+			'outdoor_detail' => isset($lead['70']) ? $lead['70']  : '',
+			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
+			'under_18' => isset($lead['295']) ? $lead['295']  : '',
+			'CS_ID' => $lead_id
+			//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
+			//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
+			//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
+			//'performance' => isset($lead['No']) ? $lead['999']  : '', // (No match)
+			//'maker_photo_thumb' => '', //$lead['http://mf.insourcecode.com/wp-content/uploads/2013/02/IMG_1823_crop1-362x500.jpg (No Match)']
+			//'ignore' => isset($lead['']) ? $lead['999']  : '',
+			//'tags' => isset($lead['3d-imaging, alternative-energy, art, art-cars, bicycles, biology, chemistry, circuit-bending, computers']) ? $lead['999']  : '',// (No Match)
+			//'group_photo_thumb' => isset($lead['']) ? $lead['999']  : '',// (No Match)
+			//'large_non_profit' => isset($lead['I am a large non-profit.']) ? $lead['999']  : '',// (No Match)
+			//'m_maker_bio' => $lead[' (Depends on Contact vs. Maker issue?)'],
+
+					
+	);
+
+	return $jdb_entry_data;
+
+
+}
 	
 	public static function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 		// Don't sync from any of our testing locations.

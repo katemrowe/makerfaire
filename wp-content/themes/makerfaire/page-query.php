@@ -48,6 +48,8 @@ $faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire
 // Check that our keys passed are in our $keys array and that a type and faire are passed
 if ( empty( $key ) ) {
 	header( 'HTTP/1.0 403 Forbidden' );
+	echo '<h2>Invalid: No Key.</h2>';
+	
 	return;
 } elseif ( $key !== MF_API_KEY ) {
 	header( 'HTTP/1.0 403 Forbidden' );

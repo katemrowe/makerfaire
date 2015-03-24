@@ -113,7 +113,7 @@ if ( isset( $long_description ) ) {
 						<?php echo !empty($makerfirstname4) ?  $makerfirstname4.' '.$makerlastname4.'</br>' : '' ; ?>
 						<?php echo !empty($makerfirstname5) ?  $makerfirstname5.' '.$makerlastname5.'</br>' : '' ; ?>
 						<?php echo !empty($makerfirstname6) ?  $makerfirstname6.' '.$makerlastname6.'</br>' : '' ; ?>
-						<?php echo !empty($makerfirstname7) ?  $makerfirstname6.' '.$makerlastname7.'</br>' : '' ; ?>
+						<?php echo !empty($makerfirstname7) ?  $makerfirstname7.' '.$makerlastname7.'</br>' : '' ; ?>
 												
 </td>
 					</tr>

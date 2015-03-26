@@ -17,7 +17,20 @@ defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
 if ( $type == 'maker' ) {
 
 	// Set the query args.
-	$args = array(
+	$search_criteria = array(
+			"status" => "active",
+			"field_filters" => array(
+					"mode" => "any",
+					array(
+							"key" => "303",
+							"operator" => "in", 
+							"value" => array( "Accepted" )
+					),
+			)
+	);
+	$formids = array(20);
+	$entries = GFAPI::get_entries($formids, $search_criteria);
+	/*$args = array(
 		'no_found_rows'  => true,
 		'post_type' 	 => 'maker',
 		'post_status' 	 => 'any',
@@ -25,7 +38,7 @@ if ( $type == 'maker' ) {
 		'faire'			 => sanitize_title( $faire ),
 	);
 	$query = new WP_Query( $args );
-
+	*/
 	// Define the API header (specific for Eventbase)
 	$header = array(
 		'header' => array(
@@ -39,31 +52,34 @@ if ( $type == 'maker' ) {
 	$makers = array();
 
 	// Loop through the posts
-	foreach ( $query->posts as $post ) {
-
+	foreach ( $entries as $entry ) {
+		
 		// REQUIRED: The maker ID
-		$maker['id'] = absint( $post->ID );
+		$maker['id'] = $entry['id'];
 
 		// REQUIRED: The maker name
-		$maker['name'] = html_entity_decode( get_the_title(), ENT_COMPAT, 'utf-8' );
+		$makerfirstname1=$entry['160.3'];$makerlastname1=$entry['160.6'];
+		
+		$maker['name'] = $makerfirstname1.' '.$makerlastname1;
 
 		// Maker Thumbnail and Large Images
-		$maker_image = get_post_meta( absint( $post->ID ), 'photo_url', true );
+		$maker_image = isset($lead['217']) ? $lead['217']  : null;
 		$maker['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $maker_image, '80', '80' ) );
 		$maker['large_image_url'] = esc_url( legacy_get_resized_remote_image_url( $maker_image, '600', '600' ) );;
 
 		// Application ID this maker is assigned to
-		$maker['child_id_refs'] = array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
+		// No longer have these
+		//$maker['child_id_refs'] = array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
 
 		// Maker bio information
-		$maker['description'] = ( ! empty( $post->post_content ) ) ? mf_clean_content( $post->post_content ) : null;
+		$maker['description'] =isset($lead['234']) ? $lead['234']  : null;
 
 		// Maker Video link
-		$maker_video = get_post_meta( absint( $post->ID ), 'video', true );
+		$maker_video = isset($lead['32']) ? $lead['32']  : null;
 		$maker['youtube_url'] = ( ! empty( $maker_video ) ) ? esc_url( $maker_video ) : null;
 
 		// Maker Website link
-		$maker_website = get_post_meta( absint( $post->ID ), 'website', true );
+		$maker_website = isset($lead['27']) ? $lead['27']  : null;
 		$maker['website_url'] = ( ! empty( $maker_website ) ) ? esc_url( $maker_website ) : null;
 
 		// Put the maker into our list of makers

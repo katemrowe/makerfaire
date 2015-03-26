@@ -46,7 +46,10 @@ $type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] 
 $faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 
 // Check that our keys passed are in our $keys array and that a type and faire are passed
-if ( empty( $key ) ) {
+/* Bypass key for Testing 
+ *  DEBUG:
+ *
+ if ( empty( $key ) ) {
 	header( 'HTTP/1.0 403 Forbidden' );
 	echo '<h2>Invalid: No Key.</h2>';
 	
@@ -72,7 +75,7 @@ if ( empty( $key ) ) {
 	echo '<h2>Invalid: Faire</h2>';
 	return;
 }
-
+*/
 
 /**
  * RUN THE CONTROLLER
@@ -81,7 +84,7 @@ if ( empty( $key ) ) {
 
 // Get the appropriate API file.
 $api_path = __DIR__ . '/api/' . sanitize_title( MF_API_VERSION ) . '/' . sanitize_title( $type ) . '/index.php';
-
+print_r($api_path);
 // Prevent Path Traversal
 if ( strpos( $api_path, '../' ) !== false || strpos( $api_path, "..\\" ) !== false || strpos( $api_path, '/..' ) !== false || strpos( $api_path, '\..' ) !== false )
 	return;

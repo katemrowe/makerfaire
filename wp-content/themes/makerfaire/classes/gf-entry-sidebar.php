@@ -235,11 +235,6 @@ if ($mode == 'view') {
 	?>
 	<div class='postbox' style="float:none;padding: 10px;">
 	<?php
-	mf_sidebar_forms($form['id'], $lead );
-	?>
-	</div>
-	<div class='postbox' style="float:none;padding: 10px;">
-	<?php
 	// Load Entry Sidebar details
 	mf_sidebar_entry_info( $form['id'], $lead );
 	?>

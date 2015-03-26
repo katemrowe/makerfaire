@@ -625,7 +625,8 @@ function mf_send_hipchat_notification( $message = 'Default Message', $from = 'Ma
 function mf_page_redirect_to_app_stores() {
 	if ( ! is_page( 'app' ) && function_exists( 'jetpack_is_mobile' ) )
 		return;
-
+	if ( class_exists( 'Jetpack' ) ) :
+	
 	$redirect_to = '';
 
  	if ( Jetpack_User_Agent_Info::is_iphone_or_ipod() )
@@ -637,6 +638,8 @@ function mf_page_redirect_to_app_stores() {
 		wp_redirect( $redirect_to, 301 );  // Permanent redirect
 		exit;
 	}
+	endif;
+	
 }
 add_action( 'template_redirect', 'mf_page_redirect_to_app_stores' );
 

@@ -48,6 +48,7 @@ function legacy_is_valid_domain( $url, $whitelisted_domains ) {
  * @return string
  */
 function legacy_get_resized_remote_image_url( $url, $width, $height, $escape = true ) {
+	if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) :
 	$width = (int) $width;
 	$height = (int) $height;
 
@@ -58,6 +59,7 @@ function legacy_get_resized_remote_image_url( $url, $width, $height, $escape = t
 	$thumburl = jetpack_photon_url( $url, array( 'resize' => array( $width, $height ) ) );
 
 	return ( $escape ) ? esc_url( $thumburl ) : $thumburl;
+	endif;
 }
 /**
  * Returns the body from a requested url

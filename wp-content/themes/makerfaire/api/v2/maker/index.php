@@ -53,7 +53,6 @@ if ( $type == 'maker' ) {
 
 	// Loop through the posts
 	foreach ( $entries as $entry ) {
-		
 		// REQUIRED: The maker ID
 		$maker['id'] = $entry['id'];
 
@@ -63,7 +62,7 @@ if ( $type == 'maker' ) {
 		$maker['name'] = $makerfirstname1.' '.$makerlastname1;
 
 		// Maker Thumbnail and Large Images
-		$maker_image = isset($lead['217']) ? $lead['217']  : null;
+		$maker_image = isset($entry['217']) ? $entry['217']  : null;
 		$maker['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $maker_image, '80', '80' ) );
 		$maker['large_image_url'] = esc_url( legacy_get_resized_remote_image_url( $maker_image, '600', '600' ) );;
 
@@ -72,14 +71,14 @@ if ( $type == 'maker' ) {
 		//$maker['child_id_refs'] = array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
 
 		// Maker bio information
-		$maker['description'] =isset($lead['234']) ? $lead['234']  : null;
+		$maker['description'] =isset($entry['234']) ? $entry['234']  : null;
 
 		// Maker Video link
-		$maker_video = isset($lead['32']) ? $lead['32']  : null;
+		$maker_video = isset($entry['32']) ? $entry['32']  : null;
 		$maker['youtube_url'] = ( ! empty( $maker_video ) ) ? esc_url( $maker_video ) : null;
 
 		// Maker Website link
-		$maker_website = isset($lead['27']) ? $lead['27']  : null;
+		$maker_website = isset($entry['27']) ? $entry['27']  : null;
 		$maker['website_url'] = ( ! empty( $maker_website ) ) ? esc_url( $maker_website ) : null;
 
 		// Put the maker into our list of makers

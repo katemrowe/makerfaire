@@ -675,7 +675,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
 			'internet' => isset($lead['77']) ? $lead['77']  : '',
 			'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
-			'email' => isset($lead['161']) ? $lead['161']  : '', 
+			'email' => isset($lead['98']) ? $lead['98']  : '', 
 			'project_photo' => isset($lead['22']) ? $lead['22']  : '',
 			'project_name' => isset($lead['151']) ? $lead['151']  : '',
 			'first_time' => isset($lead['130']) ? $lead['130']  : '',

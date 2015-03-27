@@ -643,7 +643,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 	}
 	// Load Loctations
 	
-	$fieldlocations=RGFormsModel::get_field($form,'302');
+	$fieldlocations=RGFormsModel::get_field($form,'70');
 	$locationsarray = array();
 	foreach($fieldlocations['inputs'] as $location)
 	{
@@ -719,7 +719,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'special_request' => isset($lead['64']) ? $lead['64']  : '',
 			'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
 			'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
-			'loctype_outdoors' => isset($lead['70']) ? $lead['70']  : '',
+			'loctype_outdoors' => $fieldlocations,
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
 			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 			'CS_ID' => $lead_id

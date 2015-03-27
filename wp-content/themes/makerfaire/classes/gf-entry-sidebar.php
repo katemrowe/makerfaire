@@ -671,7 +671,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'tables_chairs' => isset($lead['62']) ? $lead['62']  : '',
 			'project_video' => isset($lead['32']) ? $lead['32']  : '',
 			'cats' => isset($topicsarray) ? $topicsarray  : '',
-			'booth_location' => isset($locationsarray) ? $locationsarray : '',
+			'loctype' => isset($lead['69']) ? $lead['69']  : '',
 			'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
 			'internet' => isset($lead['77']) ? $lead['77']  : '',
 			'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
@@ -719,9 +719,9 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'special_request' => isset($lead['64']) ? $lead['64']  : '',
 			'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
 			'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
-			'outdoor_detail' => isset($lead['70']) ? $lead['70']  : '',
+			'loctype_outdoors' => isset($lead['70']) ? $lead['70']  : '',
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
-			'under_18' => isset($lead['295']) ? $lead['295']  : '',
+			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 			'CS_ID' => $lead_id
 			//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
 			//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
@@ -761,7 +761,7 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 		if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {
 			gform_update_meta( $entry_id, 'mf_jdb_sync', 'fail' );
 		} else {
-			update_post_meta( $post->ID, 'mf_jdb_sync', time() );
+			gform_update_meta( $entry_id, 'mf_jdb_sync', time() );
 		}
 	}
 	return ($res['body']);

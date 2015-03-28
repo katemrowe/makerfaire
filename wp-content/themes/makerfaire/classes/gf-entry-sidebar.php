@@ -247,15 +247,12 @@ if ($mode == 'view') {
 	<?php 
 	}
 	/* Shceduling Management Sidebar Area */
-	if ($mode == 'view') {
+	if ($mode == 'view') :
 		?>
 		<div class='postbox' style="float:none;padding: 10px;">
 		<?php
 		// Load Entry Sidebar details
 		mf_sidebar_entry_schedule( $form['id'], $lead );
-		
-		}
-		
 		?>
 			</div>
 		<div class='postbox' style="float:none;padding: 10px;">
@@ -263,6 +260,8 @@ if ($mode == 'view') {
 	mf_sidebar_forms($form['id'], $lead );
 	?>
 	</div>
+	<?php endif;?>
+		
 	<div class="detail-view-print">
 				<?php $entry_sidebar_button = '<input type="submit" name="sync_jdb" value="Send to JDB" class="button"
 				 style="width:auto;padding-bottom:2px;"
@@ -649,6 +648,14 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 	{
 		if (strlen($lead[$location['id']]) > 0)  $locationsarray[] = $lead[$location['id']];
 	}
+	// Load RF
+	
+	$rfinputs=RGFormsModel::get_field($form,'79');
+	$rfarray = array();
+	foreach($rfinputs['inputs'] as $rfinput)
+	{
+		if (strlen($lead[$rfinput['id']]) > 0)  $rfarray[] = $lead[$rfinput['id']];
+	}
 	//
 	$jdb_entry_data = array(
 			'form_type' => $form_id, //(Form ID)
@@ -701,7 +708,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'lastname' => isset($lead['96.6']) ? $lead['96.6']  : '',
 			'phone2_type' => isset($lead['149']) ? $lead['149']  : '',
 			'maker_name' => isset($allmakername) ? $allmakername  : '', 
-			'radio_frequency' => isset($lead['79']) ? $lead['79']  : '',
+			'radio_frequency' => $rfarray,
 			'what_are_you_powering' => isset($lead['74']) ? $lead['74']  : '',
 			'private_description' => isset($lead['11']) ? $lead['11']  : '',
 			'org_type' => isset($lead['45']) ? $lead['45']  : '',
@@ -719,7 +726,7 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'special_request' => isset($lead['64']) ? $lead['64']  : '',
 			'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
 			'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
-			'loctype_outdoors' => $fieldlocations,
+			'loctype_outdoors' => $locationsarray,
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
 			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 			'CS_ID' => $lead_id

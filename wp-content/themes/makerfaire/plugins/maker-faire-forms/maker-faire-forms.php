@@ -5053,7 +5053,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 	
-		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') limit 100");
+		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') limit 25");
 	
 		while($row = $result->fetch_row())
 		{
@@ -5112,11 +5112,19 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 	}
 	// Load Loctations
 	
-	$fieldlocations=RGFormsModel::get_field($form,'302');
+	$fieldlocations=RGFormsModel::get_field($form,'70');
 	$locationsarray = array();
 	foreach($fieldlocations['inputs'] as $location)
 	{
 		if (strlen($lead[$location['id']]) > 0)  $locationsarray[] = $lead[$location['id']];
+	}
+	// Load RF
+	
+	$rfinputs=RGFormsModel::get_field($form,'79');
+	$rfarray = array();
+	foreach($rfinputs['inputs'] as $rfinput)
+	{
+		if (strlen($lead[$rfinput['id']]) > 0)  $rfarray[] = $lead[$rfinput['id']];
 	}
 	//
 	$jdb_entry_data = array(
@@ -5140,11 +5148,11 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'tables_chairs' => isset($lead['62']) ? $lead['62']  : '',
 			'project_video' => isset($lead['32']) ? $lead['32']  : '',
 			'cats' => isset($topicsarray) ? $topicsarray  : '',
-			'booth_location' => isset($locationsarray) ? $locationsarray : '',
+			'loctype' => isset($lead['69']) ? $lead['69']  : '',
 			'tables_chairs_details' => isset($lead['288']) ? $lead['288']  : '',
 			'internet' => isset($lead['77']) ? $lead['77']  : '',
 			'maker_photo' => isset($lead['217']) ? $lead['217']  : '',
-			'email' => isset($lead['161']) ? $lead['161']  : '', 
+			'email' => isset($lead['98']) ? $lead['98']  : '', 
 			'project_photo' => isset($lead['22']) ? $lead['22']  : '',
 			'project_name' => isset($lead['151']) ? $lead['151']  : '',
 			'first_time' => isset($lead['130']) ? $lead['130']  : '',
@@ -5170,7 +5178,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'lastname' => isset($lead['96.6']) ? $lead['96.6']  : '',
 			'phone2_type' => isset($lead['149']) ? $lead['149']  : '',
 			'maker_name' => isset($allmakername) ? $allmakername  : '', 
-			'radio_frequency' => isset($lead['79']) ? $lead['79']  : '',
+			'radio_frequency' => $rfarray,
 			'what_are_you_powering' => isset($lead['74']) ? $lead['74']  : '',
 			'private_description' => isset($lead['11']) ? $lead['11']  : '',
 			'org_type' => isset($lead['45']) ? $lead['45']  : '',
@@ -5188,9 +5196,9 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'special_request' => isset($lead['64']) ? $lead['64']  : '',
 			'hands_on_desc' => isset($lead['67']) ? $lead['67']  : '',
 			'activity_wrist' => isset($lead['293']) ? $lead['293']  : '',
-			'outdoor_detail' => isset($lead['70']) ? $lead['70']  : '',
+			'loctype_outdoors' => $locationsarray,
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
-			'under_18' => isset($lead['295']) ? $lead['295']  : '',
+			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 			'CS_ID' => $lead_id
 			//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
 			//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
@@ -5230,7 +5238,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			if ( $body->exhibit_id == '' || $body->exhibit_id == 0 ) {
 				gform_update_meta( $entry_id, 'mf_jdb_sync', 'fail' );
 			} else {
-				update_post_meta( $post->ID, 'mf_jdb_sync', time() );
+				gform_update_meta( $post->ID, 'mf_jdb_sync', time() );
 			}
 		}
 		return ($res['body']);

@@ -2774,12 +2774,10 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		$locations = mf_get_all_locations();
 		$faires = get_terms( 'faire', array( 'hide_empty' => false, 'order' => 'DESC' ) );
 		$tags = get_terms( 'post_tag', array( 'hide_empty' => false ) ); ?>
-		<div class="wrap" id="iscic">
+		<div class="wrap"  id="iscic">
 			<?php echo screen_icon(); ?>
 			<h2>Maker Faire Reports</h2>
 			<div style="width:45%; float:left">
-				<h3><?php echo get_term_by( 'slug', MF_CURRENT_FAIRE, 'faire')->name; ?> Stats</h3>
-				<?php echo mf_count_post_statuses( 'table' ); ?>
 			<h1 style="margin-top:20px;">Sync Status with JDB</h1>
 			Syncs 100 applications at a time.<br />To do a full sync start at 0 and increase by 100 until you're done.
 			<form action="" method="post">
@@ -4384,21 +4382,27 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 	* @param string $app_status Post status
 	* =====================================================================*/
 	private function sync_status_jdb( $id = 0, $status = '' ) {
-
-		$res = wp_remote_post( 'http://db.makerfaire.com/updateExhibitStatusForJSON', array( 'body' => array( 'eid' => intval( $id ), 'status' => esc_attr( $status ) ) ) );
-		$er  = 0;
-
-		if ( 200 == $res['response']['code'] ) {
-			$body = json_decode( $res['body'] );
-			if ( 'ERROR' != $body->status ) {
-				$er = time();
+			$post_body = array(
+					'method' => 'POST',
+					'timeout' => 45,
+					'headers' => array(),
+					'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
+		
+			//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+			$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitStatusForJSON', $post_body  );
+			$er  = 0;
+		
+			if ( 200 == $res['response']['code'] ) {
+				$body = json_decode( $res['body'] );
+				if ( 'ERROR' != $body->status ) {
+					$er = time();
+				}
 			}
+		
+			gform_update_meta( $id, 'mf_jdb_status_sync', $er );
+		
+			return $er;
 		}
-
-		update_post_meta( $id, 'mf_jdb_status_sync', $er );
-
-		return $er;
-	}
 	/*
 	* Sync MakerFiare Application Statuses
 	*
@@ -4408,24 +4412,24 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 	* =====================================================================*/
 	private function sync_all_status_jdb( $offset = 0, $length = 100 ) {
 
-		$args = array(
-			'posts_per_page' => intval( $length ),
-			'offset'         => intval( $offset ),
-			'post_type'      => 'mf_form',
-			'faire'			 => MF_CURRENT_FAIRE,
-		);
-
-		$ps      = new WP_Query( $args );
-		$posts   = $ps->get_posts();
-		$success = 0;
-
-		foreach( $posts as $post ) {
-			$r = $this->sync_status_jdb( $post->ID, $post->post_status );
-
-			if( $r )
-				$success++;
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+		if ($mysqli->connect_errno) {
+			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
-
+		
+		$result = $mysqli->query("Select  a.id,b.value from wp_rg_lead a join wp_rg_lead_detail b on a.id=b.lead_id and b.field_number='303'
+				where  a.status <> 'trash' and a.form_id in (20,13,12,16,17) and a.id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_status_sync') limit 25
+		");
+		
+		while($row = $result->fetch_row())
+		{
+				$success = 0;
+		
+				$r = $this->sync_status_jdb( $row[0], $row[1] );
+		
+					if( $r )
+						$success++;
+		}
 		return $success;
 	}
 
@@ -5053,7 +5057,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 	
-		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') limit 25");
+		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where  status <> 'trash' and form_id in (20,13,12,16,17) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') limit 25");
 	
 		while($row = $result->fetch_row())
 		{
@@ -5126,7 +5130,14 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 	{
 		if (strlen($lead[$rfinput['id']]) > 0)  $rfarray[] = $lead[$rfinput['id']];
 	}
-	//
+	// Load statuses
+	//$entrystatuses=RGFormsModel::get_field($form,'303');
+	//$currentstatus = "";
+	//foreach($entrystatuses['inputs'] as $entrystatus)
+	//{
+	//	if (strlen($lead[$entrystatus['id']]) > 0)  $currentstatus = $lead[$entrystatus['id']];
+	//}
+	
 	$jdb_entry_data = array(
 			'form_type' => $form_id, //(Form ID)
 			'noise' => isset($lead['72']) ? $lead['72'] : '',
@@ -5199,7 +5210,8 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'loctype_outdoors' => $locationsarray,
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
 			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
-			'CS_ID' => $lead_id
+			'CS_ID' => $lead_id,
+			'status' => isset($lead['303']) ? $lead['303']  : '',
 			//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
 			//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
 			//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)

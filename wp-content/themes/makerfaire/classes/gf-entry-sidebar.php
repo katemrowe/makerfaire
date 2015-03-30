@@ -268,6 +268,12 @@ if ($mode == 'view') {
 				onclick="jQuery(\'#action\').val(\'sync_jdb\');"/>';
 					echo $entry_sidebar_button;	?>
 					</div>
+					<div class="detail-view-print">
+				<?php $entry_sidebar_button = '<input type="submit" name="sync_status_jdb" value="Sync Status JDB" class="button"
+				 style="width:auto;padding-bottom:2px;"
+				onclick="jQuery(\'#action\').val(\'sync_status_jdb\');"/>';
+					echo $entry_sidebar_button;	?>
+					</div>
 				<?php 
 }
 
@@ -275,7 +281,7 @@ if ($mode == 'view') {
 /* Notes Sidebar Grid Function */
 function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = '' ) {
 		?>
-<table class="widefat fixed entry-detail-notes" cellspacing="0">
+<table class="widefat fixed entry-detail-notes">
 	<tbody id="the-comment-list" class="list:comment">
 		<?php
 			$count = 0;
@@ -329,6 +335,7 @@ if (!empty($mfAction))
 	$lead = GFAPI::get_entry( $entry_info_entry_id );
 	$form_id    =  isset($lead['form_id']) ? $lead['form_id'] : 0;
 	$form = RGFormsModel::get_form_meta($form_id);
+	$entry_status =  isset($lead['303']) ? $lead['303'] : '';
 	
 	switch ($mfAction ) {
 		// Entry Management Update
@@ -347,6 +354,10 @@ if (!empty($mfAction))
 		case 'sync_jdb' :
 			gravityforms_send_entry_to_jdb($entry_info_entry_id);
 			break;
+		case 'sync_status_jdb' :
+			sync_status_jdb($entry_info_entry_id,$entry_status);
+			break;
+			
 		//Sidebar Note Add
 		case 'add_note_sidebar' :
 			add_note_sidebar($lead, $form);
@@ -444,6 +455,7 @@ function set_entry_status($lead,$form){
 				foreach ( $notifications_to_send as $notification ) {
 					GFCommon::send_notification( $notification, $form, $lead );
 				}
+				sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 
 			}
 		}
@@ -656,7 +668,14 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 	{
 		if (strlen($lead[$rfinput['id']]) > 0)  $rfarray[] = $lead[$rfinput['id']];
 	}
-	//
+	// Load statuses
+	//$entrystatuses=RGFormsModel::get_field($form,'303');
+	//$currentstatus = "";
+	//foreach($entrystatuses['inputs'] as $entrystatus)
+	//{
+	//	if (strlen($lead[$entrystatus['id']]) > 0)  $currentstatus = $lead[$entrystatus['id']];
+	//}
+	
 	$jdb_entry_data = array(
 			'form_type' => $form_id, //(Form ID)
 			'noise' => isset($lead['72']) ? $lead['72'] : '',
@@ -729,7 +748,8 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			'loctype_outdoors' => $locationsarray,
 			'makerfaire_other' => isset($lead['132']) ? $lead['132']  : '',
 			'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
-			'CS_ID' => $lead_id
+			'CS_ID' => $lead_id,
+			'status' => isset($lead['303']) ? $lead['303']  : '',
 			//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
 			//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
 			//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
@@ -772,4 +792,34 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 		}
 	}
 	return ($res['body']);
+}
+
+/*
+ * Sync MakerFaire Application Statuses
+*
+* @access private
+* @param int $id Post id to SYNC
+* @param string $app_status Post status
+* =====================================================================*/
+function sync_status_jdb( $id = 0, $status = '' ) {
+	$post_body = array(
+		'method' => 'POST',
+		'timeout' => 45,
+		'headers' => array(),
+		'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
+
+	//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitStatusForJSON', $post_body  );
+	$er  = 0;
+
+	if ( 200 == $res['response']['code'] ) {
+		$body = json_decode( $res['body'] );
+		if ( 'ERROR' != $body->status ) {
+			$er = time();
+		}
+	}
+
+	gform_update_meta( $id, 'mf_jdb_status_sync', $er );
+
+	return $er;
 }

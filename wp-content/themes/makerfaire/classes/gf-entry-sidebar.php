@@ -571,23 +571,24 @@ function add_note_sidebar($lead, $form)
 }
 
 
-
-
 function wpse27856_set_content_type(){
 	return "text/html";
 }
 
-
-
-
+/* 
+ * Add a single note 
+ */
 function mf_add_note($leadid,$notetext)
 {
 	global $current_user;
 		
 	$user_data = get_userdata( $current_user->ID );
 	RGFormsModel::add_note( $leadid, $current_user->ID, $user_data->display_name, $notetext );
+	//gravityforms_send_note_to_jdb($leadid,$notetext);
 }
-
+/*
+ * Function to send a single entry to jdb.  This is called by the sync button and by the update of the record.
+ */
 function gravityforms_send_entry_to_jdb ($id)
 {
 
@@ -617,7 +618,9 @@ function gravityforms_send_entry_to_jdb ($id)
 		};
 	}
 }
-
+/*
+ * Function for formatting gravity forms lead into usable jdb data 
+ */
 function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 {
 	//load form
@@ -768,12 +771,15 @@ function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 
 
 }
-
+/*
+ * Function to do the actual sending to jdb
+ */
 function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 	// Don't sync from any of our testing locations.
-	$local_server = array( 'localhost', 'make.com', 'vip.dev', 'staging.makerfaire.com' );
+	$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+	$remote_post_url = 'http://db.makerfaire.com/updateExhibitInfo';
 	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
-		return false;
+		$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
 	
 	$post_body = array(
 			'method' => 'POST',
@@ -781,8 +787,7 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 			'headers' => array(),
 			'body' => $jdb_encoded_record);
 	
-	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
-	//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+	$res  = wp_remote_post( $remote_post_url, $post_body  );
 	if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 		$body = json_decode( $res['body'] );
 		if ( $body->exhibit_id == '' && $body->exhibit_id == 0 ) {
@@ -801,15 +806,19 @@ function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
 * @param int $id Post id to SYNC
 * @param string $app_status Post status
 * =====================================================================*/
-function sync_status_jdb( $id = 0, $status = '' ) {
+function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
+	$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+	$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
+	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
+		$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+	
 	$post_body = array(
 		'method' => 'POST',
 		'timeout' => 45,
 		'headers' => array(),
 		'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
 
-	//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
-	$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitStatusForJSON', $post_body  );
+	$res  = wp_remote_post( $remote_post_url, $post_body  );
 	$er  = 0;
 
 	if ( 200 == $res['response']['code'] ) {
@@ -822,4 +831,42 @@ function sync_status_jdb( $id = 0, $status = '' ) {
 	gform_update_meta( $id, 'mf_jdb_status_sync', $er );
 
 	return $er;
+}
+/* 
+ * Function to send notes directly to JDB.
+ */
+ function gravityforms_send_note_to_jdb( $id = 0, $note = '' ) {
+	$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+	$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
+	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
+		$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+
+	$post_body = array(
+			'method' => 'POST',
+			'timeout' => 45,
+			'headers' => array(),
+			'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note ))));
+
+	$res  = wp_remote_post( $remote_post_url, $post_body  );
+	$er  = 0;
+
+	if ( 200 == $res['response']['code'] ) {
+		$body = json_decode( $res['body'] );
+		if ( 'ERROR' != $body->status ) {
+			$er = time();
+		}
+	}
+
+	gform_update_meta( $id, 'mf_jdb_note_sync', $er );
+
+	return $er;
+}
+/*
+ * After submission handle jdb sync
+ */
+//add_action( 'gform_after_submission', 'post_to_jdb', 10, 2 );
+function post_to_jdb( $entry, $form ) {
+
+	$gravityforms_send_entry_to_jdb($entry['id']);
+
 }

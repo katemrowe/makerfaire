@@ -4382,14 +4382,19 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 	* @param string $app_status Post status
 	* =====================================================================*/
 	private function sync_status_jdb( $id = 0, $status = '' ) {
-			$post_body = array(
+			$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+			$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
+			//$remote_post_url='';
+			if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
+				$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+				$post_body = array(
 					'method' => 'POST',
 					'timeout' => 45,
 					'headers' => array(),
 					'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
 		
 			//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
-			$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitStatusForJSON', $post_body  );
+			$res  = wp_remote_post( $remote_post_url, $post_body  );
 			$er  = 0;
 		
 			if ( 200 == $res['response']['code'] ) {
@@ -4876,7 +4881,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 	private function add_makers_to_event($json_data, $maker_names, $event_id = 0, $is_single = false, $type = 'exhibit' ) {
 			global $wpdb;
 
-      $maker_ids = array();
+      		$maker_ids = array();
 
 				foreach($maker_names as $ix => $maker_name) {
 
@@ -5079,6 +5084,29 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		}
 	}
 	
+	public static function gravityforms_sync_all_entry_notes ($entry_id)
+	{
+	
+		$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+		if ($mysqli->connect_errno) {
+			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+		}
+	
+		$result = $mysqli->query('SELECT value FROM wp_rg_lead_notes where lead_id='.$entry_id.'');
+	
+		while($row = $result->fetch_row())
+		{
+			$results_on_send = self::gravityforms_send_note_to_jdb($entry_id,$row[0]);
+			$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
+	
+			//MySqli Insert Query
+			if($results_on_send_prepared){
+				print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
+			}else{
+				die('Error : ('. $mysqli->errno .') '. $mysqli->error);
+			};
+		}
+	}
 
 public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 {
@@ -5232,19 +5260,19 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 }
 	
 	public static function gravityforms_send_record_to_jdb( $entry_id,$jdb_encoded_record ) {
-		// Don't sync from any of our testing locations.
-		$local_server = array( 'localhost', 'make.com', 'vip.dev', 'staging.makerfaire.com' );
+		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+		$remote_post_url = 'http://db.makerfaire.com/updateExhibitInfo';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
-			return false;
-	
+			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+
+
 		$post_body = array(
 				'method' => 'POST',
 				'timeout' => 45,
 				'headers' => array(),
 				'body' => $jdb_encoded_record);
 	
-		$res  = wp_remote_post( 'http://db.makerfaire.com/updateExhibitInfo', $post_body  );
-		//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+		$res  = wp_remote_post( $remote_post_url, $post_body  );
 		if ( 200 == wp_remote_retrieve_response_code( $res ) ) {
 			$body = json_decode( $res['body'] );
 			if ( $body->exhibit_id == '' || $body->exhibit_id == 0 ) {
@@ -5256,6 +5284,32 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 		return ($res['body']);
 	}
 	
+	private function gravityforms_send_note_to_jdb( $id = 0, $note = '' ) {
+		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
+		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
+		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
+			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+		$post_body = array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'headers' => array(),
+				'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note ))));
+	
+		//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
+		$res  = wp_remote_post($remote_post_url, $post_body  );
+		$er  = 0;
+	
+		if ( 200 == $res['response']['code'] ) {
+			$body = json_decode( $res['body'] );
+			if ( 'ERROR' != $body->status ) {
+				$er = time();
+			}
+		}
+	
+		gform_update_meta( $id, 'mf_jdb_status_sync', $er );
+	
+		return $er;
+	}
 	
 }
 

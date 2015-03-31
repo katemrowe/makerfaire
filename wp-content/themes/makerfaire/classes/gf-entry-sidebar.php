@@ -355,7 +355,7 @@ if (!empty($mfAction))
 			gravityforms_send_entry_to_jdb($entry_info_entry_id);
 			break;
 		case 'sync_status_jdb' :
-			sync_status_jdb($entry_info_entry_id,$entry_status);
+			gravityforms_sync_status_jdb($entry_info_entry_id,$entry_status);
 			break;
 			
 		//Sidebar Note Add

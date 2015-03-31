@@ -4402,9 +4402,25 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 				if ( 'ERROR' != $body->status ) {
 					$er = time();
 				}
+				//MySqli Insert Query]
+				$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+				if ($mysqli->connect_errno) {
+					echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+				}
+				$synccontents = '"'.$mysqli->real_escape_string($post_body).'"';
+				$results_on_send = $body;
+				$results_on_send_prepared = '"SyncStatusResults='.$mysqli->real_escape_string($results_on_send).'"';
+				
+				$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$synccontents, $results_on_send_prepared)");
+				if($insert_row){
+					print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
+				}else{
+					die('Error : ('. $mysqli->errno .') '. $mysqli->error);
+				};
 			}
 		
 			gform_update_meta( $id, 'mf_jdb_status_sync', $er );
+			
 		
 			return $er;
 		}
@@ -5073,7 +5089,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			$synccontents = '"'.$mysqli->real_escape_string($jdb_encoded_entry).'"';
 			$results_on_send = self::gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
 			$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
-	
+			self::gravityforms_sync_all_entry_notes($entry_id);
 			//MySqli Insert Query
 			$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($entry_id,$synccontents, $results_on_send_prepared)");
 			if($insert_row){
@@ -5081,6 +5097,8 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			}else{
 				die('Error : ('. $mysqli->errno .') '. $mysqli->error);
 			};
+			
+			
 		}
 	}
 	
@@ -5092,19 +5110,11 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 	
-		$result = $mysqli->query('SELECT value FROM wp_rg_lead_notes where lead_id='.$entry_id.'');
+		$result = $mysqli->query('SELECT value,id FROM wp_rg_lead_notes where lead_id='.$entry_id.'');
 	
 		while($row = $result->fetch_row())
 		{
 			$results_on_send = self::gravityforms_send_note_to_jdb($entry_id,$row[0]);
-			$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
-	
-			//MySqli Insert Query
-			if($results_on_send_prepared){
-				print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
-			}else{
-				die('Error : ('. $mysqli->errno .') '. $mysqli->error);
-			};
 		}
 	}
 
@@ -5284,7 +5294,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 		return ($res['body']);
 	}
 	
-	private function gravityforms_send_note_to_jdb( $id = 0, $note = '' ) {
+	private function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' ) {
 		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
 		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
@@ -5304,9 +5314,26 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			if ( 'ERROR' != $body->status ) {
 				$er = time();
 			}
+			//MySqli Insert Query
+			$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+			if ($mysqli->connect_errno) {
+				echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+			}
+				
+			$synccontents = '"'.noteId.':'.$mysqli->real_escape_string($post_body).'"';
+			$syncresults = '"'.$mysqli->real_escape_string($body).'"';
+			
+			$querytext= "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$synccontents, $syncresults)";
+			$insert_row = $mysqli->query($querytext);
+			if($insert_row){
+				print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
+			}else{
+				die('Error : ('. $mysqli->errno .') '. $mysqli->error);
+			};
 		}
+		
 	
-		gform_update_meta( $id, 'mf_jdb_status_sync', $er );
+		gform_update_meta( $id, 'mf_jdb_add_note', $er );
 	
 		return $er;
 	}

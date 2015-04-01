@@ -4705,10 +4705,8 @@ wp_dropdown_categories ( array (
 			if ('ERROR' != $body->status) {
 				$er = time ();
 			}
+			gform_update_meta ( $id, 'mf_jdb_status_sync', $body );
 		}
-		
-		gform_update_meta ( $id, 'mf_jdb_status_sync', $er );
-		
 		return $er;
 	}
 	/*
@@ -5390,7 +5388,7 @@ wp_dropdown_categories ( array (
 		$result = $mysqli->query ( 'SELECT value,id FROM wp_rg_lead_notes where lead_id=' . $entry_id . '' );
 		
 		while ( $row = $result->fetch_row () ) {
-			$results_on_send = self::gravityforms_send_note_to_jdb ( $entry_id, $row [0] );
+			$results_on_send = self::gravityforms_send_note_to_jdb ( $entry_id, $row[1], $row [0] );
 		}
 	}
 	public static function gravityforms_to_jdb_record($lead, $lead_id, $form_id) {
@@ -5617,7 +5615,7 @@ wp_dropdown_categories ( array (
 			 */
 		}
 		
-		gform_update_meta ( $id, 'mf_jdb_add_note', $er );
+		gform_update_meta ( $id, 'mf_jdb_add_note', $body );
 		
 		return $er;
 	}

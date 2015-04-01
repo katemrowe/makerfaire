@@ -1,5 +1,14 @@
 <?php
+
+
+function custom_rewrite_tag() {
+	add_rewrite_tag('%entryid%', '([^&]+)');
+	add_rewrite_tag('%makerfaire%', '([^&]+)');
+}
+add_action('init', 'custom_rewrite_tag', 10, 0);
+
 /* Gravity Forms Specific Helper calls*/
+
 
 function add_grav_forms(){
 	$role = get_role('editor');

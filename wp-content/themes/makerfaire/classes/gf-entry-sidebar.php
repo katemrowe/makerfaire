@@ -811,12 +811,13 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 	$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
 	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 		$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+	$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status )));
 	
 	$post_body = array(
 		'method' => 'POST',
 		'timeout' => 45,
 		'headers' => array(),
-		'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
+		'body' => $encoded_array);
 
 	$res  = wp_remote_post( $remote_post_url, $post_body  );
 	$er  = 0;
@@ -840,12 +841,13 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 	$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 		$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
-
+	$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note )));
+	
 	$post_body = array(
 			'method' => 'POST',
 			'timeout' => 45,
 			'headers' => array(),
-			'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note ))));
+			'body' => $encoded_array);
 
 	$res  = wp_remote_post( $remote_post_url, $post_body  );
 	$er  = 0;

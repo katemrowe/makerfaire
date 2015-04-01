@@ -104,6 +104,13 @@ if ( function_exists( 'wpcom_vip_sharing_twitter_via' ) ) {
     add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
 }
 */
+
+/* Rewrite rules */
+function custom_rewrite_rule() {
+	add_rewrite_rule('^mf/([^/]*)/([^/]*)/?','index.php?pagename=maker-faire-gravity-forms-display-page&makerfaire=$matches[1]&entryid=$matches[2]','top');
+}
+add_action('init', 'custom_rewrite_rule', 10, 0);
+
 /* Favicon in Header */
 add_action('wp_head','my_custom_fav_ico');
 function my_custom_fav_ico() {

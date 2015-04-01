@@ -4385,13 +4385,14 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
 			$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
 			//$remote_post_url='';
+			$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status )));
 			if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 				$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
 				$post_body = array(
 					'method' => 'POST',
 					'timeout' => 45,
 					'headers' => array(),
-					'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status ))));
+					'body' => $encoded_array);
 		
 			//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
 			$res  = wp_remote_post( $remote_post_url, $post_body  );
@@ -4411,7 +4412,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 				$results_on_send = $body;
 				$results_on_send_prepared = '"SyncStatusResults='.$mysqli->real_escape_string($results_on_send).'"';
 				
-				$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$synccontents, $results_on_send_prepared)");
+				$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$encoded_array, $results_on_send_prepared)");
 				if($insert_row){
 					print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';
 				}else{
@@ -5299,11 +5300,12 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
+		$encoded_array = http_build_query(array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note )));
 		$post_body = array(
 				'method' => 'POST',
 				'timeout' => 45,
 				'headers' => array(),
-				'body' => array( 'body' => array( 'CS_ID' => intval( $id ), 'note' => esc_attr( $note ))));
+				'body' => $encoded_array );
 	
 		//$res  = wp_remote_post( 'http://makerfaire.local/wp-content/allpostdata.php', $post_body  );
 		$res  = wp_remote_post($remote_post_url, $post_body  );
@@ -5323,7 +5325,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			$synccontents = '"'.noteId.':'.$mysqli->real_escape_string($post_body).'"';
 			$syncresults = '"'.$mysqli->real_escape_string($body).'"';
 			
-			$querytext= "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$synccontents, $syncresults)";
+			$querytext= "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$encoded_array, $syncresults)";
 			$insert_row = $mysqli->query($querytext);
 			if($insert_row){
 				print 'Success! Response from JDB  was: ' .$results_on_send .'<br />';

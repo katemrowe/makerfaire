@@ -4451,6 +4451,8 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 		
 					if( $r )
 						$success++;
+					$this->gravityforms_sync_all_entry_notes($row[0]);
+					
 		}
 		return $success;
 	}
@@ -5079,7 +5081,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 	
-		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where  status <> 'trash'  and id in (50188, 50155, 50162, 50209, 50334) and form_id in (20,13,12,16,17) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') limit 25");
+		$result = $mysqli->query("Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (20,13,12,16,17) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') ");
 	
 		while($row = $result->fetch_row())
 		{

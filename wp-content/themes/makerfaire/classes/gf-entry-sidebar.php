@@ -455,7 +455,7 @@ function set_entry_status($lead,$form){
 				foreach ( $notifications_to_send as $notification ) {
 					GFCommon::send_notification( $notification, $form, $lead );
 				}
-				sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
+				//sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 
 			}
 		}

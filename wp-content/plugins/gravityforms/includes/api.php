@@ -924,7 +924,7 @@ class GFAPI {
 
 		$field = GFFormsModel::get_field( $form, $input_id );
 
-		$lead_detail_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}rg_lead_detail WHERE lead_id=%d AND CAST(field_number as DECIMAL(4,2))=%s", $entry_id, $input_id ) );
+		$lead_detail_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}rg_lead_detail WHERE lead_id=%d AND CAST(field_number as DECIMAL(4))=%s", $entry_id, $input_id ) );
 
 		$result = true;
 		if ( ! isset( $entry[ $input_id ] ) || $entry[ $input_id ] != $value ){

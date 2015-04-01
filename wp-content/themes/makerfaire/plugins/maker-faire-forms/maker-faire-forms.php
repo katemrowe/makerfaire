@@ -5090,7 +5090,7 @@ ORDER BY wp_posts.menu_order ASC, wp_posts.post_title ASC
 			$synccontents = '"'.$mysqli->real_escape_string($jdb_encoded_entry).'"';
 			$results_on_send = self::gravityforms_send_record_to_jdb($entry_id,$jdb_encoded_entry);
 			$results_on_send_prepared = '"'.$mysqli->real_escape_string($results_on_send).'"';
-			self::gravityforms_sync_all_entry_notes($entry_id);
+			//self::gravityforms_sync_all_entry_notes($entry_id);
 			//MySqli Insert Query
 			$insert_row = $mysqli->query("INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($entry_id,$synccontents, $results_on_send_prepared)");
 			if($insert_row){
@@ -5322,7 +5322,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 				echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 			}
 				
-			$synccontents = '"'.noteId.':'.$mysqli->real_escape_string($post_body).'"';
+			/*$synccontents = '"'.noteId.':'.$mysqli->real_escape_string($post_body).'"';
 			$syncresults = '"'.$mysqli->real_escape_string($body).'"';
 			
 			$querytext= "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($id,$encoded_array, $syncresults)";
@@ -5332,6 +5332,7 @@ public static function gravityforms_to_jdb_record($lead,$lead_id,$form_id)
 			}else{
 				die('Error : ('. $mysqli->errno .') '. $mysqli->error);
 			};
+			*/
 		}
 		
 	

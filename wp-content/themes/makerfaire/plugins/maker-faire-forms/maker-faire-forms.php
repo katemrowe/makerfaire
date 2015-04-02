@@ -5378,9 +5378,9 @@ wp_dropdown_categories ( array (
 			// MySqli Insert Query
 			$insert_row = $mysqli->query ( "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($entry_id,$synccontents, $results_on_send_prepared)" );
 			if ($insert_row) {
-				print 'Success! Response from JDB  was: ' . $results_on_send . '<br />';
+				echo 'Success! Response from JDB  was: ' . $results_on_send . '<br />';
 			} else {
-				print'Error : (' . $mysqli->errno . ') ' . $mysqli->error.'<br />';
+				echo 'Error : (' . $mysqli->errno . ') ' . $mysqli->error.'<br />';
 				die ( 'Error : (' . $mysqli->errno . ') ' . $mysqli->error );
 			}
 			;
@@ -5579,6 +5579,8 @@ wp_dropdown_categories ( array (
 				gform_update_meta ( $entry_id, 'mf_jdb_sync', time () );
 			}
 		}
+		else 	gform_update_meta ( $entry_id, 'mf_jdb_sync', 'fail' );
+			
 		return ($res ['body']);
 	}
 	private function gravityforms_send_note_to_jdb($id = 0, $noteid = 0, $note = '') {

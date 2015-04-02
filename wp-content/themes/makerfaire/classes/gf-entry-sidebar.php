@@ -828,7 +828,7 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 			$er = time();
 		}
 	}
-
+	gravityforms_sync_all_entry_notes($id);
 	gform_update_meta( $id, 'mf_jdb_status_sync', $er );
 
 	return $er;
@@ -836,7 +836,7 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 /* 
  * Function to send notes directly to JDB.
  */
- function gravityforms_send_note_to_jdb( $id = 0, $note = '' ) {
+ function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' ) {
 	$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
 	$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 	if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
@@ -857,10 +857,11 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 		if ( 'ERROR' != $body->status ) {
 			$er = time();
 		}
+		gform_update_meta( $id, 'mf_jdb_note_sync', $body );
+		
 	}
 
-	gform_update_meta( $id, 'mf_jdb_note_sync', $er );
-
+	
 	return $er;
 }
 /*
@@ -871,4 +872,17 @@ function post_to_jdb( $entry, $form ) {
 
 	$gravityforms_send_entry_to_jdb($entry['id']);
 
+}
+
+function gravityforms_sync_all_entry_notes($entry_id) {
+	$mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+
+	$result = $mysqli->query ( 'SELECT value,id FROM wp_rg_lead_notes where lead_id=' . $entry_id . '' );
+
+	while ( $row = $result->fetch_row () ) {
+		$results_on_send = gravityforms_send_note_to_jdb ( $entry_id, $row[1], $row [0] );
+	}
 }

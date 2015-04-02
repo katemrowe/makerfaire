@@ -4719,7 +4719,7 @@ wp_dropdown_categories ( array (
 		}
 		
 		$result = $mysqli->query ( "Select  a.id,b.value from wp_rg_lead a join wp_rg_lead_detail b on a.id=b.lead_id and b.field_number='303'
-				where  a.status <> 'trash' and a.id in (50188, 50155, 50162, 50209, 50334) and a.form_id in (20,13,12,16,17) and a.id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_status_sync') limit 100
+				where  a.status <> 'trash' and a.id in (50188, 50155, 50162, 50209, 50334) and a.form_id in (20,13,12,16,17) and a.id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_status_sync') and  id in (select lead_id from wp_rg_lead_detail where field_number = 303)  limit 100
 		" );
 		
 		while ( $row = $result->fetch_row () ) {
@@ -5358,7 +5358,7 @@ wp_dropdown_categories ( array (
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		
-		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (20,13,12,16,17) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') LIMIT 50" );
+		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (20,13,12,16,17) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') and id in (select lead_id from wp_rg_lead_detail where field_number = 303)  LIMIT 100" );
 		
 		while ( $row = $result->fetch_row () ) {
 			$entry_id = $row [0];

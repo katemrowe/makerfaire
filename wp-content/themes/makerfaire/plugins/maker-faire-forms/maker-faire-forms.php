@@ -5584,7 +5584,7 @@ wp_dropdown_categories ( array (
 		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if (isset ( $_SERVER ['HTTP_HOST'] ) && in_array ( $_SERVER ['HTTP_HOST'], $local_server ))
 			$remote_post_url = 'http://makerfaire.local/wp-content/allpostdata.php';
-		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteidid ), 'note' => esc_attr( $note )));
+		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteid ), 'note' => esc_attr( $note )));
 	
 		$post_body = array (
 				'method' => 'POST',

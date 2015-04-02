@@ -5362,11 +5362,13 @@ wp_dropdown_categories ( array (
 		
 		while ( $row = $result->fetch_row () ) {
 			$entry_id = $row [0];
+			echo 'Processing:'.print_r($row);
 			$entry = GFAPI::get_entry ( $row [0] );
 			// $jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
 			$jdb_encoded_entry = http_build_query ( self::gravityforms_to_jdb_record ( $entry, $row [0], $row [1] ) );
 			$synccontents = '"' . $mysqli->real_escape_string ( $jdb_encoded_entry ) . '"';
 			$results_on_send = self::gravityforms_send_record_to_jdb ( $entry_id, $jdb_encoded_entry );
+			echo 'ResultsOnSend:'.print_r($results_on_send);
 			$results_on_send_prepared = '"' . $mysqli->real_escape_string ( $results_on_send ) . '"';
 			// self::gravityforms_sync_all_entry_notes($entry_id);
 			// MySqli Insert Query
@@ -5374,6 +5376,7 @@ wp_dropdown_categories ( array (
 			if ($insert_row) {
 				print 'Success! Response from JDB  was: ' . $results_on_send . '<br />';
 			} else {
+				print'Error : (' . $mysqli->errno . ') ' . $mysqli->error.'<br />';
 				die ( 'Error : (' . $mysqli->errno . ') ' . $mysqli->error );
 			}
 			;

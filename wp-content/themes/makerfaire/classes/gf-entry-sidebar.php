@@ -455,7 +455,7 @@ function set_entry_status($lead,$form){
 				foreach ( $notifications_to_send as $notification ) {
 					GFCommon::send_notification( $notification, $form, $lead );
 				}
-				//sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
+				sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 
 			}
 		}
@@ -584,8 +584,10 @@ function mf_add_note($leadid,$notetext)
 		
 	$user_data = get_userdata( $current_user->ID );
 	RGFormsModel::add_note( $leadid, $current_user->ID, $user_data->display_name, $notetext );
-	//gravityforms_send_note_to_jdb($leadid,$notetext);
+	
+	
 }
+
 /*
  * Function to send a single entry to jdb.  This is called by the sync button and by the update of the record.
  */
@@ -867,13 +869,20 @@ function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 /*
  * After submission handle jdb sync
  */
-//add_action( 'gform_after_submission', 'post_to_jdb', 10, 2 );
+add_action( 'gform_post_note_added', 'note_to_jdb', 10, 2 );
+function note_to_jdb( $noteid,$entryid,$userid,$username,$note,$notetype ) {
+
+	gravityforms_send_note_to_jdb($entryid,$noteid,$note);
+}
+/*
+ * After add note handle jdb sync
+ */
+add_action( 'gform_after_submission', 'post_to_jdb', 10, 2 );
 function post_to_jdb( $entry, $form ) {
 
 	$gravityforms_send_entry_to_jdb($entry['id']);
 
 }
-
 function gravityforms_sync_all_entry_notes($entry_id) {
 	$mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
 	if ($mysqli->connect_errno) {

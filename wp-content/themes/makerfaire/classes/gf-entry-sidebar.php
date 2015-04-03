@@ -1,19 +1,41 @@
 <?php
 
 function mf_sidebar_entry_schedule($form_id, $lead) {
+
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
+    `wp_mf_schedule`.`entry_id`,
+    `wp_mf_schedule`.`location_id`,
+    `wp_mf_schedule`.`faire`,
+    `wp_mf_schedule`.`start_dt`,
+    `wp_mf_schedule`.`end_dt`,
+    `wp_mf_schedule`.`day`
+	FROM `wp_mf_schedule` where entry_id= $id");
+	if ($result)
+	{
+	while($row = $result->fetch_row())
+	{
+		$start_dt = $row[4];
+		$end_dt = $row[5];
+		echo ('s:'.$start_dt.'e:'.$end_dt.'<br />');
+		
+	}
+	}
 	// Load Fields to show on entry info
-	
-	echo ('
+		echo ('
 			
 			<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Schedule:</label></h4>
-			<input type="text" value="2014/03/15 05:06" id="datetimepickerstart">
-			<input type="text" value="2014/03/15 05:06" id="datetimepickerend">
+			<input type="text" value="2014/03/15 05:06" name="datetimepickerstart" id="datetimepickerstart">
+			<input type="text" value="2014/03/15 05:06" name="datetimepickerend" id="datetimepickerend">
 		
 			');
-
+	
 	// Create Update button for sidebar entry management
-	$entry_sidebar_button = '<input type="submit" name="update_schedule" value="Update Schedule" class="button"
+	$entry_sidebar_button = '<input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
 			 style="width:auto;padding-bottom:2px;"
 			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/>';
 			echo $entry_sidebar_button;	
@@ -455,7 +477,7 @@ function set_entry_status($lead,$form){
 				foreach ( $notifications_to_send as $notification ) {
 					GFCommon::send_notification( $notification, $form, $lead );
 				}
-				sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
+				gravityforms_sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 
 			}
 		}
@@ -521,21 +543,29 @@ function set_form_id($lead,$form){
 /* Modify Set Entry Status */
 function set_entry_schedule($lead,$form){
 	$entry_schedule_change=$_POST['entry_schedule_change'];
+	$entry_schedule_start=($_POST['datetimepickerstart']);
+	$entry_schedule_end=($_POST['datetimepickerend']);
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	
-	$is_acceptance_status_changed = (strcmp($acceptance_current_status, $acceptance_status_change) != 0);
-
-	if (!empty($entry_info_entry_id))
-	{
-		if (!empty($entry_schedule_change))
-		{
-			$form = GFAPI::get_form($form_id);
-					$schedule=array('schedule1'=>'01012014,02022014','schedule2'=>'01012014,02022014');
-					$schedule['schedule'] = $entry_schedule_change;
-					gform_update_meta( $lead['id'], 'schedule', json_encode($schedule) );
-			
-		}	
+	
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
+	$insert_query = sprintf("INSERT INTO `wp_mf_schedule`
+		(`entry_id`,
+		`start_dt`,
+		`end_dt`)
+	VALUES
+		($entry_info_entry_id,'$entry_schedule_start', '$entry_schedule_end')");
+	//MySqli Insert Query
+	$insert_row = $mysqli->query($insert_query);
+	if($insert_row){
+		echo 'Success! <br />';
+	}else{
+		echo ('Error :'.$insert_query.':('. $mysqli->errno .') '. $mysqli->error);
+	};
+	
 }
 
 function add_note_sidebar($lead, $form)

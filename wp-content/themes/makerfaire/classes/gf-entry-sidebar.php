@@ -1,11 +1,13 @@
 <?php
 
 function mf_sidebar_entry_schedule($form_id, $lead) {
-
+	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+			<h4><label class="detail-label">Schedule:</label></h4>');
 	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
+	$entry_id=$lead['id'];
 	$result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
     `wp_mf_schedule`.`entry_id`,
     `wp_mf_schedule`.`location_id`,
@@ -13,32 +15,36 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
     `wp_mf_schedule`.`day`
-	FROM `wp_mf_schedule` where entry_id= $id");
+	FROM `wp_mf_schedule` where entry_id=$entry_id");
 	if ($result)
 	{
 	while($row = $result->fetch_row())
 	{
-		$start_dt = $row[4];
-		$end_dt = $row[5];
-		echo ('s:'.$start_dt.'e:'.$end_dt.'<br />');
+		$start_dt = strtotime( $row[4]);
+		$end_dt = strtotime($row[5]);
+		$schedule_entry_id = $row[0];
+		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;" name="delete_entry_id[]"></input>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'<br />');
 		
 	}
+	$entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"
+			 style="width:auto;padding-bottom:2px;"
+			onclick="jQuery(\'#action\').val(\'delete_entry_schedule\');"/><br />';
+	echo $entry_delete_button;
 	}
 	// Load Fields to show on entry info
-		echo ('
-			
-			<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
-			<h4><label class="detail-label">Schedule:</label></h4>
-			<input type="text" value="2014/03/15 05:06" name="datetimepickerstart" id="datetimepickerstart">
-			<input type="text" value="2014/03/15 05:06" name="datetimepickerend" id="datetimepickerend">
+		echo ('<h5>Add to Schedule:</h5>
+			start: <input type="text" value="" name="datetimepickerstart" id="datetimepickerstart"><br />
+			end: <input type="text" value="" name="datetimepickerend" id="datetimepickerend"><br />
 		
 			');
 	
 	// Create Update button for sidebar entry management
 	$entry_sidebar_button = '<input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
 			 style="width:auto;padding-bottom:2px;"
-			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/>';
+			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/><br />';
 			echo $entry_sidebar_button;	
+	
+				
 
 }
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
@@ -370,6 +376,9 @@ if (!empty($mfAction))
 		case 'update_entry_schedule' :
 			set_entry_schedule($lead,$form);
 			break;
+		case 'delete_entry_schedule' :
+			delete_entry_schedule($lead,$form);
+			break;
 		case 'change_form_id' :
 			set_form_id($lead,$form);
 			break;
@@ -567,6 +576,31 @@ function set_entry_schedule($lead,$form){
 	};
 	
 }
+
+/* Modify Set Entry Status */
+function delete_entry_schedule($lead,$form){
+	$entry_schedule_change=$_POST['entry_schedule_change'];
+	$delete_entry_schedule=implode(',',($_POST['delete_entry_id']));
+
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	if (isset($delete_entry_schedule))
+	{
+	$delete_query = sprintf("DELETE FROM `wp_mf_schedule`
+			WHERE ID IN ($delete_entry_schedule)");
+	//MySqli Insert Query
+	$mysqlresults = $mysqli->query($delete_query);
+	if($mysqlresults){
+		echo 'Success! <br />';
+	}else{
+		echo ('Error :'.$delete_query.':('. $mysqli->errno .') '. $mysqli->error);
+	};}
+	
+ 
+}
+
 
 function add_note_sidebar($lead, $form)
 {

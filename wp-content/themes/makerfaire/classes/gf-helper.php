@@ -73,6 +73,7 @@ $menus = wp_get_nav_menus();
 $menu_locations = get_nav_menu_locations();
 
 $location_id = 'mf-admin-bayarea-register-menu';
+
 if (isset($menu_locations[ $location_id ])) {
 	foreach ($menus as $menu) {
 		// If the ID of this menu is the ID associated with the location we're searching for
@@ -80,36 +81,69 @@ if (isset($menu_locations[ $location_id ])) {
 			// This is the correct menu
 			$menu_items = wp_get_nav_menu_items($menu);
 
-$args = array(
-		'id'    => 'mf_admin_parent',
-		'title' => 'MF Admin',
-		'meta'  => array( 'class' => 'my-toolbar-page' ),
-);
+		$args = array(
+				'id'    => 'mf_admin_parent',
+				'title' => 'MF Admin',
+				'meta'  => array( 'class' => 'my-toolbar-page' ),
+		);
 
-$wp_admin_bar->add_node( $args );
+		$wp_admin_bar->add_node( $args );
 
-$args = array(
+		$args = array(
 		'id'    => 'mf_admin_parent_bayarea',
 		'title' => 'Bay Area',
 			'meta'  => array( 'class' => 'my-toolbar-page' ),
 		'parent' => 'mf_admin_parent'
-);
+		);
 
-$wp_admin_bar->add_node( $args );
+		$wp_admin_bar->add_node( $args );
 
-foreach ( (array) $menu_items as $key => $menu_item ) {
-	$args = array(
-		'id'    => $menu_item->object_id,
-		'title' => $menu_item->title,
-		'href'  => $menu_item->url,
-		'meta'  => array( 'class' => 'my-toolbar-page' ),
-		'parent' => 'mf_admin_parent_bayarea'
-	);
+		foreach ( (array) $menu_items as $key => $menu_item ) {
+			$args = array(
+				'id'    => $menu_item->object_id,
+				'title' => $menu_item->title,
+				'href'  => $menu_item->url,
+				'meta'  => array( 'class' => 'my-toolbar-page' ),
+				'parent' => 'mf_admin_parent_bayarea'
+			);
+		
+			$wp_admin_bar->add_node( $args );
+			}
+		}
+	}
+}
 
-	$wp_admin_bar->add_node( $args );
+$location_id = 'mf-admin-fairesetup-register-menu';
+
+if (isset($menu_locations[ $location_id ])) {
+	foreach ($menus as $menu) {
+		// If the ID of this menu is the ID associated with the location we're searching for
+		if ($menu->term_id == $menu_locations[ $location_id ]) {
+			// This is the correct menu
+			$menu_items = wp_get_nav_menu_items($menu);
+
+			$args = array(
+					'id'    => 'mf_admin_parent_fairesetup',
+					'title' => 'Faire Setup',
+					'meta'  => array( 'class' => 'my-toolbar-page' ),
+					'parent' => 'mf_admin_parent'
+			);
+
+			$wp_admin_bar->add_node( $args );
+
+			foreach ( (array) $menu_items as $key => $menu_item ) {
+				$args = array(
+						'id'    => $menu_item->object_id,
+						'title' => $menu_item->title,
+						'href'  => $menu_item->url,
+						'meta'  => array( 'class' => 'my-toolbar-page' ),
+						'parent' => 'mf_admin_parent_fairesetup'
+				);
+
+				$wp_admin_bar->add_node( $args );
+			}
+		}
 	}
-	}
-	}
-	}
+}
 }
 

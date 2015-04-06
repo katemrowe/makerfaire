@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
 if ( $type == 'maker_export' ) {
 
 	// Set the query args.
-	$args = array(
+	/*$args = array(
 		'no_found_rows'  => true,
 		'post_type' 	 => 'maker',
 		'post_status' 	 => 'any',
@@ -25,7 +25,7 @@ if ( $type == 'maker_export' ) {
 		'faire'			 => sanitize_title( $faire ),
 	);
 	$query = new WP_Query( $args );
-
+*/
 	// Define the API header (specific for Eventbase)
 	$header = array(
 		'header' => array(

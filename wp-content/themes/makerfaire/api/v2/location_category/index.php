@@ -17,8 +17,18 @@ defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
 // Double check again we have requested this file
 if ( $type == 'location_category' ) {
 	// By default we have the taxonomy set to show_ui => false as these will never be updated
-	$terms = get_terms( array( 'location_category' ), array( 'hide_empty' => 0 ) );
-
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$select_query = sprintf("SELECT `wp_mf_location_elements`.`ID`,
+   		 	`wp_mf_location_elements`.`faire`,
+    		`wp_mf_location_elements`.`element`
+			FROM `wp_mf_location_elements`
+			");
+ 	$result = $mysqli->query ( $select_query );
+	
+	// Loop through the posts
 	// Define the API header (specific for Eventbase)
 	$header = array(
 		'header' => array(
@@ -30,13 +40,14 @@ if ( $type == 'location_category' ) {
 	// Init the entities header
 	$loc_cats = array();
 
-	foreach ( $terms as $term ) {
+	while ( $row = $result->fetch_row () ) {
+	
 
 		// REQUIRED: Location Category ID
-		$loc_cat['id'] = absint( $term->term_id );
+		$loc_cat['id'] = absint( $row[0] );
 
 		// REQUIRED: Location Category name
-		$loc_cat['name'] = esc_html( $term->name );
+		$loc_cat['name'] = esc_html( $row[2] );
 
 		// Put the lcoation category into our list of location categories
 		array_push( $loc_cats, $loc_cat );

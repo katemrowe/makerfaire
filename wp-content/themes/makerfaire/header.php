@@ -155,7 +155,7 @@ Topbar
 
 							$defaults = array(
 								'theme_location'  => '',
-								'menu'            => 'header-menu',
+								'menu'            => 'Main Navigation',
 								'container'       => false,
 								'container_class' => '',
 								'container_id'    => '',

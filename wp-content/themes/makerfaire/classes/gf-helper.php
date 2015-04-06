@@ -113,37 +113,37 @@ if (isset($menu_locations[ $location_id ])) {
 	}
 }
 
-$location_id = 'mf-admin-fairesetup-register-menu';
+// $location_id = 'mf-admin-fairesetup-register-menu';
 
-if (isset($menu_locations[ $location_id ])) {
-	foreach ($menus as $menu) {
-		// If the ID of this menu is the ID associated with the location we're searching for
-		if ($menu->term_id == $menu_locations[ $location_id ]) {
-			// This is the correct menu
-			$menu_items = wp_get_nav_menu_items($menu);
+// if (isset($menu_locations[ $location_id ])) {
+// 	foreach ($menus as $menu) {
+// 		// If the ID of this menu is the ID associated with the location we're searching for
+// 		if ($menu->term_id == $menu_locations[ $location_id ]) {
+// 			// This is the correct menu
+// 			$menu_items = wp_get_nav_menu_items($menu);
 
-			$args = array(
-					'id'    => 'mf_admin_parent_fairesetup',
-					'title' => 'Faire Setup',
-					'meta'  => array( 'class' => 'my-toolbar-page' ),
-					'parent' => 'mf_admin_parent'
-			);
+// 			$args = array(
+// 					'id'    => 'mf_admin_parent_fairesetup',
+// 					'title' => 'Faire Setup',
+// 					'meta'  => array( 'class' => 'my-toolbar-page' ),
+// 					'parent' => 'mf_admin_parent'
+// 			);
 
-			$wp_admin_bar->add_node( $args );
+// 			$wp_admin_bar->add_node( $args );
 
-			foreach ( (array) $menu_items as $key => $menu_item ) {
-				$args = array(
-						'id'    => $menu_item->object_id,
-						'title' => $menu_item->title,
-						'href'  => $menu_item->url,
-						'meta'  => array( 'class' => 'my-toolbar-page' ),
-						'parent' => 'mf_admin_parent_fairesetup'
-				);
+// 			foreach ( (array) $menu_items as $key => $menu_item ) {
+// 				$args = array(
+// 						'id'    => $menu_item->object_id,
+// 						'title' => $menu_item->title,
+// 						'href'  => $menu_item->url,
+// 						'meta'  => array( 'class' => 'my-toolbar-page' ),
+// 						'parent' => 'mf_admin_parent_fairesetup'
+// 				);
 
-				$wp_admin_bar->add_node( $args );
-			}
-		}
-	}
-}
+// 				$wp_admin_bar->add_node( $args );
+// 			}
+// 		}
+// 	}
+// }
 }
 

@@ -262,7 +262,6 @@ function isc_register_menus() {
   register_nav_menus(
 	array( 'header-menu' => __( 'Header Menu' ),
 			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ),
-			'mf-admin-nyc-register-menu' => __( 'MF New York Admin Bar' ),
 			'mf-admin-fairesetup-register-menu' => __( 'Faires Admin Bar' )  )
   );
 }

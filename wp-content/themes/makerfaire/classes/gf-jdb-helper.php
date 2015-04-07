@@ -9,9 +9,7 @@ class GFJDBHELPER {
 	*/
 	public static function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' ) {
 		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
-		//$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
-		$remote_post_url='';
-	
+		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
 		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteid ), 'note' => esc_attr( $note )));
@@ -70,8 +68,7 @@ class GFJDBHELPER {
 				'makerfaire.local',
 				'staging.makerfaire.com'
 		);
-		//$remote_post_url = 'http://db.makerfaire.com/updateExhibitInfo';
-		$remote_post_url='';
+		$remote_post_url = 'http://db.makerfaire.com/updateExhibitInfo';
 		if (isset ( $_SERVER ['HTTP_HOST'] ) && in_array ( $_SERVER ['HTTP_HOST'], $local_server ))
 			$remote_post_url = 'http://makerfaire.local/wp-content/allpostdata.php';
 	
@@ -300,9 +297,7 @@ class GFJDBHELPER {
 	* =====================================================================*/
 	public static function gravityforms_sync_status_jdb( $id = 0, $status = '' ) {
 		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
-		//$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
-		$remote_post_url='';
-	
+		$remote_post_url = 'http://db.makerfaire.com/updateExhibitStatus';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
 		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'status' => esc_attr( $status )));

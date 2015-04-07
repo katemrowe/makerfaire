@@ -147,3 +147,24 @@ if (isset($menu_locations[ $location_id ])) {
 // }
 }
 
+/*
+ * After Submission Gravity Forms Action Handling
+ */
+add_action( 'gform_after_submission', 'post_to_jdb', 10, 2 );
+function post_to_jdb( $entry, $form ) {
+	error_log('$gravityforms_send_entry_to_jdb:'.$entry['id']);
+	$result = GFJDBHELPER::gravityforms_send_entry_to_jdb($entry['id']);
+	error_log('GFJDBHELPER:result:'.$result);
+}
+
+/*
+ * After Note Added handle jdb sync
+*/
+add_action( 'gform_post_note_added', 'note_to_jdb', 10, 2 );
+function note_to_jdb( $noteid,$entryid,$userid,$username,$note,$notetype ) {
+	error_log('$GFJDBHELPER:gravityforms_send_note_to_jdb:result:'.$noteid);
+	$result=GFJDBHELPER::gravityforms_send_note_to_jdb($entryid,$noteid,$note);
+	error_log('GFJDBHELPER:gravityforms_send_note_to_jdb:result:'.$result);
+	
+}
+

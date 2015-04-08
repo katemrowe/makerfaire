@@ -17,7 +17,9 @@ defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
 if ( $type == 'venue' ) {
 
 	// Set the query args.
-	$args = array(
+	/*
+	 * 
+	 $args = array(
 		'no_found_rows'  => true,
 		'post_type' 	 => 'location',
 		'post_status' 	 => 'any',
@@ -25,7 +27,7 @@ if ( $type == 'venue' ) {
 		'faire'			 => sanitize_title( $faire ),
 	);
 	$query = new WP_Query( $args );
-
+	*/
 	// Define the API header (specific for Eventbase)
 	$header = array(
 		'header' => array(

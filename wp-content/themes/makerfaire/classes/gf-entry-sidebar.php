@@ -383,10 +383,10 @@ if (!empty($mfAction))
 			set_form_id($lead,$form);
 			break;
 		case 'sync_jdb' :
-			gravityforms_send_entry_to_jdb($entry_info_entry_id);
+			GFJDBHELPER::gravityforms_send_entry_to_jdb($entry_info_entry_id);
 			break;
 		case 'sync_status_jdb' :
-			gravityforms_sync_status_jdb($entry_info_entry_id,$entry_status);
+			GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$entry_status);
 			break;
 			
 		//Sidebar Note Add
@@ -563,10 +563,11 @@ function set_entry_schedule($lead,$form){
 	}
 	$insert_query = sprintf("INSERT INTO `wp_mf_schedule`
 		(`entry_id`,
+		`faire`,
 		`start_dt`,
 		`end_dt`)
 	VALUES
-		($entry_info_entry_id,'$entry_schedule_start', '$entry_schedule_end')");
+		($entry_info_entry_id,'BA15','$entry_schedule_start', '$entry_schedule_end')");
 	//MySqli Insert Query
 	$insert_row = $mysqli->query($insert_query);
 	if($insert_row){

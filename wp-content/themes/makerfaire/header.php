@@ -30,7 +30,6 @@
 	<!-- Le styles -->
 
 	<?php wp_head(); ?>
-
 	<!-- Remarketing pixel -->
 
 	<script type="text/javascript">
@@ -121,70 +120,98 @@
 Topbar
 ======
 -->
+<header id="header" style="height:auto !important;">
 
-<header id="header">
+<?php
+  $menu_name = 'header-menu';
+  $locations = get_nav_menu_locations();
+  $menu = wp_get_nav_menu_object( $locations[ $menu_name ] );
+  $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
 
-	<div class="container">
-
-		<div class="topad">
-			<!-- Beginning Sync AdSlot 1 for Ad unit header ### size: [[728,90]]  -->
-			<div id='div-gpt-ad-664089004995786621-1'>
-				<script type='text/javascript'>
-					googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-1')});
-				</script>
-			</div>
-			<!-- End AdSlot 1 -->
+?>
+ 
+<nav class="navbar">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
 		</div>
-		
-			<p class="tagline"><a href="http://intel.com"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/intel.png" alt="Disney"></a></p>
+        	<div class="collapse navbar-collapse">
+    		
+    
+<ul class="nav navbar-nav">
+    <?php
+    $count = 0;
+    $submenu = false;
 
+    foreach( $menuitems as $item ):
 
-			<div class="row">
+        $link           = $item->url;
+        $title          = $item->title;
+        $classes        = $item->classes;
+        $description    = $item->description ;
+        // item does not have a parent so menu_item_parent equals 0 (false)
+        if ( !$item->menu_item_parent ):
 
-				<div class="span5">
-
-					<h1><a href="http://makerfaire.com" title="Maker Faire"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" width="380" alt="Maker Faire" title="Maker Faire"></a></h1>
-
-				</div>
-
-				<div class="span7">
-
-					<div class="nav navi">
-
-						<?php
-
-							$defaults = array(
-								'theme_location'  => '',
-								'menu'            => 'Main Navigation',
-								'container'       => false,
-								'container_class' => '',
-								'container_id'    => '',
-								'menu_class'      => 'menu',
-								'menu_id'         => '',
-								'echo'            => true,
-								'fallback_cb'     => 'wp_page_menu',
-								'before'          => '',
-								'after'           => '',
-								'link_before'     => '<div>',
-								'link_after'      => '</div>',
-								'items_wrap'      => '<ul id="%1$s" class="%2$s" style="margin-left:12px;">%3$s</ul>',
-								'depth'           => 0,
-								'walker'          => ''
-							);
-
-						wp_nav_menu( $defaults );
-
-						?>
-
-					</div><!--end nav wrapper-->
-
-				</div>
-
-			</div>
+        // save this id for later comparison with sub-menu items
+        $parent_id = $item->ID;
+    ?>
+ 
+    <li class="dropdown">
+        <a href="<?php echo $link; ?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <?php echo $title; ?> 
+            <span class="caret"></span>
+        </a>
+    <?php endif; ?>
+ 
+        <?php if ( $parent_id == $item->menu_item_parent ): ?>
+ 
+            <?php if ( !$submenu ): $submenu = true; ?>
+            
+            <div class="drop-holder">
+                <div class="drop">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="drop-logo about">
+                                	
+                                </div>
+                                <div class="column">
+                                	<div class="top-holder">
+                                    </div>
+                                	<div class="col no-border">
+                                        <ul class="sub-menu">
+            <?php endif; ?>
+                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
+                                                <a href="<?php echo $link; ?>" class="title"><?php echo $title; ?></a>
+                                                <div class="description"><?php echo $description; ?></div>
+                                            </li>
+            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
+                                        </ul>
+                                    </div>
+                                    <div class="col dinamic-content">
+                                    	
+                                    </div>
+                                </div>
+                        	</div>      
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <?php $submenu = false; endif; ?>
+ 
+        <?php endif; ?>
+ 	
+    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
+    </li>                           
+    <?php $submenu = false; endif; ?>
+ 	
+<?php $count++; endforeach; ?>
+ 
+</ul>
 
 		</div>
-
 	</div>
+</nav>
 
 
 </header>

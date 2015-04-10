@@ -33,7 +33,7 @@ class Make_Instagram {
 		$base_url = 'https://api.instagram.com/v1/tags/makerfaire/media/recent';
 		$params = array(
 			'access_token' => '227901753.1fb234f.b4dd629a578c47cda3f6fd579935190e',
-			'count' => 20
+			'count' => 3
 		);
 
 		// Build the URL
@@ -49,6 +49,23 @@ class Make_Instagram {
 		// Send it off...
 		return $data->data;
 	}
+
+        public function getFirstImage() {
+          $ps = $this->load_data(); 
+
+          // make sure $output exists, otherwise we may get an error in local environment
+	  if(!isset($output) || !is_string($output)) {
+             $output = "";
+	  }
+
+          $img = $ps[0];
+          
+          $output .= "<li><a href=\"" . esc_url( $img->link ) . "\" target=\"_blank\" class=\"instagram-link\">"
+                  .  "  <img src=\"" . esc_url( $img->images->standard_resolution->url ) . "\" height=\"182\" width=\"180\" alt=\"image description\">"    
+                  .  "</a></li>";
+       
+          return $output;
+        }
 
 	public function show_images() {
 		// TODO:	This whole function is a bit of a mess of entangled php and html.
@@ -66,42 +83,27 @@ class Make_Instagram {
 		$num_images = count($ps);
         $pages = array_chunk($ps, $images_per_page);
         $num_pages = count($pages);
-
-		$output ="<div id=\"instagram-carousel\" class=\"carousel slide\" data-interval=\"3000\" data-ride=\"carousel\">"
-        		.	"<div class=\"carousel-inner\">";
-        // start outputting carousel pages
-        foreach( $pages as $page ) {
-
-			$output .=	"<div class=\"item\" >"
-					.		"<div class=\"carousel row-fluid instagram-rows\">";
-			// in each page, output $images_per_page images
-			foreach( $page as $img ) {
-
-					$output .=	"<div class=\"span4\">"
-							.		"<a href=\"" . esc_url( $img->link ) . "\" class=\"instagram-link\">"
-							.			"<div class=\"thumbnail\">"
-							.				"<img style=\"max-width:180px; height: auto;\" src=\"" . esc_url( $img->images->standard_resolution->url ) . "\">"
-							.				"<div class=\"caption insta-caption\">"
-							.			 		wp_kses_post( Markdown( wp_trim_words( $img->caption->text, 10, '...' ) ) )
-							.				"</div>"
-							.			"</div>"
-							.		"</a>"
-							.	"</div>";
-				}
-			$output .=		"</div>"		// instagram-rows
-					.	"</div>";	// item
-		}
-
-		// output carousel buttons
-		$output .=   "</div>" // carousel-inner
-					."<a class=\"carousel-control left\" href=\"#instagram-carousel\" data-slide=\"prev\">"
-        			."    <span >‹</span>"
-        			."</a>"
-        			."<a class=\"carousel-control right\" href=\"#instagram-carousel\" data-slide=\"next\">"
-        			."    <span >›</span>"
-        			."</a>"
-        		."</div>"
-        		."<div class=\"spacer\"></div>";
+		?>
+		<?php
+		$output ="<div class=\"item-holder\"><div class=\"container-fluid\"><div class=\"row\"><div class=\"col-xs-4\"><div class=\"social-holder twitter\"><div class=\"title\"><h1><a href=\"http://twitter.com/makerfaire\" target=\"_blank\">#MakerFaire</a></h1></div><div id=\"recent-twitter\"></div><a href=\"http://twitter.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Twitter</a></div></div>";
+		
+		$output .="<div class=\"col-xs-8\">
+							<div class=\"social-holder instagram\">
+								<div class=\"title\">
+									<h1>Instagram, <a href=\"http://instagram.com/makerfaire\" target=\"_blank\">#makerfaire</a></h1>
+								</div>";
+					foreach( $pages as $page ) {			
+							$output .= "<ul class=\"img-list\">";
+							foreach( $page as $img ) {
+						$output .= "<li><a href=\"" . esc_url( $img->link ) . "\" target=\"_blank\" class=\"instagram-link\"><img src=\"" . esc_url( $img->images->standard_resolution->url ) . "\" height=\"182\" width=\"180\" alt=\"image description\"></a></li>";
+							}
+						$output .= "</ul>";
+					}
+						$output .= "<a href=\"http://instagram.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Instagram</a>
+							</div>
+						</div>";
+		$output .="</div></div></div>";
+	
 		return $output;
 	}
 
@@ -115,3 +117,5 @@ function make_show_images() {
 }
 
 add_shortcode( 'show_instagram', 'make_show_images' );
+
+?>

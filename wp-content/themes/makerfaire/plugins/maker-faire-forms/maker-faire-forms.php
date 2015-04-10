@@ -2955,11 +2955,11 @@ endif;
 	 * Queue up all JS and CSS @access public =====================================================================
 	 */
 	public function enqueue() {
-		wp_enqueue_script ( 'jquery' );
-		wp_enqueue_script ( 'mff_js', plugins_url ( 'assets/js/mff.js', __FILE__ ) );
-		wp_enqueue_script ( 'mff_jquery_form_js', plugins_url ( 'assets/js/jquery.form.js', __FILE__ ) );
+		//wp_enqueue_script ( 'jquery' );
+	//	wp_enqueue_script ( 'mff_js', plugins_url ( 'assets/js/mff.js', __FILE__ ) );
+	//	wp_enqueue_script ( 'mff_jquery_form_js', plugins_url ( 'assets/js/jquery.form.js', __FILE__ ) );
 		
-		wp_enqueue_style ( 'mff_css', plugins_url ( 'assets/css/style.css', __FILE__ ) );
+	//	wp_enqueue_style ( 'mff_css', plugins_url ( 'assets/css/style.css', __FILE__ ) );
 	}
 	
 	/*

@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 1.1.4
+
+    - Added support for ":list" modifier on merge tags outside of the submission preview
+
 ## 1.1.3
 
     - Fixed several issues relating to changes with multi-file uploads in GF 1.9

@@ -131,6 +131,7 @@ function make_enqueue_jquery() {
 	
 	// Scripts
 	wp_enqueue_script( 'jquery' );
+	//wp_enqueue_script( 'jquery-main', get_stylesheet_directory_uri() . '/js/jquery.main.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'make-bootstrap', get_stylesheet_directory_uri() . '/js/bootstrap.min.js', array( 'jquery' ) );
 	wp_enqueue_script( 'make-countdown', get_stylesheet_directory_uri() . '/js/jquery.countdown.js', array( 'jquery' ) );
 	wp_enqueue_script( 'jquery_cookie',  get_stylesheet_directory_uri() . '/js/jquery.cookie.js', array( 'jquery' ), null );
@@ -142,7 +143,10 @@ function make_enqueue_jquery() {
 	wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'bootgrid',  get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'thickbox',null, array( 'jquery' ), null );
-	
+
+
+    // $translation_array = array('templateUrl' => get_stylesheet_directory_uri());
+    // wp_localize_script('jquery-main', 'object_name', $translation_array);
 	
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
@@ -262,8 +266,9 @@ function makerfaire_index_feed($n = 4) {
 function isc_register_menus() {
   register_nav_menus(
 	array( 'header-menu' => __( 'Header Menu' ),
-			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ))
- );
+            'footer' => __( 'footer' ),
+			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ) )
+  );
 }
 add_action( 'init', 'isc_register_menus' );
 
@@ -354,6 +359,72 @@ function makerfaire_newsletter_shortcode() {
 }
 
 add_shortcode( 'newsletter', 'makerfaire_newsletter_shortcode' );
+
+/**
+ * meet the makers 
+ */
+function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
+  extract( shortcode_atts( array(
+	    'form_id' 	=> '',
+	    'entry1_id'	=> '',
+	    'entry2_id'	=> '',
+	    'entry3_id'	=> ''
+  ), $atts ) );
+
+  $entries = GFAPI::get_entries(esc_attr($form_id));  
+  $values = array();
+  foreach ($entries as $entry) {
+    if ($entry['id'] == esc_attr($entry1_id)) {
+      $values[0] = $entry; 
+    } else if ($entry['id'] == esc_attr($entry2_id)) {
+      $values[1] = $entry; 
+    } else if ($entry['id'] == esc_attr($entry3_id)) {
+      $values[2] = $entry; 
+    }
+  }
+
+$output = '<div class="filter-container">' 
+          . ' <div class="col"><a href="' . $values[0][3] . '" class="post">'
+          . '   <img src="' . $values[0][2] . '" height="402" width="622" alt="image description">'
+          . '   <div class="text-box"><span class="section">' . $values[0][1] . '</span></div></a>'
+          . ' </div><div class="small col">'
+          . '   <a href="' . $values[1][3] . '" class="post">'
+          . '     <img src="' . $values[1][2] . '" height="402" width="622" alt="image description">'
+          . '     <div class="text-box"><span class="section">' . $values[1][1] . '</span></div>'
+          . '   </a>'
+          . '   <a href="' . $values[2][3] . '" class="post">'
+          . '     <img src="' . $values[2][2] . '" height="402" width="622" alt="image description">'
+          . '     <div class="text-box"><span class="section">' . $values[2][1] . '</span></div>'
+          . '   </a>'
+          . '</div></div>';
+  
+  return $output;
+}
+
+add_shortcode( 'mmakers', 'makerfaire_meet_the_makers_shortcode' );
+
+
+function makerfaire_featured_makers_shortcode($atts, $content = null) {
+  extract( shortcode_atts( array(
+	    'form_id' 	=> '',
+	    'entry1_id'	=> '',
+	    'entry2_id'	=> '',
+	    'entry3_id'	=> ''
+  ), $atts ) );
+
+  $criteria = array(
+     'field_filters' => array(
+       array('key' => '304.1', 'value' => 'Featured Maker')
+     )
+  );
+
+  $entries = GFAPI::get_entries(esc_attr($form_id), $criteria, null, array('offset' => 0, 'page_size' => 40));  
+  $randEntry = array_rand($entries); 
+  
+  $output = '';
+  return $output;
+}
+add_shortcode( 'fmakers', 'makerfaire_featured_makers_shortcode' );
 
 /**
  * Modal Window Builder
@@ -779,4 +850,112 @@ function create_post_type() {
 	)
 	);
 }
+
+
+/**
+ * Allow HTML in WordPress Custom Menu Descriptions
+ *
+ * Create HTML list of nav menu items and allow HTML tags.
+ * Replacement for the native menu Walker, echoing the description.
+ * This is the ONLY known way to display the Description field.
+ *
+ * @see http://wordpress.stackexchange.com/questions/51609/
+ *
+ */
+    class Description_Walker extends Walker_Nav_Menu {
+
+        function start_el(&$output, $item, $depth, $args)
+        {
+            $classes     = empty ( $item->classes ) ? array () : (array) $item->classes;
+
+            $class_names = join(
+                ' '
+                ,   apply_filters(
+                    'nav_menu_css_class'
+                    ,   array_filter( $classes ), $item
+                )
+            );
+
+            ! empty ( $class_names )
+            and $class_names = ' class="'. esc_attr( $class_names ) . '"';
+
+            // Build default menu items
+            $output .= "<li id='menu-item-$item->ID' $class_names>";
+
+            $attributes  = '';
+
+            ! empty( $item->attr_title )
+            and $attributes .= ' title="'  . esc_attr( $item->attr_title ) .'"';
+            ! empty( $item->target )
+            and $attributes .= ' target="' . esc_attr( $item->target     ) .'"';
+            ! empty( $item->xfn )
+            and $attributes .= ' rel="'    . esc_attr( $item->xfn        ) .'"';
+            ! empty( $item->url )
+            and $attributes .= ' href="'   . esc_attr( $item->url        ) .'"';
+
+            // Build the description (you may need to change the depth to 0, 1, or 2)
+            $description = ( ! empty ( $item->description ) and 1 == $depth )
+                ? '<span class="nav_desc">'.  $item->description . '</span>' : '';
+
+            $title = apply_filters( 'the_title', $item->title, $item->ID );
+
+            $item_output = $args->before
+                . "<a $attributes>"
+                . $args->link_before
+                . $title
+                . '</a> '
+                . $args->link_after
+                . $description
+                . $args->after;
+
+            // Since $output is called by reference we don't need to return anything.
+            $output .= apply_filters(
+                'walker_nav_menu_start_el'
+                ,   $item_output
+                ,   $item
+                ,   $depth
+                ,   $args
+            );
+        }
+    }
+    // Allow HTML descriptions in WordPress Menu
+    remove_filter( 'nav_menu_description', 'strip_tags' );
+    add_filter( 'wp_setup_nav_menu_item', 'cus_wp_setup_nav_menu_item' );
+    function cus_wp_setup_nav_menu_item( $menu_item ) {
+        $menu_item->description = apply_filters( 'nav_menu_description', $menu_item->post_content );
+        return $menu_item;
+    }
+    //and then use this in your template:
+    //wp_nav_menu( array( 'walker' => new Description_Walker ));
+
+
+// BEGINING AMAZING HACKS
+function maker_url_vars( $rules ) {
+	$newrules = array();
+	$newrules['bay-area-15/maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-not-delete&e_id=$matches[1]';
+	return $newrules + $rules;
+}
+
+add_filter( 'rewrite_rules_array','maker_url_vars' );
+
+add_action( 'wp_loaded','my_flush_rules' );
+
+// flush_rules() if our rules are not yet included
+function my_flush_rules(){
+	$rules = get_option( 'rewrite_rules' );
+
+	if ( ! isset( $rules['bay-area-15/maker/entry/(\d*)/?'] ) ) {
+		global $wp_rewrite;
+	   	$wp_rewrite->flush_rules();
+	}
+}
+
+add_filter( 'query_vars', 'my_query_vars' );
+function my_query_vars( $query_vars ){
+    $query_vars[] = 'e_id';
+    return $query_vars;
+}
+
+// END AMAZING HACKS
+
 

@@ -25,7 +25,7 @@
 
 	<div class="center">
 		<a href="https://mfba2015.eventbrite.com/" target="_blank">
-			<img src="http://makerfaire.com/wp-content/uploads/2015/03/MF15_BA_300x250.gif" />
+			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF-300x250_BuyTickets.gif" />
 		</a>
 	</div>
 

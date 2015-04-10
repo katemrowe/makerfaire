@@ -2,7 +2,7 @@
 /*
 Template name: Admin Page Template
 */
-get_header('admin'); ?>
+get_header(); ?>
 
 <div class="clear"></div>
 

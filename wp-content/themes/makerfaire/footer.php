@@ -1,116 +1,39 @@
 <div class="clear"></div>
 
-<div class="beige">
-
-	<div class="container">
-
-		<div class="topad">
-
-			<!-- Beginning Sync AdSlot 4 for Ad unit header ### size: [[728,90]]  -->
-			<div id='div-gpt-ad-664089004995786621-4'>
-				<script type='text/javascript'>
-					googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-4')});
-				</script>
-			</div>
-			<!-- End AdSlot 4 -->
-
-		</div>
-
-		<footer>
-
-			<div class="row">
-
-
-				<div class="span3">
-					<div class="sidebar-bordered-nl">
-
-<a href="http://makerfaire.com/map/"><img style="max-width:100% ;height:auto;" src="https://makerfaire.files.wordpress.com/2014/09/minimf_findfaire_v1.gif" /></a>
-</div>
-				</div>
-					<div class="span4 offset1" style="background-color:#e8f1f4;">
-
-				      <div class="sidebar-bordered-nl" style="margin-bottom:0px;">
-
-				                <h3 class="counter-title">Sign up for news and updates on Maker Faire</h3>
-
-				                <form class="form-inline" action="http://makermedia.createsend.com/t/r/s/jjuruj/" method="post" id="subForm">
-				                        <input type="text" placeholder="Enter your email" class="news-signup" name="cm-jjuruj-jjuruj" id="jjuruj-jjuruj">
-				                        <input type="image" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/images/go.png" value="Go!" class="btn" onclick="ga('send', 'event', 'Newsletter Sub', 'Join', jQuery('[name|=cm]').serialize().replace(/&/g, ' ') );">
-				                        <div class="control-group">
-				                                <h5>Call For Makers</h5>
-				                                <label for="fielddduult-0"><input id="fielddduult-0" name="cm-fo-dduult" value="621683" type="checkbox" checked/> Inform me About the Call for Makers</label><br>
-				                                <h5>Preferred Faire?</h5>
-				                                <label for="fieldjdlthk-0"><input id="fieldjdlthk-0" name="cm-fo-jdlthk" value="188882" type="checkbox" checked/> Bay Area</label><span style="margin-left:15px;"></span>
-				                                <label for="fieldjdlthk-2"><input id="fieldjdlthk-2" name="cm-fo-jdlthk" value="188884" type="checkbox" checked/> New York</label>
-				                                <h5>Join Another Newsletter</h5>
-				                                <label for="listjrsydu"><input id="listjrsydu" name="cm-ol-jrsydu" type="checkbox" /> Maker Pro Newsletter</label><span style="margin-left:15px;"></span>
-				                                <label for="listttihir"><input id="listttihir" name="cm-ol-ttihir" type="checkbox" /> Maker Shed</label>
-				                        </div>
-				                </form>
-				                
-    			                <div class="soc_icons" style="padding-top:0px;">
-			                        <a class="footer-sprite ico-facebook" href="http://facebook.com/makerfaire" title="Facebook" target="_blank"></a>
-			                        <a class="footer-sprite ico-twitter"  href="http://twitter.com/makerfaire" title="Twitter" target="_blank"></a>
-			                        <a class="footer-sprite ico-google-plus" href="https://google.com/+MAKE/" title="Google+" target="_blank"></a>
-			                        <a class="footer-sprite ico-flickr" href="http://www.flickr.com/photos/tags/makerfaire/" title="Flickr" target="_blank"></a>
-			                        <a class="footer-sprite ico-instagram" href="http://instagram.com/makerfaire" title="Instagram" target="_blank"></a>
-			                        <a class="footer-sprite ico-youtube" href="http://youtube.com/makerfaire" title="Youtube" target="_blank"></a>
-			                        <a class="footer-sprite ico-rss" href="http://makezine.com/tag/maker-faire/feed/" title="RSS Feed" target="_blank"></a>
-			                <!-- END socialArea -->
-			                </div>
-
-				                <script type="text/javascript">
-				                jQuery(document).ready(function(){
-				                        jQuery('.news-signup').focus(function() {
-				                                jQuery('.hidden').slideDown();
-				                        });
-				                });
-
-				                </script>
-					     </div>
-
+<footer id="footer">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="logo"><a href="<?php echo site_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png" height="43" width="183" alt=""></a></div>
+					</div>
 				</div>
 
-				<div class="span3 offset1" >
-					<div class="sidebar-bordered-nl">
-                    <a href="https://www.pubservice.com/MK/subscribe.aspx?PC=MK&PK=M3AMFB">
-                    	<img style="max-width:100% ;height:auto;" src="http://cdn.makezine.com/make/makerfaire/mf_subscribe_ad.jpg" alt="Subscribe to MAKE magazine!" />
-                    </a>
-               </div>
-                </div><!--subad-->
+                <div class="row">
+                    <div class="col-xs-9">
+                        <?php wp_nav_menu('footer'); ?>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="email-holder">
+                            <h2>Stay in the Loop</h2>
+                            <form class="form-inline" action="http://makermedia.createsend.com/t/r/s/jjuruj/" method="post" id="subForm">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter your email" class="form-control" name="cm-jjuruj-jjuruj" id="jjuruj-jjuruj">
+                                </div>
+                                <button type="submit" class="btn btn-info"  value="Go!" class="btn" onclick="ga('send', 'event', 'Newsletter Sub', 'Join', jQuery('[name|=cm]').serialize().replace(/&amp;/g, ' ') );">Get the news</button>
+                            </form>
+                            <p>This will subscribe you to our events newsletter. Find more cool newsletters you can subscribe to <a href="#">here</a>!</p>
+                        </div>
+                    </div>
+                </div>
 
-			</div>
 
-			<div class="row">
-
-				<div class="span12">
-					<div class=" footer-links">
-						<ul id="horizontal-list">
-
-							<li><a href="http://makerfaire.com/makerfairehistory/">About</a></li>
-							<li><a href="http://makezine.com/tag/maker-faire/">Blog</a></li>
-							<li><a href="https://help.makermedia.com" target="_blank">Help</a></li>
-							<li><a href="http://makerfaire.com/newsletter/">Newsletter</a></li>
-							<li><a href="http://makermedia.com/privacy/">Privacy Policy</a></li>
-							<li><a href="http://makerfaire.com/sponsors/">Sponsors</a></li>
-							<li><a href="http://makerfaire.com/be-a-maker/">Be a Maker</a></li>
-						</ul>
-
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="copyright">Make: and Maker Faire are registered trademarks of Maker Media, Inc. Copyright o 2004-2015 Maker Media, Inc. All rights reserved</p>
 					</div>
 				</div>
 			</div>
-			<div class="row">
-
-				<div class="span12 center">
-					<?php echo make_copyright_footer(); ?>
-				</div>
-
-			</div>
 		</footer>
-
-	</div>
-
-</div>
 <script type="text/javascript">
 
 	jQuery(document).ready(function(){

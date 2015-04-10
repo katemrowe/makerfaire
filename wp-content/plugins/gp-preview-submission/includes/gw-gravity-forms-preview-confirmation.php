@@ -16,6 +16,7 @@ class GWPreviewConfirmation {
         add_filter( 'gform_pre_render', array( __class__, 'prepop_merge_tags' ) );
         add_filter( 'gform_pre_render', array( __class__, 'replace_merge_tags' ) );
         add_filter( 'gform_replace_merge_tags', array( __class__, 'product_summary_merge_tag' ), 10, 3 );
+        add_filter( 'gform_merge_tag_filter', array( __class__, 'global_modifiers' ), 10, 5 );
 
     }
 
@@ -376,6 +377,18 @@ class GWPreviewConfirmation {
     public static function is_multi_file_field( $field ) {
         return rgar( $field, 'multipleFiles' ) == true;
     }
+
+	public static function global_modifiers( $field_value, $merge_tag, $options, $field, $field_label ) {
+
+		if( ! $field_value || $options != 'link' ) {
+			return $field_value;
+		}
+
+		$file_path = esc_attr( str_replace( " ", "%20", $field_value ) );
+		$value = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . basename( $file_path ) . "</a>";
+
+		return $value;
+	}
 
 }
 

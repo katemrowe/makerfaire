@@ -1,21 +1,13 @@
 <?php
-
 /**
  * Plugin Name: GP Preview Submission
  * Plugin URI: http://gravitywiz.com/
  * Description: Add a simple submission preview to allow users to confirm their submission is correct before submitting the form.
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author: David Smith
  * Author URI: http://gravitywiz.com
  * License: GPL2
  * Perk: True
- */
-
-/**
- * TODO:
- *
- * - add support for multi-file upload field
- *
  */
 
 /**
@@ -27,7 +19,7 @@ if( ! require_once( dirname( $gw_perk_file ) . '/includes/safetynet.php' ) )
 
 class GP_Preview_Submission extends GWPerk {
 
-    public $version = '1.1.3';
+    public $version = '1.1.4';
     public $min_gravity_perks_version = '1.2';
     public $min_gravity_forms_version = '1.8';
     public $min_wp_version = '3.7';

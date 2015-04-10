@@ -184,7 +184,7 @@ class GFEntryList {
 		$sort_field_meta = RGFormsModel::get_field( $form, $sort_field );
 		$is_numeric      = $sort_field_meta['type'] == 'number';
 
-		$page_size        = apply_filters( 'gform_entry_page_size', apply_filters( "gform_entry_page_size_{$form_id}", 20, $form_id ), $form_id );
+		$page_size        = 5 ; //apply_filters( 'gform_entry_page_size', apply_filters( "gform_entry_page_size_{$form_id}", 20, $form_id ), $form_id );
 		$first_item_index = $page_index * $page_size;
 
 		if ( ! empty( $sort_field ) ) {
@@ -197,7 +197,7 @@ class GFEntryList {
 		$total_count = 0;
 
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-
+		error_log (print_r($leads));
 		$summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];

@@ -30,3 +30,24 @@ function mf_sponsor_carousel( $category_name ) {
 
 	return $output;
 }
+
+function mf_sponsor_list( $category_name ) {
+	// Get all of the sponsor from the links
+	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name, 'limit' => 6 ) );
+
+	// Split them into chucks of two
+	// $sponsors = array_chunk( $sponsors, 2, true );
+
+	// Get the output started.
+	$output = '<ul>';
+
+	// Loop through each block of sponsors
+	foreach ($sponsors as $idx => $spon) {
+		//foreach ($sponsor as $spon) {
+		   $output .= '<li><a href="' . esc_url( $spon->link_url ) . '"><img src="' . legacy_get_resized_remote_image_url( $spon->link_image, 125, 105 ) . '" alt=""></a></li>';
+		//}
+	}
+
+	$output .= '</ul>';
+	return $output;
+}

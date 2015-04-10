@@ -1,13 +1,16 @@
 <?php
-
+add_action('wp_print_scripts','example_dequeue_myscript');
+function example_dequeue_myscript() {
+	wp_dequeue_script( 'jquery-main' );
+}
 /*
-Template name: No Frills
+Template name: Admin No Sidebar
 */
+get_header('admin'); 
 
-get_header('admin'); ?>
+?>
 
 <div class="clear"></div>
-
 <div class="container">
 	<div class="content">
 

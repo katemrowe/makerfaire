@@ -792,10 +792,10 @@ function make_cpt_icons() { ?>
  * Adds footer copyright information
  */
 function make_copyright_footer() { ?>
-	<div class="row">
-		<div class="span12">
-			<p class="footer_copyright text-center"><a href="http://makezine.com/">Make:</a> and <a href="http://makerfaire.com/">Maker Faire</a> are registered trademarks of <a href="http://makermedia.com/">Maker Media, Inc.</a><br>
-			Copyright &copy; 2004-<?php echo date("Y") ?> Maker Media, Inc.  All rights reserved</p>
+	<div class="row footer_copyright">
+		<div class="text-center">
+			<p class="muted"><small>Make: and Maker Faire are registered trademarks of Maker Media, Inc.</small></p>
+			<p class="muted"><small>Copyright &copy; 2004-<?php echo date("Y") ?> Maker Media, Inc.  All rights reserved</small></p>
 		</div>
 	</div>
 <?php }

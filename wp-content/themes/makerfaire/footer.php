@@ -1,39 +1,208 @@
 <div class="clear"></div>
 
-<footer id="footer">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="logo"><a href="<?php echo site_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png" height="43" width="183" alt=""></a></div>
-					</div>
-				</div>
+<div class="topad">
 
-                <div class="row">
-                    <div class="col-xs-9">
-                        <?php wp_nav_menu('footer'); ?>
-                    </div>
-                    <div class="col-xs-3">
-                        <div class="email-holder">
-                            <h2>Stay in the Loop</h2>
-                            <form class="form-inline" action="http://makermedia.createsend.com/t/r/s/jjuruj/" method="post" id="subForm">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter your email" class="form-control" name="cm-jjuruj-jjuruj" id="jjuruj-jjuruj">
-                                </div>
-                                <button type="submit" class="btn btn-info"  value="Go!" class="btn" onclick="ga('send', 'event', 'Newsletter Sub', 'Join', jQuery('[name|=cm]').serialize().replace(/&amp;/g, ' ') );">Get the news</button>
-                            </form>
-                            <p>This will subscribe you to our events newsletter. Find more cool newsletters you can subscribe to <a href="#">here</a>!</p>
-                        </div>
-                    </div>
-                </div>
+	<!-- Beginning Sync AdSlot 4 for Ad unit header ### size: [[728,90]]  -->
+	<div id='div-gpt-ad-664089004995786621-4'>
+		<script type='text/javascript'>
+			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-4')});
+		</script>
+	</div>
+	<!-- End AdSlot 4 -->
 
-
-				<div class="row">
-					<div class="col-xs-12">
-						<p class="copyright">Make: and Maker Faire are registered trademarks of Maker Media, Inc. Copyright o 2004-2015 Maker Media, Inc. All rights reserved</p>
-					</div>
-				</div>
+</div>
+<footer id="footer" class="new-footer">
+	<div class="container">
+		<div class="row social-foot-desktop">
+			<div class="span3 social-foot-col" >
+				<a href="/"><img class="footer_logo" src="//cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" alt="Maker Faire Logo"></a>
+				<ul class="unstyled">
+					<li><a href="/makerfairehistory">About Maker Faire</a></li>
+					<li><a href="/map">Find a Faire Near You</a></li>
+					<li><a href="/maker-movement">Maker Movement</a></li>
+					<li><a href="/be-a-maker">Be a Maker</a></li>
+					<li><a href="https://help.makermedia.com/hc/en-us/categories/200333245-Maker-Faire" target="_blank">Maker Faire FAQs</a></li>
+				</ul>
 			</div>
-		</footer>
+
+			<div class="span3 social-foot-col" >
+				<h4>Explore Making</h4>
+				<ul class="unstyled">
+					<li><a href="//makezine.com/blog" target="_blank">Make: News</a></li>
+					<li><a href="/">Maker Faire</a></li>
+					<li><a href="//www.makershed.com" target="_blank">Maker Shed</a></li>
+					<li><a href="//makercon.com" target="_blank">MakerCon</a></li>
+					<li><a href="//makercamp.com" target="_blank">Maker Camp</a></li>
+				</ul>
+			</div>
+			<!-- div class="clearfix visible-phone"></div --><!-- Add this back in when site is responsive -->
+			<div class="span3 social-foot-col">
+				<h4>Our Company</h4>
+				<ul class="unstyled">
+					<li><a href="//makermedia.com" target="_blank">About Us</a></li>
+					<li><a href="//makermedia.com/work-with-us/advertising" target="_blank">Advertise with Us</a></li>
+					<li><a href="//makermedia.com/work-with-us/job-openings" target="_blank">Careers</a></li>
+					<li><a href="//help.makermedia.com/hc/en-us" target="_blank">Help</a></li>
+					<li><a href="//makermedia.com/privacy" target="_blank">Privacy</a></li>
+				</ul>
+			</div>
+
+			<div class="span3 social-foot-col">
+				<h4 class="stay-connected">Stay Connected</h4>
+				<div class="social-profile-icons">
+					<a class="sprite-facebook-32" href="//www.facebook.com/makerfaire" title="Facebook" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-twitter-32" href="//twitter.com/makerfaire" title="Twitter" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-googleplus-32" href="//plus.google.com/104410464300110463062/posts" rel="publisher" title="Google+" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+				</div>
+				<?php
+					$isSecure = "http://";
+					if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+						$isSecure = "https://";
+					}
+				?>
+	    	    <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
+					<input type="hidden" name="cmd" value="subscribe" />
+					<input type="hidden" name="custom_source" value="footer" /> 
+					<input type="hidden" name="custom_incentive" value="none" /> 
+					<input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" />
+					<input type="hidden" id="format_mime" name="format" value="mime" />
+					<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
+					<input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
+					<input type="hidden" name="errors_to" value="" />
+					<div>
+						<input name="email" placeholder="Enter your Email" required="required" type="text"><br>
+						<input value="Sign Up for our Newsletter" class="btn-cyan" type="submit">
+					</div>
+			    </form>
+			</div>
+		</div><!-- END desktop row -->
+		<!-- Add back in when the site is responsive -->
+<!-- 		<div class="row social-foot-mobile">
+			<div class="span12 social-foot-col">
+				<h4 class="stay-connected">Stay Connected</h4>
+				<div class="social-profile-icons">
+					<a class="sprite-facebook-32" href="http://facebook.com/makemagazine" title="Facebook" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-twitter-32" href="http://twitter.com/make" title="Twitter" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-pinterest-32" href="http://pinterest.com/makemagazine/" title="Pinterest" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-googleplus-32" href="https://plus.google.com/+MAKE/posts" rel="publisher" title="Google+" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+				</div>
+				<?php
+					$isSecure = "http://";
+					if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+						$isSecure = "https://";
+					}
+				?>
+	    	    <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
+					<input type="hidden" name="cmd" value="subscribe" />
+					<input type="hidden" name="custom_source" value="footer" /> 
+					<input type="hidden" name="custom_incentive" value="none" /> 
+					<input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" />
+					<input type="hidden" id="format_mime" name="format" value="mime" />
+					<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
+					<input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
+					<input type="hidden" name="errors_to" value="" />
+					<div>
+						<input name="email" placeholder="Enter your Email" required="required" type="text"><br>
+						<input value="Sign Up for our Newsletter" class="btn-cyan" type="submit">
+					</div>
+			    </form>
+			</div>
+			<div class="span12 accordion" id="accordionF">
+			  <div class="accordion-group">
+			    <div class="accordion-heading">
+			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseOneF">
+			        <h3>Make:</h3>
+			      </a>
+			    </div>
+			    <div id="collapseOneF" class="accordion-body collapse">
+			      <div class="accordion-inner">
+			        <ul class="nav nav-pills nav-stacked">
+						<li><a href="//www.pubservice.com/MK/subscribe.aspx?PC=MK&PK=M3AMZB" target="_blank">Subscribe to Make:</a></li>
+						<li><a href="/projects">Make: Projects</a></li>
+						<li><a href="/weekendprojects">Weekedn Projects</a></li>
+						<li><a href="/video">Make: Videos</a></li>
+						<li><a href="/category/maker-pro">Maker Pro News</a></li>
+					</ul>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="accordion-group">
+			    <div class="accordion-heading">
+			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseTwoF">
+			        <h3>Explore Making</h3>
+			      </a>
+			    </div>
+			    <div id="collapseTwoF" class="accordion-body collapse">
+			      <div class="accordion-inner">
+			        <ul class="nav nav-pills nav-stacked">
+						<li><a href="/blog">Make: News</a></li>
+						<li><a href="//makerfaire.com" target="_blank">Maker Faire</a></li>
+						<li><a href="//www.makershed.com" target="_blank">Maker Shed</a></li>
+						<li><a href="//makercon.com" target="_blank">MakerCon</a></li>
+						<li><a href="//makercamp.com" target="_blank">Maker Camp</a></li>
+					</ul>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="accordion-group">
+			    <div class="accordion-heading">
+			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseThreeF">
+			        <h3>Our Company</h3>
+			      </a>
+			    </div>
+			    <div id="collapseThreeF" class="accordion-body collapse">
+			      <div class="accordion-inner">
+			        <ul class="nav nav-pills nav-stacked">
+						<li><a href="//makermedia.com" target="_blank">About Us</a></li>
+						<li><a href="//makermedia.com/work-with-us/advertising" target="_blank">Advertise with Us</a></li>
+						<li><a href="//makermedia.com/work-with-us/job-openings" target="_blank">Careers</a></li>
+						<li><a href="//help.makermedia.com/hc/en-us" target="_blank">Help</a></li>
+						<li><a href="//makermedia.com/privacy" target="_blank">Privacy</a></li>
+					</ul>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div><!-- End social-foot-mobile -->
+	</div><!-- END container -->
+	<?php echo make_copyright_footer(); ?>
+</footer><!-- END new-footer -->
+
 <script type="text/javascript">
 
 	jQuery(document).ready(function(){

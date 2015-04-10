@@ -1,58 +1,146 @@
-footer {
-	padding-top:40px;
-	padding-bottom:20px;
-	.pills {
-		margin-top:20px;
-		margin-left:100px;
-		a {
-			color:#5a6479;
-		}
-	}
+.new-footer {
+    padding:20px 0;
+    margin-top: 15px;
+    border-top: 20px solid #3FAFED;
+    .container {
+        padding-bottom: 15px;
+    }
+    .footer_copyright {
+        p {
+            margin: 0px;
+            line-height: 16px;
+        }
+    }
+    li {
+        padding:3px 0;
+        a {
+            color: #3FAFED;
+            font-size: 18px;
+        }
+    }
+    .footer_logo {
+        width: 180px;
+        padding-bottom: 10px;
+    }
+    h4 {
+        color: #005D8F;
+        font-size: 22px;
+        padding-top: 17px;
+        margin-bottom: 8px;
+    }
+    .stay-connected {
+        margin-bottom: 14px;
+    }
+    .social-profile-icons {
+        height: 33px;
+        margin-bottom: 20px;
+    }
+    form input[name=email] {
+        padding: 15px 8px;
+        font-size: 15px;
+        line-height: 1em;
+        border: 2px solid #cccccc;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .btn-cyan {
+        padding: 10px 8px;
+        font-size: 15px;
+        line-height: 1em;
+        width: 100%;
+    }
+    .social-foot-mobile{
+        .accordion-heading .accordion-toggle {
+            padding: 12px 15px 8px;
+            padding-left: 26px;
+        }
+        .nav {
+            margin-bottom: 0px;
+        }
+        h3 {
+            font-size: 22px;
+        }
+        #accordionF {
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+    }
+    .text-center {
+    	text-align: center;
+    }
+}
+// SOCIAL MEDIA SPRITES
+.stitches-sprite(@x: 0, @y: 0, @width: 0, @height: 0) {
+    background-position: @x @y;
 }
 
-.beige {
-	margin-top:40px;
-	background-color:#f2ebd4;
+.social-profile-icons {
+    a {
+    	display: block;
+	    float: left;
+	    text-align: center;
+	    width: 23.75%;
+    	height: 33px;
+    	.social-profile-cont {
+    		background-position: center;
+    		display: inline-block;
+    		width: 32px;
+    	}
+	    &.sprite-facebook-32 {
+	        span {
+	        	.stitches-sprite(-5px, -5px, 17px, 32px);
+	        }
+	        background-color: #335A8E;
+	        transition: background-color 0.2s ease;
+	        margin-right: 1.25%;
+	    }
+	    &.sprite-facebook-32:hover {
+	    	background-color: #1d3250;
+	    	transition: background-color 0.2s ease;
+	    }
+	    &.sprite-googleplus-32 {
+	    	span {
+	        	.stitches-sprite(-5px, -47px, 32px, 32px);
+	    	}
+	        background-color: #C04B36;
+	        transition: background-color 0.2s ease;
+	    }
+	    &.sprite-googleplus-32:hover {
+	    	background-color: #7e3123;
+	    	transition: background-color 0.2s ease;
+	    }
+	    &.sprite-pinterest-32 {
+	    	span {
+	        	.stitches-sprite(-5px, -89px, 32px, 32px);
+	    	}
+	        background-color: #BA4236;
+	        transition: background-color 0.2s ease;
+	        margin-right: 1.25%;
+	    }
+	    &.sprite-pinterest-32:hover {
+	    	background-color: #782b23;
+	    	transition: background-color 0.2s ease;
+	    }
+	    &.sprite-twitter-32 {
+	    	span {
+	        	.stitches-sprite(-5px, -131px, 32px, 32px);
+	        }
+	        background-color: #75ADCF;
+	        transition: background-color 0.2s ease;
+	        margin-right: 1.25%;
+	    }
+	    &.sprite-twitter-32:hover {
+	    	background-color: #3e86b1;
+	    	transition: background-color 0.2s ease;
+	    }
+    }
 }
 
-.more_faires {
-	padding:10px;
-	max-height: 373px;
-	min-height:371px;
-	border:1px solid #D0D0CE;
-	background-color:#E8F1F4;
-	h3, h4 {
-		font-family: "bebas-neue", sans-serif;
-		font-weight:300;
-	}
-	h3 {
-		margin-bottom:10px;
-		color:#67abc6;
-		font-size:32px;
-
-	}
-	h4 {
-		margin:10px 0px;
-		color:#67abc6;
-		font-size:28px;
-	}
-	ul {
-		margin-bottom:0;
-		li {
-			list-style-image:url('../images/arrow.gif');
-			font-size:14px;
-			line-height:16px;
-			a {
-				color:#065270;
-				font-weight:bold;
-			}
-		}
-	}
-}
-
-.footer_copyright {
-	font-size: 12px  !important;
-	line-height: 16px  !important;
-	font-weight: normal !important;
-	margin-bottom: 0px;
+.sprite {
+    background-image: url(../img/spritesheet.png);    
+    background-repeat: no-repeat;
+    display: block;
+    height: 33px;
 }

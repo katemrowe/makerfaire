@@ -22,7 +22,7 @@ get_header();
         <div class="carousel-inner">
             <div class="mask">
                 <div class="slideset">
-                    <?php $entries = GFAPI::get_entries(23, $criteria, null, array('offset' => 0, 'page_size' => 10)); ?>
+                    <?php $entries = GFAPI::get_entries(22, $criteria, null, array('offset' => 0, 'page_size' => 10)); ?>
                     <?php foreach ($entries as $entry): ?>
                     <div class="slide" data-url="<?php echo $entry['4'] ?>">
                         <div class="bg-stretch">

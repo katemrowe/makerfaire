@@ -111,7 +111,7 @@
 				 </div>
                               <?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
 				 <div class="slide">
-				     <a href="#"><img src="<?php echo $entries[$i]['22']; ?>" height="94" width="94" alt=""></a>
+				     <a href="#"><img src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],94,94); ?>" height="94" width="94" alt=""></a>
 				 </div>
                              <?php } // end for ?>
 									</div>

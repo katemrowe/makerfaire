@@ -371,30 +371,30 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
 	    'entry3_id'	=> ''
   ), $atts ) );
 
-  $entries = GFAPI::get_entries(esc_attr($form_id));  
   $values = array();
-  foreach ($entries as $entry) {
-    if ($entry['id'] == esc_attr($entry1_id)) {
-      $values[0] = $entry; 
-    } else if ($entry['id'] == esc_attr($entry2_id)) {
-      $values[1] = $entry; 
-    } else if ($entry['id'] == esc_attr($entry3_id)) {
-      $values[2] = $entry; 
+    if (null != (esc_attr($entry1_id))) {
+      $values[0] = $entries = GFAPI::get_entry(esc_attr($entry1_id)); 
     }
-  }
+    if (null != (esc_attr($entry2_id))) {
+      $values[1] = $entries = GFAPI::get_entry(esc_attr($entry2_id)); 
+    }
+    if (null != (esc_attr($entry3_id))) {
+      $values[2] = $entries = GFAPI::get_entry(esc_attr($entry3_id)); 
+    }
+  
 
 $output = '<div class="filter-container">' 
-          . ' <div class="col"><a href="' . $values[0][3] . '" class="post">'
-          . '   <img src="' . $values[0][2] . '" height="402" width="622" alt="image description">'
-          . '   <div class="text-box"><span class="section">' . $values[0][1] . '</span></div></a>'
+          . ' <div class="col"><a href="' . $values[0]['id'] . '" class="post">'
+          . '   <img src="' . $values[0]['22'] . '" height="402" width="622" alt="image description">'
+          . '   <div class="text-box"><span class="section">' . $values[0]['151'] . '</span></div></a>'
           . ' </div><div class="small col">'
-          . '   <a href="' . $values[1][3] . '" class="post">'
-          . '     <img src="' . $values[1][2] . '" height="402" width="622" alt="image description">'
-          . '     <div class="text-box"><span class="section">' . $values[1][1] . '</span></div>'
+          . '   <a href="' . $values[1]['id'] . '" class="post">'
+          . '     <img src="' . $values[1]['22'] . '" height="402" width="622" alt="image description">'
+          . '     <div class="text-box"><span class="section">' . $values[1]['151'] . '</span></div>'
           . '   </a>'
-          . '   <a href="' . $values[2][3] . '" class="post">'
-          . '     <img src="' . $values[2][2] . '" height="402" width="622" alt="image description">'
-          . '     <div class="text-box"><span class="section">' . $values[2][1] . '</span></div>'
+          . '   <a href="' . $values[2]['id'] . '" class="post">'
+          . '     <img src="' . $values[2]['22'] . '" height="402" width="622" alt="image description">'
+          . '     <div class="text-box"><span class="section">' . $values[2]['151'] . '</span></div>'
           . '   </a>'
           . '</div></div>';
   

@@ -137,7 +137,7 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(2) > div").addClass('area');
 
-    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="#" class="btn btn-info">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
+    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
 
     /**
      * This splits into 3 blocks the menu links

@@ -27,7 +27,7 @@
                     <?php foreach ($entries as $entry): ?>
                     <div class="slide" data-url="<?php echo $entry['4'] ?>">
                         <div class="bg-stretch">
-                            <a href="<?php echo $entry['4'] ?>"><img src="<?php echo $entry['1'] ?>" height="370" width="1274" alt=""></a>
+                            <a href="<?php echo $entry['4'] ?>"><img src="<?php echo legacy_get_resized_remote_image_url($entry['1'],1274,370); ?>" height="370" width="1274" alt=""></a>
                         </div>
                         <div class="text-box">
                             <div class="container-fluid">

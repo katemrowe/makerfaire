@@ -167,6 +167,8 @@ header .blurb {
 .new-footer .social-profile-icons {
   height: 33px;
   margin-bottom: 20px;
+  font-family: proxima-nova, sans-serif;
+  font-weight: 700;
 }
 .new-footer form input[name=email] {
   padding: 15px 8px;

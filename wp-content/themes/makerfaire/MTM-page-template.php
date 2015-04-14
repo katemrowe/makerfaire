@@ -108,16 +108,16 @@
 								<div class="mask">
 									<div class="slideset">
 			      <div class="slide">
-   		                <a href="/bay-area-15/maker/entry/<?php echo $randEntry['id']; ?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],935,442); ?>" height="442" width="935" alt=""></a>
-				<a href="/bay-area-15/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
+   		                <a href="/maker/entry/<?php echo $randEntry['id']; ?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],935,442); ?>" height="442" width="935" alt=""></a>
+				<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
 				   <strong class="title">Featured Maker Story</strong>
 				   <p><mark><?php echo $randEntry['151']; ?>: </mark><?php echo $randEntry['16']; ?></p>
 				</div></a>
 			      </div>
                               <?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
                                 <div class="slide">
-   		                  <a href="/bay-area-15/maker/entry/<?php echo $entries[$i]['id']; ?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],935,442); ?>" height="442" width="935" alt=""></a>
-				  <a href="/bay-area-15/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
+   		                  <a href="/maker/entry/<?php echo $entries[$i]['id']; ?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],935,442); ?>" height="442" width="935" alt=""></a>
+				  <a href="/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
 				     <strong class="title">Featured Maker Story</strong>
 				     <p><mark><?php echo $entries[$i]['151']; ?>: </mark><?php echo $entries[$i]['16']; ?></p>
 				  </div></a>

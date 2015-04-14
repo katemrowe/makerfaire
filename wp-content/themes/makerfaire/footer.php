@@ -1,16 +1,3 @@
-<div class="clear"></div>
-
-<div class="topad">
-
-	<!-- Beginning Sync AdSlot 4 for Ad unit header ### size: [[728,90]]  -->
-	<div id='div-gpt-ad-664089004995786621-4'>
-		<script type='text/javascript'>
-			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-4')});
-		</script>
-	</div>
-	<!-- End AdSlot 4 -->
-
-</div>
 <footer id="footer" class="new-footer">
 	<div class="container">
 		<div class="row social-foot-desktop">

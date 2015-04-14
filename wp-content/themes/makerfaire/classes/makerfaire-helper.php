@@ -15,14 +15,11 @@ add_action( 'wp_loaded','my_flush_rules' );
 function my_flush_rules(){
 	$rules = get_option( 'rewrite_rules' );
 
-	if ( ! isset( $rules['bay-area-15/maker/entry/(\d*)/?'] ) ) {
+	if ( ! isset( $rules['bay-area-15/maker/entry/(\d*)/?'] ) && ! isset( $rules['bay-area-2015/meet-the-makers/topics/([a-z0-9-]+$)/?'] )) {
 		global $wp_rewrite;
 	   	$wp_rewrite->flush_rules();
 	}
-	if ( ! isset( $rules['bay-area-2015/meet-the-makers/topics/([a-z0-9-]+$)/?'] ) ) {
-		global $wp_rewrite;
-		$wp_rewrite->flush_rules();
-	}
+	
 }
 
 add_filter( 'query_vars', 'my_query_vars' );

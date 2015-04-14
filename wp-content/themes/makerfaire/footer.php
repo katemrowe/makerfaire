@@ -1,7 +1,7 @@
 
 <footer id="footer" class="new-footer">
 	<div class="container">
-		<div class="row social-foot-desktop">
+		<div class="row-fluid social-foot-desktop">
 			<div class="span3 social-foot-col" >
 				<a href="/"><img class="footer_logo" src="//cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" alt="Maker Faire Logo"></a>
 				<ul class="unstyled">

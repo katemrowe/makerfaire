@@ -49,7 +49,7 @@ get_header(); ?>
 			<div class="span2"></div><div class="span6">
 			<h3><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 			<ul class="unstyled"><li>Topics: 
-				<?php echo  implode(',',$topicsarray[]);?>
+				<?php echo  implode(',',$topicsarray);?>
 			</li>
 			</ul>
 			</div>

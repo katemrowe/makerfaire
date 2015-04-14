@@ -386,15 +386,15 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
   
 
 $output = '<div class="filter-container">' 
-          . ' <div class="col"><a href="' . $values[0]['id'] . '" class="post">'
+          . ' <div class="col"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
           . '   <img src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" height="402" width="622" alt="image description">'
           . '   <div class="text-box"><span class="section">' . $values[0]['151'] . '</span></div></a>'
           . ' </div><div class="small col">'
-          . '   <a href="' . $values[1]['id'] . '" class="post">'
+          . '   <a href="/maker/entry/' . $values[1]['id'] . '" class="post">'
           . '     <img src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" height="402" width="622" alt="image description">'
           . '     <div class="text-box"><span class="section">' . $values[1]['151'] . '</span></div>'
           . '   </a>'
-          . '   <a href="' . $values[2]['id'] . '" class="post">'
+          . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
           . '     <img src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" height="402" width="622" alt="image description">'
           . '     <div class="text-box"><span class="section">' . $values[2]['151'] . '</span></div>'
           . '   </a>'

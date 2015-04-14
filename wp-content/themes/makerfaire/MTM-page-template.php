@@ -17,10 +17,12 @@
  	$cats_tags = get_categories(array('hide_empty' => 0));
  	$output = '<ul class="columns">';
  	foreach ($cats_tags as $cat) {
- 		// $atts['faire'] has been deprecated and will be removed once the production server has been updated.
+ 		  if ($cat->cat_name != 'uncategorized') {
+   			// $atts['faire'] has been deprecated and will be removed once the production server has been updated.
  		// Why? Include both if $atts['faire_url'] needed JE 8.27.14
  			$output .= '<li><a href="topics/' .  $cat->slug . '">' . esc_html( $cat->name ) . '</a></li>';
  		}
+ 	}
  
  	$output .= '</ul>';
  	return $output;

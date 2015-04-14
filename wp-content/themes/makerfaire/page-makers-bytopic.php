@@ -4,14 +4,17 @@
  */
 global $wp_query;
 $topic_slug = $wp_query->query_vars['t_slug'];
-print_r(get_term_by('slug',$topic_slug,'category'));
 $category = get_term_by('slug',$topic_slug,'category');
 $search_category = $category->name.':'.$category->term_id;
-print_r($search_category);
 
 $f = $wp_query->query_vars['f'];
 $search_criteria['field_filters'][] = array( 'key' => '147', 'value' => array( $search_category));
 $entries=GFAPI::get_entries(20,$search_criteria);
+
+// Load Categories
+$fieldtopics=RGFormsModel::get_field($form,'147');
+
+
 
 get_header(); ?>
 <div class="clear"></div>
@@ -29,20 +32,24 @@ get_header(); ?>
 
 			</div>
 			
-			TOPIC SLUG:	<?php echo $topic_slug;?>
+			TOPIC:	<?php echo $topic_slug;?>
 			
 			<?php foreach ($entries as $entry) :
 
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
 			$entry_id = isset($entry['id']) ? $entry['id']  : '';
-				
+			$topicsarray = array();
+			foreach($fieldtopics['inputs'] as $topic)
+			{
+				if (strlen($entry[$topic['id']]) > 0)  $topicsarray[] = $lead[$topic['id']];
+			}
 				?>
 						<hr>
 			<div class="row">
 			<div class="span2"></div><div class="span6">
 			<h3><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 			<ul class="unstyled"><li>Topics: 
-				<a href="#">Topic</a>
+				<?php echo  implode(',',$topicsarray[]);?>
 			</li>
 			</ul>
 			</div>

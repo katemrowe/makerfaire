@@ -30,14 +30,5 @@ function my_query_vars( $query_vars ){
 	return $query_vars;
 }
 
-function my_rewrite_tests( $tests ) {
-	return array(
-			'MakerFaire' => array(
-					'/bay-area-2015/meet-the-makers/topics/3d-imaging/' => 'index.php?post_type=page&pagename=listing-page-do-not-delete&f=$matches[1]&t_slug=$matches[2]',
-			'/maker/entry/51080/' => 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]'
-		)
-	);
-}
-add_filter( 'rewrite_testing_tests', 'my_rewrite_tests' );
 
 // END AMAZING HACKS

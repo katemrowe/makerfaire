@@ -23,7 +23,8 @@ get_header(); ?>
 		<div class="content span8">
 
 			<div class="page-header">
-
+	<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+    
 				<h1> <small><?php echo  $topic_slug; ?></small></h1>
 
 			</div>
@@ -47,8 +48,7 @@ get_header(); ?>
 			</div>
 			</div>
 			<?php endforeach;?>
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-    
+		
     <?php the_content(); ?>
     <!-- The last holder-->
 	<?php endwhile; ?>

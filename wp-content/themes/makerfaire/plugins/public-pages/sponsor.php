@@ -33,10 +33,10 @@ function mf_sponsor_carousel( $category_name ) {
 
 function mf_sponsor_list( $category_name ) {
 	// Get all of the sponsor from the links
-	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name, 'limit' => 6 ) );
+	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name ) );
 
 	// Split them into chucks of two
-	// $sponsors = array_chunk( $sponsors, 2, true );
+	$sponsors = array_chunk( $sponsors, 6, true );
 
 	// Get the output started.
 	$output = '<ul>';

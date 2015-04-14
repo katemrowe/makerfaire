@@ -2,7 +2,7 @@
 // BEGINING AMAZING HACKS
 function maker_url_vars( $rules ) {
 	$newrules = array();
-	$newrules['bay-area-15/maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]';
+	$newrules['maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]';
 	$newrules['bay-area-2015/meet-the-makers/topics/([a-z0-9-]+$)/?'] = 'index.php?post_type=page&pagename=listing-page-do-not-delete&t_slug=$matches[1]';
 	return $newrules + $rules;
 }

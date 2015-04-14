@@ -20,7 +20,7 @@ get_header(); ?>
 
 			<div class="page-header">
 
-				<h1><?php the_title(); ?> <small><?php echo esc_html( $topic_slug ); ?></small></h1>
+				<h1> <small><?php echo  $topic_slug; ?></small></h1>
 
 			</div>
 

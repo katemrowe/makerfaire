@@ -3,7 +3,7 @@
 function maker_url_vars( $rules ) {
 	$newrules = array();
 	$newrules['maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]';
-	$newrules['([^\/]*)\/meet-the-makers\/topics\/([^\/]*)\/?'] = 'index.php?post_type=page&pagename=listing-page-do-not-delete&f=$matches[1]&t_slug=$matches[2]';
+	$newrules['([^/]*)/meet-the-makers/topics/([^/]*)/?'] = 'index.php?post_type=page&pagename=listing-page-do-not-delete&f=$matches[1]&t_slug=$matches[2]';
 	return $newrules + $rules;
 }
 
@@ -15,7 +15,7 @@ add_action( 'wp_loaded','my_flush_rules' );
 function my_flush_rules(){
 	$rules = get_option( 'rewrite_rules' );
 
-	if ( ! isset( $rules['maker/entry/(\d*)/?'] ) || ! isset( $rules['([^\/]*)\/meet-the-makers\/topics\/([^\/]*)\/?'] )) {
+	if ( ! isset( $rules['maker/entry/(\d*)/?'] ) || ! isset( $rules['([^/]*)/meet-the-makers/topics/([^/]*)/?'] )) {
 		global $wp_rewrite;
 	   	$wp_rewrite->flush_rules();
 	}

@@ -41,7 +41,7 @@ get_header(); ?>
 			$topicsarray = array();
 			foreach($fieldtopics['inputs'] as $topic)
 			{
-				if (strlen($entry[$topic['id']]) > 0)  $topicsarray[] = $lead[$topic['id']];
+				if (strlen($entry[$topic['id']]) > 0)  $topicsarray[] = $entry[$topic['id']];
 			}
 				?>
 						<hr>

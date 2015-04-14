@@ -929,33 +929,8 @@ function create_post_type() {
     //wp_nav_menu( array( 'walker' => new Description_Walker ));
 
 
-// BEGINING AMAZING HACKS
-function maker_url_vars( $rules ) {
-	$newrules = array();
-	$newrules['bay-area-15/maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]';
-	return $newrules + $rules;
-}
 
-add_filter( 'rewrite_rules_array','maker_url_vars' );
 
-add_action( 'wp_loaded','my_flush_rules' );
 
-// flush_rules() if our rules are not yet included
-function my_flush_rules(){
-	$rules = get_option( 'rewrite_rules' );
-
-	if ( ! isset( $rules['bay-area-15/maker/entry/(\d*)/?'] ) ) {
-		global $wp_rewrite;
-	   	$wp_rewrite->flush_rules();
-	}
-}
-
-add_filter( 'query_vars', 'my_query_vars' );
-function my_query_vars( $query_vars ){
-    $query_vars[] = 'e_id';
-    return $query_vars;
-}
-
-// END AMAZING HACKS
 
 

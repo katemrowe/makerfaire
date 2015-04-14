@@ -3,6 +3,29 @@
  * Template Name: Meet the Makers page
  */
  get_header();
+ 
+ function mf_get_topics( ) {
+ 	$args = array(
+ 			'hide_empty'	=> true, //unreliable: See mf_get_terms.
+ 			'exclude'		=> array( '1' ),
+ 			'show_tags' => '',
+ 			'show_cats' => '',
+ 	);
+ 
+ 	//See mf_get_terms
+ 	//array_merge for atts here to avoid breaking code term display code
+ 	$cats_tags = get_categories();
+ 	$output = '<ul class="columns">';
+ 	foreach ($cats_tags as $cat) {
+ 		// $atts['faire'] has been deprecated and will be removed once the production server has been updated.
+ 		// Why? Include both if $atts['faire_url'] needed JE 8.27.14
+ 			$output .= '<li><a href="topics/' .  $cat->slug . '">' . esc_html( $cat->name ) . '</a></li>';
+ 		}
+ 
+ 	$output .= '</ul>';
+ 	return $output;
+ }
+ 
  ?>
  <div id="wrapper">
  <main id="main" role="main">
@@ -148,6 +171,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="browse-box">
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-12">
+Browse by Topic 
+<?php echo mf_get_topics();?></div>
+</div>
+</div>
+</div>
         
 					<?php the_content(); ?>
 
@@ -269,3 +301,5 @@
     };
     twitterFetcher.fetch(config1);
     //end of twitter function</script>
+    
+    

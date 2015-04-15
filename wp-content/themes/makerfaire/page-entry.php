@@ -120,20 +120,24 @@ function display_entry_schedule($entry_id) {
     `wp_mf_schedule`.`end_dt`,
     `wp_mf_schedule`.`day`
 	FROM `wp_mf_schedule` where entry_id=$entry_id");
+
 	if ($result)
 	{
-	echo '<ul>';
-	while($row = $result->fetch_row())
-	{
-		$start_dt = strtotime( $row[4]);
-		$end_dt = strtotime($row[5]);
-		$schedule_entry_id = $row[0];
-		echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
-		
+		if ($result->num_rows === 0) echo 'No schedule found';
+		else 
+		{
+		echo '<ul>';
+		while($row = $result->fetch_row())
+		{
+			$start_dt = strtotime( $row[4]);
+			$end_dt = strtotime($row[5]);
+			$schedule_entry_id = $row[0];
+			echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
+			
+		}
+		echo '</ul>';
+		}
 	}
-	echo '</ul>';
-	}
-	else echo 'No schedule found';
 }
 ?>
 

@@ -12,7 +12,8 @@ $search_criteria['field_filters'][] = array( 'key' => '147', 'value' => array( $
 $entries=GFAPI::get_entries(20,$search_criteria);
 
 // Load Categories
-$fieldtopics=RGFormsModel::get_field($form,'147');
+$cats_tags = get_categories(array('hide_empty' => 0));
+
 
 
 
@@ -35,14 +36,16 @@ get_header(); ?>
 			TOPIC:	<?php echo $topic_slug;?>
 			
 			<?php foreach ($entries as $entry) :
-
+			print_r($entry['147']);
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
 			$entry_id = isset($entry['id']) ? $entry['id']  : '';
-			$topicsarray = array();
-			foreach($fieldtopics['inputs'] as $topic)
-			{
-				if (strlen($entry[$topic['id']]) > 0)  $topicsarray[] = $entry[$topic['id']];
+			foreach ($cats_tags as $cat) {
+				if ($cat->slug != 'uncategorized') {
+					if (strlen($entry['147.1']) > 0)  $topicsarray[] = $entry[$topic['id']];
+	
+				}
 			}
+				
 				?>
 						<hr>
 			<div class="row">

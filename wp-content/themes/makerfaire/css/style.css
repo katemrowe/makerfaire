@@ -740,7 +740,7 @@ tr.time {
 li.hidelink a:link,
 li.hidelink a:visited {
 color:#999 !important;
-cursor:none !important;
+cursor:default !important;
 }
 .tab-content h3 {
   line-height: 100%;

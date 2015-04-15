@@ -737,6 +737,11 @@ tr.time {
   width: 728px;
   height: 90px;
 }
+li.hidelink a:link,
+li.hidelink a:visited {
+color:#999 !important;
+cursor:none !important;
+}
 .tab-content h3 {
   line-height: 100%;
 }

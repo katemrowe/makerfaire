@@ -55,7 +55,7 @@
 <li>Short Description: <?php echo $project_short; ?></li> 
 <li>Project Website: <?php echo $project_website; ?></li> 
 <li>Project Video: 
-<iframe src="<?php echo str_replace('http://vimeo.com','http://player.vimeo.com',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+<iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
 
 </li> 
 <li>Short Desription<?php echo $entry['16']; ?></li>

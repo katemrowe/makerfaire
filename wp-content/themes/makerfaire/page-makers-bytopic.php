@@ -6,10 +6,13 @@ global $wp_query;
 $topic_slug = $wp_query->query_vars['t_slug'];
 $category = get_term_by('slug',$topic_slug,'category');
 $search_category = $category->name.':'.$category->term_id;
+$offset = $wp_query->query_vars['offset'];
+print_r( $wp_query->query_vars['offset']);
 
+$total_count = 0;
 $f = $wp_query->query_vars['f'];
 $search_criteria['field_filters'][] = array( 'key' => '147', 'value' => array( $search_category));
-$entries=GFAPI::get_entries(20,$search_criteria);
+$entries=GFAPI::get_entries(20,$search_criteria,null,array('offset' => $offset, 'page_size' => 20 ),$total_count);
 
 // Load Categories
 $cats_tags = get_categories(array('hide_empty' => 0));
@@ -34,6 +37,8 @@ get_header(); ?>
 			</div>
 			
 			TOPIC:	<?php echo $topic_slug;?>
+			PAGE: <?php echo $offset;?>
+			TOTAL :<?php echo $total_count;?>
 			
 			<?php foreach ($entries as $entry) :
 			print_r($entry['147']);
@@ -51,10 +56,7 @@ get_header(); ?>
 			<div class="row">
 			<div class="span2"></div><div class="span6">
 			<h3><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
-			<ul class="unstyled"><li>Topics: 
-				<?php echo  implode(',',$topicsarray);?>
-			</li>
-			</ul>
+			
 			</div>
 			</div>
 			<?php endforeach;?>

@@ -16,7 +16,7 @@ $search_value['field_filters'][] = array('key' => '147', 'value' => $search_cate
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
 $entries=search_entries_bytopic(20,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
-
+$current_url = '//makerfaire.local/'.$f.'/meet-the-makers/topics/'.$topic_slug;
 $total_count=GFAPI::count_entries(20,$search_value);
 
 // Load Categories
@@ -35,7 +35,7 @@ get_header(); ?>
 		<div class="content span8">
 			<div class="span7">
 			<h1> <small><?php echo  $topic_slug; ?></small></h1>
-			<?php pagination_display();?>
+			<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
 			</div>
 			<div class="span2">
 			TOPIC:	<?php echo $topic_slug;?>
@@ -58,7 +58,7 @@ get_header(); ?>
 			</div>
 			<?php endforeach;?>
 			<div class="span7">
-			<?php pagination_display();?>
+			<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
 			</div>
 		</div>
 		<!--Content-->
@@ -136,7 +136,11 @@ function sort_by_field_query( $form_id, $searching, $sorting, $paging ) {
 	return $sql;
 }
 
-function pagination_display () {
+function pagination_display ($current_url,$current_page,$pagesize,$total_count) {
+
+$pages = ceil($total_count / $pagesize);
+
+
 ?>
 <style>
 .pagination {
@@ -165,22 +169,13 @@ function pagination_display () {
 	width: auto;
 }
 </style>
-<div class="btn-group pull-right"><nav ><ul class="pagination pull-right">
-<li>
-<a href="#" aria-label="Previous">
-<span aria-hidden="true">&laquo;</span>
-</a>
-</li>
-<li class="active"><a href="#">1</a></li>
-<li><a href="#">2</a></li>
-<li><a href="#">3</a></li>
-<li><a href="#">4</a></li>
-<li><a href="#">5</a></li>
-<li>
-<a href="#" aria-label="Next">
-<span aria-hidden="true">&raquo;</span>
-</a>
-</li>
+<div class="btn-group pull-right">
+<nav ><ul class="pagination pull-right">
+<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
+<?php for($i = 1;$i <= $pages;$i++): ?>
+<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
+<?php endfor;?>
+<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
 </ul>
 </nav>
 </div>

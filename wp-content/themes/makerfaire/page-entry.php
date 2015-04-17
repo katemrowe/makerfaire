@@ -83,6 +83,7 @@
       </div>
       <br />
 
+<!-- Commenting out for now via Clair
       <h2>Schedule</h2>
       <hr />
       <?php
@@ -91,6 +92,7 @@
         }
       ?>
       <br />
+-->
       
       <h2>Makers/Group</h2>
       <hr />
@@ -98,10 +100,10 @@
       if (isset($groupbio)) {
         echo '<div class="row padbottom">
                 <div class="12">
-                  <img class="span4 pull-left" src="' . echo $groupphoto . '" alt="Maker Profile Image">
+                  <img class="span4 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
                   <div class="span8">
-                    <h3 style="margin-top: 0px;">' . echo $groupname . '</h3>
-                    <p>' . echo $groupbio . '</p>
+                    <h3 style="margin-top: 0px;">' . $groupname . '</h3>
+                    <p>' . $groupbio . '</p>
                   </div>
                 </div>
               </div>';
@@ -109,10 +111,10 @@
       else {
         echo '<!-- Need to loop through the Makers 1-7... -->
               <div class="row padbottom">
-                <img class="span4 pull-left" src="' . echo $makerphoto1 . '" alt="Maker Profile Image">
+                <img class="span4 pull-left" src="' . $makerphoto1 . '" alt="Maker Profile Image">
                 <div class="span8">
-                  <h3 style="margin-top: 0px;">' . echo $makerfirstname1 . ' ' . echo $makerlastname1 . '</h3>
-                  <p>' . echo $makerbio1 . '</p>
+                  <h3 style="margin-top: 0px;">' . $makerfirstname1 . ' ' . $makerlastname1 . '</h3>
+                  <p>' . $makerbio1 . '</p>
                 </div>
               </div>';
       }

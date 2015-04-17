@@ -8,6 +8,8 @@
  * This page specifically handles the Maker data.
  *
  * @version 2.0
+ * 
+ * Read from location_elements
  */
 
 // Stop any direct calls to this file

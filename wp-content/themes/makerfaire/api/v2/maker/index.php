@@ -29,7 +29,9 @@ if ( $type == 'maker' ) {
 			)
 	);
 	$formids = array(20);
-	$entries = GFAPI::get_entries($formids, $search_criteria);
+	$paging = array('offset' => 0, 'page_size' => 2000 );
+	$total_count=0;
+	$entries = GFAPI::get_entries($formids, $search_criteria,array(),$paging,$total_count);
 	/*$args = array(
 		'no_found_rows'  => true,
 		'post_type' 	 => 'maker',

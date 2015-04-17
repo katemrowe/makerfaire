@@ -39,7 +39,7 @@ if ( $type == 'maker_export' ) {
 	$makers = array();
 
 	// Loop through the posts
-	foreach ( $query->posts as $post ) {
+	/*foreach ( $query->posts as $post ) {
 
 		// REQUIRED: The maker ID
 		$maker['id'] = absint( $post->ID );
@@ -83,4 +83,5 @@ if ( $type == 'maker_export' ) {
 
 	// Reset the Query
 	wp_reset_postdata();
+	*/
 }

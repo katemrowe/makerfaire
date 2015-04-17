@@ -34,16 +34,9 @@ get_header(); ?>
 
 		<div class="content span8">
 			<div class="span7">
-			<h1> <small><?php echo  $topic_slug; ?></small></h1>
+			<h1><?php echo  $topic_slug; ?> (<?php echo $total_count;?> found.)</h1>
 			<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
 			</div>
-			<div class="span2">
-			TOPIC:	<?php echo $topic_slug;?>
-			PAGE: <?php echo $currentpage;?>
-			OFFSET: <?php echo $offset;?>
-			TOTAL :<?php echo $total_count;?>
-			</div>
-			
 			<?php foreach ($entries as $entry) :
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
 			$entry_id = isset($entry['id']) ? $entry['id']  : '';

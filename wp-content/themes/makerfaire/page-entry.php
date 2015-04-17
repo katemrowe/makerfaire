@@ -44,103 +44,135 @@
   
   get_header();
 ?>
-<div style="margin-left: 100px">
-<img src="<?php echo $entry['22']; ?>" style="width: 300px;"/>
-<h1><?php echo $entry['151']; ?></h1>
+
+<div class="clear"></div>
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="content span8">
+
+      <div class="page-header">
+
+        <h1><?php echo $entry['151']; ?></h1>
+        <hr />
+
+      </div>
+
+      <img class="img-responsive" src="<?php echo $entry['22']; ?>" />
+
+      <p class="lead"><?php echo $project_short; ?></p> 
+
+      <?php if (isset($project_website)) {
+          echo '<a href="' . $project_website . '" class="btn btn-info pull-left padright" target="_blank">Project Website</a>';
+      } ?>
+
+      <!-- Button to trigger video modal -->
+      <a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>
+       
+      <!-- Modal -->
+      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel"><?php echo $entry['151']; ?></h3>
+        </div>
+        <div class="modal-body">
+          <iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+        </div>
+      </div>
+      <br />
+
+<!-- Commenting out for now via Clair
+      <h2>Schedule</h2>
+      <hr />
+      <?php
+        if (!empty(display_entry_schedule($entryId))) {
+          display_entry_schedule($entryId);
+        }
+      ?>
+      <br />
+-->
+      
+      <h2>Makers/Group</h2>
+      <hr />
+      <?php 
+      if (isset($groupbio)) {
+        echo '<div class="row padbottom">
+                <div class="12">
+                  <img class="span4 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
+                  <div class="span8">
+                    <h3 style="margin-top: 0px;">' . $groupname . '</h3>
+                    <p>' . $groupbio . '</p>
+                  </div>
+                </div>
+              </div>';
+      } 
+      else {
+        echo '<!-- Need to loop through the Makers 1-7... -->
+              <div class="row padbottom">
+                <img class="span4 pull-left" src="' . $makerphoto1 . '" alt="Maker Profile Image">
+                <div class="span8">
+                  <h3 style="margin-top: 0px;">' . $makerfirstname1 . ' ' . $makerlastname1 . '</h3>
+                  <p>' . $makerbio1 . '</p>
+                </div>
+              </div>';
+      }
+      ?>
+
+    </div><!--Content-->
+
+    <?php get_sidebar(); ?>
+
+  </div>
+
+</div><!--Container-->
+
+
+<!-- What do i do with these?
+Duplicate to $project_website;
 <p>Homepage: <i><?php echo $entry['27']; ?></i></p>
 
-<h1>Title and Photo</h1>
-<ul>
+Duplicate $entry['22']
 <li>Project Photo: <?php echo $project_photo; ?></li> 
-<li>Short Description: <?php echo $project_short; ?></li> 
-<li>Project Website: <?php echo $project_website; ?></li> 
-<li>Project Video: 
-<iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
 
-</li> 
+Duplicate to $entry['151']
 <li>Short Desription<?php echo $entry['16']; ?></li>
-
-
-</ul>
-<h1>Schedule Info</h1>
-	<?php display_entry_schedule($entryId);?>
-
-
-<h1>Maker / Group</h1>
-	
-<li>Maker 1 Name: <?php echo $makerfirstname1; ?> <?php echo $makerlastname1; ?></li>
-<li>$makerbio1: <?php echo $makerbio1; ?></li>
-<li>$makerphoto1: <?php echo $makerphoto1; ?></li>
-<li>Maker 2 Name: <?php echo $makerfirstname2; ?> <?php echo $makerlastname2; ?></li>
-<li>$makerbio2: <?php echo $makerbio2; ?></li>
-<li>$makerphoto2: <?php echo $makerphoto2; ?></li>
-<li>Maker 3 Name: <?php echo $makerfirstname3; ?> <?php echo $makerlastname3; ?></li>
-<li>$makerbio3: <?php echo $makerbio3; ?></li>
-<li>$makerphoto3: <?php echo $makerphoto3; ?></li>
-<li>Maker 4 Name: <?php echo $makerfirstname4; ?> <?php echo $makerlastname4; ?></li>
-<li>$makerbio4: <?php echo $makerbio4; ?></li>
-<li>$makerphoto4: <?php echo $makerphoto4; ?></li>
-<li>Maker 5 Name: <?php echo $makerfirstname5; ?> <?php echo $makerlastname5; ?></li>
-<li>$makerbio5: <?php echo $makerbio5; ?></li>
-<li>$makerphoto5: <?php echo $makerphoto5; ?></li>
-<li>Maker 6 Name: <?php echo $makerfirstname6; ?> <?php echo $makerlastname6; ?></li>
-<li>$makerbio6: <?php echo $makerbio6; ?></li>
-<li>$makerphoto6: <?php echo $makerphoto6; ?></li>
-<li>Maker 7 Name: <?php echo $makerfirstname7; ?> <?php echo $makerlastname7; ?></li>
-<li>$makerbio7: <?php echo $makerbio7; ?></li>
-<li>$makerphoto7: <?php echo $makerphoto7; ?></li>
-
-
-
-
-
-
-
-
-
-<li>$groupname: <?php echo $groupname; ?></li>
-<li>$groupphoto: <?php echo $groupphoto; ?></li>
-<li>$groupbio: <?php echo $groupbio; ?></li>
-</ul>
-
-</div>
+-->
 
  <?php get_footer();
-
  
 function display_entry_schedule($entry_id) {
-	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
-			<h4><label class="detail-label">Schedule:</label></h4>');
-	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
-	if ($mysqli->connect_errno) {
-		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-	}
-	$result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
+  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+      <h4><label class="detail-label">Schedule:</label></h4>');
+  $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+  if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+  }
+  $result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
     `wp_mf_schedule`.`entry_id`,
     `wp_mf_schedule`.`location_id`,
     `wp_mf_schedule`.`faire`,
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
     `wp_mf_schedule`.`day`
-	FROM `wp_mf_schedule` where entry_id=$entry_id");
+  FROM `wp_mf_schedule` where entry_id=$entry_id");
 
-	if ($result)
-	{
-		if ($result->num_rows === 0) echo 'No schedule found';
-		else 
-		{
-		echo '<ul>';
-		while($row = $result->fetch_row())
-		{
-			$start_dt = strtotime( $row[4]);
-			$end_dt = strtotime($row[5]);
-			$schedule_entry_id = $row[0];
-			echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
-			
-		}
-		echo '</ul>';
-		}
-	}
+  if ($result)
+  {
+    if ($result->num_rows === 0) echo 'No schedule found';
+    else 
+    {
+    echo '<ul>';
+    while($row = $result->fetch_row())
+    {
+      $start_dt = strtotime( $row[4]);
+      $end_dt = strtotime($row[5]);
+      $schedule_entry_id = $row[0];
+      echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
+    }
+    echo '</ul>';
+    }
+  }
 }
 ?>
-

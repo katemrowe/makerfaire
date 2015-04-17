@@ -65,7 +65,7 @@
       <p class="lead"><?php echo $project_short; ?></p> 
 
       <?php if (isset($project_website)) {
-          echo '<a href="<?php echo $project_website; ?>" class="btn btn-info pull-left">Project Website</a>';
+          echo '<a href="'<?php echo $project_website; ?>'" class="btn btn-info pull-left padright" target="_blank">Project Website</a>';
       } ?>
 
       <!-- Button to trigger video modal -->
@@ -81,6 +81,7 @@
           <iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
         </div>
       </div>
+      <br />
 
       <h2>Schedule</h2>
       <hr />
@@ -89,29 +90,33 @@
           display_entry_schedule($entryId);
         }
       ?>
-
+      <br />
+      
       <h2>Makers/Group</h2>
       <hr />
-      <!-- Need to loop through the Makers 1-7... -->
-      <div class="row">
-        <div class="12">
-          <img class="span4 pull-left" data-src="<?php echo $makerphoto1; ?>" style="width:640px;">
-          <div class="span8">
-            <h3><?php echo $makerfirstname1; ?> <?php echo $makerlastname1; ?></h3>
-            <p><?php echo $makerbio1; ?></p>
-          </div>
-        </div>
-      </div>
-      <!-- ...or display the group info -->
-      <div class="row">
-        <div class="12">
-          <img class="span4 pull-left" data-src="<?php echo $groupphoto; ?>" alt="Maker Profile Image">
-          <div class="span8">
-            <h3><?php echo $groupname; ?></h3>
-            <p><?php echo $groupbio; ?></p>
-          </div>
-        </div>
-      </div>
+      <?php 
+      if (isset($groupbio)) {
+        echo '<div class="row padbottom">
+                <div class="12">
+                  <img class="span4 pull-left" src="' . echo $groupphoto . '" alt="Maker Profile Image">
+                  <div class="span8">
+                    <h3 style="margin-top: 0px;">' . echo $groupname . '</h3>
+                    <p>' . echo $groupbio . '</p>
+                  </div>
+                </div>
+              </div>';
+      } 
+      else {
+        echo '<!-- Need to loop through the Makers 1-7... -->
+              <div class="row padbottom">
+                <img class="span4 pull-left" src="' . echo $makerphoto1 . '" alt="Maker Profile Image">
+                <div class="span8">
+                  <h3 style="margin-top: 0px;">' . echo $makerfirstname1 . ' ' . echo $makerlastname1 . '</h3>
+                  <p>' . echo $makerbio1 . '</p>
+                </div>
+              </div>';
+      }
+      ?>
 
     </div><!--Content-->
 

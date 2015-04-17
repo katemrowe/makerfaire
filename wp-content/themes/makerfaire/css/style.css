@@ -53,6 +53,18 @@ h4 {
   height: 92px;
   margin: 10px auto 0;
 }
+.padtop {
+  padding-top: 15px;
+}
+.padbottom {
+  padding-bottom: 15px;
+}
+.padleft {
+  padding-left: 15px;
+}
+.padright {
+  padding-right: 15px;
+}
 .faire-thumb {
   max-width: 130px;
   max-height: 130px;
@@ -833,12 +845,6 @@ li.hidelink a:visited {
 .topper .blue,
 .blue a {
   color: #00adef;
-}
-h1 {
-  margin-bottom: 24px;
-}
-h4 {
-  margin-top: 12px;
 }
 .no-js .mf-form div.step,
 .no-js .mf-breadcrumbs,
@@ -3482,9 +3488,6 @@ li:nth-child(1) .drop-holder .column .col {
   display: none;
 }
 /* 2015-04-04 */
-.hide {
-  display: none;
-}
 .left {
   float: left;
 }

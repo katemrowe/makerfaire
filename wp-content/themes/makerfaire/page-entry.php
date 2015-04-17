@@ -65,7 +65,7 @@
       <p class="lead"><?php echo $project_short; ?></p> 
 
       <?php if (isset($project_website)) {
-          echo '<a href="' . echo $project_website . '" class="btn btn-info pull-left padright" target="_blank">Project Website</a>';
+          echo '<a href="' . $project_website . '" class="btn btn-info pull-left padright" target="_blank">Project Website</a>';
       } ?>
 
       <!-- Button to trigger video modal -->

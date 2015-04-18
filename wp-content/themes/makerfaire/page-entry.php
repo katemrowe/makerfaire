@@ -8,29 +8,14 @@
   global $wp_query;
   $entryId = $wp_query->query_vars['e_id'];
   $entry = GFAPI::get_entry($entryId);
-  
-  $makerfirstname1=$entry['160.3'];$makerlastname1=$entry['160.6'];
-  $makerfirstname2=$entry['158.3'];$makerlastname2=$entry['158.6'];
-  $makerfirstname3=$entry['155.3'];$makerlastname3=$entry['155.6'];
-  $makerfirstname4=$entry['156.3'];$makerlastname4=$entry['156.6'];
-  $makerfirstname5=$entry['157.3'];$makerlastname5=$entry['157.6'];
-  $makerfirstname6=$entry['159.3'];$makerlastname6=$entry['159.6'];
-  $makerfirstname7=$entry['154.3'];$makerlastname7=$entry['154.6'];
-  
-  $makerbio1=$entry['234'];
-  $makerphoto1=$entry['217'];
-  $makerbio2=$entry['258'];
-  $makerphoto2=$entry['224'];
-  $makerbio3=$entry['259'];
-  $makerphoto3=$entry['223'];
-  $makerbio4=$entry['260'];
-  $makerphoto4=$entry['222'];
-  $makerbio5=$entry['261'];
-  $makerphoto5=$entry['220'];
-  $makerbio6=$entry['262'];
-  $makerphoto6=$entry['221'];
-  $makerbio7=$entry['263'];
-  $makerphoto7=$entry['219'];
+  $makers = array();
+  if (strlen($entry['160.3']) > 0) $makers[] =  array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
+  if (strlen($entry['158.3']) > 0) $makers[] = array('firstname' => $entry['158.3'], 'lastname' => $entry['158.6'], 'bio'=>$entry['258'], 'photo'=>$entry['224']);
+  if (strlen($entry['155.3']) > 0) $makers[] = array('firstname' => $entry['155.3'], 'lastname' => $entry['155.6'], 'bio'=>$entry['259'], 'photo'=>$entry['223']);
+  if (strlen($entry['156.3']) > 0) $makers[] = array('firstname' => $entry['156.3'], 'lastname' => $entry['156.6'], 'bio'=>$entry['260'], 'photo'=>$entry['222']);
+  if (strlen($entry['157.3']) > 0) $makers[] = array('firstname' => $entry['157.3'], 'lastname' => $entry['157.6'], 'bio'=>$entry['261'], 'photo'=>$entry['220']);
+  if (strlen($entry['159.3']) > 0) $makers[] = array('firstname' => $entry['159.3'], 'lastname' => $entry['159.6'], 'bio'=>$entry['262'] , 'photo'=>$entry['221']);
+  if (strlen($entry['154.3']) > 0) $makers[] = array('firstname' => $entry['154.3'], 'lastname' => $entry['154.6'], 'bio'=>$entry['263'], 'photo'=>$entry['219']);
   
   $groupname=$entry['109'];
   $groupphoto=$entry['111'];
@@ -98,25 +83,30 @@
       
       <h2>Makers/Group</h2>
       <hr />
-      <?php 
-      if (isset($groupbio)) {
-        echo '<div class="row padbottom">
-                <img class="span4 pull-left" src="' . $groupphoto . '" alt="Group Profile Image">
-                <div class="span8">
-                  <h3 style="margin-top: 0px;">' . $groupname . '</h3>
-                  <p>' . $groupbio . '</p>
+      <?php
+      if (strlen($groupbio > 0)) {
+       echo '<div class="row padbottom">
+                <div class="12">
+                  <img class="span4 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
+                  <div class="span8">
+                    <h3 style="margin-top: 0px;">' . $groupname . '</h3>
+                    <p>' . $groupbio . '</p>
+                  </div>
                 </div>
               </div>';
       } 
       else {
-        echo '<!-- Need to loop through the Makers 1-7... -->
-              <div class="row padbottom">
-                <img class="span4 pull-left" src="' . $makerphoto1 . '" alt="Maker Profile Image">
+		foreach($makers as $maker)
+		{
+		echo '<div class="row padbottom">
+                <img class="span4 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
                 <div class="span8">
-                  <h3 style="margin-top: 0px;">' . $makerfirstname1 . ' ' . $makerlastname1 . '</h3>
-                  <p>' . $makerbio1 . '</p>
+                  <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
+                  <p>' . $maker['bio'] . '</p>
                 </div>
               </div>';
+		}
+		
       }
       ?>
 

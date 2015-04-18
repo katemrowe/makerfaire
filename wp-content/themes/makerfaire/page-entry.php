@@ -49,15 +49,15 @@
       <p class="lead"><?php echo $project_short; ?></p> 
 
       <?php if (isset($project_website)) {
-          echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="padding-right:15px;">Project Website</a>';
+          echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';
       } ?>
       
       <!-- Button to trigger video modal -->
       <?php if (isset($project_website)) {
-          echo '<a class="btn btn-info" href="" target="_blank">Project Video</a>';
+          echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
       <br />
-       
+
       <!-- Modal -->
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -86,12 +86,10 @@
       <?php
       if (strlen($groupbio > 0)) {
        echo '<div class="row padbottom">
-                <div class="12">
-                  <img class="span4 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
-                  <div class="span8">
-                    <h3 style="margin-top: 0px;">' . $groupname . '</h3>
-                    <p>' . $groupbio . '</p>
-                  </div>
+                <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
+                <div class="span5">
+                  <h3 style="margin-top: 0px;">' . $groupname . '</h3>
+                  <p>' . $groupbio . '</p>
                 </div>
               </div>';
       } 
@@ -99,8 +97,8 @@
 		foreach($makers as $maker)
 		{
 		echo '<div class="row padbottom">
-                <img class="span4 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
-                <div class="span8">
+                <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
+                <div class="span5">
                   <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                   <p>' . $maker['bio'] . '</p>
                 </div>

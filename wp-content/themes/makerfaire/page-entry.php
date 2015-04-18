@@ -32,7 +32,7 @@
 
 <div class="clear"></div>
 
-<div class="container">
+<div class="container modal-fix">
 
   <div class="row">
 
@@ -41,21 +41,23 @@
       <div class="page-header">
 
         <h1><?php echo $entry['151']; ?></h1>
-        <hr />
 
       </div>
 
-      <img class="img-responsive" src="<?php echo $entry['22']; ?>" />
+      <img class="img-responsive padbottom" src="<?php echo $entry['22']; ?>" />
 
       <p class="lead"><?php echo $project_short; ?></p> 
 
       <?php if (isset($project_website)) {
-          echo '<a href="' . $project_website . '" class="btn btn-info pull-left padright" target="_blank">Project Website</a>';
+          echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';
       } ?>
-
+      
       <!-- Button to trigger video modal -->
-      <a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>
-       
+      <?php if (isset($project_website)) {
+          echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
+      } ?>
+      <br />
+
       <!-- Modal -->
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -66,7 +68,7 @@
           <iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
         </div>
       </div>
-      <br />
+
 
 <!-- Commenting out for now via Clair
       <h2>Schedule</h2>
@@ -81,15 +83,13 @@
       
       <h2>Makers/Group</h2>
       <hr />
-      <?php 
+      <?php
       if (strlen($groupbio > 0)) {
        echo '<div class="row padbottom">
-                <div class="12">
-                  <img class="span4 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
-                  <div class="span8">
-                    <h3 style="margin-top: 0px;">' . $groupname . '</h3>
-                    <p>' . $groupbio . '</p>
-                  </div>
+                <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
+                <div class="span5">
+                  <h3 style="margin-top: 0px;">' . $groupname . '</h3>
+                  <p>' . $groupbio . '</p>
                 </div>
               </div>';
       } 
@@ -97,8 +97,8 @@
 		foreach($makers as $maker)
 		{
 		echo '<div class="row padbottom">
-                <img class="span4 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
-                <div class="span8">
+                <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
+                <div class="span5">
                   <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                   <p>' . $maker['bio'] . '</p>
                 </div>

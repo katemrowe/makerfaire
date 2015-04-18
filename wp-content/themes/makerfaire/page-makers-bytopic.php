@@ -16,7 +16,7 @@ $search_value['field_filters'][] = array('key' => '147', 'value' => $search_cate
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
 $entries=search_entries_bytopic(20,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
-$current_url = '//makerfaire.local/'.$f.'/meet-the-makers/topics/'.$topic_slug;
+$current_url = '/'.$f.'/meet-the-makers/topics/'.$topic_slug;
 $total_count=GFAPI::count_entries(20,$search_value);
 
 // Load Categories

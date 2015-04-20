@@ -86,7 +86,12 @@
       <?php
       if (!empty($groupbio)) {
         echo '<div class="row padbottom">
-                <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
+                ' . if (!empty($groupphoto)) { . '
+                  <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">' .
+                }
+                else { . '
+                  <img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Group Image">' .
+                } . '
                 <div class="span5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
                   <p>' . $groupbio . '</p>
@@ -96,7 +101,13 @@
       else {
     		foreach($makers as $maker) {
       		echo '<div class="row padbottom">
-                  <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
+                  ' . if (!empty($maker['photo'])) { . '
+                    <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' .
+                  }
+                  else { . '
+                    <img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Maker Image">' .
+                  } . '
+                  <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">
                   <div class="span5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                     <p>' . $maker['bio'] . '</p>

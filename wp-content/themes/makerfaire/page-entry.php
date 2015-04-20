@@ -48,12 +48,12 @@
 
       <p class="lead"><?php echo $project_short; ?></p> 
 
-      <?php if (!empty($_POST['mail'])) {
+      <?php if (!empty($project_website)) {
           echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';
       } ?>
       
       <!-- Button to trigger video modal -->
-      <?php if (!empty($entry['151'])) {
+      <?php if (!empty($project_video)) {
           echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
       <br />

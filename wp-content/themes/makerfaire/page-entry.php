@@ -86,13 +86,8 @@
       <?php
       if (!empty($groupbio)) {
         echo '<div class="row padbottom">
-                ' . if (!empty($groupphoto)) { . '
-                  <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">' .
-                }
-                else { . '
-                  <img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Group Image">' .
-                } . '
-                <div class="span5">
+                ',(!empty($groupphoto) ? '<img class="span3 pull-left" src="' . $groupphoto . '" alt="Group Image">' : '<img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Group Image">');
+        echo    '<div class="span5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
                   <p>' . $groupbio . '</p>
                 </div>
@@ -101,13 +96,8 @@
       else {
     		foreach($makers as $maker) {
       		echo '<div class="row padbottom">
-                  ' . if (!empty($maker['photo'])) { . '
-                    <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' .
-                  }
-                  else { . '
-                    <img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Maker Image">' .
-                  } . '
-                  <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">
+                  ',(!empty($maker['photo']) ? '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="span3 pull-left" src="/images/maker-placeholder.jpg" alt="Maker Image">');
+          echo    '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">
                   <div class="span5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                     <p>' . $maker['bio'] . '</p>

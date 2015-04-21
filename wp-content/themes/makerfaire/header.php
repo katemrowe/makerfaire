@@ -113,9 +113,8 @@ Topbar
 <header id="header" style="height:auto !important;">
 
 <?php
-  $menu_name = 'header-menu';
-  $locations = get_nav_menu_locations();
-  $menu = wp_get_nav_menu_object( $locations[ $menu_name ] );
+  $menu_name = 'Main Navigation Version 2';
+  $menu = wp_get_nav_menu_object( $menu_name );
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
 
 ?>

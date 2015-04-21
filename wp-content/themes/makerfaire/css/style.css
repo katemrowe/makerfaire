@@ -520,7 +520,7 @@ tr.time {
   right: 0;
   bottom: auto;
   z-index: 1040;
-  width: 560px;
+  width: 533px;
   margin-left: -280px;
   top: 10%;
   left: 50%;
@@ -3204,7 +3204,6 @@ li:nth-child(1) .drop-holder .column .col {
   overflow: visible !important;
 }
 .follow-wrap {
-  border-bottom: 22px solid #67bde1;
   padding: 40px 0 21px;
 }
 .follow-wrap .timer {

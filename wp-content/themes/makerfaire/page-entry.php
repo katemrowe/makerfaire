@@ -9,12 +9,12 @@
   $entryId = $wp_query->query_vars['e_id'];
   $entry = GFAPI::get_entry($entryId);
   $makers = array();
-  if (strlen($entry['160.3']) > 0) $makers[] =  array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
+  if (strlen($entry['160.3']) > 0) $makers[] = array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
   if (strlen($entry['158.3']) > 0) $makers[] = array('firstname' => $entry['158.3'], 'lastname' => $entry['158.6'], 'bio'=>$entry['258'], 'photo'=>$entry['224']);
   if (strlen($entry['155.3']) > 0) $makers[] = array('firstname' => $entry['155.3'], 'lastname' => $entry['155.6'], 'bio'=>$entry['259'], 'photo'=>$entry['223']);
   if (strlen($entry['156.3']) > 0) $makers[] = array('firstname' => $entry['156.3'], 'lastname' => $entry['156.6'], 'bio'=>$entry['260'], 'photo'=>$entry['222']);
   if (strlen($entry['157.3']) > 0) $makers[] = array('firstname' => $entry['157.3'], 'lastname' => $entry['157.6'], 'bio'=>$entry['261'], 'photo'=>$entry['220']);
-  if (strlen($entry['159.3']) > 0) $makers[] = array('firstname' => $entry['159.3'], 'lastname' => $entry['159.6'], 'bio'=>$entry['262'] , 'photo'=>$entry['221']);
+  if (strlen($entry['159.3']) > 0) $makers[] = array('firstname' => $entry['159.3'], 'lastname' => $entry['159.6'], 'bio'=>$entry['262'], 'photo'=>$entry['221']);
   if (strlen($entry['154.3']) > 0) $makers[] = array('firstname' => $entry['154.3'], 'lastname' => $entry['154.6'], 'bio'=>$entry['263'], 'photo'=>$entry['219']);
   
   $groupname=$entry['109'];
@@ -48,17 +48,17 @@
 
       <p class="lead"><?php echo $project_short; ?></p> 
 
-      <?php if (isset($project_website)) {
+      <?php if (!empty($project_website)) {
           echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';
       } ?>
       
       <!-- Button to trigger video modal -->
-      <?php if (isset($project_website)) {
+      <?php if (!empty($project_video)) {
           echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
       <br />
 
-      <!-- Modal -->
+      <!-- Video Modal -->
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -84,37 +84,35 @@
       <h2>Makers/Group</h2>
       <hr />
       <?php
-      if (strlen($groupbio > 0)) {
-       echo '<div class="row padbottom">
-                <img class="span3 pull-left" src="' . $groupphoto . '" alt="Maker Profile Image">
-                <div class="span5">
+      if (!empty($groupbio)) {
+        echo '<div class="row padbottom">
+                ',(!empty($groupphoto) ? '<img class="span3 pull-left" src="' . $groupphoto . '" alt="Group Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
+        echo    '<div class="span5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
                   <p>' . $groupbio . '</p>
                 </div>
               </div>';
       } 
       else {
-		foreach($makers as $maker)
-		{
-		echo '<div class="row padbottom">
-                <img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Profile Image">
-                <div class="span5">
-                  <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
-                  <p>' . $maker['bio'] . '</p>
-                </div>
-              </div>';
-		}
-		
+    		foreach($makers as $maker) {
+      		echo '<div class="row padbottom">
+                  ',(!empty($maker['photo']) ? '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
+          echo    '<div class="span5">
+                    <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
+                    <p>' . $maker['bio'] . '</p>
+                  </div>
+                </div>';
+    		}
       }
       ?>
 
-    </div><!--Content-->
+    </div><!--span8-->
 
     <?php get_sidebar(); ?>
 
-  </div>
+  </div><!--row-->
 
-</div><!--Container-->
+</div><!--container-->
 
 
 <!-- What do i do with these?

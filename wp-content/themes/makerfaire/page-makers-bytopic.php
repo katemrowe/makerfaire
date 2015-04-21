@@ -7,7 +7,7 @@ $topic_slug = $wp_query->query_vars['t_slug'];
 $category = get_term_by('slug',$topic_slug,'category');
 $search_category = $category->name.':'.$category->term_id;
 $currentpage = $wp_query->query_vars['offset'];
-$page_size = 10;
+$page_size = 25;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
@@ -36,7 +36,7 @@ get_header(); ?>
 					    <div class="col-md-5">
 					      <h2>Bay Area 2015 Makers</h2><h3>Topic: <?php echo $category->name;?>, <?php echo $total_count;?> results </h3>
 		        		</div>
-					    <div class="col-md-1 pull-right">
+					    <div class="col-md-3">
 					    	<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
 						</div>
 			  		</div>

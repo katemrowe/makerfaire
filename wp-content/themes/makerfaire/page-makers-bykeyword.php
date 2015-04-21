@@ -42,9 +42,11 @@ get_header(); ?>
 			</div>
 			<div class="row">
 				<div class="span8">
-					<h3>Search: "<?php echo  $keyword; ?>", <span class="text-muted"><?php echo $total_count;?> results</span></h3>
+					<h3 class="nomargins">Search: "<?php echo  $keyword; ?>", <span class="text-muted"><?php echo $total_count;?> results</span></h3>
 				</div>
 			</div>
+			<div class="clear"></div>
+			<div class="clear"></div>
 			
 			<?php foreach ($entries as $entry) :
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
@@ -59,11 +61,16 @@ get_header(); ?>
 			<?php endforeach;?>
 			<hr>
 
-			<div class="row padtop padbottom">
-				<div class="span8">
-					<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
-				</div>
-			</div>
+			<?php
+			if ($total_count > 25) {
+				echo '<div class="row padtop padbottom">
+					<div class="span8">
+						' . pagination_display($current_url,$currentpage,$page_size,$total_count) . '
+					</div>
+				</div>';
+			}
+			?>
+
 		</div>
 		<!--Content-->
 

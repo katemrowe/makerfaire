@@ -314,10 +314,10 @@ function makerfaire_newsletter_shortcode() {
 				<input type="hidden" name="cmd" value="subscribe" />
 				<input type="hidden" name="custom_source" value="Newsletter Shortcode" /> 
 				<input type="hidden" name="custom_incentive" value="none" /> 
-				<input type="hidden" name="custom_url" value="' . echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; . '" />
+				<input type="hidden" name="custom_url" value="' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; . '" />
 				<input type="hidden" id="format_mime" name="format" value="mime" />
 				<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
-				<input type="hidden" name="custom_host" value="' . echo $_SERVER["HTTP_HOST"]; . '" />
+				<input type="hidden" name="custom_host" value="' . $_SERVER["HTTP_HOST"]; . '" />
 				<input type="hidden" name="errors_to" value="" />
 				<fieldset>
 					<div id="legend">

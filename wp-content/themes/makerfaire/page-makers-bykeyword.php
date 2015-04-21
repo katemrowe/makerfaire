@@ -27,46 +27,51 @@ get_header(); ?>
 <div class="clear"></div>
 
 <div class="container">
-
 	<div class="row">
-
 		<div class="content span8">
-			<div class="container">
-				  	<div class="row">
-					    <div class="col-md-5">
-					      <h2>Bay Area 2015 Makers</h2>
-					   <h3>Search on "<?php echo  $keyword; ?>" returned <?php echo $total_count;?> results</h3>
-					   </div>
-					    <div class="col-md-3">
-					    	<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
-						</div>
-			  		</div>
+
+			<div class="row">
+				<div class="span8">
+					<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span8">
+					<h1>Bay Area 2015 Makers</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span8">
+					<h3>Search: "<?php echo  $keyword; ?>", <span class="text-muted"><?php echo $total_count;?> results</span></h3>
+				</div>
 			</div>
 			
 			<?php foreach ($entries as $entry) :
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
 			$entry_id = isset($entry['id']) ? $entry['id']  : '';
-			
-				?>
-						<hr>
+			?>
+			<hr>
 			<div class="row">
-			<div class="span6">
-			<h3><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
-			
-			</div>
+				<div class="span8">
+					<h3 class="nomargins"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
+				</div>
 			</div>
 			<?php endforeach;?>
-			<div class="pull-right">
-			<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
+			<hr>
+
+			<div class="row padtop padbottom">
+				<div class="span8">
+					<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
+				</div>
 			</div>
-		
 		</div>
 		<!--Content-->
 
 		<?php get_sidebar(); ?>
 
 	</div>
-		<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
 
 </div><!--Container-->
 
@@ -200,15 +205,14 @@ function sort_by_field_count( $form_id, $searching ) {
 
 	return $sql;
 
-
 }
 
 function pagination_display ($current_url,$current_page,$pagesize,$total_count) {
 
 $pages = ceil($total_count / $pagesize);
 
-
 ?>
+
 <style>
 .pagination {
 	background: none;
@@ -236,19 +240,19 @@ $pages = ceil($total_count / $pagesize);
 	width: auto;
 }
 </style>
-<div class="btn-group pull-right">
-<nav ><ul class="pagination pull-right">
-<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
-<?php for($i = 1;$i <= $pages;$i++): ?>
-<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
-<?php endfor;?>
-<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
-</ul>
-</nav>
+
+<div class="btn-group pull-left">
+	<nav>
+		<ul class="pagination pull-left">
+			<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
+			<?php for($i = 1;$i <= $pages;$i++): ?>
+			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
+			<?php endfor;?>
+			<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
+		</ul>
+	</nav>
 </div>
+
 <?php 
 }
-
-
-
 ?>

@@ -7,7 +7,7 @@ $topic_slug = $wp_query->query_vars['t_slug'];
 $category = get_term_by('slug',$topic_slug,'category');
 $search_category = $category->name.':'.$category->term_id;
 $currentpage = $wp_query->query_vars['offset'];
-$page_size = 25;
+$page_size = 30;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
@@ -31,9 +31,9 @@ get_header(); ?>
 	<div class="row">
 		<div class="content span8">
 
-			<div class="row">
+			<div class="row padbottom">
 				<div class="span8">
-					<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
+					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">
@@ -55,7 +55,7 @@ get_header(); ?>
 			?>
 			<hr>
 			<div class="row">
-				<div class="span8">
+				<div class="span8 maker-results">
 					<h3 class="nomargins"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 				</div>
 			</div>
@@ -63,7 +63,7 @@ get_header(); ?>
 			<hr>
 
 			<?php
-			if ($total_count > 25) {
+			if ($total_count > 30) {
 				echo '<div class="row padtop padbottom">
 					<div class="span8">
 						' . pagination_display($current_url,$currentpage,$page_size,$total_count) . '
@@ -71,7 +71,7 @@ get_header(); ?>
 				</div>';
 			}
 			?>
-			
+
 		</div>
 		<!--Content-->
 

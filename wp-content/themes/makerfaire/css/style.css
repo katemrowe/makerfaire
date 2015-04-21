@@ -49,6 +49,11 @@ h4 {
 a {
   color: #085a7e;
 }
+a:hover,
+a:focus {
+  color: #404040;
+  text-decoration: none;
+}
 .no-js .mf-form div.step,
 .no-js .mf-breadcrumbs,
 .js .hide-if-js,
@@ -596,6 +601,10 @@ tr.time {
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
   background-clip: padding-box;
+}
+.page-template-page-makers-bytopic-php h3.maker-results,
+.page-template-page-makers-bykeyword-php h3.maker-results {
+  font-size: 21px;
 }
 .search .search-title {
   margin-bottom: 5px;

@@ -7,7 +7,7 @@ $current_form_ids = 20;
 //$keyword = urldecode($wp_query->query_vars['s_keyword']);
 $keyword=$_GET["s_keyword"];
 $currentpage = $wp_query->query_vars['offset'];
-$page_size = 25;
+$page_size = 30;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
@@ -30,9 +30,9 @@ get_header(); ?>
 	<div class="row">
 		<div class="content span8">
 
-			<div class="row">
+			<div class="row padbottom">
 				<div class="span8">
-					<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
+					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">
@@ -55,14 +55,14 @@ get_header(); ?>
 			<hr>
 			<div class="row">
 				<div class="span8">
-					<h3 class="nomargins"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
+					<h3 class="nomargins maker-results"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 				</div>
 			</div>
 			<?php endforeach;?>
 			<hr>
 
 			<?php
-			if ($total_count > 25) {
+			if ($total_count > 30) {
 				echo '<div class="row padtop padbottom">
 					<div class="span8">
 						' . pagination_display($current_url,$currentpage,$page_size,$total_count) . '

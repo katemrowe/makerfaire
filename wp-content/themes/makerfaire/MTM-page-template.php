@@ -150,22 +150,15 @@
 			</div>
 		</div>
     <!--End of slider -->
-        
+  
 	<div class="search-box">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-xs-12">
 						<strong>Looking for a specifc Maker? Search by Keyword:</strong>
 						<div class="form-group">
-                        	        <?php
-										global $wp_query
-									?>
-									<form role="search" method="get" class="form-search" id="searchform" action="<?php echo home_url( '/' ); ?>">
-										<input type="text" value="<?php echo get_search_query( true ); ?>" name="s" id="s" class="form-control" />
-										<input type="hidden" name="post_type" value="mf_form" />
-										<?php if ( isset( $_GET['faire'] ) ) : ?>
-											<input type="hidden" name="faire" value="<?php echo esc_attr( $_GET['faire'] ); ?>" />
-										<?php endif; ?>
+                        	       <form role="search" method="get" class="form-search" id="searchform" action="search/">
+										<input type="text"  name="s_keyword" id="s_keyword" class="form-control" />
 										<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
 									</form>
 						</div>
@@ -302,6 +295,13 @@ Browse by Topic
         "enableLinks": true
     };
     twitterFetcher.fetch(config1);
-    //end of twitter function</script>
-    
+    //end of twitter function
+   </script>
+    <script>// search
+    $(".searchsubmit").click(function(){
+        var uemail = $('.email_input_field').val();
+        window.location = "http://example.com/automated/action.jsp?action=register&errorPage=/automated/action.jsp&gid=12345678&uemail="+uemail+"&user.CustomAttribute.NewsletterPopUp=Global&user.CustomAttribute.NewsletterOptIn=True";
+        return false;
+      }
+    });</script>
     

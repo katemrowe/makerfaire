@@ -204,9 +204,11 @@
                         jQuery('#mf-featured-slider').carousel({
                             interval: 8000
                         });
-		jQuery('.carousel').carousel({
+		jQuery( ".carousel" ).each( function() {
+	        jQuery(this).carousel({
 			interval: 4000
-		});
+			        });
+	    });
 		
 	});
 

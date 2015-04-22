@@ -96,6 +96,7 @@ function search_entries_bytopic( $form_id, $search_criteria = array(), $sorting 
 	$sqlcounting = sort_by_field_count( $form_id, $search_criteria);
 	
 	GFCommon::log_debug( $sql );
+	GFCommon::log_debug( $sqlcounting );
 	//getting results
 	
 	$results = $wpdb->get_results( $sql );

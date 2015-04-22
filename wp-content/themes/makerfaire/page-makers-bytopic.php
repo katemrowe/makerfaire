@@ -55,8 +55,8 @@ get_header(); ?>
 			?>
 			<hr>
 			<div class="row">
-				<div class="span8 maker-results">
-					<h3 class="nomargins"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
+				<div class="span8">
+					<h3 class="nomargins maker-results"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 				</div>
 			</div>
 			<?php endforeach;?>

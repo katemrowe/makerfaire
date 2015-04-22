@@ -65,7 +65,7 @@
 						$isSecure = "https://";
 					}
 				?>
-	    	    <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+	    	    <form action="http://whatcounts.com/bin/listctrl" method="POST">
 					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
 					<input type="hidden" name="cmd" value="subscribe" />
 					<input type="hidden" name="custom_source" value="footer" /> 
@@ -114,7 +114,7 @@
 						$isSecure = "https://";
 					}
 				?>
-	    	    <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+	    	    <form action="http://whatcounts.com/bin/listctrl" method="POST">
 					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
 					<input type="hidden" name="cmd" value="subscribe" />
 					<input type="hidden" name="custom_source" value="footer" /> 

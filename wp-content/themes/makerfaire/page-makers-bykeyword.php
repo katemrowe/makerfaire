@@ -5,18 +5,18 @@
 global $wp_query;
 $current_form_ids = 20;
 //$keyword = urldecode($wp_query->query_vars['s_keyword']);
-$search_term=$_GET["s_term"];
+$keyword=$_GET["s_keyword"];
 $currentpage = $wp_query->query_vars['offset'];
-$page_size = 25;
+$page_size = 30;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
-$search_criteria = array( 'key' => '147', 'value' =>  $search_term);
-$search_value['field_filters'][] = array('key' => '147', 'value' => $search_term);
+$search_criteria = array( 'key' => '147', 'value' =>  $keyword);
+$search_value['field_filters'][] = array('key' => '147', 'value' => $keyword);
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
 $entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
-$current_url = '/'.$f.'/meet-the-makers/search/';
+$current_url = '/'.$f.'/meet-the-makers/search/'.$keyword;
 // Load Categories
 $cats_tags = get_categories(array('hide_empty' => 0));
 
@@ -27,46 +27,58 @@ get_header(); ?>
 <div class="clear"></div>
 
 <div class="container">
-
 	<div class="row">
-
 		<div class="content span8">
-			<div class="container">
-				  	<div class="row">
-					    <div class="col-md-5">
-					      <h2>Bay Area 2015 Makers</h2>
-					   <h3>Search on "<?php echo  $search_term; ?>" returned <?php echo $total_count;?> results</h3>
-					   </div>
-					    <div class="col-md-3">
-					    	<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
-						</div>
-			  		</div>
+
+			<div class="row padbottom">
+				<div class="span8">
+					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
+				</div>
 			</div>
+			<div class="row">
+				<div class="span8">
+					<h1>Bay Area 2015 Makers</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span8">
+					<h3 class="nomargins">Search: "<?php echo  $keyword; ?>", <span class="text-muted"><?php echo $total_count;?> results</span></h3>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="clear"></div>
 			
 			<?php foreach ($entries as $entry) :
 			$project_name = isset($entry['151']) ? $entry['151']  : '';
 			$entry_id = isset($entry['id']) ? $entry['id']  : '';
-			
-				?>
-						<hr>
+			?>
+			<hr>
 			<div class="row">
-			<div class="span6">
-			<h3><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
-			
-			</div>
+				<div class="span8">
+					<h3 class="nomargins maker-results"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
+				</div>
 			</div>
 			<?php endforeach;?>
-			<div class="pull-right">
-			<?php pagination_display($current_url,$search_term,$currentpage,$page_size,$total_count);?>
-			</div>
-		
+			<hr>
+
+			<?php
+			if ($total_count > 30) {
+				echo '<div class="row padtop padbottom">
+					<div class="span8">
+						' . pagination_display($current_url,$currentpage,$page_size,$total_count) . '
+					</div>
+				</div>';
+			}
+			?>
+
 		</div>
 		<!--Content-->
 
 		<?php get_sidebar(); ?>
 
 	</div>
-		<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
 
 </div><!--Container-->
 
@@ -200,15 +212,14 @@ function sort_by_field_count( $form_id, $searching ) {
 
 	return $sql;
 
-
 }
 
-function pagination_display ($current_url,$search_term,$current_page,$pagesize,$total_count) {
+function pagination_display ($current_url,$current_page,$pagesize,$total_count) {
 
 $pages = ceil($total_count / $pagesize);
 
-
 ?>
+
 <style>
 .pagination {
 	background: none;
@@ -236,19 +247,19 @@ $pages = ceil($total_count / $pagesize);
 	width: auto;
 }
 </style>
-<div class="btn-group pull-right">
-<nav ><ul class="pagination pull-right">
-<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
-<?php for($i = 1;$i <= $pages;$i++): ?>
-<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>/?s_term=<?php echo $search_term;?>"><?php echo $i?></a></li>
-<?php endfor;?>
-<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
-</ul>
-</nav>
+
+<div class="btn-group pull-left">
+	<nav>
+		<ul class="pagination pull-left">
+			<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
+			<?php for($i = 1;$i <= $pages;$i++): ?>
+			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
+			<?php endfor;?>
+			<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
+		</ul>
+	</nav>
 </div>
+
 <?php 
 }
-
-
-
 ?>

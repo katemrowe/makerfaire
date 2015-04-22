@@ -309,15 +309,15 @@ add_shortcode( 'tabs', 'makerfaire_data_toggle' );
 
 function makerfaire_newsletter_shortcode() {
 
-		$output = '<form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+		$output = '<form class="form-horizontal" action="http://whatcounts.com/bin/listctrl" method="POST">
 				<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
 				<input type="hidden" name="cmd" value="subscribe" />
 				<input type="hidden" name="custom_source" value="Newsletter Shortcode" /> 
 				<input type="hidden" name="custom_incentive" value="none" /> 
-				<input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" />
+				<input type="hidden" name="custom_url" value="' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . '" />
 				<input type="hidden" id="format_mime" name="format" value="mime" />
 				<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
-				<input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
+				<input type="hidden" name="custom_host" value="' . $_SERVER["HTTP_HOST"] . '" />
 				<input type="hidden" name="errors_to" value="" />
 				<fieldset>
 					<div id="legend">
@@ -327,20 +327,20 @@ function makerfaire_newsletter_shortcode() {
 					  <!-- Name -->
 					  <label class="control-label" for="first">Name</label>
 					  <div class="controls">
-					  	<input class="input-xlarge" name="first" required="required" type="text">
+					  	<input class="formfield input-xlarge" name="first" required="required" type="text">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <!-- Email -->
 					  <label class="control-label" for="email">Email</label>
 					  <div class="controls">
-					  	<input class="input-xlarge" name="email" required="required" type="email">
+					  	<input class="formfield input-xlarge" name="email" required="required" type="email">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <!-- Button -->
 					  <div class="controls">
-					    <button class="btn btn-success" type="submit">Subscribe</button>
+					    <button class="btn-cyan" type="submit">Subscribe</button>
 					  </div>
 					</div>
 				</fieldset>

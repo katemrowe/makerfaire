@@ -3,6 +3,7 @@
  * Template Name: Makers By Topic
  */
 global $wp_query;
+$current_form_ids = '20, 13, 12, 17, 16';
 $topic_slug = $wp_query->query_vars['t_slug'];
 $category = get_term_by('slug',$topic_slug,'category');
 $search_category = $category->name.':'.$category->term_id;
@@ -15,7 +16,7 @@ $search_criteria = array( 'key' => '147', 'value' =>  $search_category);
 $search_value['field_filters'][] = array('key' => '147', 'value' => $search_category);
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
-$entries=search_entries_bytopic(20,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
+$entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
 $current_url = '/'.$f.'/meet-the-makers/topics/'.$topic_slug;
 
 // Load Categories
@@ -147,7 +148,7 @@ function sort_by_field_query( $form_id, $searching, $sorting, $paging ) {
 						lead_id as id
 						from $lead_detail_table_name
 						WHERE (field_number BETWEEN '$searchfield_number_min' AND '$searchfield_number_max' AND value IN ( '$search_value' ))
-						AND form_id=$form_id
+						AND form_id in ($form_id)
 					) filtered on l.lead_id=filtered.id
 				INNER JOIN 
 				    (
@@ -155,9 +156,9 @@ function sort_by_field_query( $form_id, $searching, $sorting, $paging ) {
 						lead_id as id
 						from $lead_detail_table_name
 						WHERE $accepted_criteria
-						AND form_id=$form_id 
+						AND form_id in ($form_id) 
 						) accepted on l.lead_id=accepted.id
-				WHERE field_number  between $field_number_min AND $field_number_max AND l.form_id=$form_id 
+				WHERE field_number  between $field_number_min AND $field_number_max AND l.form_id in ($form_id) 
 		ORDER BY l.value ASC LIMIT $offset,$page_size ) sorted on sorted.id=l.id
         order by sorted.sort
 	";
@@ -186,10 +187,10 @@ function sort_by_field_count( $form_id, $searching ) {
 						lead_id as id
 						from $lead_detail_table_name
 						WHERE $accepted_criteria
-						AND form_id=$form_id 
+						AND form_id in ($form_id) 
 						) accepted on $lead_detail_table_name.lead_id=accepted.id
 						WHERE (field_number BETWEEN '$searchfield_number_min' AND '$searchfield_number_max' AND value IN ( '$search_value' ))
-						AND form_id=$form_id 
+						AND form_id in ($form_id)
 	";
 
 	return $sql;

@@ -3,6 +3,9 @@
  * Template Name: Home page
  */
 get_header();
+
+/* Need to validate issues with release.  This is to see if it shows up in staging on wpengine */
+
 ?>
 <main id="main" role="main">
 	<!-- Homepage carousel-->	
@@ -22,8 +25,7 @@ get_header();
         <div class="carousel-inner">
             <div class="mask">
                 <div class="slideset">
-                    <?php $entries = GFAPI::get_entries(24, $criteria, null, array('offset' => 0, 'page_size' => 10));
-                    ?>
+                    <?php $entries = GFAPI::get_entries(24, $criteria, null, array('offset' => 0, 'page_size' => 10)); ?>
                     <?php foreach ($entries as $entry): ?>
                     <div class="slide" data-url="<?php echo $entry['4'] ?>">
                         <div class="bg-stretch">

@@ -23,7 +23,7 @@ get_header();
             <div class="mask">
                 <div class="slideset">
                     <?php $entries = GFAPI::get_entries(24, $criteria, null, array('offset' => 0, 'page_size' => 10));
-                    echo print_r($entries, true); ?>
+                    ?>
                     <?php foreach ($entries as $entry): ?>
                     <div class="slide" data-url="<?php echo $entry['4'] ?>">
                         <div class="bg-stretch">

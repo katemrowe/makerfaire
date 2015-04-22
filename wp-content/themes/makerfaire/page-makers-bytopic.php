@@ -44,7 +44,7 @@ get_header(); ?>
 			</div>
 			<div class="row">
 				<div class="span8">
-					<h3 class="nomargins">Topic: <?php echo $category->name;?>, <span class="text-muted"><?php echo $total_count;?> results</span></h3>
+					<h3 class="nomargins">Topic: <?php echo $category->name;?>, <span class="text-muted"><?php echo $total_count; echo ($total_count == 1) ? ' result' : 'results'; ?></span></h3>
 				</div>
 			</div>
 			<div class="clear"></div>

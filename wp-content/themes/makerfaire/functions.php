@@ -358,34 +358,42 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
   extract( shortcode_atts( array(
 	    'form_id' 	=> '',
 	    'entry1_id'	=> '',
+	    'entry1_description'	=> '',
 	    'entry2_id'	=> '',
-	    'entry3_id'	=> ''
+	    'entry2_description'	=> '',
+	    'entry3_id'	=> '',
+ 	    'entry3_description'	=> ''
   ), $atts ) );
 
   $values = array();
     if (null != (esc_attr($entry1_id))) {
       $values[0] = $entries = GFAPI::get_entry(esc_attr($entry1_id)); 
+      $entry1_description = isset($entry1_description) ? $entry1_description : $values[0]['151'];
     }
     if (null != (esc_attr($entry2_id))) {
       $values[1] = $entries = GFAPI::get_entry(esc_attr($entry2_id)); 
-    }
+       $entry2_description = isset($entry2_description) ? $entry2_description : $values[1]['151'];
+   }
     if (null != (esc_attr($entry3_id))) {
       $values[2] = $entries = GFAPI::get_entry(esc_attr($entry3_id)); 
-    }
+       $entry3_description = isset($entry3_description) ? $entry3_description : $values[2]['151'];
+   }
+    
+    
   
 
 $output = '<div class="filter-container">' 
           . ' <div class="col"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
           . '   <img src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" height="402" width="622" alt="image description">'
-          . '   <div class="text-box"><span class="section">' . $values[0]['151'] . '</span></div></a>'
+          . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
           . ' </div><div class="small col">'
           . '   <a href="/maker/entry/' . $values[1]['id'] . '" class="post">'
           . '     <img src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" height="402" width="622" alt="image description">'
-          . '     <div class="text-box"><span class="section">' . $values[1]['151'] . '</span></div>'
+          . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
           . '   </a>'
           . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
           . '     <img src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" height="402" width="622" alt="image description">'
-          . '     <div class="text-box"><span class="section">' . $values[2]['151'] . '</span></div>'
+          . '     <div class="text-box"><span class="section">' . $entry3_description . '</span></div>'
           . '   </a>'
           . '</div></div>';
   

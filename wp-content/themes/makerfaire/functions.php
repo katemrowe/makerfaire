@@ -202,7 +202,8 @@ function makerfaire_get_news() {
 	$url = 'http://makezine.com/maker-faire-news/';
 	$response = wp_remote_get( $url, 3, 60,  array( 'obey_cache_control_header' => false ) );
 	$output = wp_remote_retrieve_body( $response );
-	return $output;
+	$cleaned_output = str_replace('?resize=130%2C130', '',$output);
+	return $cleaned_output;
 }
 
 add_shortcode('news', 'makerfaire_get_news');

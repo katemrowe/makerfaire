@@ -45,8 +45,7 @@ jQuery(function() {
     initCustomGallery();
     initSameHeight();
     initThumbnailsGallery();
-
-    getInitialImageSize();
+    
 
 });
 /* Make all external link open in a new tab */
@@ -56,11 +55,15 @@ jQuery(document).ready(function() {
 /* end of external link */
 
 // for images
+/* No longer needed.
 function getInitialImageSize() {
-    jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src').replace('?resize=130%2C130', ''));
+	
+	jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src').replace('?resize=130%2C130', ''));
     jQuery(".news.post div.row:nth-child(2) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(2) a").children('img').attr('src').replace('?resize=130%2C130', ''));
     jQuery(".news.post div.row:nth-child(3) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(3) a").children('img').attr('src').replace('?resize=130%2C130', ''));
+	
 }
+*/
 
 // Menu styling
 function makeStyle(){

@@ -5,18 +5,18 @@
 global $wp_query;
 $current_form_ids = 20;
 //$keyword = urldecode($wp_query->query_vars['s_keyword']);
-$keyword=$_GET["s_keyword"];
+$search_term=$_GET["s_term"];
 $currentpage = $wp_query->query_vars['offset'];
 $page_size = 25;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
-$search_criteria = array( 'key' => '147', 'value' =>  $keyword);
-$search_value['field_filters'][] = array('key' => '147', 'value' => $keyword);
+$search_criteria = array( 'key' => '147', 'value' =>  $search_term);
+$search_value['field_filters'][] = array('key' => '147', 'value' => $search_term);
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
 $entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
-$current_url = '/'.$f.'/meet-the-makers/search/'.$keyword;
+$current_url = '/'.$f.'/meet-the-makers/search/';
 // Load Categories
 $cats_tags = get_categories(array('hide_empty' => 0));
 
@@ -35,7 +35,7 @@ get_header(); ?>
 				  	<div class="row">
 					    <div class="col-md-5">
 					      <h2>Bay Area 2015 Makers</h2>
-					   <h3>Search on "<?php echo  $keyword; ?>" returned <?php echo $total_count;?> results</h3>
+					   <h3>Search on "<?php echo  $search_term; ?>" returned <?php echo $total_count;?> results</h3>
 					   </div>
 					    <div class="col-md-3">
 					    	<a href="/bay-area-2015/meet-the-makers/">Look for More Makers</a>
@@ -57,7 +57,7 @@ get_header(); ?>
 			</div>
 			<?php endforeach;?>
 			<div class="pull-right">
-			<?php pagination_display($current_url,$currentpage,$page_size,$total_count);?>
+			<?php pagination_display($current_url,$search_term,$currentpage,$page_size,$total_count);?>
 			</div>
 		
 		</div>
@@ -203,7 +203,7 @@ function sort_by_field_count( $form_id, $searching ) {
 
 }
 
-function pagination_display ($current_url,$current_page,$pagesize,$total_count) {
+function pagination_display ($current_url,$search_term,$current_page,$pagesize,$total_count) {
 
 $pages = ceil($total_count / $pagesize);
 
@@ -240,7 +240,7 @@ $pages = ceil($total_count / $pagesize);
 <nav ><ul class="pagination pull-right">
 <li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
 <?php for($i = 1;$i <= $pages;$i++): ?>
-<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
+<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>/?s_term=<?php echo $search_term;?>"><?php echo $i?></a></li>
 <?php endfor;?>
 <li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>
 </ul>

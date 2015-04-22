@@ -32,58 +32,7 @@
  <div id="wrapper">
  <main id="main" role="main">
  
-	<div class="carousel-holder">
-        <div class="social-popup popup-active">
-            <a class="open" href="#"><i class="icon-share"></i></a>
-            <div class="popup">
-                <a class="close" href="#"><i class="icon-close"></i></a>
-                <ul class="social-list">
-                    <li class="facebook"><a href="http://www.facebook.com/makerfaire" target="_blank"><i class="icon-facebook"></i></a></li>
-                    <li class="twitter"><a href="http://twitter.com/makerfaire"><i class="icon-twitter" target="_blank"></i></a></li>
-                    <li class="pinterest"><a href="https://www.pinterest.com/makemagazine/maker-faire/" target="_blank"><i class="icon-pinterest"></i></a></li>
-                    <li class="googleplus"><a href="http://plus.google.com/communities/105823492396218903971" target="_blank"><i class="icon-googleplus"></i></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="carousel-inner">
-            <div class="mask">
-                <div class="slideset">
-                    <?php $entries = GFAPI::get_entries(23, $criteria, null, array('offset' => 0, 'page_size' => 10)); ?>
-                    <?php foreach ($entries as $entry): ?>
-                    <div class="slide" data-url="<?php echo $entry['4'] ?>">
-                        <div class="bg-stretch">
-                            <a href="<?php echo $entry['4'] ?>"><img src="<?php echo legacy_get_resized_remote_image_url($entry['1'],1274,370); ?>" height="370" width="1274" alt=""></a>
-                        </div>
-                        <div class="text-box">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                    <a href="<?php echo $entry['4'] ?>" style="color:#FFF;">
-                                            <h1><?php echo $entry['2'] ?></h1>
-                                            <p><?php echo $entry['3'] ?></p> 
-                                    </a>         
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>  
-                </div>
-            </div>
-            <div class="btn-box">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <a class="btn-prev" href="#"><span class="icon-arrow-left"></span></a>
-                            <a class="btn-next" href="#"><span class="icon-arrow-right"></span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pagination">
-            </div>
-        </div>
-    </div>        
+	    
         <!-- The header section with a fullwidth image--> 
 <?php
  $criteria = array(
@@ -158,7 +107,7 @@
 						<strong>Looking for a specifc Maker? Search by Keyword:</strong>
 						<div class="form-group">
                         	       <form role="search" method="get" class="form-search" id="searchform" action="search/">
-										<input type="text"  name="s_keyword" id="s_keyword" class="form-control" />
+										<input type="text"  name="s_term" id="s_term" class="form-control" />
 										<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
 									</form>
 						</div>

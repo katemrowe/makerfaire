@@ -197,7 +197,7 @@ function sort_by_field_count( $form_id, $searching ) {
 	
 
 	$sql = "SELECT
-	count(l.id) as total_count
+	count(distinct l.lead_id) as total_count
 	from $lead_detail_table_name as l
 	INNER JOIN 
 				    (

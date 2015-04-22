@@ -179,7 +179,7 @@ function sort_by_field_count( $form_id, $searching ) {
 	$accepted_criteria = "(field_number BETWEEN '302.9999' AND '303.9999' AND value = 'Accepted' )";
 
 
-	$sql = "SELECT count( accepted.id ) as total_count
+	$sql = "SELECT count( distinct accepted.id ) as total_count
 						from $lead_detail_table_name
 						INNER JOIN 
 				    (

@@ -133,7 +133,7 @@ function make_enqueue_jquery() {
 	
 	// Scripts
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-main', get_stylesheet_directory_uri() . '/js/jquery.main.js', array( 'jquery' ), null );
+	wp_enqueue_script( 'jquery-main', get_stylesheet_directory_uri() . '/js/jquery.main.js', array( 'jquery' ) );
 	wp_enqueue_script( 'make-bootstrap', get_stylesheet_directory_uri() . '/js/bootstrap.min.js', array( 'jquery' ) );
 	wp_enqueue_script( 'make-countdown', get_stylesheet_directory_uri() . '/js/jquery.countdown.js', array( 'jquery' ) );
 	wp_enqueue_script( 'jquery_cookie',  get_stylesheet_directory_uri() . '/js/jquery.cookie.js', array( 'jquery' ), null );

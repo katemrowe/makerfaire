@@ -133,7 +133,7 @@ Topbar
     $submenu = false;
 
     foreach( $menuitems as $item ):
-
+        $target         = $item->target;
         $link           = $item->url;
         $title          = $item->title;
         $classes        = $item->classes;
@@ -146,7 +146,7 @@ Topbar
     ?>
  
     <li class="dropdown">
-        <a href="<?php echo $link; ?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+        <a href="<?php echo $link; ?>" <?php echo ($target!=''?'target="'.$target.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <?php echo $title; ?> 
             <span class="caret"></span>
         </a>
@@ -171,7 +171,7 @@ Topbar
                                         <ul class="sub-menu">
             <?php endif; ?>
                                             <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
-                                                <a href="<?php echo $link; ?>" class="title"><?php echo $title; ?></a>
+                                                <a href="<?php echo $link; ?>" <?php echo ($target!=''?'target="'.$target.'"':'');?> class="title"><?php echo $title; ?></a>
                                                 <div class="description"><?php echo $description; ?></div>
                                             </li>
             <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>

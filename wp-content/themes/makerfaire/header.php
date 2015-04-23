@@ -133,6 +133,7 @@ Topbar
     $submenu = false;
 
     foreach( $menuitems as $item ):
+            //4/23/15
         $new_window     = (isset($item->target)?$item->target:'');
         $link           = $item->url;
         $title          = $item->title;

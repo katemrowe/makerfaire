@@ -70,7 +70,12 @@
           
            <?php  
            $dispVideo = str_replace('//vimeo.com','//player.vimeo.com/video',$project_video);
-           $dispVideo = str_replace('http://youtu.be/','https://www.youtube.com/embed/',$project_video);?>
+           //youtube has two type of url formats we need to look for and change
+           $videoID = parse_yturl($dispVideo);
+           if($videoID!=''){
+               $dispVideo = 'https://www.youtube.com/embed/'.$videoID;
+           }
+           ?>
             <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>

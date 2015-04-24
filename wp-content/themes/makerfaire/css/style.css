@@ -3377,6 +3377,8 @@ li:nth-child(1) .drop-holder .column .col {
 .news.post .row .span2 .faire-thumb {
   max-width: 622px;
   max-height: 402px;
+  object-fit: none;
+  object-position: center;
 }
 .news.post .row .span2 .thumbnail {
   padding: 0px;

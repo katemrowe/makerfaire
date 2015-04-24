@@ -67,7 +67,11 @@
           <h3 id="myModalLabel"><?php echo $entry['151']; ?></h3>
         </div>
         <div class="modal-body">
-          <iframe src="<?php echo str_replace('//vimeo.com','//player.vimeo.com/video',$project_video); ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+          
+           <?php  
+           $dispVideo = str_replace('//vimeo.com','//player.vimeo.com/video',$project_video);
+           $dispVideo = str_replace('http://youtu.be/','https://www.youtube.com/embed/',$project_video);?>
+            <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
 

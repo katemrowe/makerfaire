@@ -37,11 +37,11 @@ if ( $type == 'schedule' ) {
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
     `wp_mf_schedule`.`day`,
-    `wp_mf_schedule`.`large_image_url`,
-    `wp_mf_schedule`.`thumb_url`,
-    `wp_mf_schedule`.`category_id`,
-    `wp_mf_schedule`.`project_title`,
-    `wp_mf_schedule`.`venue_id`,
+    `wp_mf_api_entity`.`large_image_url`,
+    `wp_mf_api_entity`.`thumb_image_url`,
+    `wp_mf_api_entity`.`category_id`,
+    `wp_mf_api_entity`.`project_title`,
+    `wp_mf_schedule`.`location_id`,
     `wp_mf_location`.`ID`,
     `wp_mf_location`.`entry_id`,
     `wp_mf_location`.`faire`,
@@ -56,6 +56,7 @@ if ( $type == 'schedule' ) {
     `wp_mf_faire_area`.`area`,
 	 maker.`exhibit_makers`
 	FROM `wp_mf_schedule` 
+    inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
     inner join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
     inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
 	inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
@@ -67,8 +68,9 @@ if ( $type == 'schedule' ) {
         GROUP BY lead_id) maker on `wp_mf_schedule`.`entry_id` = maker.lead_id
 			WHERE `wp_mf_schedule`.faire = '$faire' ");
  	$mysqli->query("SET NAMES 'utf8'");
+ 	
 	$result = $mysqli->query ( $select_query );
-	
+	print_r($select_query);
 	// Initalize the schedule container
 	$schedules = array();
 

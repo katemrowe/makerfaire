@@ -64,7 +64,8 @@ WHERE ID in (SELECT
     `wp_mf_schedule`.`entry_id` 
     FROM `wp_mf_schedule`
     WHERE `wp_mf_schedule`.`faire` = '$faire')");
- 	$result = $mysqli->query ( $select_query );
+ 	$mysqli->query("SET NAMES 'utf8'");
+	$result = $mysqli->query ( $select_query );
 	
 	// Initalize the app container
 	$apps = array();

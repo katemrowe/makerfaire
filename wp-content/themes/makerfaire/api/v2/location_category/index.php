@@ -26,7 +26,8 @@ if ( $type == 'location_category' ) {
     		`wp_mf_location_elements`.`element`
 			FROM `wp_mf_location_elements`
 			");
- 	$result = $mysqli->query ( $select_query );
+ 	$mysqli->query("SET NAMES 'utf8'");
+	$result = $mysqli->query ( $select_query );
 	
 	// Loop through the posts
 	// Define the API header (specific for Eventbase)

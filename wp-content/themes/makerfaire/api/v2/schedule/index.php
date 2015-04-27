@@ -66,7 +66,8 @@ if ( $type == 'schedule' ) {
         WHERE `First Name` is not null
         GROUP BY lead_id) maker on `wp_mf_schedule`.`entry_id` = maker.lead_id
 			WHERE `wp_mf_schedule`.faire = '$faire' ");
- 	$result = $mysqli->query ( $select_query );
+ 	$mysqli->query("SET NAMES 'utf8'");
+	$result = $mysqli->query ( $select_query );
 	
 	// Initalize the schedule container
 	$schedules = array();

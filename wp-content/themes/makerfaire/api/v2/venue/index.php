@@ -59,7 +59,7 @@ if ( $type == 'venue' ) {
 	FROM `wp_mf_api_venue`
 			WHERE `wp_mf_api_venue`.faire = '$faire' ");
  	$result = $mysqli->query ( $select_query );
-	
+ 	error_log('API_VENUE_QUERY_RESULT='.print_r($result,true)):
 	// Loop through the posts
 	while ( $row = $result->fetch_row () ) {
 		

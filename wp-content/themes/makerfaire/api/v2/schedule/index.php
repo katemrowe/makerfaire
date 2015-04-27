@@ -70,7 +70,6 @@ if ( $type == 'schedule' ) {
  	$mysqli->query("SET NAMES 'utf8'");
  	
 	$result = $mysqli->query ( $select_query );
-	print_r($select_query);
 	// Initalize the schedule container
 	$schedules = array();
 

@@ -14,6 +14,8 @@
 
 // Stop any direct calls to this file
 defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
+$type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : null );
+$faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 
 // Double check again we have requested this file
 if ( $type == 'venue' ) {
@@ -41,59 +43,60 @@ if ( $type == 'venue' ) {
 
 	// Init the entities header
 	$venues = array();
-
+	
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$select_query = sprintf("SELECT `wp_mf_api_venue`.`ID`,
+    `wp_mf_api_venue`.`area_id`,
+    `wp_mf_api_venue`.`subarea_id`,
+    `wp_mf_api_venue`.`description`,
+    `wp_mf_api_venue`.`longitude`,
+    `wp_mf_api_venue`.`latitude`,
+    `wp_mf_api_venue`.`child_id_refs`,
+    `wp_mf_api_venue`.`location_category_id`
+	FROM `wp_mf_api_venue`
+			WHERE `wp_mf_api_venue`.faire = '$faire' ");
+ 	$result = $mysqli->query ( $select_query );
+	
 	// Loop through the posts
-	foreach ( $query->posts as $post ) {
-
+	while ( $row = $result->fetch_row () ) {
+		
 		// Open the array.
 		$venue = array();
 
 		// REQUIRED: The venue ID
-		$venue['id'] = absint( $post->ID );
+		$venue['id'] = absint( $row[0] );
 
 		// REQUIRED: The venue name
-		$venue['name'] = html_entity_decode( get_the_title(), ENT_COMPAT, 'utf-8' );
+		$venue['name'] = html_entity_decode( $row[3], ENT_COMPAT, 'utf-8' );
 
 		// Get the child locations
 		$kids = get_children( array( 'post_parent' => $venue['id'], ) );
 
-		$venue['child_id_refs'] = array();
+		$venue['child_id_refs'] = array($row[6]);
 
-		foreach ( $kids as $kid => $values ) {
-			$venue['child_id_refs'][] = $kid;
-		}
-
+		
 		// Get the description, if it exists.
-		$venue['description'] = html_entity_decode( trim( Markdown( get_the_excerpt() ) ), ENT_COMPAT, 'utf-8' );
+		$venue['description'] = html_entity_decode( trim( Markdown( $row[3] ) ), ENT_COMPAT, 'utf-8' );
 
 		// Do we have a subtitle?
-		$venue['subtitle'] = ( $post->post_parent != 0 ) ? get_the_title( $post->post_parent ) : '';
+		//$venue['subtitle'] = ( $post->post_parent != 0 ) ? get_the_title( $post->post_parent ) : '';
 
 		// Do we have lat/long?
-		$meta = get_post_meta( $post->ID );
+		//$meta = get_post_meta( $post->ID );
 
 		// Attach the lat/long to the data feed
-		$venue['latitude']	= ( isset( $meta['latitude'] ) ) ? floatval( $meta['latitude'][0] ) : '';
-		$venue['longitude']	= ( isset( $meta['longitude'] ) ) ? floatval( $meta['longitude'][0] ) : '';
+		$venue['latitude']	= ( isset( $row[5] ) ) ? floatval( $row[5] ) : '';
+		$venue['longitude']	= ( isset( $row[4] ) ) ? floatval( $row[4] ) : '';
 
 		// They apparently changed the spec.
-		$venue['gps_lat']	= ( isset( $meta['latitude'] ) ) ? floatval( $meta['latitude'][0] ) : '';
-		$venue['gps_long']	= ( isset( $meta['longitude'] ) ) ? floatval( $meta['longitude'][0] ) : '';
+		$venue['gps_lat']	= $venue['latitude'];
+		$venue['gps_long']	= $venue['longitude'];
 
 		// Let's add the venue categories
-		$cats = wp_get_post_terms( absint( $post->ID ), array( 'location_category' ) );
-
-		$category_ids = array();
-
-		if ( $cats && ! is_wp_error( $cats ) ) {
-			foreach( $cats as $cat ) {
-				$category_ids[] = absint( $cat->term_id );
-			}
-		} else {
-			$category_ids = null;
-		}
-
-		$venue['category_id_refs'] = $category_ids;
+		$venue['category_id_refs'] = $row[7];
 
 
 		// Put the maker into our list of makers

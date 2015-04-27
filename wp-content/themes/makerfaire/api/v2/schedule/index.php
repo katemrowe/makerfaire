@@ -36,8 +36,36 @@ if ( $type == 'schedule' ) {
     `wp_mf_schedule`.`faire`,
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
-    `wp_mf_schedule`.`day`
-	FROM `wp_mf_schedule` WHERE faire = '$faire'");
+    `wp_mf_schedule`.`day`,
+    `wp_mf_schedule`.`large_image_url`,
+    `wp_mf_schedule`.`thumb_url`,
+    `wp_mf_schedule`.`category_id`,
+    `wp_mf_schedule`.`project_title`,
+    `wp_mf_schedule`.`venue_id`,
+    `wp_mf_location`.`ID`,
+    `wp_mf_location`.`entry_id`,
+    `wp_mf_location`.`faire`,
+    `wp_mf_location`.`area`,
+    `wp_mf_location`.`subarea`,
+    `wp_mf_location`.`location`,
+    `wp_mf_location`.`latitude`,
+    `wp_mf_location`.`longitude`,
+    `wp_mf_location`.`location_element_id`,
+    `wp_mf_faire_area`.`ID`,
+    `wp_mf_faire_area`.`faire_id`,
+    `wp_mf_faire_area`.`area`,
+	 maker.`exhibit_makers`
+	FROM `wp_mf_schedule` 
+    inner join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
+    inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
+	inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+	inner join (SELECT 
+    GROUP_CONCAT((`maker_id`)
+        SEPARATOR ',') AS `exhibit_makers`, lead_id 
+        FROM wp_mf_maker
+        WHERE `First Name` is not null
+        GROUP BY lead_id) maker on `wp_mf_schedule`.`entry_id` = maker.lead_id
+			WHERE `wp_mf_schedule`.faire = '$faire' ");
  	$result = $mysqli->query ( $select_query );
 	
 	// Initalize the schedule container
@@ -56,9 +84,8 @@ if ( $type == 'schedule' ) {
 
 		// REQUIRED: Schedule ID
 		$schedule['id'] = $entry_id;
-		$entry = GFAPI::get_entry($entry_id);
-		$schedule_name = isset ( $lead ['151'] ) ? $lead ['151'] : '';
-		$project_photo =  isset ( $lead ['22'] ) ? $lead ['22'] : '';
+		$schedule_name = isset ( $row[10] ) ? $row[10] : '';
+		$project_photo =  isset ( $row[7] ) ? $row[7] : '';
 		// REQUIED: Application title paired to scheduled item
 		$schedule['name'] = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 		$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour',  $start ) );
@@ -71,9 +98,7 @@ if ( $type == 'schedule' ) {
 		$schedule['time_stop'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
 
 		// REQUIRED: Venue ID reference
-		$locations = get_post_meta( absint( $post->ID ), 'faire_location', true );
-
-		$schedule['venue_id_ref'] = $locations[0];
+		$schedule['venue_id_ref'] = $row[11];
 
 		// Schedule thumbnails. Nothing more than images from the application it is tied to
 		//$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
@@ -84,26 +109,14 @@ if ( $type == 'schedule' ) {
 
 
 		// A list of applications assigned to this event (should only be one really...)
-		$schedule['entity_id_refs'] = array( absint( $app_id ) );
+		$schedule['entity_id_refs'] = array( absint( $entry_id) );
 
-		//$event_maker_ids = explode(',',get_post_meta( absint( $post->ID ), 'mfei_event', true ));
-		
 		// Application Makers
 
-		/* NO Longer have Maker ID's
-		 if((count($event_maker_ids) > 0) && ($event_maker_ids[0] !== '')) {
-			foreach ( $event_maker_ids as $maker_id ) {
-				$maker_ids[] = absint( $maker_id );
-			}
-		} else {
-			$maker_ids = get_makers_from_app(absint($app_id));
-		}
-		
-
-		$schedule['maker_id_refs'] = ( ! empty( $maker_ids ) ) ? $maker_ids : null;
+		$schedule['maker_id_refs'] = ( ! empty( $row[25] ) ) ? $row[25] : null;
 
 		$maker_ids = array();
-		*/
+		
 		// Put the application into our list of schedules
 		array_push( $schedules, $schedule );
 	}

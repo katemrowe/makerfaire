@@ -40,95 +40,69 @@ if ( $type == 'entity' ) {
 		),
 	);
 
-
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$select_query = sprintf("
+			SELECT `wp_mf_api_entity`.`ID`,
+    `wp_mf_api_entity`.`project_title`,
+    `wp_mf_api_entity`.`project_description`,
+    `wp_mf_api_entity`.`project_url`,
+    `wp_mf_api_entity`.`category_id`,
+     maker.`exhibit_makers`,
+    `wp_mf_api_entity`.`thumb_image_url`,
+    `wp_mf_api_entity`.`large_image_url`
+FROM `wp_mf_api_entity`
+inner join (SELECT 
+    GROUP_CONCAT((`maker_id`)
+        SEPARATOR ',') AS `exhibit_makers`, lead_id 
+        FROM wp_mf_maker
+        WHERE `First Name` is not null
+        GROUP BY lead_id) maker on `wp_mf_api_entity`.`ID` = maker.lead_id
+WHERE ID in (SELECT 
+    `wp_mf_schedule`.`entry_id` 
+    FROM `wp_mf_schedule`
+    WHERE `wp_mf_schedule`.`faire` = '$faire')");
+ 	$result = $mysqli->query ( $select_query );
+	
 	// Initalize the app container
 	$apps = array();
 
 	// Loop through the posts
-	foreach ( $query->posts as $post ) {
+	while ( $row = $result->fetch_row () ) {
 		// Store the app information
-		$app_data = json_decode( mf_clean_content( $post->post_content ) );
+		//$app_data = json_decode( mf_clean_content( $post->post_content ) );
 
 		// REQUIRED: Application ID
-		$app['id'] = absint( $post->ID );
+		$app['id'] = absint( $row[0]);
 
 		// REQUIRED: Application name
-		$app['name'] = html_entity_decode( get_the_title(), ENT_COMPAT, 'utf-8' );
+		$app['name'] = html_entity_decode( $row[1], ENT_COMPAT, 'utf-8' );
 
 		// Application Thumbnail and Large Images
-		$app_image = mf_get_the_maker_image( $app_data );
+		$app_image =$row[6];
 		$app['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$app['large_image_url'] = esc_url( $app_image );
 		// Should actually be this... Adding it in for the future.
 		$app['large_img_url'] = esc_url( $app_image );
 
 		// Application Locations
-		$locations = mf_get_locations( $post->ID, true );
-
-		$location_output = array();
-		foreach ( $locations as $location ) {
-			$location_output[] = $location->ID;
-		}
-
-		if ( empty ( $location_output ) )
-			$location_output = null;
-
-		$app['venue_id_ref'] = $location_output[0];
+		$app['venue_id_ref'] = $row[8];
 
 		// Application Makers
 		$app_id = $app['id'];// get the entity id
 
-		$maker_ids = get_makers_from_app(absint($app_id));
+		$maker_ids = $row[5];
 
 		$app['child_id_refs'] = ( ! empty( $maker_ids ) ) ? $maker_ids : null;
 
 		// Application Categories
-		$cats = wp_get_post_terms( absint( $post->ID ), array( 'category', 'post_tag', 'group' ) );
-
-		$category_ids = array();
-
-		if ( $cats && ! is_wp_error( $cats ) ) {
-			foreach( $cats as $cat ) {
-				$category_ids[] = absint( $cat->term_id );
-			}
-		} else {
-			$category_ids = null;
-		}
-
+		$category_ids = $row[4];
 		$app['category_id_refs'] = $category_ids;
 
 		// Application Description
-		$app_description_field = $mfform->merge_fields( 'project_description', $app_data->form_type );
-
-		$app['description'] = ( !empty( $app_description_field ) ) ? $app_data->{$app_description_field} : '';
-
-		// Application YouTube URL
-		$video_field = $mfform->merge_fields( 'project_video', $app_data->form_type );
-		$app['youtube_url'] = ( ! empty( $app_data->{$video_field} ) ) ? esc_url( $app_data->{$video_field} ) : null;
-
-		// Application Website URL
-		$website_field = $mfform->merge_fields( 'project_website', $app_data->form_type );
-		$app['website_url'] = ( ! empty( $app_data->{$website_field} ) ) ? esc_url( $app_data->{$website_field} ) : null;
-
-		// Application Email
-		$app['email'] = ( ! empty( $app_data->email ) ) ? sanitize_email( $app_data->email ) : null;
-
-		// Application Tags
-		$tags_list = get_the_tags();
-		$tags = '';
-
-		if ( ! empty( $tags_list ) && is_array( $tags_list ) ) {
-			$last_tag = end( $tags_list );
-			foreach ( $tags_list as $tag ) {
-				$tags .= esc_html( $tag->name );
-
-				// Don't append the comma if it's the last item in the array
-				if ( $tag !== $last_tag )
-					$tags .= ',';
-			}
-		}
-
-		$app['tags'] = $tags;
+		$app['description'] = $row[2];
 
 		// Put the application into our list of apps
 		array_push( $apps, $app );

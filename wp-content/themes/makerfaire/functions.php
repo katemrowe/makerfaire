@@ -826,6 +826,19 @@ function scriptLoaded(){
    document.write( myValue );
 }
 
+/**
+ *  Check if input string is a valid YouTube URL
+ *  and try to extract the YouTube Video ID from it.
+ *  @author  Stephan Schmitz <eyecatchup@gmail.com>
+ *  @param   $url   string   The string that shall be checked.
+ *  @return  mixed           Returns YouTube Video ID, or (boolean) false.
+ */        
+function parse_yturl($url) 
+{
+    $pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=|/watch\?.+&v=))([\w-]{11})(?:.+)?$#x';
+    preg_match($pattern, $url, $matches);
+    return (isset($matches[1])) ? $matches[1] : false;
+}
 
 add_action( 'init', 'create_post_type' );
 function create_post_type() {

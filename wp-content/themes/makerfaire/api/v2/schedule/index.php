@@ -54,18 +54,12 @@ if ( $type == 'schedule' ) {
     `wp_mf_faire_area`.`ID`,
     `wp_mf_faire_area`.`faire_id`,
     `wp_mf_faire_area`.`area`,
-	 maker.`exhibit_makers`
+	 `wp_mf_api_entity`.`child_id_ref`
 	FROM `wp_mf_schedule` 
-    inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-    inner join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
-    inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-	inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
-	inner join (SELECT 
-    GROUP_CONCAT((`maker_id`)
-        SEPARATOR ',') AS `exhibit_makers`, lead_id 
-        FROM wp_mf_maker
-        WHERE `First Name` is not null
-        GROUP BY lead_id) maker on `wp_mf_schedule`.`entry_id` = maker.lead_id
+    left outer join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
+    left outer join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
+    left outer join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
+	left outer join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
 			WHERE `wp_mf_schedule`.faire = '$faire' ");
  	$mysqli->query("SET NAMES 'utf8'");
  	

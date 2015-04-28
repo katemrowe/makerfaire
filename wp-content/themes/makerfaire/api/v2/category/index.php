@@ -59,7 +59,7 @@ $header = array(
 	}
 	array_push($venues , array('id'=>'222','name'=>'makers'));
 	array_push($venues , array('id'=>'999','name'=>'exhibit categories','child_id_refs'=>$child_id_refs));
-	$merged = array_merge( $header, array( 'entity' => array($venues ) ));
+	$merged = array_merge( $header, array( 'entity' =>$venues  ));
 	// Output the JSON
 	echo json_encode( $merged );
 

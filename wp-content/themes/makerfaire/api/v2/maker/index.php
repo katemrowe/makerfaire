@@ -66,7 +66,7 @@ if ( $type == 'maker' ) {
 		$maker['last_name']=$row['2'];
 		$maker['description']=$row['3'];
 		$maker['email']=$row['4'];
-		$maker['twitter']=$row['5'];
+		$maker['twitter']=$row['6'];
 		
 		$maker['name'] = $row['1'].' '.$row['2'];
 		$maker['child_id_refs'] = array(); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );

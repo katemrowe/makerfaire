@@ -94,7 +94,7 @@ if ( $type == 'venue' ) {
 		$venue['gps_long']	= $venue['longitude'];
 
 		// Let's add the venue categories
-		$venue['category_id_refs'] = $row[7];
+		$venue['category_id_refs'] = explode(',',$row[7]);
 
 
 		// Put the maker into our list of makers

@@ -12,6 +12,8 @@
 
 // Stop any direct calls to this file
 defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
+$type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : null );
+$faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 
 //set allowed categories
 	//$allowed_categories = array(134289,7334,21774,139916,18082,2806,1098,183852052,1234386,74592,129975,10585,14877,181078,1169,1342,4843,292,1445,173,1334084,6877,3866349,79279,1211,91749252,313691,14340,133183,31827,49695267,13426,19557,213030,1256,524354,1438891,367966,25393,1274,144196889,1981,94030,3233,1212,3221,32656,70890761,197443,54,21464,139654,159558,50036,174,137903,78436,44926,400,24600,337,18,5382,1559,30314,41611515,586,238263556,349,5936,4936,5598517,26202,1336,15939,65518,1302369,767441,70627,45212,248375,120,8540250,3169,67778846,62455,6120,209229,2389,98163290);
@@ -41,12 +43,12 @@ $header = array(
 	$categories = get_categories();
 	// Initalize the app container
 	$venues = array();
-
+	$child_id_refs = array();
 	// Loop through the terms
 	foreach ( $categories as $term ) {
 		// REQUIRED: Category ID
 		$venue['id'] = absint( $term->term_id );
-
+		$child_id_refs [] = absint( $term->term_id );
 		// REQUIRED: Category Name
 		$venue['name'] = html_entity_decode( esc_js( $term->name ) );
 
@@ -56,7 +58,8 @@ $header = array(
 	
 	}
 	array_push($venues , array('id'=>'222','name'=>'makers'));
-	$merged = array_merge( $header, array( 'entity' => $venues, ) );
+	array_push($venues , array('id'=>'999','name'=>'exhibit categories','child_id_refs'=>$child_id_refs));
+	$merged = array_merge( $header, array( 'entity' => array($venues ) ));
 	// Output the JSON
 	echo json_encode( $merged );
 

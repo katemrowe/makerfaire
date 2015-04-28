@@ -73,9 +73,7 @@ if ( $type == 'venue' ) {
 		$venue['name'] = html_entity_decode( $row[3], ENT_COMPAT, 'utf-8' );
 
 		// Get the child locations
-		$kids = get_children( array( 'post_parent' => $venue['id'], ) );
-
-		$venue['child_id_refs'] = array($row[6]);
+		$venue['child_id_refs'] = explode(',',$row[6]);
 
 		
 		// Get the description, if it exists.

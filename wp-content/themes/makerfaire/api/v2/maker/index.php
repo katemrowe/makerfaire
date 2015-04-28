@@ -12,6 +12,8 @@
 
 // Stop any direct calls to this file
 defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
+$type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : null );
+$faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 
 // Double check again we have requested this file
 if ( $type == 'maker' ) {

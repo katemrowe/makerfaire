@@ -13,9 +13,9 @@ error_reporting( 'NONE' );
 
 // Stop any direct calls to this file
 defined( 'ABSPATH' ) or die( 'This file cannot be called directly!' );
+$type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : null );
+$faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 
-// We need to have access to the $mfform object so we can utilize the merge_fields() function
-global $mfform;
 
 // Double check again we have requested this file
 if ( $type == 'entity' ) {
@@ -55,7 +55,7 @@ if ( $type == 'entity' ) {
     `wp_mf_api_entity`.`large_image_url`
 FROM `wp_mf_api_entity`
 inner join (SELECT 
-    GROUP_CONCAT((`maker_id`)
+    GROUP_CONCAT( distinct (`maker_id`)
         SEPARATOR ',') AS `exhibit_makers`, lead_id 
         FROM wp_mf_maker
         WHERE `First Name` is not null
@@ -96,11 +96,11 @@ WHERE ID in (SELECT
 
 		$maker_ids = $row[5];
 
-		$app['child_id_refs'] = ( ! empty( $maker_ids ) ) ? $maker_ids : null;
+		$app['child_id_refs'] = ( ! empty( $maker_ids ) ) ? explode(',',$maker_ids) : null;
 
 		// Application Categories
 		$category_ids = $row[4];
-		$app['category_id_refs'] = $category_ids;
+		$app['category_id_refs'] = explode(',',$category_ids);
 
 		// Application Description
 		$app['description'] = $row[2];

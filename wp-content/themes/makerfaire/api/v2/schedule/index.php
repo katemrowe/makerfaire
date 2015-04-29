@@ -41,7 +41,7 @@ if ( $type == 'schedule' ) {
     `wp_mf_api_entity`.`thumb_image_url`,
     `wp_mf_api_entity`.`category_id`,
     `wp_mf_api_entity`.`project_title`,
-    `wp_mf_schedule`.`location_id`,
+    `wp_mf_api_venue`.ID,
     `wp_mf_location`.`ID`,
     `wp_mf_location`.`entry_id`,
     `wp_mf_location`.`faire`,
@@ -54,12 +54,13 @@ if ( $type == 'schedule' ) {
     `wp_mf_faire_area`.`ID`,
     `wp_mf_faire_area`.`faire_id`,
     `wp_mf_faire_area`.`area`,
-	 `wp_mf_api_entity`.`child_id_ref`
+	`wp_mf_api_entity`.`child_id_ref`
 	FROM `wp_mf_schedule` 
     left outer join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-    left outer join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
+    left outer join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
     left outer join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
 	left outer join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+    left outer join `wp_mf_api_venue` on `wp_mf_faire_area`.ID=`wp_mf_api_venue`.area_id and `wp_mf_faire_subarea`.ID=`wp_mf_api_venue`.subarea_id
 			WHERE `wp_mf_schedule`.faire = '$faire' ");
  	$mysqli->query("SET NAMES 'utf8'");
  	

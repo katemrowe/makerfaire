@@ -1,4 +1,5 @@
 <?php 
+// Removed unnecessary comments.
 // BEGINING AMAZING HACKS
 function maker_url_vars( $rules ) {
 	$newrules = array();

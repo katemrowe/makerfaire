@@ -55,12 +55,15 @@ function mf_display_schedule_by_area( $atts ) {
 
 	$data = shortcode_atts( array(
 			'area' 	=> '',
+			'subarea' 	=> '',
 			'faire'			=> '',
 	), $atts );
 
 	// Get the faire date array. If the
-	$faire = sanitize_title( $data['faire'] );
-	$area = sanitize_title( $data['area'] );
+	$faire = $data['faire'];
+	$area =$data['area'] ;
+	$subarea = $data['subarea'] ;
+	$subarea_array = explode(': ',$subarea);
 	
 	// Make sure we actually passed a valid faire...
 	//if ( empty( $faire_date ) )
@@ -73,24 +76,24 @@ function mf_display_schedule_by_area( $atts ) {
 	// Get Friday events by location
 	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area , 'area' );
 	if ( $friday === false ) {
-		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area);
+		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
 		wp_cache_set( $faire . '_friday_schedule_'.$area , $friday, 'area', 300 );
 	}
 	// Get Saturday events by location
 	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area , 'area' );
 	if ( $saturday === false ) {
-		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area);
+		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
 		wp_cache_set( $faire . '_saturday_schedule_'.$area , $saturday, 'area', 300 );
 	}
 	// Get Saturday events by location
 	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area , 'area' );
 	if ( $sunday === false ) {
-		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area);
+		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
 		wp_cache_set( $faire . '_sunday_schedule_'.$area , $sunday, 'area', 300 );
 	}
 
 	
-	$output = '<div class="row"><div class="span4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $area . '</a></h2></div> <div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
+	$output = '<div class="row"><div class="span4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
 
 	
 	// Let's loop through each day and spit out a schedule?
@@ -139,7 +142,7 @@ function mf_display_schedule_by_area( $atts ) {
 
 			// Presenter Name(s)
 			// if ( ! empty( $app->presenter_name ) )
-				$output .= '<h4 class="maker-name">' . 'TODO: Presenter Name' . '</h4>';
+				$output .= '<h4 class="maker-name">' . $scheduleditem['maker_list'] . '</h4>';
 
 			// Application Descriptions
 			$description =  $scheduleditem['project_description'];
@@ -163,7 +166,7 @@ function mf_display_schedule_by_area( $atts ) {
 }
 add_shortcode('mf_schedule_by_area', 'mf_display_schedule_by_area');
 
-function get_mf_schedule_by_faire ($faire, $day, $area)
+function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 {
 	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
 	if ($mysqli->connect_errno) {
@@ -195,18 +198,23 @@ $select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
 		`wp_mf_faire_area`.`ID`,
 		`wp_mf_faire_area`.`faire_id`,
 		`wp_mf_faire_area`.`area`,
-	 `wp_mf_api_entity`.`child_id_ref`
-		FROM `wp_mf_schedule`
+	    `wp_mf_api_entity`.`child_id_ref`,
+        makerlist.Makers
+        
+        FROM `wp_mf_schedule`
 		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-		inner join `wp_mf_location` on `wp_mf_schedule`.location_id=`wp_mf_location`.ID
-		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+		left outer join (select  entry_id,group_concat( distinct concat(wp_mf_api_maker.FIRST_NAME,' ',wp_mf_api_maker.LAST_NAME) separator ',') as Makers
+				from `wp_mf_api_maker` group by entry_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.entry_ID
+		left outer join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
+		left outer join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
+		left outer join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
 		WHERE `wp_mf_schedule`.faire = '$faire' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '$day'
 			and `wp_mf_location`.`area` = '$area'
+			and `wp_mf_location`.`subarea` = '$subarea'
+		order by `wp_mf_schedule`.`start_dt`
 		");
 $mysqli->query("SET NAMES 'utf8'");
-
 $result = $mysqli->query ( $select_query );
 // Initalize the schedule container
 $schedules = array();
@@ -256,7 +264,8 @@ while ( $row = $result->fetch_row () ) {
 	// Application Makers
 
 	$schedule['maker_id_refs'] = ( ! empty( $row[25] ) ) ? $row[25] : null;
-
+	$schedule['maker_list'] = ( ! empty( $row[26] ) ) ? $row[26] : null;
+	
 	$maker_ids = array();
 
 	// Put the application into our list of schedules

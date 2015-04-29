@@ -203,11 +203,11 @@ $select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
         
         FROM `wp_mf_schedule`
 		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-		inner join (select  entry_id,group_concat( distinct concat(wp_mf_api_maker.FIRST_NAME,' ',wp_mf_api_maker.LAST_NAME) separator ',') as Makers
+		left outer join (select  entry_id,group_concat( distinct concat(wp_mf_api_maker.FIRST_NAME,' ',wp_mf_api_maker.LAST_NAME) separator ',') as Makers
 				from `wp_mf_api_maker` group by entry_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.entry_ID
-		left outer join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
-		left outer join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-		left outer join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
+		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
+		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
 		WHERE `wp_mf_schedule`.faire = '$faire' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '$day'
 			and `wp_mf_location`.`area` = '$area'

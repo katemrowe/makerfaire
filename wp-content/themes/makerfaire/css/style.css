@@ -2896,6 +2896,9 @@ li:nth-child(1) .drop-holder .column .col {
   width: 100%;
   height: auto;
 }
+.filter-container .col img {
+  max-height: 398px;
+}
 .filter-container .post .text-box {
   position: absolute;
   left: 0;
@@ -3480,7 +3483,6 @@ li:nth-child(1) .drop-holder .column .col {
   display: none;
 }
 .news.post {
-  margin: 0 0 28px;
   box-sizing: border-box;
   content: " ";
   display: block;
@@ -3516,6 +3518,8 @@ li:nth-child(1) .drop-holder .column .col {
 .news.post .row .span2 .faire-thumb {
   max-width: 622px;
   max-height: 402px;
+  object-fit: cover;
+  object-position: center;
 }
 .news.post .row .span2 .thumbnail {
   padding: 0px;

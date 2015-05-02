@@ -98,10 +98,11 @@ function mf_display_schedule_by_area( $atts ) {
 	
 	// Let's loop through each day and spit out a schedule?
 	$days = array( 'friday', 'saturday', 'sunday' );
+        $output .= '<ul class="nav nav-tabs">||navtabs||</ul>';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {
-
-			// Start the schedule
+                       $navTabs .= '<li><a href="#'.esc_attr( $day ).'">'.esc_attr( $day ).'</a></li>';                       
+ 		// Start the schedule
 			$output .= '<table id="' . esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
 			$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
@@ -161,7 +162,7 @@ function mf_display_schedule_by_area( $atts ) {
 			
 		} 
 	}
-
+        $output = str_replace('||navtabs||', $navTabs, $output);
 	return $output;
 }
 add_shortcode('mf_schedule_by_area', 'mf_display_schedule_by_area');

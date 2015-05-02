@@ -101,9 +101,9 @@ function mf_display_schedule_by_area( $atts ) {
         $output .= '<ul class="nav nav-tabs">||navtabs||</ul>';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li><a href="#'.$area.esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                       $navTabs .= '<li><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
  		// Start the schedule
-			$output .= '<table id="' . esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
+			$output .= '<table id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
 			$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
 

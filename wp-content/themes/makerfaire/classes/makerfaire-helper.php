@@ -96,18 +96,23 @@ function mf_display_schedule_by_area( $atts ) {
 	//$output = '<div class="row"><div class="span4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
         $output = '<div class="row">'
                 . '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
-                . '<div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
+                . '<div class="span1 pull-right" style="position:relative; top:25px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
 	$days = array( 'friday', 'saturday', 'sunday' );
         
         $output .= ' <div class="tab-content">';
+        //$first sets the first day to active
+        //at the end of the first day loop we set $first to blank
+        $first = 'active';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li style="margin:0;border:1px solid 1px solid #ddd"><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
- 		// Start the schedule
-			$output .= '<div id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="tab-pane fade in active">';
-                        $output .= '<table id="' . esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
+                       $navTabs .= '<li> class="'.$first.'"><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                        
+                                
+                        // Start the schedule
+			$output .= '<div id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
+                        $output .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';
 			//$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
 
@@ -163,7 +168,7 @@ function mf_display_schedule_by_area( $atts ) {
 			endforeach;
 
 			$output .= '</table></div>';
-			
+			$first = '';
 		} 
 	}
         $output .='</div>';

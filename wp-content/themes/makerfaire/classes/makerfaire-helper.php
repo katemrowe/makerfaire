@@ -104,7 +104,8 @@ function mf_display_schedule_by_area( $atts ) {
 		if ( count(${ $day }) > 0 ) {
                        $navTabs .= '<li><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
  		// Start the schedule
-			$output .= '<table id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
+			$output .= '<div id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="tab-pane fade in active">';
+                        $output .= '<table id="' . esc_attr( $day ) . '" class="table table-striped table-bordered table-schedule">';
 			$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
 
@@ -159,7 +160,7 @@ function mf_display_schedule_by_area( $atts ) {
 			$output .= '</tr>';
 			endforeach;
 
-			$output .= '</table>';
+			$output .= '</table></div>';
 			
 		} 
 	}

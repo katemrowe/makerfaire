@@ -98,7 +98,7 @@ function mf_display_schedule_by_area( $atts ) {
 	
 	// Let's loop through each day and spit out a schedule?
 	$days = array( 'friday', 'saturday', 'sunday' );
-        $output .= '<ul class="nav nav-tabs">||navtabs||</ul>';
+        $output .= '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>';
         $output .= ' <div class="tab-content">';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {

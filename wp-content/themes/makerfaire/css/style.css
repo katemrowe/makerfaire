@@ -3931,3 +3931,25 @@ li:nth-child(1) .drop-holder .column .col {
   padding: 10px 25px 10px 25px;
   border-radius: 5px;
 }
+#scheduleTab .nav-tabs > li > a {
+  border: 0;
+  background-color: transparent;
+  text-transform: capitalize;
+}
+#scheduleTab .nav-tabs > li {
+  border: thin solid #ddd;
+  margin: 0;
+  font-size: 18px;
+}
+#scheduleTab .nav-tabs > li.active {
+  background-color: #00bef3;
+}
+#scheduleTab .nav-tabs > li.active a {
+  color: #fff;
+}
+#scheduleTab .dateTime {
+  color: #085a7e;
+}
+#scheduleTab table tr {
+  background-color: #f9f9f9;
+}

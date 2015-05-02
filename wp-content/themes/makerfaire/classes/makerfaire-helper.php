@@ -107,7 +107,7 @@ function mf_display_schedule_by_area( $atts ) {
         $first = 'active';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li> class="'.$first.'"><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                       $navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
                         
                                 
                         // Start the schedule
@@ -127,7 +127,7 @@ function mf_display_schedule_by_area( $atts ) {
 
 			$output .= '<tr>';
 			$output .= '<td width="200" style="max-width:200px;" class="dateTime">';
-			$output .= '<h5>' . esc_html($scheduleditem['day'] ) . '</h5>';
+			$output .= '<h4 style="font-weight:bold">' . esc_html($scheduleditem['day'] ) . '</h4>';
 			$output .= '<p>' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; ' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
 			if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
 				//$output .= '<div class="pull-left thumbnail">';
@@ -148,7 +148,7 @@ function mf_display_schedule_by_area( $atts ) {
 				//$output .= '</div>';
 			}
 			$output .= '</td><td>';
-			$output .= '<h3><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h3>';
+			$output .= '<h4><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h4>';
 
 			// Presenter Name(s)
 			// if ( ! empty( $app->presenter_name ) )

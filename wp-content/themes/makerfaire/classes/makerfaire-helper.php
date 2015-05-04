@@ -130,22 +130,16 @@ function mf_display_schedule_by_area( $atts ) {
 			$output .= '<h4 style="font-weight:bold">' . esc_html($scheduleditem['day'] ) . '</h4>';
 			$output .= '<p>' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; ' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
 			if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
-				//$output .= '<div class="pull-left thumbnail">';
+				$output .= '<div class="pull-left thumbnail">';
 				// We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
-				/*if (  $scheduleditem['thumb_img_url'] ) {
+				if (  $scheduleditem['thumb_img_url'] ) {
 					$output .=  $scheduleditem['thumb_img_url'];
-					
-				} elseif ( $app->form_type == 'performer' || $app->form_type == 'exhibit' ) {
-					$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . legacy_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }, 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
-				}
-				elseif ( ! empty( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }[0] ) ) {
-					$output .= '<a href="' . get_permalink( absint( $app_obj->ID ) ) . '"><img src="' . legacy_get_resized_remote_image_url( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) }[0], 140, 140 ) . '" alt="' . esc_attr( $app_obj->post_title ) . '" width="140" height="140"></a>';
 				}
 				else {
-				*/
-					//$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
-				/*}*/
-				//$output .= '</div>';
+				
+					$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+				}
+				$output .= '</div>';
 			}
 			$output .= '</td><td>';
 			$output .= '<h4><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h4>';

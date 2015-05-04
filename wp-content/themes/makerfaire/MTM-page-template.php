@@ -104,7 +104,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-xs-12">
-						<strong>Looking for a specifc Maker? Search by Keyword:</strong>
+						<strong>Looking for a specific Maker? Search by Keyword:</strong>
 						<div class="form-group">
                         	       <form role="search" method="get" class="form-search" id="searchform" action="search/">
 										<input type="text"  name="s_term" id="s_term" class="form-control" />

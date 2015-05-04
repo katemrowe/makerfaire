@@ -134,7 +134,8 @@ function mf_display_schedule_by_area( $atts ) {
 				$output .= '<div class="pull-left thumbnail">';
 				// We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
 				if (  $scheduleditem['thumb_img_url'] ) {
-					$output .=  $scheduleditem['thumb_img_url'];
+					$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['thumb_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+					
 				}
 				else {
 				

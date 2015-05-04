@@ -63,6 +63,7 @@ function mf_display_schedule_by_area( $atts ) {
 	$faire = $data['faire'];
 	$area =$data['area'] ;
 	$subarea = $data['subarea'] ;
+	$subarea_clean_name = str_replace(' ', '', str_replace(':','',$data['subarea'] ));
 	$subarea_array = explode(': ',$subarea);
 	
 	// Make sure we actually passed a valid faire...
@@ -107,11 +108,11 @@ function mf_display_schedule_by_area( $atts ) {
         $first = 'active';
 	foreach ( $days as 	 $day ) {
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $area).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                       $navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
                         
                                 
                         // Start the schedule
-			$output .= '<div id="' . str_replace(' ', '', $area).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
+			$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
                         $output .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';
 			//$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';

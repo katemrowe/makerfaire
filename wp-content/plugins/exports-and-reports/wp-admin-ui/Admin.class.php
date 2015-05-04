@@ -17,7 +17,7 @@ if(!is_object($wpdb))
 if(isset($_GET['download']) && !isset($_GET['page']) && is_user_logged_in() && isset($_GET['_wpnonce']) && false !== wp_verify_nonce($_GET['_wpnonce'], 'wp-admin-ui-export'))
 {
     do_action('wp_admin_ui_export_download');
-    $file = WP_ADMIN_UI_EXPORT_DIR.'/'.str_replace(array('/','..'),'',$_GET['export']);
+    $file = WP_CONTENT_DIR.'/exports/'.str_replace(array('/','..'),'',$_GET['export']);
     $file = realpath( $file );
     if(!isset($_GET['export'])||empty($_GET['export'])||!file_exists($file))
         die('File not found.');

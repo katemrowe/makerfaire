@@ -205,12 +205,14 @@ $select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
 		`wp_mf_faire_area`.`faire_id`,
 		`wp_mf_faire_area`.`area`,
 	    `wp_mf_api_entity`.`child_id_ref`,
-        makerlist.Makers
-        
+       `wp_mf_api_entity`.`child_id_ref`,
+        makerlist.Makers,
+		wp_mf_maker.photo
         FROM `wp_mf_schedule`
 		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
 		left outer join (select  entry_id,group_concat( distinct concat(wp_mf_api_maker.FIRST_NAME,' ',wp_mf_api_maker.LAST_NAME) separator ',') as Makers
 				from `wp_mf_api_maker` group by entry_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.entry_ID
+		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.entry_id and wp_mf_maker.maker_id like '%-1'
 		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
 		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
 		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
@@ -240,6 +242,8 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['id'] = $entry_id;
 	$schedule_name = isset ( $row[10] ) ? $row[10] : '';
 	$project_photo =  isset ( $row[7] ) ? $row[7] : '';
+	$maker_photo =  isset ( $row[32] ) ? $row[32] : '';
+	
 	// REQUIED: Application title paired to scheduled item
 	$schedule['name'] = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 	$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour',  $start ) );
@@ -258,7 +262,7 @@ while ( $row = $result->fetch_row () ) {
 
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
 	//$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
-	$app_image = $project_photo;
+	$app_image = (isset($maker_photo)) ? $maker_photo : $project_photo;
 
 	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );

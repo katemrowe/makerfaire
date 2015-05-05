@@ -249,7 +249,7 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour',  $start ) );
 	$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
 	$schedule['day'] = $day;
-	$schedule['project_description'] = getExcerpt(isset ( $row[11] ) ? $row[11] : '', 300);
+	$schedule['project_description'] = getExcerpt(isset ( $row[11] ) ? $row[11] : '');
 	
 	//ORIGINAL CALL
 	//$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $start . $dates['time_zone'] ) ) );

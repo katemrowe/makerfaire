@@ -249,7 +249,7 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour',  $start ) );
 	$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
 	$schedule['day'] = $day;
-	$schedule['project_description'] = isset ( $row[11] ) ? $row[11] : '';
+	$schedule['project_description'] = getExcerpt(isset ( $row[11] ) ? $row[11] : '', 300);
 	
 	//ORIGINAL CALL
 	//$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $start . $dates['time_zone'] ) ) );
@@ -282,4 +282,27 @@ while ( $row = $result->fetch_row () ) {
 	array_push( $schedules, $schedule );
 }
 return $schedules;
+}
+
+
+
+/**
+ * Get excerpt from string
+ *
+ * @param String $str String to get an excerpt from
+ * @param Integer $startPos Position int string to start excerpt from
+ * @param Integer $maxLength Maximum length the excerpt may be
+ * @return String excerpt
+ */
+function getExcerpt($str, $startPos=0, $maxLength=300) {
+	if(strlen($str) > $maxLength) {
+		$excerpt   = substr($str, $startPos, $maxLength-3);
+		$lastSpace = strrpos($excerpt, ' ');
+		$excerpt   = substr($excerpt, 0, $lastSpace);
+		$excerpt  .= '...';
+	} else {
+		$excerpt = $str;
+	}
+
+	return $excerpt;
 }

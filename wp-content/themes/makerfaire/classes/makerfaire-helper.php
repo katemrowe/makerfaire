@@ -149,7 +149,7 @@ function mf_display_schedule_by_area( $atts ) {
 			// Presenter Name(s)
 			// if ( ! empty( $app->presenter_name ) )
 				$output .= '<h4 class="maker-name">' . $scheduleditem['maker_list'] . '</h4>';
-
+                        $output .= '<h5>Presenter -'.$scheduleditem['first_name'].' '. $scheduleditem['last_name'].'</h5>';
 			// Application Descriptions
 			$description =  $scheduleditem['project_description'];
 			if ( ! empty( $description ) )
@@ -207,7 +207,8 @@ $select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
 	    `wp_mf_api_entity`.`child_id_ref`,
        `wp_mf_api_entity`.`child_id_ref`,
         makerlist.Makers,
-		`wp_mf_maker`.photo
+		`wp_mf_maker`.photo,
+                `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
         FROM `wp_mf_schedule`
 		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
 		left outer join (select  entry_id,group_concat( distinct concat(wp_mf_api_maker.FIRST_NAME,' ',wp_mf_api_maker.LAST_NAME) separator ',') as Makers
@@ -256,7 +257,9 @@ while ( $row = $result->fetch_row () ) {
 	//$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $stop . $dates['time_zone'] ) ) );
 	// Rename the field, keeping 'time_end' to ensure this works.
 	$schedule['time_stop'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
-
+        
+        $schedule['first_name'] = $row[28];
+        $schedule['last_name'] = $row[29];
 	// REQUIRED: Venue ID reference
 	$schedule['venue_id_ref'] = $row[11];
 

@@ -42,7 +42,6 @@ if ( $type == 'schedule' ) {
     `wp_mf_api_entity`.`category_id`,
     `wp_mf_api_entity`.`project_title`,
     `wp_mf_api_venue`.ID,
-    `wp_mf_location`.`ID`,
     `wp_mf_location`.`entry_id`,
     `wp_mf_location`.`faire`,
     `wp_mf_location`.`area`,

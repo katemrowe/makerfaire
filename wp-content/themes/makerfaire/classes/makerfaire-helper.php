@@ -242,7 +242,7 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['id'] = $entry_id;
 	$schedule_name = isset ( $row[10] ) ? $row[10] : '';
 	$project_photo =  isset ( $row[7] ) ? $row[7] : '';
-	$maker_photo =  isset ( $row[32] ) ? $row[32] : '';
+	$maker_photo =  isset ( $row[27] ) ? $row[27] : '';
 	
 	// REQUIED: Application title paired to scheduled item
 	$schedule['name'] = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );

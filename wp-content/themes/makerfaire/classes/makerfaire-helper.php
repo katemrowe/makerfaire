@@ -249,7 +249,7 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour',  $start ) );
 	$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
 	$schedule['day'] = $day;
-	$schedule['project_description'] = getExcerpt(isset ( $row[11] ) ? $row[11] : '');
+	$schedule['project_description'] = isset ( $row[11] ) ? $row[11] : '';
 	
 	//ORIGINAL CALL
 	//$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $start . $dates['time_zone'] ) ) );
@@ -263,7 +263,7 @@ while ( $row = $result->fetch_row () ) {
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
 	//$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
 	$app_image = (isset($maker_photo)) ? $maker_photo : $project_photo;
-
+	echo 'img'.print_r($app_image,true);
 	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 
@@ -285,24 +285,4 @@ return $schedules;
 }
 
 
-
-/**
- * Get excerpt from string
- *
- * @param String $str String to get an excerpt from
- * @param Integer $startPos Position int string to start excerpt from
- * @param Integer $maxLength Maximum length the excerpt may be
- * @return String excerpt
- */
-function getExcerpt($str, $startPos=0, $maxLength=300) {
-	if(strlen($str) > $maxLength) {
-		$excerpt   = substr($str, $startPos, $maxLength-3);
-		$lastSpace = strrpos($excerpt, ' ');
-		$excerpt   = substr($excerpt, 0, $lastSpace);
-		$excerpt  .= '...';
-	} else {
-		$excerpt = $str;
-	}
-
-	return $excerpt;
-}
+=

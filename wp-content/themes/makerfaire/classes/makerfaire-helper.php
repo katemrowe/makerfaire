@@ -210,7 +210,7 @@ $select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
                 `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
         FROM `wp_mf_schedule`
 		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-		left outer join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ',') as Makers
+		left outer join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
 				from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
 		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.lead_id and wp_mf_maker.maker_id like '%%-1'
 		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id

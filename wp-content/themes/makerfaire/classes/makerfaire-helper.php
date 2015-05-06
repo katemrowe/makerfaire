@@ -207,13 +207,14 @@ $select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
 		`wp_mf_maker`.photo,
                 `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
         FROM `wp_mf_schedule`
-		inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-		left outer join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
-				from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
-		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.lead_id and wp_mf_maker.maker_id like '%%-1'
+		inner join `wp_rg_lead` on `wp_rg_lead`.ID = `wp_mf_schedule`.entry_id and `wp_rg_lead`.status = 'active'
+        inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
+		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.lead_id and wp_mf_maker.name = 'Presenter'
 		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
 		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
 		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+		inner join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
+		 		from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
 		WHERE `wp_mf_schedule`.faire = '$faire' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '$day'
 			and `wp_mf_location`.`area` = '$area'
@@ -254,9 +255,8 @@ while ( $row = $result->fetch_row () ) {
 	//$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $stop . $dates['time_zone'] ) ) );
 	// Rename the field, keeping 'time_end' to ensure this works.
 	$schedule['time_stop'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
-        
-        $schedule['first_name'] = $row[28];
-        $schedule['last_name'] = $row[29];
+    $schedule['first_name'] = $row[28];
+    $schedule['last_name'] = $row[29];
 	// REQUIRED: Venue ID reference
 	$schedule['venue_id_ref'] = $row[11];
 

@@ -179,7 +179,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-$select_query = sprintf("SELECT `wp_mf_schedule`.`ID`,
+$select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
 		`wp_mf_schedule`.`entry_id`,
 		`wp_mf_schedule`.`location_id`,
 		`wp_mf_schedule`.`faire`,

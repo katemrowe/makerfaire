@@ -147,10 +147,8 @@ function mf_display_schedule_by_area( $atts ) {
 			$output .= '<h4><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h4>';
 
 			// Presenter Name(s)
-			// if ( ! empty( $app->presenter_name ) )
 				$output .= '<h4 class="maker-name">' . $scheduleditem['maker_list'] . '</h4>';
-                        $output .= '<h5>Presenter -'.$scheduleditem['first_name'].' '. $scheduleditem['last_name'].'</h5>';
-			// Application Descriptions
+            // Application Descriptions
 			$description =  $scheduleditem['project_description'];
 			if ( ! empty( $description ) )
 				$output .=   $description ;

@@ -244,13 +244,11 @@ Browse by Topic
         "enableLinks": true
     };
     twitterFetcher.fetch(config1);
-    //end of twitter function
-   </script>
-    <script>// search
-    $(".searchsubmit").click(function(){
+	// Search function
+      $(".searchsubmit").click(function(){
         var uemail = $('.email_input_field').val();
         window.location = "http://example.com/automated/action.jsp?action=register&errorPage=/automated/action.jsp&gid=12345678&uemail="+uemail+"&user.CustomAttribute.NewsletterPopUp=Global&user.CustomAttribute.NewsletterOptIn=True";
         return false;
-      }
-    });</script>
+      };
+      </script>
     

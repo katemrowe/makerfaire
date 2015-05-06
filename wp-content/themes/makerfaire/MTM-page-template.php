@@ -245,7 +245,7 @@ Browse by Topic
     };
     twitterFetcher.fetch(config1);
 	// Search function
-      $(".searchsubmit").click(function(){
+      jQuery(".searchsubmit").click(function(){
         var uemail = $('.email_input_field').val();
         window.location = "http://example.com/automated/action.jsp?action=register&errorPage=/automated/action.jsp&gid=12345678&uemail="+uemail+"&user.CustomAttribute.NewsletterPopUp=Global&user.CustomAttribute.NewsletterOptIn=True";
         return false;

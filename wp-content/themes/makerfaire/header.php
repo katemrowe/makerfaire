@@ -123,7 +123,7 @@ Topbar
 			<div class="navbar-header">
 				<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
 			</div>
-	        <div class="collapse navbar-collapse">
+	        <div class="collapse navbar-collapse hidden-xs">
 				<ul class="nav navbar-nav">
 				    <?php
 				    $count = 0;

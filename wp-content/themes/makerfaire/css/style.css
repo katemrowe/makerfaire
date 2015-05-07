@@ -1689,7 +1689,7 @@ li.hidelink a:visited {
   height: auto !important;
 }
 .quora .navbar-header {
-  margin: 0 !important;
+  margin: 0;
   float: left;
 }
 .quora .nav > li > a:hover,
@@ -2054,8 +2054,8 @@ li.hidelink a:visited {
 .quora .navbar-collapse {
   padding: 0;
   float: left;
-  display: block !important;
-  visibility: visible !important;
+  display: block;
+  visibility: visible;
   border: 0 !important;
 }
 .quora .navbar-nav > li {
@@ -2714,9 +2714,6 @@ li.hidelink a:visited {
 }
 .quora .social-holder.instagram a {
   color: #333;
-}
-.quora .social-holder.instagram a img {
-  width: 220px;
 }
 .quora .social-holder.instagram a:hover {
   text-decoration: none;
@@ -3631,6 +3628,24 @@ li.hidelink a:visited {
 }
 .quora #scheduleTab table tr {
   background-color: #f9f9f9;
+}
+@media (max-width: 767px) {
+  .quora .social-holder.instagram {
+    border-left: none;
+    padding: 0 5%;
+  }
+  .quora .social-holder.twitter {
+    padding: 0 5%;
+  }
+  .quora .social-holder .img-list li {
+    padding: 0 10px 15px 0;
+  }
+  .quora#header {
+    padding: 10px 0 0;
+  }
+  .quora .navbar-header {
+    margin: 0 0 10px 0;
+  }
 }
 @media (max-width: 992px) {
   #div-gpt-ad-664089004995786621-2 {

@@ -85,9 +85,9 @@ class Make_Instagram {
         $num_pages = count($pages);
 		?>
 		<?php
-		$output ="<div class=\"item-holder\"><div class=\"container-fluid\"><div class=\"row\"><div class=\"col-xs-4\"><div class=\"social-holder twitter\"><div class=\"title\"><h1><a href=\"http://twitter.com/makerfaire\" target=\"_blank\">#MakerFaire</a></h1></div><div id=\"recent-twitter\"></div><a href=\"http://twitter.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Twitter</a></div></div>";
+		$output ="<div class=\"item-holder\"><div class=\"container\"><div class=\"row\"><div class=\"col-xs-12 col-sm-4\"><div class=\"social-holder twitter\"><div class=\"title\"><h1><a href=\"http://twitter.com/makerfaire\" target=\"_blank\">#MakerFaire</a></h1></div><div id=\"recent-twitter\"></div><a href=\"http://twitter.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Twitter</a></div></div>";
 		
-		$output .="<div class=\"col-xs-8\">
+		$output .="<div class=\"col-xs-12 col-sm-8\">
 							<div class=\"social-holder instagram\">
 								<div class=\"title\">
 									<h1>Instagram, <a href=\"http://instagram.com/makerfaire\" target=\"_blank\">#makerfaire</a></h1>
@@ -95,7 +95,7 @@ class Make_Instagram {
 					foreach( $pages as $page ) {			
 							$output .= "<ul class=\"img-list\">";
 							foreach( $page as $img ) {
-						$output .= "<li><a href=\"" . esc_url( $img->link ) . "\" target=\"_blank\" class=\"instagram-link\"><img src=\"" . esc_url( $img->images->standard_resolution->url ) . "\" height=\"182\" width=\"180\" alt=\"image description\"></a></li>";
+						$output .= "<li class='col-xs-12 col-sm-4'><a href=\"" . esc_url( $img->link ) . "\" target=\"_blank\" class=\"instagram-link\"><img src=\"" . esc_url( $img->images->standard_resolution->url ) . "\" class=\"img-responsive\" alt=\"image description\"></a></li>";
 							}
 						$output .= "</ul>";
 					}

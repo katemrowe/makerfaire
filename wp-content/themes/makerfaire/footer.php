@@ -304,11 +304,5 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 
 <?php wp_footer(); ?>
 
-<script>
-jQuery(function() {
-	jQuery(".container-fluid").toggleClass("container-fluid container");
-});
-</script>
-
 </body>
 </html>

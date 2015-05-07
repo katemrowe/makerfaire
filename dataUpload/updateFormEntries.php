@@ -60,32 +60,53 @@ if ( isset($_POST["submit"]) ) {
         if ($_FILES["fileToUpload"]["error"] > 0) {
             echo "Return Code: " . $_FILES["fileToUpload"]["error"] . "<br />";
 
-        }
-        else {
-                 //Print file details
-             
+        } else {
+            //save the file 
+            $target_dir = "uploads/";
+            if(!file_exists($target_dir)){
+                mkdir("uploads/", 0777);
+            }
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]).date('dmyhi');
+                                     
             $name = $_FILES['fileToUpload']['name'];
             $ext = strtolower(end(explode('.', $_FILES['fileToUpload']['name'])));
             $type = $_FILES['fileToUpload']['type'];
             $tmpName = $_FILES['fileToUpload']['tmp_name'];
             
-            echo "Upload: " . $name . "<br />";
-            echo "Type: " . $type . "<br />";
-            echo "Size: " . ($_FILES["fileToUpload"]["size"] / 1024) . " Kb<br />";
+            //Print File Details
+            echo "Upload: "    . $name . "<br />";
+            echo "Type: "      . $type . "<br />";
+            echo "Size: "      . ($_FILES["fileToUpload"]["size"] / 1024) . " Kb<br />";
             echo "Temp file: " . $tmpName . "<br />";
-            if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+            
+            //Save file to server
+             //if file already exists
+            $savedFile = "/dataUpload/upload/" . $name;
+            $savedFile = $target_file;
+             if (file_exists($savedFile)) {
+                echo $name . " already exists. ";
+             }else {
+                 if ($error == UPLOAD_ERR_OK) {
+                    //Store file in directory                                    
+                    if( move_uploaded_file($tmpName, $savedFile) ) {
+                        echo "Stored in: " . $savedFile . "<br />";
+                    } else {
+                        echo "Not uploaded<br/>";
+                    }
+                    
+                 }
+            }
+            
+            if(($handle = fopen($savedFile, 'r')) !== FALSE) {
                 // necessary if a large csv file
                 set_time_limit(0);
 
                 $row = 0;
 
                 while(($data = fgetcsv($handle, 0, ',')) !== FALSE) {
-                    // number of fields in the csv
-                    $col_count = count($data);
-                    
+                    // number of fields in the csv                    
                     foreach($data as $value){
-                        $csv[$row][] = $value;
-                       
+                        $csv[$row][] = $value;                       
                     }
                  
                     // inc the row
@@ -171,6 +192,7 @@ if ( isset($_POST["submit"]) ) {
             . "(`id`, `lead_id`, `form_id`, `field_number`, `value`) "
             . "VALUES ".$insertLead.";";
         $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);
+        echo $sql.'<br/>';
 }
 ?>
 

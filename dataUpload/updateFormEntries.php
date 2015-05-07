@@ -147,7 +147,7 @@ if ( isset($_POST["submit"]) ) {
             
             
        }
-       $APIdata[] = array($data);     
+       $APIdata[] = $data;     
        $tableData[] = array('parentID'=> $parentID, 
                           'childID' => '', 
                           'faire'   => $faire,

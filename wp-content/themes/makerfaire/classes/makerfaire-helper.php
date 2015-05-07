@@ -186,13 +186,11 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 		`wp_mf_schedule`.`start_dt`,
 		`wp_mf_schedule`.`end_dt`,
 		DAYNAME(`wp_mf_schedule`.`start_dt`) as `day`,
-		`wp_mf_api_entity`.`large_image_url`,
-		`wp_mf_api_entity`.`thumb_image_url`,
-		`wp_mf_api_entity`.`category_id`,
-		`wp_mf_api_entity`.`project_title`,
-		`wp_mf_api_entity`.`project_description`,
-		`wp_mf_schedule`.`location_id`,
-		`wp_mf_location`.`entry_id`,
+		`wp_gravityforms_entity_view`.`Photo`,
+		`wp_gravityforms_entity_view`.`ThumbPhoto`,
+		`wp_gravityforms_entity_view`.`Categories`,
+		`wp_gravityforms_entity_view`.`Title`,
+		`wp_gravityforms_entity_view`.`Description`,
 		`wp_mf_location`.`faire`,
 		`wp_mf_location`.`area`,
 		`wp_mf_location`.`subarea`,
@@ -200,22 +198,15 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 		`wp_mf_location`.`latitude`,
 		`wp_mf_location`.`longitude`,
 		`wp_mf_location`.`location_element_id`,
-		`wp_mf_faire_area`.`ID`,
-		`wp_mf_faire_area`.`faire_id`,
-		`wp_mf_faire_area`.`area`,
-			
-	    `wp_mf_api_entity`.`child_id_ref`,
-       `wp_mf_api_entity`.`child_id_ref`,
+		`wp_gravityforms_entity_view`.`maker_ids`,
+       `wp_gravityforms_entity_view`.`entry_status`,
         makerlist.Makers,
 		`wp_mf_maker`.photo,
                 `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
         FROM `wp_mf_schedule`
-		inner join `wp_rg_lead` on `wp_rg_lead`.ID = `wp_mf_schedule`.entry_id and `wp_rg_lead`.status = 'active'
-        inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
+		inner join `wp_gravityforms_entity_view` on `wp_mf_schedule`.entry_id=`wp_gravityforms_entity_view`.entry_id and `wp_gravityforms_entity_view`.`entry_status` = 'active'
 		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.lead_id and wp_mf_maker.name = 'Presenter'
 		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
-		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
 		inner join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
 		 		from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
 		WHERE `wp_mf_schedule`.faire = '%s' 

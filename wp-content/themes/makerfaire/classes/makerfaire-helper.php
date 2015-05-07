@@ -53,19 +53,18 @@ function my_query_vars( $query_vars ){
 function mf_display_schedule_by_area( $atts ) {
 	global $mfform;
 
-	$data = shortcode_atts( array(
+	/*$data = shortcode_atts( array(
 			'area' 	=> '',
 			'subarea' 	=> '',
 			'faire'			=> '',
 	), $atts );
-
+	*/
 	// Get the faire date array. If the
-	$faire = $data['faire'];
-	$area =$data['area'] ;
-	$subarea = $data['subarea'] ;
-	$subarea_clean_name = str_replace(' ', '', str_replace(':','',$data['subarea'] ));
-	$subarea_array = explode(': ',$subarea);
+	$faire = $atts['faire'];
+	$area =$atts['area'] ;
+	$subarea = htmlspecialchars_decode($atts['subarea']);
 	
+	$subarea_clean_name = strtolower(str_replace('&','',(str_replace(' ', '', str_replace(':','',$subarea )))));
 	// Make sure we actually passed a valid faire...
 	//if ( empty( $faire_date ) )
 	//	return '<h3>Not a valid faire!</h3>';
@@ -80,15 +79,16 @@ function mf_display_schedule_by_area( $atts ) {
 		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
 		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea , $friday, 'area', 300 );
 	}
+	
 	// Get Saturday events by location
 	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea , 'area' );
-	if ( $saturday === false ) {
+	if ( $saturday === false  ) {
 		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
 		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea , $saturday, 'area', 300 );
 	}
 	// Get Saturday events by location
 	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea , 'area' );
-	if ( $sunday === false ) {
+	if ( $sunday === false  ) {
 		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
 		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea , $sunday, 'area', 300 );
 	}
@@ -100,7 +100,7 @@ function mf_display_schedule_by_area( $atts ) {
                 . '<div class="span1 pull-right" style="position:relative; top:25px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
-	$days = array( 'friday', 'saturday', 'sunday' );
+	$days = array( 'friday','saturday', 'sunday' );
         
         $output .= ' <div class="tab-content">';
         //$first sets the first day to active
@@ -177,7 +177,9 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-$select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
+	
+	
+	$select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
 		`wp_mf_schedule`.`entry_id`,
 		`wp_mf_schedule`.`location_id`,
 		`wp_mf_schedule`.`faire`,
@@ -215,20 +217,21 @@ $select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
 		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
 		inner join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
 		 		from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
-		WHERE `wp_mf_schedule`.faire = '$faire' 
-			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '$day'
-			and `wp_mf_location`.`area` = '$area'
-			and `wp_mf_location`.`subarea` = '$subarea'
+		WHERE `wp_mf_schedule`.faire = '%s' 
+			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
+			and `wp_mf_location`.`area` = '%s'
+			and `wp_mf_location`.`subarea` like '%s'
 		order by `wp_mf_schedule`.`start_dt`
-		");
-$mysqli->query("SET NAMES 'utf8'");
-$result = $mysqli->query ( $select_query );
+		",$faire,$day,$area,$subarea);
+
+
+
+$result = $mysqli->query( $select_query );
 // Initalize the schedule container
 $schedules = array();
 
 // Loop through the posts
 while ( $row = $result->fetch_row () ) {
-
 	// Return some post meta
 	$entry_id = $row[1];
 	$app_id = $entry_id;
@@ -279,6 +282,7 @@ while ( $row = $result->fetch_row () ) {
 
 	// Put the application into our list of schedules
 	array_push( $schedules, $schedule );
+	
 }
 return $schedules;
 }

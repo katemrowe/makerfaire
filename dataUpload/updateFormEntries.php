@@ -188,11 +188,11 @@ if ( isset($_POST["submit"]) ) {
                 . "(`id`, `parentID`, `childID`, `faire`, `form`) values " .$insertRel.";";
 
     // update wp_rg_lead_detail with category
-        $sql = "INSERT INTO `wp_makerfaire`.`wp_rg_lead_detail` "
+        $sql .= "INSERT INTO `wp_makerfaire`.`wp_rg_lead_detail` "
             . "(`id`, `lead_id`, `form_id`, `field_number`, `value`) "
             . "VALUES ".$insertLead.";";
         $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);
-        echo $sql.'<br/>';
+        //echo $sql.'<br/>';
 }
 ?>
 

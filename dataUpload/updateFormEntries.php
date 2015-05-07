@@ -183,12 +183,13 @@ if ( isset($_POST["submit"]) ) {
       `faire` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
       `form` mediumint(8) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+     $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);
     // add to the wp_rg_lead_rel table
-        $sql .= "INSERT INTO `wp_makerfaire`.`wp_rg_lead_rel` "
+        $sql = "INSERT INTO wp_rg_lead_rel "
                 . "(`id`, `parentID`, `childID`, `faire`, `form`) values " .$insertRel.";";
-
+ $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);
     // update wp_rg_lead_detail with category
-        $sql .= "INSERT INTO `wp_makerfaire`.`wp_rg_lead_detail` "
+        $sql = "INSERT INTO `wp_rg_lead_detail` "
             . "(`id`, `lead_id`, `form_id`, `field_number`, `value`) "
             . "VALUES ".$insertLead.";";
         $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);

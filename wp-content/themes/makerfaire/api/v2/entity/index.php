@@ -45,25 +45,25 @@ if ( $type == 'entity' ) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
 	$select_query = sprintf("
-			SELECT `wp_mf_api_entity`.`ID`,
-    `wp_mf_api_entity`.`project_title`,
-    `wp_mf_api_entity`.`project_description`,
-    `wp_mf_api_entity`.`project_url`,
-    `wp_mf_api_entity`.`category_id`,
+SELECT `wp_gravityforms_entity_view`.`entry_id`,
+    `wp_gravityforms_entity_view`.`Title`,
+    `wp_gravityforms_entity_view`.`Description`,
+    `wp_gravityforms_entity_view`.`URL`,
+    `wp_gravityforms_entity_view`.`Categories`,
      maker.`exhibit_makers`,
-    `wp_mf_api_entity`.`thumb_image_url`,
-    `wp_mf_api_entity`.`large_image_url`
-FROM `wp_mf_api_entity`
+    `wp_gravityforms_entity_view`.`THUMBPHOTO`,
+    `wp_gravityforms_entity_view`.`PHOTO`
+FROM `wp_gravityforms_entity_view`
 inner join (SELECT 
     GROUP_CONCAT( distinct (`maker_id`)
         SEPARATOR ',') AS `exhibit_makers`, lead_id 
         FROM wp_mf_maker
         WHERE `First Name` is not null
-        GROUP BY lead_id) maker on `wp_mf_api_entity`.`ID` = maker.lead_id
-WHERE ID in (SELECT 
-    `wp_mf_schedule`.`entry_id` 
-    FROM `wp_mf_schedule`
-    WHERE `wp_mf_schedule`.`faire` = '$faire')");
+        GROUP BY lead_id) maker on `wp_gravityforms_entity_view`.`entry_ID` = maker.lead_id
+WHERE wp_gravityforms_entity_view.form_id in (SELECT 
+    `wp_mf_faire`.`form_ids` 
+    FROM `wp_mf_faire`
+    WHERE `wp_mf_faire`.`faire` = '$faire')");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
 	
@@ -82,14 +82,14 @@ WHERE ID in (SELECT
 		$app['name'] = html_entity_decode( $row[1], ENT_COMPAT, 'utf-8' );
 
 		// Application Thumbnail and Large Images
-		$app_image =$row[6];
+		$app_image =$row[7];
 		$app['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$app['large_image_url'] = esc_url( $app_image );
 		// Should actually be this... Adding it in for the future.
 		$app['large_img_url'] = esc_url( $app_image );
 
 		// Application Locations
-		$app['venue_id_ref'] = $row[8];
+		$app['venue_id_ref'] = ''; //NOTE: Needs to be implemented $row[8];
 
 		// Application Makers
 		$app_id = $app['id'];// get the entity id

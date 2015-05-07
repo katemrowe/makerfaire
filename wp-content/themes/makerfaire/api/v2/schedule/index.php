@@ -92,12 +92,12 @@ if ( $type == 'schedule' ) {
 		//$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $stop . $dates['time_zone'] ) ) );
 		// Rename the field, keeping 'time_end' to ensure this works.
 		$schedule['time_stop'] = date( DATE_ATOM, strtotime( '+7 hour', $stop ) );
-			/*
+			
                //bad hack to convert to gmt time
-                $schedule['time_start'] = str_replace('+00:00', '-07:00', $schedule['time_start']);
+              /*  $schedule['time_start'] = str_replace('+00:00', '-07:00', $schedule['time_start']);
                 $schedule['time_end'] = str_replace('+00:00', '-07:00', $schedule['time_end']);
                 $schedule['time_stop'] = str_replace('+00:00', '-07:00', $schedule['time_stop']);
-            */    
+              */  
 		// REQUIRED: Venue ID reference
 		$schedule['venue_id_ref'] = $row[11];
 

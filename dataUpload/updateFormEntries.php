@@ -7,32 +7,30 @@
  */
 include 'db_connect.php';
 
-//return entry dat
-$api_key = '84ed801ad4';
-$private_key = 'cacff8d71d9cc6e';
-$method  = 'POST';
-$domain = $_SERVER['HTTP_HOST'];
-if($domain=='localhost')    $domain .= '/makerfaire';
-//print_r($_SERVER);
-//echo 'domain is '.$domain.' ';
-//$endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
-$endpoint = $domain.'/gravityformsapi/';
-echo 'sending to '.$endpoint.'<br/>';
-$route = 'entries';
-//$route = 'forms/20/entries';
-$expires = strtotime('+60 mins');
-$string_to_sign = sprintf('%s:%s:%s:%s', $api_key, $method, $route, $expires);
-$sig = calculate_signature($string_to_sign, $private_key);
-
-$api_call = $endpoint.$route.'?api_key='.$api_key.'&signature='.$sig.'&expires='.$expires;
-
 
 function calculate_signature($string, $private_key) {
     $hash = hash_hmac("sha1", $string, $private_key, true);
     $sig = rawurlencode(base64_encode($hash));
     return $sig;
 }
-function call_api($data,$api_call){
+function call_api($data){
+    
+    $api_key = '84ed801ad4';
+    $private_key = 'cacff8d71d9cc6e';
+    $method  = 'POST';
+    $domain = $_SERVER['HTTP_HOST'];
+    if($domain=='localhost')    $domain .= '/makerfaire';
+
+    //$endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
+    $endpoint = $domain.'/gravityformsapi/';
+    echo 'sending to '.$endpoint.'<br/>';
+    //$route = 'entries';
+    $route = 'forms/20/entries';
+    $expires = strtotime('+60 mins');
+    $string_to_sign = sprintf('%s:%s:%s:%s', $api_key, $method, $route, $expires);
+    $sig = calculate_signature($string_to_sign, $private_key);
+
+    $api_call = $endpoint.$route.'?api_key='.$api_key.'&signature='.$sig.'&expires='.$expires;
     //print_r(json_encode($data));
     
     $ch = curl_init($api_call);
@@ -46,8 +44,9 @@ function call_api($data,$api_call){
     $returnedData = json_decode($result);//201 status indicates it inserted the entry. Should return id of the entry.
     //die('stop');
     if($returnedData->status==201){ 
-            return $returnedData->response[0];
-        
+            return $returnedData->response;        
+    }else{        
+        print_r($result);
     }
 }
 
@@ -127,18 +126,22 @@ if ( isset($_POST["submit"]) ) {
             
             
        }
-       $APIdata = array($data);
-       //print_r($APIdata);
-       //echo '<br/><br/>';
-       //$childID = '';
-       $childID = call_api ($APIdata,$api_call);
-      
+       $APIdata[] = array($data);     
        $tableData[] = array('parentID'=> $parentID, 
-                          'childID' => $childID, 
+                          'childID' => '', 
                           'faire'   => $faire,
                           'form_id' => $form,
                           '147.44'  => $rowData[$catKey]);
     }
+    
+    $childID = call_api ($APIdata);
+  
+    foreach($tableData as $key=>$value){
+        $tableData[$key]['childID'] = $childID[$key];
+    }
+    print_r($tableData);
+    die('stop');
+       
     //now we need to update the database
     //find the end of the $tableData
     $endkey = key( array_slice( $tableData, -1, 1, TRUE ) );

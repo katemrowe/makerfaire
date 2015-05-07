@@ -245,8 +245,8 @@ while ( $row = $result->fetch_row () ) {
 	
 	// REQUIED: Application title paired to scheduled item
 	$schedule['name'] = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
-	$schedule['time_start'] = date( DATE_ATOM, strtotime(  $start ) );
-	$schedule['time_end'] = date( DATE_ATOM, strtotime(  $stop ) );
+	$schedule['time_start'] = date( DATE_ATOM, strtotime( '0 hour', $start ) );
+	$schedule['time_end'] = date( DATE_ATOM, strtotime( '0 hour', $stop ) );
 	$schedule['day'] = $day;
 	$schedule['project_description'] = isset ( $row[11] ) ? $row[11] : '';
 	

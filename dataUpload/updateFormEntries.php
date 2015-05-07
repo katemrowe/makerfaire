@@ -132,7 +132,6 @@ if ( isset($_POST["submit"]) ) {
        //echo '<br/><br/>';
        //$childID = '';
        $childID = call_api ($APIdata,$api_call);
-       //echo 'childID='.$childID;
       
        $tableData[] = array('parentID'=> $parentID, 
                           'childID' => $childID, 
@@ -140,35 +139,36 @@ if ( isset($_POST["submit"]) ) {
                           'form_id' => $form,
                           '147.44'  => $rowData[$catKey]);
     }
-}
-//now we need to update the database
-// check if table exists
-// if it doesn't exist, create it
-$sql = "CREATE TABLE IF NOT EXISTS `wp_rg_lead_rel` (
-  `id` int(10) NOT NULL,
-  `parentID` int(10) NOT NULL,
-  `childID` int(10) NOT NULL,
-  `faire` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `form` mediumint(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-";
-
-$result=mysql_query($sql) or die("error in create wp_rg_lead_rel query ".mysql_error().' '.$sql);
-
-foreach($tableData as $value){
+    //now we need to update the database
+    //find the end of the $tableData
+    $endkey = key( array_slice( $tableData, -1, 1, TRUE ) );
+    $contchar = ',';
+    
+    //loop thru array to build SQL inserts
+    foreach($tableData as $key => $value){        
+        if($endkey == $key) $contchar = '';
+        $insertRel .= " (NULL, ".$value['parentID'].", ".$value['childID'].", '".$value['faire']."', '".$value['form_id']."')".$contchar;
+        $insertLead .= "(NULL, '".$value['childID']."', '".$value['form_id']."', '147.44', '".$value['147.44']."')".$contchar;
+    }
+    // check if table exists
+    // if it doesn't exist, create it
+    $sql = "CREATE TABLE IF NOT EXISTS `wp_rg_lead_rel` (
+      `id` int(10) NOT NULL,
+      `parentID` int(10) NOT NULL,
+      `childID` int(10) NOT NULL,
+      `faire` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+      `form` mediumint(8) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     // add to the wp_rg_lead_rel table
-    $sql = "INSERT INTO `wp_makerfaire`.`wp_rg_lead_rel` "
-            . "(`id`, `parentID`, `childID`, `faire`, `form`) "
-            . "VALUES (NULL, ".$value['parentID'].", ".$value['childID'].", '".$value['faire']."', '".$value['form_id']."');";
-    $result=mysql_query($sql) or die("error in wp_rg_lead_rel query ".mysql_error().' '.$sql);
- 
-    // update wp_rg_lead_detail with category
-    $sql = "INSERT INTO `wp_makerfaire`.`wp_rg_lead_detail` "
-        . "(`id`, `lead_id`, `form_id`, `field_number`, `value`) "
-        . "VALUES (NULL, '".$value['childID']."', '".$value['form_id']."', '147.44', '".$value['147.44']."');";
-    $result=mysql_query($sql) or die("error in wp_rg_lead_detail query ".mysql_error().' '.$sql);
-}
+        $sql .= "INSERT INTO `wp_makerfaire`.`wp_rg_lead_rel` "
+                . "(`id`, `parentID`, `childID`, `faire`, `form`) values " .$insertRel.";";
 
+    // update wp_rg_lead_detail with category
+        $sql = "INSERT INTO `wp_makerfaire`.`wp_rg_lead_detail` "
+            . "(`id`, `lead_id`, `form_id`, `field_number`, `value`) "
+            . "VALUES ".$insertLead.";";
+        $result=mysql_query($sql) or die("error in SQL ".mysql_error().' '.$sql);
+}
 ?>
 
 <!DOCTYPE html>

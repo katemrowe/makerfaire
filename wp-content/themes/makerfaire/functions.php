@@ -123,7 +123,8 @@ function my_custom_fav_ico() {
 function make_enqueue_jquery() {
 	// Styles
 	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );
-	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
+	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.min.css' );
+	//wp_enqueue_style( 'make-bootstrap-responisve', get_stylesheet_directory_uri() . '/css/bootstrap-responsive.css' );
 	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
 	wp_enqueue_style( 'ytv', get_stylesheet_directory_uri() . '/css/ytv.css' );
@@ -471,16 +472,16 @@ function makerfaire_news_rss() { ?>
 
 			foreach($fs as $f) : $a = $f['i']->get_authors(); ?>
 				<div class="row">
-					<div class="span2">
-						<a href="<?php echo esc_url($f['i']->get_link()); ?>" title="<?php echo esc_attr($f['i']->get_title()); ?>"><img class="thumbnail faire-thumb " alt="<?php echo legacy_get_resized_remote_image_url(esc_attr($f['i']->get_title()),308,202); ?>" src="<?php echo esc_url($f['src']); ?>" /></a>
+					<div class="col-md-2">
+						<a href="<?php echo esc_url($f['i']->get_link()); ?>" title="<?php echo esc_attr($f['i']->get_title()); ?>"><img class="img-thumbnail faire-thumb " alt="<?php echo legacy_get_resized_remote_image_url(esc_attr($f['i']->get_title()),308,202); ?>" src="<?php echo esc_url($f['src']); ?>" /></a>
 					</div>
-					<div class="span6">
+					<div class="col-md-6">
 					<h2><a href="<?php echo esc_url($f['i']->get_link()); ?>"><?php echo esc_html($f['i']->get_title()); ?></a></h2>
 					<?php echo str_replace(array($f['img'], '<p><a href="'.$f['i']->get_link().'">Read the full article on MAKE</a></p>'), '', html_entity_decode(esc_html($f['i']->get_description()))); ?>
 					
 					<!-- READ FULL STORY BUTTON AND LINK
 					 <p class="read_more" style="margin:10px 0"><strong>
-					<a class="btn btn-primary btn-mini" href="<?php /*  echo esc_url($f['i']->get_link()); */ ?>">Read full story &raquo;</a></strong></p> 
+					<a class="btn btn-primary btn-xs" href="<?php /*  echo esc_url($f['i']->get_link()); */ ?>">Read full story &raquo;</a></strong></p> 
 					-->
 
 					<!-- AUTHOR AND CATEGORY DESCRIPTIONS

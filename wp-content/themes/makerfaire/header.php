@@ -110,7 +110,7 @@
 Topbar
 ======
 -->
-<header id="header" style="height:auto !important;">
+<header id="header" class="quora" style="height:auto !important;">
 
 <?php
   $menu_name = 'Main Navigation Version 2';
@@ -118,90 +118,84 @@ Topbar
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
 
 ?>
- 
-<nav class="navbar">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+	<nav class="navbar">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+			</div>
+	        <div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+				    <?php
+				    $count = 0;
+				    $submenu = false;
+
+				    foreach( $menuitems as $item ):
+				            //4/23/15
+				        $new_window     = (isset($item->target)?$item->target:'');
+				        $link           = $item->url;
+				        $title          = $item->title;
+				        $classes        = $item->classes;
+				        $description    = $item->description ;
+				        // item does not have a parent so menu_item_parent equals 0 (false)
+				        if ( !$item->menu_item_parent ):
+
+				        // save this id for later comparison with sub-menu items
+				        $parent_id = $item->ID;
+				    ?>
+				 
+				    <li class="dropdown">
+				        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+				            <?php echo $title; ?> 
+				            <span class="caret"></span>
+				        </a>
+				    <?php endif; ?>
+				 
+				        <?php if ( $parent_id == $item->menu_item_parent ): ?>
+				 
+				            <?php if ( !$submenu ): $submenu = true; ?>
+				            
+				            <div class="drop-holder">
+				                <div class="drop">
+				                    <div class="container">
+				                        <div class="row">
+				                            <div class="col-xs-12">
+				                                <div class="drop-logo about">
+				                                	
+				                                </div>
+				                                <div class="column">
+				                                	<div class="top-holder">
+				                                    </div>
+				                                	<div class="col no-border">
+				                                        <ul class="sub-menu">
+				            <?php endif; ?>
+				                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
+				                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
+				                                                <div class="description"><?php echo $description; ?></div>
+				                                            </li>
+				            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
+				                                        </ul>
+				                                    </div>
+				                                    <div class="col dinamic-content">
+				                                    	
+				                                    </div>
+				                                </div>
+				                        	</div>      
+				            			</div>
+				            		</div>
+				            	</div>
+				            </div>
+				            <?php $submenu = false; endif; ?>
+				 
+				        <?php endif; ?>
+				 	
+				    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
+				    </li>                           
+				    <?php $submenu = false; endif; ?>
+				 	
+				<?php $count++; endforeach; ?>
+				 
+				</ul>
+			</div>
 		</div>
-        	<div class="collapse navbar-collapse">
-    		
-    
-<ul class="nav navbar-nav">
-    <?php
-    $count = 0;
-    $submenu = false;
-
-    foreach( $menuitems as $item ):
-            //4/23/15
-        $new_window     = (isset($item->target)?$item->target:'');
-        $link           = $item->url;
-        $title          = $item->title;
-        $classes        = $item->classes;
-        $description    = $item->description ;
-        // item does not have a parent so menu_item_parent equals 0 (false)
-        if ( !$item->menu_item_parent ):
-
-        // save this id for later comparison with sub-menu items
-        $parent_id = $item->ID;
-    ?>
- 
-    <li class="dropdown">
-        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <?php echo $title; ?> 
-            <span class="caret"></span>
-        </a>
-    <?php endif; ?>
- 
-        <?php if ( $parent_id == $item->menu_item_parent ): ?>
- 
-            <?php if ( !$submenu ): $submenu = true; ?>
-            
-            <div class="drop-holder">
-                <div class="drop">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="drop-logo about">
-                                	
-                                </div>
-                                <div class="column">
-                                	<div class="top-holder">
-                                    </div>
-                                	<div class="col no-border">
-                                        <ul class="sub-menu">
-            <?php endif; ?>
-                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
-                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
-                                                <div class="description"><?php echo $description; ?></div>
-                                            </li>
-            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
-                                        </ul>
-                                    </div>
-                                    <div class="col dinamic-content">
-                                    	
-                                    </div>
-                                </div>
-                        	</div>      
-            			</div>
-            		</div>
-            	</div>
-            </div>
-            <?php $submenu = false; endif; ?>
- 
-        <?php endif; ?>
- 	
-    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
-    </li>                           
-    <?php $submenu = false; endif; ?>
- 	
-<?php $count++; endforeach; ?>
- 
-</ul>
-
-		</div>
-	</div>
-</nav>
-
-
+	</nav>
 </header>

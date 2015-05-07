@@ -6,7 +6,7 @@
 
 	<div class="row">
 
-		<div class="content span8">
+		<div class="content col-md-8">
 
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
@@ -27,7 +27,7 @@
 
 						<div class="postmeta">
 
-							<div class="span-thumb thumbnail">
+							<div class="span-thumb img-thumbnail">
 
 								<?php echo get_avatar( get_the_author_meta('user_email'), 72); ?>
 

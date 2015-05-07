@@ -50,7 +50,7 @@
       
         <!-- The slider -->
     	<div class="featured-holder">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<h1>Featured 2015 Bay Area Makers: </h1>
@@ -101,7 +101,7 @@
     <!--End of slider -->
   
 	<div class="search-box">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<strong>Looking for a specific Maker? Search by Keyword:</strong>
@@ -116,7 +116,7 @@
 			</div>
 		</div>
 		<div class="browse-box">
-<div class="container-fluid">
+<div class="container">
 <div class="row">
 <div class="col-xs-12">
 Browse by Topic 
@@ -129,7 +129,7 @@ Browse by Topic
 
        <!-- Sponsor carusel section-->                 
        <div class="sponsors-wrap">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 sponsor-carousel-holder">
 						<div class="head-box">
@@ -179,7 +179,7 @@ Browse by Topic
         
         <!-- The last section --> 
         <div class="follow-wrap">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-4">
 						<div class="social-holder timer-box">

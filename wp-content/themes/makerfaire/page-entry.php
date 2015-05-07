@@ -36,7 +36,7 @@
 
   <div class="row">
 
-    <div class="content span8">
+    <div class="content col-md-8">
 
       <a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
 
@@ -91,14 +91,15 @@
       ?>
       <br />
 -->
-      
+      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix">&nbsp;</div>
       <h2>Makers/Group</h2>
       <hr />
       <?php
       if (!empty($groupbio)) {
         echo '<div class="row padbottom">
-                ',(!empty($groupphoto) ? '<img class="span3 pull-left" src="' . $groupphoto . '" alt="Group Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
-        echo    '<div class="span5">
+                ',(!empty($groupphoto) ? '<img class="col-md-3 pull-left img-responsive" src="' . $groupphoto . '" alt="Group Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
+        echo    '<div class="col-md-5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
                   <p>' . $groupbio . '</p>
                 </div>
@@ -107,8 +108,8 @@
       else {
     		foreach($makers as $maker) {
       		echo '<div class="row padbottom">
-                  ',(!empty($maker['photo']) ? '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
-          echo    '<div class="span5">
+                  ',(!empty($maker['photo']) ? '<img class="col-md-3 pull-left img-responsive" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
+          echo    '<div class="col-md-5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                     <p>' . $maker['bio'] . '</p>
                   </div>
@@ -117,7 +118,7 @@
       }
       ?>
 
-    </div><!--span8-->
+    </div><!--col-md-8-->
 
     <?php get_sidebar(); ?>
 

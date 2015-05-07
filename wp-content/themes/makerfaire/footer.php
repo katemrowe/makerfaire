@@ -1,10 +1,9 @@
-
 <footer id="footer" class="new-footer">
 	<div class="container">
-		<div class="row-fluid social-foot-desktop">
-			<div class="span3 social-foot-col" >
+		<div class="row social-foot-desktop hidden-xs">
+			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col" >
 				<a href="/"><img class="footer_logo" src="//cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" alt="Maker Faire Logo"></a>
-				<ul class="unstyled">
+				<ul class="list-unstyled">
 					<li><a href="/makerfairehistory">About Maker Faire</a></li>
 					<li><a href="/map">Find a Faire Near You</a></li>
 					<li><a href="/maker-movement">Maker Movement</a></li>
@@ -13,9 +12,9 @@
 				</ul>
 			</div>
 
-			<div class="span3 social-foot-col" >
+			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col" >
 				<h4>Explore Making</h4>
-				<ul class="unstyled">
+				<ul class="list-unstyled">
 					<li><a href="//makezine.com/blog" target="_blank">Make: News</a></li>
 					<li><a href="/">Maker Faire</a></li>
 					<li><a href="//www.makershed.com" target="_blank">Maker Shed</a></li>
@@ -23,10 +22,9 @@
 					<li><a href="//makercamp.com" target="_blank">Maker Camp</a></li>
 				</ul>
 			</div>
-			<!-- div class="clearfix visible-phone"></div --><!-- Add this back in when site is responsive -->
-			<div class="span3 social-foot-col">
+			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col">
 				<h4>Our Company</h4>
-				<ul class="unstyled">
+				<ul class="list-unstyled">
 					<li><a href="//makermedia.com" target="_blank">About Us</a></li>
 					<li><a href="//makermedia.com/work-with-us/advertising" target="_blank">Advertise with Us</a></li>
 					<li><a href="//makermedia.com/work-with-us/job-openings" target="_blank">Careers</a></li>
@@ -35,7 +33,7 @@
 				</ul>
 			</div>
 
-			<div class="span3 social-foot-col">
+			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col">
 				<h4 class="stay-connected">Stay Connected</h4>
 				<div class="social-profile-icons">
 					<a class="sprite-facebook-32" href="//www.facebook.com/makerfaire" title="Facebook" target="_blank">
@@ -83,8 +81,8 @@
 			</div>
 		</div><!-- END desktop row -->
 		<!-- Add back in when the site is responsive -->
-<!-- 		<div class="row social-foot-mobile">
-			<div class="span12 social-foot-col">
+ 		<div class="row social-foot-mobile visible-xs-block">
+			<div class="col-xs-12 social-foot-col">
 				<h4 class="stay-connected">Stay Connected</h4>
 				<div class="social-profile-icons">
 					<a class="sprite-facebook-32" href="http://facebook.com/makemagazine" title="Facebook" target="_blank">
@@ -130,52 +128,52 @@
 					</div>
 			    </form>
 			</div>
-			<div class="span12 accordion" id="accordionF">
-			  <div class="accordion-group">
-			    <div class="accordion-heading">
-			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseOneF">
-			        <h3>Make:</h3>
-			      </a>
-			    </div>
-			    <div id="collapseOneF" class="accordion-body collapse">
-			      <div class="accordion-inner">
-			        <ul class="nav nav-pills nav-stacked">
+			<div class="col-xs-12 panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default">
+				  <div class="panel-heading" role="tab" id="heading1">
+				    <h4 class="panel-title">
+				      <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="false" aria-controls="collapse1">Make:</a>
+				    </h4>
+				  </div>
+				  <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+				    <div class="panel-body">
+				      <ul class="nav nav-pills nav-stacked">
 						<li><a href="//www.pubservice.com/MK/subscribe.aspx?PC=MK&PK=M3AMZB" target="_blank">Subscribe to Make:</a></li>
 						<li><a href="/projects">Make: Projects</a></li>
 						<li><a href="/weekendprojects">Weekedn Projects</a></li>
 						<li><a href="/video">Make: Videos</a></li>
 						<li><a href="/category/maker-pro">Maker Pro News</a></li>
-					</ul>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="accordion-group">
-			    <div class="accordion-heading">
-			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseTwoF">
-			        <h3>Explore Making</h3>
-			      </a>
-			    </div>
-			    <div id="collapseTwoF" class="accordion-body collapse">
-			      <div class="accordion-inner">
-			        <ul class="nav nav-pills nav-stacked">
+		             </ul>
+		            </div>
+		          </div>
+		        </div>
+		        <div class="panel panel-default">
+		          <div class="panel-heading" role="tab" id="heading2">
+		            <h4 class="panel-title">
+		              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">Explore Making</a>
+		            </h4>
+		          </div>
+		          <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+		            <div class="panel-body">
+		              <ul class="nav nav-pills nav-stacked">
 						<li><a href="/blog">Make: News</a></li>
 						<li><a href="//makerfaire.com" target="_blank">Maker Faire</a></li>
 						<li><a href="//www.makershed.com" target="_blank">Maker Shed</a></li>
 						<li><a href="//makercon.com" target="_blank">MakerCon</a></li>
 						<li><a href="//makercamp.com" target="_blank">Maker Camp</a></li>
-					</ul>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="accordion-group">
-			    <div class="accordion-heading">
-			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionF" href="#collapseThreeF">
-			        <h3>Our Company</h3>
-			      </a>
-			    </div>
-			    <div id="collapseThreeF" class="accordion-body collapse">
-			      <div class="accordion-inner">
-			        <ul class="nav nav-pills nav-stacked">
+		              </ul>
+		            </div>
+		          </div>
+		        </div>
+		        <div class="panel panel-default">
+		          <div class="panel-heading" role="tab" id="heading3">
+		            <h4 class="panel-title">
+		              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">Our Company</a>
+		            </h4>
+		          </div>
+		          <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+		            <div class="panel-body">
+		              <ul class="nav nav-pills nav-stacked">
 						<li><a href="//makermedia.com" target="_blank">About Us</a></li>
 						<li><a href="//makermedia.com/work-with-us/advertising" target="_blank">Advertise with Us</a></li>
 						<li><a href="//makermedia.com/work-with-us/job-openings" target="_blank">Careers</a></li>
@@ -197,7 +195,6 @@
 
 		jQuery('.dropdown-toggle').dropdown();
 		jQuery('#north').tab('show');
-		jQuery('#myModal').modal('hide');
 		jQuery('#featuredMakers').carousel({
 			interval: 5000
 		});
@@ -306,6 +303,12 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 </script>
 
 <?php wp_footer(); ?>
+
+<script>
+jQuery(function() {
+	jQuery(".container-fluid").toggleClass("container-fluid container");
+});
+</script>
 
 </body>
 </html>

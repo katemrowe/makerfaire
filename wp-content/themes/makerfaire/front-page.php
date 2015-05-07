@@ -4,7 +4,7 @@
  */
 get_header();
 ?>
-<main id="main" role="main">
+<main id="main" class="quora" role="main">
 	<!-- Homepage carousel-->	
     <div class="carousel-holder">
         <div class="social-popup popup-active">
@@ -29,7 +29,7 @@ get_header();
                             <a href="<?php echo $entry['4'] ?>"><img src="<?php echo legacy_get_resized_remote_image_url($entry['1'],1274,370); ?>" height="370" width="1274" alt=""></a>
                         </div>
                         <div class="text-box">
-                            <div class="container-fluid">
+                            <div class="container">
                                 <div class="row">
                                     <div class="col-xs-12">
                                     <a href="<?php echo $entry['4'] ?>" style="color:#FFF;">
@@ -45,7 +45,7 @@ get_header();
                 </div>
             </div>
             <div class="btn-box">
-                <div class="container-fluid">
+                <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
                             <a class="btn-prev" href="#"><span class="icon-arrow-left"></span></a>

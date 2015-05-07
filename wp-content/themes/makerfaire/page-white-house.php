@@ -50,7 +50,7 @@ nav.wh ul li:last-of-type {
 			</ul>
 		</nav>
 		<div class="row">
-			<div class="span12">
+			<div class="col-md-12">
 
 			</div>
 		</div>
@@ -61,7 +61,7 @@ nav.wh ul li:last-of-type {
 
 	<div class="row">
 
-		<div class="content span12">
+		<div class="content col-md-12">
 
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 

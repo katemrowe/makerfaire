@@ -9,7 +9,7 @@
 <div id="wrapper">
 	<header id="header">
 			<nav class="navbar">
-				<div class="container-fluid">
+				<div class="container">
 					<div class="navbar-header">
 						<a class="navbar-brand" href="#"><img src="images/logo.png" height="43" width="183" alt="maker faire"></a>
 					</div>
@@ -19,7 +19,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
 								<div class="drop-holder">
 									<div class="drop">
-										<div class="container-fluid">
+										<div class="container">
 											<div class="row">
 												<div class="col-xs-12">
 													<div class="drop-logo about"><img src="images/about-logo.png" height="154" width="113" alt=""></div>
@@ -50,7 +50,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bay Area<span class="caret"></span></a>
 								<div class="drop-holder area">
 									<div class="drop">
-										<div class="container-fluid">
+										<div class="container">
 											<div class="row">
 												<div class="col-xs-12">
 													<div class="drop-logo">
@@ -136,7 +136,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">New York <span class="caret"></span></a>
 								<div class="drop-holder new-york">
 									<div class="drop">
-										<div class="container-fluid">
+										<div class="container">
 											<div class="row">
 												<div class="col-xs-12">
 													<div class="drop-logo"><img src="images/newyork-logo.png" height="157" width="157" alt=""></div>
@@ -168,7 +168,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Around the World<span class="caret"></span></a>
 								<div class="drop-holder">
 									<div class="drop">
-										<div class="container-fluid">
+										<div class="container">
 											<div class="row">
 												<div class="col-xs-12">
 													<div class="drop-logo"><img src="images/world-logo.png" height="130" width="130" alt=""></div>
@@ -206,11 +206,11 @@
 		</header>
 	<main id="main" role="main">
 		<div class="banner">
-			<div class="container-fluid">
+			<div class="container">
 				<img class="visual" src="images/img9.jpg" height="369" width="940" alt="">
 			</div>
 			<div class="text-holder">
-				<div class="container-fluid">
+				<div class="container">
 					<div class="row">
 						<div class="col-xs-12">
 							<h1>Bay Area <br/>Maker Faire</h1>
@@ -231,12 +231,12 @@
 					</ul>
 				</div>
 			</div>
-			<div class="container-fluid">
+			<div class="container">
 				<strong><a href="#" class="intel-logo"><img src="images/intel-logo2.png" height="47" width="72" alt=""></a>Bay Area Makers Faire is brought to you by Intel.</strong>
 			</div>
 		</div>
 		<div class="featured-holder">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<h1>Featured 2015 Bay Area Makers: </h1>
@@ -393,7 +393,7 @@
 			</div>
 		</div>
 		<div class="search-box">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<strong>Looking for a specifc Maker? Search by Keyword:</strong>
@@ -406,7 +406,7 @@
 			</div>
 		</div>
 		<div class="browse-box">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="title">
@@ -485,7 +485,7 @@
 			</div>
 		</div>
 		<div class="sponsors-wrap">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 sponsor-carousel-holder">
 						<div class="head-box">
@@ -544,7 +544,7 @@
 			</div>
 		</div>
 		<div class="follow-wrap">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-4">
 						<div class="social-holder timer-box">
@@ -598,7 +598,7 @@
 		</div>
 	</main>
 	<footer id="footer">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="logo"><a href="#"><img src="images/logo.png" height="43" width="183" alt=""></a></div>

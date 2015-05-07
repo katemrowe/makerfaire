@@ -10,7 +10,7 @@ get_header(); ?>
 
 	<div class="row">
 
-		<div class="content span12">
+		<div class="content col-md-12">
 
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 

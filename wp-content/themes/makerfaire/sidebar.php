@@ -1,5 +1,5 @@
 
-<div class="span4">
+<div class="col-md-4">
 
 	<div class="sidebar-bordered">
 
@@ -76,7 +76,7 @@
         </div>
 
 	<!-- Beginning Sync AdSlot 2 for Ad unit header ### size: [[300,250]]  -->
-	<div id='div-gpt-ad-664089004995786621-2' class="adblock">
+	<div id='div-gpt-ad-664089004995786621-2' class="adblock pull-left">
 		<script type='text/javascript'>
 			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-2')});
 		</script>
@@ -84,7 +84,7 @@
 	<!-- End AdSlot 2 -->
 
 	<!-- Beginning Sync AdSlot 3 for Ad unit header ### size: [[300,250]]  -->
-	<div id='div-gpt-ad-664089004995786621-3' class="adblock">
+	<div id='div-gpt-ad-664089004995786621-3' class="adblock pull-left">
 		<script type='text/javascript'>
 			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-3')});
 		</script>

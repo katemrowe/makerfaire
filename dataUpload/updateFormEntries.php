@@ -139,8 +139,8 @@ if ( isset($_POST["submit"]) ) {
     foreach($tableData as $key=>$value){
         $tableData[$key]['childID'] = $childID[$key];
     }
-    print_r($tableData);
-    die('stop');
+    //print_r($tableData);
+    //die('stop');
        
     //now we need to update the database
     //find the end of the $tableData

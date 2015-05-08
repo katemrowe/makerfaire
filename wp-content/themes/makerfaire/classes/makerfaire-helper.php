@@ -74,23 +74,23 @@ function mf_display_schedule_by_area( $atts ) {
 	//$sunday_schedule = get_mf_schedule_by_faire($faire, 'Sunday', $area);
 	
 	// Get Friday events by location
-	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea, 'area' );
+	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name, 'area' );
 	if ( $friday === false ) {
 		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
-		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea , $friday, 'area', 300 );
+		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name , $friday, 'area', 300 );
 	}
 
 	// Get Saturday events by location
-	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea , 'area' );
+	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
 	if ( $saturday === false  ) {
 		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
-		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea , $saturday, 'area', 300 );
+		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , $saturday, 'area', 300 );
 	}
 	// Get Saturday events by location
-	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea , 'area' );
+	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
 	if ( $sunday === false  ) {
 		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
-		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea , $sunday, 'area', 300 );
+		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , $sunday, 'area', 300 );
 	}
 
 	

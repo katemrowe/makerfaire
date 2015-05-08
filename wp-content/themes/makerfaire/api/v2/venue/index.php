@@ -96,7 +96,6 @@ if ( $type == 'venue' ) {
 		// Let's add the venue categories
 		$venue['category_id_refs'] = explode(',',$row[7]);
 
-
 		// Put the maker into our list of makers
 		array_push( $venues, $venue );
 	}

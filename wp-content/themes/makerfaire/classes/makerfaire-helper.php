@@ -249,8 +249,7 @@ while ( $row = $result->fetch_row () ) {
 	$schedule['id'] = $entry_id;
 	$schedule_name = isset ( $row[10] ) ? $row[10] : '';
 	$project_photo =  isset ( $row[7] ) ? $row[7] : '';
-	$maker_photo =  isset ( $row[27] ) ? $row[27] : '';
-	
+	$maker_photo =  isset ( $row[21] ) ? $row[21] : '';
 	// REQUIED: Application title paired to scheduled item
 	$schedule['name'] = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 	$schedule['time_start'] = date( DATE_ATOM, strtotime( '0 hour',  $start ) );
@@ -263,14 +262,15 @@ while ( $row = $result->fetch_row () ) {
 	//$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $stop . $dates['time_zone'] ) ) );
 	// Rename the field, keeping 'time_end' to ensure this works.
 	$schedule['time_stop'] = date( DATE_ATOM, strtotime( '0 hour', $stop ) );
-    $schedule['first_name'] = $row[28];
-    $schedule['last_name'] = $row[29];
+    $schedule['first_name'] = $row[22];
+    $schedule['last_name'] = $row[23];
 	// REQUIRED: Venue ID reference
-	$schedule['venue_id_ref'] = $row[11];
+	//$schedule['venue_id_ref'] = $row[11];
 
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
 	//$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
 	$app_image = (isset($maker_photo)) ? $maker_photo : $project_photo;
+	
 	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 
@@ -280,8 +280,8 @@ while ( $row = $result->fetch_row () ) {
 
 	// Application Makers
 
-	$schedule['maker_id_refs'] = ( ! empty( $row[25] ) ) ? $row[25] : null;
-	$schedule['maker_list'] = ( ! empty( $row[26] ) ) ? $row[26] : null;
+	//$schedule['maker_id_refs'] = ( ! empty( $row[25] ) ) ? $row[25] : null;
+	$schedule['maker_list'] = ( ! empty( $row[20] ) ) ? $row[20] : null;
 	
 	$maker_ids = array();
 

@@ -74,23 +74,23 @@ function mf_display_schedule_by_area( $atts ) {
 	//$sunday_schedule = get_mf_schedule_by_faire($faire, 'Sunday', $area);
 	
 	// Get Friday events by location
-	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea, 'area' );
+	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name, 'area' );
 	if ( $friday === false ) {
 		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
-		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea , $friday, 'area', 300 );
+		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name , $friday, 'area', 300 );
 	}
 
 	// Get Saturday events by location
-	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea , 'area' );
+	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
 	if ( $saturday === false  ) {
 		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
-		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea , $saturday, 'area', 300 );
+		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , $saturday, 'area', 300 );
 	}
 	// Get Saturday events by location
-	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea , 'area' );
+	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
 	if ( $sunday === false  ) {
 		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
-		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea , $sunday, 'area', 300 );
+		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , $sunday, 'area', 300 );
 	}
 
 	
@@ -179,53 +179,57 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	}
 	
 	
-	$select_query = sprintf("SELECT DISTINCT `wp_mf_schedule`.`ID`,
-		`wp_mf_schedule`.`entry_id`,
-		`wp_mf_schedule`.`location_id`,
-		`wp_mf_schedule`.`faire`,
-		`wp_mf_schedule`.`start_dt`,
-		`wp_mf_schedule`.`end_dt`,
-		DAYNAME(`wp_mf_schedule`.`start_dt`) as `day`,
-		`wp_mf_api_entity`.`large_image_url`,
-		`wp_mf_api_entity`.`thumb_image_url`,
-		`wp_mf_api_entity`.`category_id`,
-		`wp_mf_api_entity`.`project_title`,
-		`wp_mf_api_entity`.`project_description`,
-		`wp_mf_schedule`.`location_id`,
-		`wp_mf_location`.`entry_id`,
-		`wp_mf_location`.`faire`,
-		`wp_mf_location`.`area`,
-		`wp_mf_location`.`subarea`,
-		`wp_mf_location`.`location`,
-		`wp_mf_location`.`latitude`,
-		`wp_mf_location`.`longitude`,
-		`wp_mf_location`.`location_element_id`,
-		`wp_mf_faire_area`.`ID`,
-		`wp_mf_faire_area`.`faire_id`,
-		`wp_mf_faire_area`.`area`,
-			
-	    `wp_mf_api_entity`.`child_id_ref`,
-       `wp_mf_api_entity`.`child_id_ref`,
-        makerlist.Makers,
-		`wp_mf_maker`.photo,
-                `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
-        FROM `wp_mf_schedule`
-		inner join `wp_rg_lead` on `wp_rg_lead`.ID = `wp_mf_schedule`.entry_id and `wp_rg_lead`.status = 'active'
-        inner join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-		inner join `wp_mf_maker` on `wp_mf_schedule`.entry_id=`wp_mf_maker`.lead_id and wp_mf_maker.name = 'Presenter'
-		inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
-		inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-		inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
-		inner join (select  lead_id,group_concat( distinct concat(wp_mf_maker.`FIRST NAME`,' ',wp_mf_maker.`LAST NAME`) separator ', ') as Makers
-		 		from `wp_mf_maker` where Name != 'Contact' group by lead_id) as `makerlist` on `wp_mf_schedule`.entry_id=`makerlist`.lead_id
-		WHERE `wp_mf_schedule`.faire = '%s' 
+		$select_query = sprintf("SELECT DISTINCT
+	    `wp_mf_schedule`.`ID`,
+	    `wp_mf_schedule`.`entry_id`,
+	    `wp_mf_schedule`.`location_id`,
+	    `wp_mf_schedule`.`faire`,
+	    `wp_mf_schedule`.`start_dt`,
+	    `wp_mf_schedule`.`end_dt`,
+	    DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`,
+	    `wp_gravityforms_entity_view`.`Photo`,
+	    `wp_gravityforms_entity_view`.`ThumbPhoto`,
+	    `wp_gravityforms_entity_view`.`Categories`,
+	    `wp_gravityforms_entity_view`.`Title`,
+	    `wp_gravityforms_entity_view`.`Description`,
+	    `wp_mf_location`.`faire`,
+	    `wp_mf_location`.`area`,
+	    `wp_mf_location`.`subarea`,
+	    `wp_mf_location`.`location`,
+	    `wp_mf_location`.`latitude`,
+	    `wp_mf_location`.`longitude`,
+	    `wp_mf_location`.`location_element_id`,
+	    `wp_gravityforms_entity_view`.`entry_status`,
+	    makerlist.Makers,
+	    `wp_mf_maker`.photo,
+	    `wp_mf_maker`.`First Name` AS first_name,
+	    `wp_mf_maker`.`Last Name` AS last_name
+	FROM
+	    `wp_mf_schedule`
+	        INNER JOIN
+	    `wp_gravityforms_entity_view` ON `wp_mf_schedule`.entry_id = `wp_gravityforms_entity_view`.entry_id
+	        AND `wp_gravityforms_entity_view`.`entry_status` = 'active'
+	        INNER JOIN
+	    `wp_mf_maker` ON `wp_mf_schedule`.entry_id = `wp_mf_maker`.lead_id
+	        AND wp_mf_maker.name = 'Presenter'
+	        left outer JOIN
+	    `wp_mf_location` ON `wp_mf_schedule`.entry_id = `wp_mf_location`.entry_id
+	        INNER JOIN
+	    (SELECT 
+	        lead_id,
+	            GROUP_CONCAT(DISTINCT CONCAT(wp_mf_maker.`FIRST NAME`, ' ', wp_mf_maker.`LAST NAME`)
+	                SEPARATOR ', ') AS Makers
+	    FROM
+	        `wp_mf_maker`
+	    WHERE
+	        Name != 'Contact'
+	    GROUP BY lead_id) AS `makerlist` ON `wp_mf_schedule`.entry_id = `makerlist`.lead_id
+WHERE `wp_mf_schedule`.faire = '%s' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
 			and `wp_mf_location`.`area` = '%s'
 			and `wp_mf_location`.`subarea` like '%s'
 		order by `wp_mf_schedule`.`start_dt`
 		",$faire,$day,$area,$subarea);
-
-
 
 $result = $mysqli->query( $select_query );
 // Initalize the schedule container

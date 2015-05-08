@@ -269,7 +269,7 @@ while ( $row = $result->fetch_row () ) {
 
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
 	//$post_content = json_decode( mf_clean_content( get_page( absint( $app_id ) )->post_content ) );
-  
+    if($maker_photo == NULL) $maker_photo ='';	
     $app_image = (isset($maker_photo) && trim($maker_photo)!='' && $maker_photo!= NULL? $maker_photo : $project_photo);
 	
 	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );

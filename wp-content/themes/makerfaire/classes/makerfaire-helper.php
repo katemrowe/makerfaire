@@ -198,8 +198,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 		`wp_mf_location`.`latitude`,
 		`wp_mf_location`.`longitude`,
 		`wp_mf_location`.`location_element_id`,
-		`wp_gravityforms_entity_view`.`maker_ids`,
-       `wp_gravityforms_entity_view`.`entry_status`,
+		`wp_gravityforms_entity_view`.`entry_status`,
         makerlist.Makers,
 		`wp_mf_maker`.photo,
                 `wp_mf_maker`.`First Name` as first_name,`wp_mf_maker`.`Last Name` as last_name
@@ -215,8 +214,6 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 			and `wp_mf_location`.`subarea` like '%s'
 		order by `wp_mf_schedule`.`start_dt`
 		",$faire,$day,$area,$subarea);
-
-
 
 $result = $mysqli->query( $select_query );
 // Initalize the schedule container

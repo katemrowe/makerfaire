@@ -53,17 +53,22 @@ SELECT `wp_gravityforms_entity_view`.`entry_id`,
      maker.`exhibit_makers`,
     `wp_gravityforms_entity_view`.`THUMBPHOTO`,
     `wp_gravityforms_entity_view`.`PHOTO`
-FROM `wp_gravityforms_entity_view`
-inner join (SELECT 
-    GROUP_CONCAT( distinct (`maker_id`)
-        SEPARATOR ',') AS `exhibit_makers`, lead_id 
-        FROM wp_mf_maker
-        WHERE `First Name` is not null
-        GROUP BY lead_id) maker on `wp_gravityforms_entity_view`.`entry_ID` = maker.lead_id
-WHERE wp_gravityforms_entity_view.form_id in (SELECT 
-    `wp_mf_faire`.`form_ids` 
-    FROM `wp_mf_faire`
-    WHERE `wp_mf_faire`.`faire` = '$faire')");
+FROM
+    `wp_gravityforms_entity_view`
+        INNER JOIN
+    (SELECT 
+        GROUP_CONCAT(DISTINCT (`maker_id`)
+                SEPARATOR ',') AS `exhibit_makers`,
+            lead_id
+    FROM
+        wp_mf_maker
+    WHERE
+        `First Name` IS NOT NULL
+    GROUP BY lead_id) maker ON `wp_gravityforms_entity_view`.`entry_ID` = maker.lead_id
+        INNER JOIN
+    `wp_mf_faire` ON FIND_IN_SET(wp_gravityforms_entity_view.form_id,
+            `wp_mf_faire`.`form_ids`) > 0
+        AND `wp_mf_faire`.`faire` = '$faire')");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
 	

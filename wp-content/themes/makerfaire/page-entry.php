@@ -58,7 +58,7 @@
       <?php if (!empty($project_video)) {
           echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
-      <br />
+      <div class="clearfix">&nbsp;</div>
 
       <!-- Video Modal -->
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -79,9 +79,8 @@
             <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
+      <div class="clearfix">&nbsp;</div>
 
-
-<!-- Commenting out for now via Clair
       <h2>Schedule</h2>
       <hr />
       <?php
@@ -89,8 +88,7 @@
           display_entry_schedule($entryId);
         }
       ?>
-      <br />
--->
+      <div class="clearfix">&nbsp;</div>
       
       <h2>Makers/Group</h2>
       <hr />
@@ -105,15 +103,15 @@
               </div>';
       } 
       else {
-    		foreach($makers as $maker) {
-      		echo '<div class="row padbottom">
+        foreach($makers as $maker) {
+          echo '<div class="row padbottom">
                   ',(!empty($maker['photo']) ? '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
           echo    '<div class="span5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                     <p>' . $maker['bio'] . '</p>
                   </div>
                 </div>';
-    		}
+        }
       }
       ?>
 
@@ -140,8 +138,7 @@ Duplicate to $entry['151']
  <?php get_footer();
  
 function display_entry_schedule($entry_id) {
-  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
-      <h4><label class="detail-label">Schedule:</label></h4>');
+  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>');
   $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
   if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
@@ -160,13 +157,13 @@ function display_entry_schedule($entry_id) {
     if ($result->num_rows === 0) echo 'No schedule found';
     else 
     {
-    echo '<ul>';
+    echo '<ul class="unstyled">';
     while($row = $result->fetch_row())
     {
       $start_dt = strtotime( $row[4]);
       $end_dt = strtotime($row[5]);
       $schedule_entry_id = $row[0];
-      echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
+      echo ('<li>'.date("l",$start_dt).': '. date("g A",$start_dt).' to '.date("g A",$end_dt).'</li>');
     }
     echo '</ul>';
     }

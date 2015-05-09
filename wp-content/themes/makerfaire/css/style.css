@@ -54,6 +54,15 @@ a:focus {
   color: #00bef3;
   text-decoration: none;
 }
+hr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+ul.unstyled,
+ol.unstyled {
+  margin-left: 0;
+  list-style: none;
+}
 .no-js .mf-form div.step,
 .no-js .mf-breadcrumbs,
 .js .hide-if-js,

@@ -149,7 +149,8 @@ function display_entry_schedule($entry_id) {
     `wp_mf_schedule`.`faire`,
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
-    `wp_mf_schedule`.`day`
+   DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`
+	    
   FROM `wp_mf_schedule` where entry_id=$entry_id");
 
   if ($result)
@@ -162,8 +163,13 @@ function display_entry_schedule($entry_id) {
     {
       $start_dt = strtotime( $row[4]);
       $end_dt = strtotime($row[5]);
+      
+      $schedule_time_start = date('h:i A', strtotime( '0 hour',  $start_dt ) );
+      $schedule_time_end = date('h:i A', strtotime( '0 hour', $end_dt ) );
+      $schedule_day = $row[6];
+      
       $schedule_entry_id = $row[0];
-      echo ('<li>'.date("l",$start_dt).': '. date("g A",$start_dt).' to '.date("g A",$end_dt).'</li>');
+      echo ('<li>'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
     }
     echo '</ul>';
     }

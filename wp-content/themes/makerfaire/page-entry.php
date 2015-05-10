@@ -147,9 +147,11 @@ function display_entry_schedule($entry_id) {
     `wp_mf_schedule`.`faire`,
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
-   DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`
-	    
-  FROM `wp_mf_schedule` where entry_id=$entry_id");
+   DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`,
+	    `wp_mf_location`.`area`,`wp_mf_location`.`subarea`
+  FROM `wp_mf_schedule`
+  left outer join `wp_mf_location` on `wp_mf_schedule`.`entry_id`= `wp_mf_location`.`entry_id`
+	where entry_id=$entry_id");
 
   if ($result)
   {
@@ -157,9 +159,11 @@ function display_entry_schedule($entry_id) {
     else 
     {
     	echo ' <h2>Schedule</h2>  <hr />';
-    echo '<ul class="unstyled">';
     while($row = $result->fetch_row())
     {
+      //NOTE: This will need to be changed for future logic when more than one area and subarea could be assigned.
+      $schedule_area = $row[7];
+      $schedule_subarea=$row[8];
       $start_dt = strtotime( $row[4]);
       $end_dt = strtotime($row[5]);
       
@@ -168,9 +172,10 @@ function display_entry_schedule($entry_id) {
       $schedule_day = $row[6];
       
       $schedule_entry_id = $row[0];
-      echo ('<li>'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
+      $schedule_list .= ('<li>'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
     }
-    echo '</ul>';
+    echo '<h3>'.$schedule_area.' '.$schedule_subarea.'</h3>';
+    echo '<ul class="unstyled">'.$schedule_list.'</ul>';
     }
   }
 }

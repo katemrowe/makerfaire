@@ -81,8 +81,6 @@
       </div>
       <div class="clearfix">&nbsp;</div>
 
-      <h2>Schedule</h2>
-      <hr />
       <?php
         if (!empty(display_entry_schedule($entryId))) {
           display_entry_schedule($entryId);
@@ -155,9 +153,10 @@ function display_entry_schedule($entry_id) {
 
   if ($result)
   {
-    if ($result->num_rows === 0) echo 'No schedule found';
+    if ($result->num_rows === 0) echo '';
     else 
     {
+    	echo ' <h2>Schedule</h2>  <hr />';
     echo '<ul class="unstyled">';
     while($row = $result->fetch_row())
     {

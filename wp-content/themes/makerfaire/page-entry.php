@@ -141,7 +141,7 @@ function display_entry_schedule($entry_id) {
   if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
   }
-  $result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
+  $query_text = sprintf("SELECT `wp_mf_schedule`.`ID`,
     `wp_mf_schedule`.`entry_id`,
     `wp_mf_schedule`.`location_id`,
     `wp_mf_schedule`.`faire`,
@@ -151,14 +151,16 @@ function display_entry_schedule($entry_id) {
 	    `wp_mf_location`.`area`,`wp_mf_location`.`subarea`
   FROM `wp_mf_schedule`
   left outer join `wp_mf_location` on `wp_mf_schedule`.`entry_id`= `wp_mf_location`.`entry_id`
-	where entry_id=$entry_id");
-
+	where `wp_mf_schedule`.`entry_id`=$entry_id");
+  $result = $mysqli->query($query_text);
   if ($result)
   {
     if ($result->num_rows === 0) echo '';
     else 
     {
     	echo ' <h2>Schedule</h2>  <hr />';
+    	$schedule_area = '';
+    	$schedule_subarea = '';
     while($row = $result->fetch_row())
     {
       //NOTE: This will need to be changed for future logic when more than one area and subarea could be assigned.
@@ -174,8 +176,8 @@ function display_entry_schedule($entry_id) {
       $schedule_entry_id = $row[0];
       $schedule_list .= ('<li>'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
     }
-    echo '<h3>'.$schedule_area.' '.$schedule_subarea.'</h3>';
-    echo '<ul class="unstyled">'.$schedule_list.'</ul>';
+    echo '<h4>'.$schedule_area.' '.$schedule_subarea.'';
+    echo '<ul class="unstyled">'.$schedule_list.'</ul></h4>';
     }
   }
 }

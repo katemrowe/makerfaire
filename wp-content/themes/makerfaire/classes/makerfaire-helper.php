@@ -230,6 +230,7 @@ WHERE `wp_mf_schedule`.faire = '%s'
 			and `wp_mf_location`.`subarea` = '%s'
 		order by `wp_mf_schedule`.`start_dt`
 		",$faire,$day,$area,$subarea);
+		$mysqli->set_charset("utf8");
 $result = $mysqli->query( $select_query );
 // Initalize the schedule container
 $schedules = array();

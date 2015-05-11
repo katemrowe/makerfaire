@@ -145,7 +145,7 @@ function make_enqueue_jquery() {
 	wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'bootgrid',  get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'thickbox',null, array( 'jquery' ), null );
-
+         wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
 
     $translation_array = array('templateUrl' => get_stylesheet_directory_uri());
     wp_localize_script('jquery-main', 'object_name', $translation_array);

@@ -209,7 +209,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	        INNER JOIN
 	    `wp_gravityforms_entity_view` ON `wp_mf_schedule`.entry_id = `wp_gravityforms_entity_view`.entry_id
 	        AND `wp_gravityforms_entity_view`.`entry_status` = 'active'
-	        INNER JOIN
+	        left outer JOIN
 	    `wp_mf_maker` ON `wp_mf_schedule`.entry_id = `wp_mf_maker`.lead_id
 	        AND wp_mf_maker.name = 'Presenter'
 	        left outer JOIN
@@ -227,10 +227,9 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 WHERE `wp_mf_schedule`.faire = '%s' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
 			and `wp_mf_location`.`area` = '%s'
-			and `wp_mf_location`.`subarea` like '%s'
+			and `wp_mf_location`.`subarea` = '%s'
 		order by `wp_mf_schedule`.`start_dt`
 		",$faire,$day,$area,$subarea);
-
 $result = $mysqli->query( $select_query );
 // Initalize the schedule container
 $schedules = array();

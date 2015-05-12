@@ -174,10 +174,10 @@ function display_entry_schedule($entry_id) {
       $schedule_day = $row[6];
       
       $schedule_entry_id = $row[0];
-      $schedule_list .= ('<li>'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
+      $schedule_list .= ('<li style="margin: 0; padding: 0;">'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
     }
     echo '<h4>'.$schedule_area.' '.$schedule_subarea.'';
-    echo '<ul class="unstyled">'.$schedule_list.'</ul></h4>';
+    echo '<ul class="unstyled" style="margin: 0; padding: 0;">'.$schedule_list.'</ul></h4>';
     }
   }
 }

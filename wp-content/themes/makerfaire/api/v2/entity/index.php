@@ -52,16 +52,14 @@ SELECT `wp_gravityforms_entity_view`.`entry_id`,
     `wp_gravityforms_entity_view`.`Categories`,
      maker.`exhibit_makers`,
     `wp_gravityforms_entity_view`.`THUMBPHOTO`,
-    `wp_gravityforms_entity_view`.`PHOTO`
-  	`wp_mf_api_venue`.ID
+    `wp_gravityforms_entity_view`.`PHOTO`,
+  	 `wp_mf_api_venue`.ID
 FROM
     `wp_gravityforms_entity_view`
 	left outer join `wp_mf_location` on wp_gravityforms_entity_view.entry_id = wp_mf_location.entry_id
 	left outer join `wp_mf_faire_subarea` on wp_mf_location.subarea = wp_mf_faire_subarea.subarea
 	left outer join `wp_mf_api_venue` on `wp_mf_api_venue`.`subarea_id` = `wp_mf_faire_subarea`.ID 
-    join `wp_mf_location` on wp_gravityforms_entity_view.entry_id = wp_mf_location.entry_id
-    join `wp_mf_api_venue` on `wp_mf_location`.`subarea` = `wp_mf_api_venue`.description 
-        INNER JOIN
+     INNER JOIN
     (SELECT 
         GROUP_CONCAT(DISTINCT (`maker_id`)
                 SEPARATOR ',') AS `exhibit_makers`,

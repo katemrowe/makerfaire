@@ -108,12 +108,12 @@ if ( $type == 'schedule' ) {
 		$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 
-
+		$maker_ids = explode(',',$row[23]);
+		
 		// A list of applications assigned to this event (should only be one really...)
-		$schedule['entity_id_refs'] =absint( $entry_id);
+		$schedule['entity_id_refs'] = $maker_ids = array_merge(array( $entry_id),$maker_ids);
 
 		// Application Makers
-		$maker_ids = explode(',',$row[23]);
 		$schedule['maker_id_refs'] = $maker_ids;
 
 		

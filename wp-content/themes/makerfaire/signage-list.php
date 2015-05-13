@@ -22,131 +22,53 @@ if ( ! empty( $location ) )
  * @return [type]           [description]
  */
 function get_schedule_list( $location, $short_description = false, $day_set = '' ) {
-	$output = '';
 
-	if ( empty( $day_set ) || $day_set == 'saturday' ) {
+    global $wpdb;
+        $output = '';
+        //retrieve Data
+        $sql = "select location.subarea,
+		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
+		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
+		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
+		maker_view.PresentationTitle as 'Exhibit'	
+                
+                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location
 
-		$args = array(
-			'post_type'			=> 'event-items',
-			'orderby'			=> 'meta_value',
-			'meta_key'			=> 'mfei_start',
-			'faire'				=> MF_CURRENT_FAIRE,
-			'order'				=> 'asc',
-			'posts_per_page'	=> '30',
-			'meta_query' 		=> array(
-					array(
-						'key'		=> 'mfei_day',
-						'value'		=> 'Saturday'
-					),
-					array(
-						'key'		=> 'faire_location',
-						'value'		=> intval( $location ),
-						'compare'	=> 'LIKE',
-					)
-				)
-			);
-		$saturday = new WP_Query( $args );
+                where   schedule.faire = 'BA15' AND
+                        maker_view.lead_id   = schedule.entry_id AND
+                        maker_view.Status    = 'Accepted' AND
+                        maker_view.lead_id   = location.entry_id AND "
+                .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
+                "       maker_view.Name = 'Contact'
 
-		$output .= '<h2>Saturday</h1>';
-		$output .= '<table style="width:100%;">';
-		while ( $saturday->have_posts() ) : $saturday->the_post();
-			$meta = get_post_meta( get_the_ID());
-			$sched_post = get_post( $meta['mfei_record'][0] );
-			$json = json_decode( mf_convert_newlines( mf_character_fixer( $sched_post->post_content ) ) );
-			$day = ($meta['mfei_day'][0]) ? $meta['mfei_day'][0] : '' ;
-			$start = ($meta['mfei_start'][0]) ? $meta['mfei_start'][0] : '';
-			$stop = ($meta['mfei_stop'][0]) ? $meta['mfei_stop'][0] : '';
+                order by Day ASC, subarea ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC
 
-			$output .= '<tr>';
-			$output .= '<td width="160" style="max-width:160px; padding:15px 0;" valign="top">';
-			if ( ! isset ( $location ) ) {
-				$output .= '<h4 style="margin-top:0;">' . get_the_title( $location ) . '</h4>';
-			}
-			$output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . esc_html( $start ) . ' &mdash; ' . esc_html( $stop ) . '</h2>';
-			$output .= '</td>';
-			$output .= '<td>';
-			$output .= '<h3 style="margin-top:0;">' . esc_html( get_the_title( $sched_post->ID ) ) . '</h3>';
-			if ( ! empty( $json->presenter_name ) ) {
-				$names = $json->presenter_name;
-				$names_output = '';
-				foreach ( $names as $name ) {
-					$names_output .= ', ' . esc_html( $name );
-				}
-				$output .= '<h4 style="margin:5px 0 0; color:#666;">' . substr($names_output, 2) . '</h4>';
-			}
-			if ( $short_description == true && ! empty( $json->short_description) ) {
-				$output .= Markdown ( mf_character_fixer( stripslashes( wp_filter_post_kses( mf_convert_newlines( esc_html( $json->short_description ), "\n" ) ) ) ) );
-			}
-			$output .= '<tr><td colspan="2"><div style="border-bottom:2px solid #ccc;"></div></td></tr>';
-			$output .= '</td>';
-			$output .= '</tr>';
-		endwhile;
-		$output .= '</table>';
-		wp_reset_postdata();
+";
+        //echo $sql;
+        $day = '';
+        foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {
+            if($day!=$row['Day']){
+               $day=$row['Day']; 
+               $output .= '<h2>'.$day.'</h2>';
+            }
+            
+            $output .= '<table style="width:100%;">';
 
-	}
-
-	// Roll the schedule for Sunday.
-	if ( empty( $day_set ) || $day_set == 'sunday' ) {
-		$args = array(
-			'post_type'			=> 'event-items',
-			'orderby'			=> 'meta_value',
-			'meta_key'			=> 'mfei_start',
-			'faire'				=> MF_CURRENT_FAIRE,
-			'order'				=> 'asc',
-			'posts_per_page'	=> '30',
-			'meta_query' 		=> array(
-					array(
-						'key'		=> 'mfei_day',
-						'value'		=> 'Sunday'
-					),
-					array(
-						'key'		=> 'faire_location',
-						'value'		=> intval( $location ),
-						'compare'	=> 'LIKE',
-					)
-				)
-			);
-		$sunday = new WP_Query( $args );
-
-		$output .= '<h2 style="margin-top:30px;">Sunday</h1>';
-		$output .= '<table style="width:100%;">';
-		while ( $sunday->have_posts() ) : $sunday->the_post();
-			$meta = get_post_meta( get_the_ID());
-			$sched_post = get_post( $meta['mfei_record'][0] );
-			$json = json_decode( mf_convert_newlines( mf_character_fixer( $sched_post->post_content ) ) );
-			$day = ($meta['mfei_day'][0]) ? $meta['mfei_day'][0] : '' ;
-			$start = ($meta['mfei_start'][0]) ? $meta['mfei_start'][0] : '';
-			$stop = ($meta['mfei_stop'][0]) ? $meta['mfei_stop'][0] : '';
-
-			$output .= '<tr>';
-			$output .= '<td width="160" style="max-width:160px; padding:15px 0;" valign="top">';
-			if ( ! isset ( $location ) ) {
-				$output .= '<h4 style="margin-top:0;">' . get_the_title( $location ) . '</h4>';
-			}
-			$output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . esc_html( $start ) . ' &mdash; ' . esc_html( $stop ) . '</h2>';
-			$output .= '</td>';
-			$output .= '<td>';
-			$output .= '<h3 style="margin-top:0;">' . esc_html( get_the_title( $sched_post->ID ) ) . '</h3>';
-			if ( ! empty( $json->presenter_name ) ) {
-				$names = $json->presenter_name;
-				$names_output = '';
-				foreach ( $names as $name ) {
-					$names_output .= ', ' . esc_html( $name );
-				}
-				$output .= '<h4 style="margin:5px 0 0; color:#666;">' . substr($names_output, 2) . '</h4>';
-			}
-			if ( $short_description == true && ! empty( $json->short_description) ) {
-				$output .= Markdown ( mf_character_fixer( stripslashes( wp_filter_post_kses( mf_convert_newlines( esc_html( $json->short_description ), "\n" ) ) ) ) );
-			}
-			$output .= '<tr><td colspan="2"><div style="border-bottom:2px solid #ccc;"></div></td></tr>';
-			$output .= '</td>';
-			$output .= '</tr>';
-		endwhile;
-		$output .= '</table>';
-		wp_reset_postdata();
-
-	}
+            $output .= '<tr>';
+            $output .= '<td width="25%" style="padding:15px 0;" valign="top">';
+            $output .= '<h4 style="margin-top:0;">' . $row['subarea'] . '</h4>';
+            $output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . $row['Start Time']  . ' &mdash; ' . $row['End Time']  . '</h2>';
+            $output .= '</td>';
+            $output .= '<td>';
+            $output .= '<h3 style="margin-top:0;">' . $row['Exhibit']  . '</h3>';
+	
+            $output .= '<tr><td colspan="2"><div style="border-bottom:2px solid #ccc;"></div></td></tr>';
+            $output .= '</td>';
+            $output .= '</tr>';
+		
+            $output .= '</table>';   
+        }
+            
 
 	return $output;
 }

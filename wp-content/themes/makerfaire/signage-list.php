@@ -75,6 +75,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                 
             <?php
             if($stage!=$row['subarea'] || $dayOfWeek!=$row['Day']){
+                if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
                 $stage = $row['subarea'];
                 $dayOfWeek=$row['Day']; 
                 $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stageArray[$stage].'</h1>

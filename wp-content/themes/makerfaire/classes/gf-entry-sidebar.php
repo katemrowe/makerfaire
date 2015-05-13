@@ -1,5 +1,70 @@
 <?php
 
+
+function mf_sidebar_entry_locations($form_id, $lead) {
+	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+			<h4><label class="detail-label">Faire Locations:</label></h4>');
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$entry_id=$lead['id'];
+	$result = $mysqli->query("SELECT `wp_mf_location`.`ID`,
+    `wp_mf_location`.`entry_id`,
+    `wp_mf_location`.`faire`,
+    `wp_mf_location`.`area`,
+    `wp_mf_location`.`subarea`,
+    `wp_mf_location`.`location`,
+    `wp_mf_location`.`latitude`,
+    `wp_mf_location`.`longitude`,
+    `wp_mf_location`.`location_element_id`
+	FROM `wp_mf_location`
+			 where entry_id=$entry_id");
+	
+	if ($result)
+	{
+		while($row = $result->fetch_row())
+		{
+			$area = (strlen($row[3]) > 0) ? ' ('.$row[3].')' : '' ;
+			$subarea = $row[4];
+			$location_code = $row[5];
+			$location_entry_id = $row[0];
+			echo ('<input type="checkbox" value="'.$location_entry_id.'" style="margin: 3px;" name="delete_location_id[]"></input>'.$subarea.$area.' '.$location_code.' <br />');
+
+		}
+		$entry_delete_button = '<input type="submit" name="delete_entry_locations[]" value="Delete Selected" class="button"
+			 style="width:auto;padding-bottom:2px;"
+			onclick="jQuery(\'#action\').val(\'delete_entry_location\');"/><br />';
+		echo $entry_delete_button;
+	}
+	$result_subareas = $mysqli->query("select area ,subarea from wp_mf_faire_subarea 
+								join wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_subarea.faire_id=wp_mf_faire.ID
+							order by subarea,area");
+	if (isset($result_subareas))
+	{
+	echo ('<h5>Add Location:</h5>');
+	echo ('Subarea <select style="width:250px" name="entry_location_subarea_change">
+			');
+	while($row = $result_subareas->fetch_row())
+	{
+		$area_option = (strlen($row[0]) > 0) ? ' ('.$row[0].')' : '' ;
+		$subarea_option = $row[1];
+		echo '<option value="'.$subarea_option.'">'.$subarea_option.$area_option.'</option>';
+	}
+		echo("		</select><br />");
+	
+	// Create Update button for sidebar entry management
+	$entry_sidebar_button = '
+			Location Code: (optional) <input type="text" name="update_entry_location_code" id="update_entry_location_code" />
+			<input type="submit" name="update_entry_location" value="Update Location" class="button"
+			 style="width:auto;padding-bottom:2px;"
+			onclick="jQuery(\'#action\').val(\'update_entry_location\');"/><br />';
+	echo $entry_sidebar_button;
+	}
+
+
+}
+
 function mf_sidebar_entry_schedule($form_id, $lead) {
 	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Schedule:</label></h4>');
@@ -283,7 +348,17 @@ if ($mode == 'view') {
 		mf_sidebar_entry_schedule( $form['id'], $lead );
 		?>
 			</div>
+			
 		<div class='postbox' style="float:none;padding: 10px;">
+		<?php
+		// Load Entry Sidebar details
+		mf_sidebar_entry_locations( $form['id'], $lead );
+		?>
+			</div>
+			
+		<div class='postbox' style="float:none;padding: 10px;">
+		
+		
 	<?php
 	mf_sidebar_forms($form['id'], $lead );
 	?>
@@ -378,6 +453,12 @@ if (!empty($mfAction))
 			break;
 		case 'delete_entry_schedule' :
 			delete_entry_schedule($lead,$form);
+			break;
+		case 'update_entry_location' :
+			set_entry_location($lead,$form);
+			break;
+		case 'delete_entry_location' :
+			delete_entry_location($lead,$form);
 			break;
 		case 'change_form_id' :
 			set_form_id($lead,$form);
@@ -555,7 +636,7 @@ function set_entry_schedule($lead,$form){
 	$entry_schedule_start=($_POST['datetimepickerstart']);
 	$entry_schedule_end=($_POST['datetimepickerend']);
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
-	
+	$form_id=$lead['form_id'];
 	
 	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
 	if ($mysqli->connect_errno) {
@@ -566,8 +647,9 @@ function set_entry_schedule($lead,$form){
 		`faire`,
 		`start_dt`,
 		`end_dt`)
-	VALUES
-		($entry_info_entry_id,'BA15','$entry_schedule_start', '$entry_schedule_end')");
+	SELECT $entry_info_entry_id,wp_mf_faire.faire,'$entry_schedule_start', '$entry_schedule_end'
+		from wp_mf_faire where find_in_set($form_id,form_ids) > 0
+		");
 	//MySqli Insert Query
 	$insert_row = $mysqli->query($insert_query);
 	if($insert_row){
@@ -600,6 +682,77 @@ function delete_entry_schedule($lead,$form){
 	};}
 	
  
+}
+
+/* Modify Set Entry Status */
+function set_entry_location($lead,$form){
+	$entry_schedule_change=$_POST['entry_location_subarea_change'];
+	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	$update_entry_location_code=$_POST['update_entry_location_code'];
+	
+	$form_id=$lead['form_id'];
+	
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$delete_query = sprintf("
+			DELETE FROM wp_mf_location where `entry_id` = $entry_info_entry_id");
+	//MySqli Insert Query
+	$delete_row = $mysqli->query($delete_query);
+	if(!$delete_row){
+		echo ('Error :'.$delete_query.':('. $mysqli->errno .') '. $mysqli->error);
+	};
+	
+	$insert_query = sprintf("
+				INSERT INTO `wp_mf_location`
+				(`entry_id`,
+				`faire`,
+				`area`,
+				`subarea`,
+				`location`,
+				`location_element_id`)
+				Select $entry_info_entry_id
+				,wp_mf_faire.faire
+				,area
+				,subarea 
+				,'$update_entry_location_code'
+				,3
+				from wp_mf_faire_subarea 
+				join wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_subarea.faire_id=wp_mf_faire.ID
+				where subarea='$entry_schedule_change';");
+	//MySqli Insert Query
+	$insert_row = $mysqli->query($insert_query);
+	if($insert_row){
+		echo 'Success! <br />';
+	}else{
+		echo ('Error :'.$insert_query.':('. $mysqli->errno .') '. $mysqli->error);
+	};
+
+}
+
+/* Modify Set Entry Status */
+function delete_entry_location($lead,$form){
+	$entry_schedule_change=$_POST['entry_location_change'];
+	$delete_entry_schedule=implode(',',($_POST['delete_location_id']));
+
+	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	if (isset($delete_entry_schedule))
+	{
+		$delete_query = sprintf("DELETE FROM `wp_mf_location`
+				WHERE ID IN ($delete_entry_schedule)");
+		//MySqli Insert Query
+		$mysqlresults = $mysqli->query($delete_query);
+		if($mysqlresults){
+			echo 'Success! <br />';
+		}else{
+			echo ('Error :'.$delete_query.':('. $mysqli->errno .') '. $mysqli->error);
+		};}
+
+
 }
 
 

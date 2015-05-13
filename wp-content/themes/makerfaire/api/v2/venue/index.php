@@ -57,7 +57,7 @@ if ( $type == 'venue' ) {
     `wp_mf_api_venue`.`child_id_refs`,
     `wp_mf_api_venue`.`location_category_id`
 	FROM `wp_mf_api_venue`
-			WHERE `wp_mf_api_venue`.faire = '$faire' ");
+	WHERE `wp_mf_api_venue`.faire = '$faire' ");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
  	// Loop through the posts

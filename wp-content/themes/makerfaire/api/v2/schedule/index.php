@@ -110,13 +110,13 @@ if ( $type == 'schedule' ) {
 
 
 		// A list of applications assigned to this event (should only be one really...)
-		$schedule['entity_id_refs'] = array( absint( $entry_id) );
+		$schedule['entity_id_refs'] =absint( $entry_id);
 
 		// Application Makers
+		$maker_ids = explode(',',$row[23]);
+		$schedule['maker_id_refs'] = $maker_ids;
 
-		$schedule['maker_id_refs'] = ( ! empty( $row[25] ) ) ? $row[25] : null;
-
-		$maker_ids = array();
+		
 		
 		// Put the application into our list of schedules
 		array_push( $schedules, $schedule );

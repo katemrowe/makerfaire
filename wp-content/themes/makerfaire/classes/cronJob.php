@@ -124,7 +124,7 @@ function build_wp_mf_maker(){
                     group_concat(if((format(`wp_rg_lead_detail`.`field_number`,2) between 301.9999 and 302.9999),`wp_rg_lead_detail`.`value`,NULL) separator ',') AS `Location`,
                     max(if((`wp_rg_lead_detail`.`field_number` = 303),`wp_rg_lead_detail`.`value`,NULL)) AS `Status`,
                     `b`.`form_id` AS `form_id`,
-                    concat(`wp_makerfaire`.`wp_rg_lead_detail`.`lead_id`,'-".$nameID."') AS `maker_id`, ";
+                    concat(`wp_rg_lead_detail`.`lead_id`,'-".$nameID."') AS `maker_id`, ";
         $nameID++;            
         foreach($lead_detail as $field_value=>$field_number){
             

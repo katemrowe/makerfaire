@@ -222,7 +222,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	    FROM
 	        `wp_mf_maker`
 	    WHERE
-	        Name != 'Contact'
+	        Name != 'Contact' and length(`FIRST NAME`) > 0 and length(`LAST NAME`) > 0
 	    GROUP BY lead_id) AS `makerlist` ON `wp_mf_schedule`.entry_id = `makerlist`.lead_id
 WHERE `wp_mf_schedule`.faire = '%s' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
@@ -293,4 +293,116 @@ while ( $row = $result->fetch_row () ) {
 return $schedules;
 }
 
+add_shortcode('mf_schedule_by_faire', 'mf_display_schedule_by_faire');
+
+
+	function mf_display_schedule_by_faire( $atts ) {
+		global $mfform;
+	
+		/*$data = shortcode_atts( array(
+		 'area' 	=> '',
+				'subarea' 	=> '',
+				'faire'			=> '',
+		), $atts );
+		*/
+		// Get the faire date array. If the
+		$faire = $atts['faire'];
+
+		
+		// Get Friday events by location
+		$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name, 'area' );
+		if ( $friday === false ) {
+			$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
+			wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name , $friday, 'area', 3000 );
+		}
+	
+		// Get Saturday events by location
+		$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
+		if ( $saturday === false  ) {
+			$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
+			wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , $saturday, 'area', 3000 );
+		}
+		// Get Saturday events by location
+		$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
+		if ( $sunday === false  ) {
+			$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
+			wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , $sunday, 'area', 3000 );
+		}
+	
+	
+		//$output = '<div class="row"><div class="span4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
+		$output = '<div class="row">'
+				. '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
+						. '<div class="span1 pull-right" style="position:relative; top:25px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
+	
+		// Let's loop through each day and spit out a schedule?
+		$days = array( 'saturday', 'sunday' );
+	
+		$output .= ' <div class="tab-content">';
+		//$first sets the first day to active
+		//at the end of the first day loop we set $first to blank
+		$first = 'active';
+		foreach ( $days as 	 $day ) {
+			if ( count(${ $day }) > 0 ) {
+				$navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';
+	
+	
+				// Start the schedule
+				$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
+				$output .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';
+				//$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
+				//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
+	
+				// Loop through the events and get the applications
+				//while ( ${ $day }->have_posts() ) : ${ $day }->the_post();
+				foreach( ${ $day } as $scheduleditem ) :
+					
+				$event_id = $scheduleditem['id'];
+				//$meta = get_post_meta( absint( get_the_ID() ) );
+				//$app_obj = get_post( absint( $meta['mfei_record'][0] ) );
+				//$app = json_decode( mf_convert_newlines( str_replace( "\'", "'", $app_obj->post_content ) ) );
+	
+				$output .= '<tr>';
+				$output .= '<td width="200" style="max-width:200px;" class="dateTime">';
+				$output .= '<h4 style="font-weight:bold">' . esc_html($scheduleditem['day'] ) . '</h4>';
+				$output .= '<p>' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; ' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
+				if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
+					$output .= '<div class="pull-left thumbnail">';
+					// We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
+					if (  $scheduleditem['thumb_img_url'] ) {
+						$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['thumb_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+							
+					}
+					else {
+	
+						$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+					}
+					$output .= '</div>';
+				}
+				$output .= '</td><td>';
+				$output .= '<h4><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h4>';
+	
+				// Presenter Name(s)
+				$output .= '<h4 class="maker-name">' . $scheduleditem['maker_list'] . '</h4>';
+				// Application Descriptions
+				$description =  $scheduleditem['project_description'];
+				if ( ! empty( $description ) )
+					$output .=   $description ;
+	
+				// Add our video link for video coverage
+				/*if ( ! empty( $meta['mfei_coverage'][0] ) )
+					$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-mini btn-primary">Watch Video</a></p>';
+				*/
+				$output .= '</td>';
+				$output .= '</tr>';
+				endforeach;
+	
+				$output .= '</table></div>';
+				$first = '';
+			}
+		}
+		$output .='</div>';
+		$output = str_replace('||navtabs||', $navTabs, $output);
+		return $output;
+	}
 

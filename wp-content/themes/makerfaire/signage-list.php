@@ -30,8 +30,14 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
 		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
 		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
 		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
-		maker_view.PresentationTitle as 'Exhibit'	
-                
+		maker_view.PresentationTitle as 'Exhibit',	
+                (SELECT GROUP_CONCAT(DISTINCT concat(maker_view2.`First Name`, ' ', maker_view2.`Last Name`)  
+                            ORDER BY maker_view2.Name SEPARATOR ', ') AS presenters
+                        FROM wp_mf_maker maker_view2
+                            where 	maker_view2.lead_id = maker_view.lead_id AND
+                                            maker_view2.`First Name` is NOT NULL
+                           ORDER BY maker_view2.Name
+                            ) as 'Presenters'
                 from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location
 
                 where   schedule.faire = 'BA15' AND
@@ -41,27 +47,54 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
                 "       maker_view.Name = 'Contact'
 
-                order by Day ASC, subarea ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC
+                order by subarea ASC, Day ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC
 
 ";
-        //echo $sql;
-        $day = '';
+     
+        //group by stage and date
+        $dayOfWeek = '';
+        $stage     = '';
+        $stageArray = array('Midway: Meeting Pavilion: Center Stage'        =>'Center Stage',
+                            'Expo: Center: Make: Live Stage'                =>'Make: Live',
+                            'Expo: Center: Make: Electronics Stage'         =>'Make: Electronics',
+                            'North Courtyard: Make: Science Stage'          =>'Make: Science',
+                            'Midway: Grass M: Make: Education Stage'        =>'Make: Education',
+                            'West Green: Grass K: Make: DIY Stage'          =>'Make: DIY',
+                            'Show Barn: Homegrown Village: Maker Square Stage'          =>'Maker Square',
+                            'Show Barn: Homegrown Village: Hands-On Homegrown Workshop' =>'Hands-On HomeGrown Village',
+                            'South Lot: Center: Swap-O-Rama-Rama: Textile Talk Lounge'  =>'Textile Talk Lounge',
+                            'Fiesta: Main Room: Tesla Stage'                =>'Tesla Stage',
+                            'West Lot: Traveling Spectacular Stage'         =>'The Traveling Spectacular',
+                            'West Lot: North: Coke Zero & Mentos Stage'     =>'Coke Zero & Mentos',
+                            'Midway: Center: Pedal Powered Stage'           =>'Pedal Powered Stage',
+                            'North Courtyard: Battle Pond"'                 =>'Battle Pond',
+                            'South Lot: South: Race Track'                  =>'Race Track',
+                            'Expo: South Center: Game of Drones'            =>'Game of Drones',);
         foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {
-            if($day!=$row['Day']){
-               $day=$row['Day']; 
-               $output .= '<h2>'.$day.'</h2>';
-            }
+            ?>
+                
+            <?php
+            if($stage!=$row['subarea'] || $dayOfWeek!=$row['Day']){
+                $stage = $row['subarea'];
+                $dayOfWeek=$row['Day']; 
+                $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stageArray[$stage].'</h1>
+                            <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
+                            <p></p>
+                            <p></p>
+                            <p></p>';
+                $output .= '<div style="clear:both"><h2>'.$dayOfWeek.'</h2></div>';
+            }                                      
             
             $output .= '<table style="width:100%;">';
 
             $output .= '<tr>';
             $output .= '<td width="25%" style="padding:15px 0;" valign="top">';
-            $output .= '<h4 style="margin-top:0;">' . $row['subarea'] . '</h4>';
+           
             $output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . $row['Start Time']  . ' &mdash; ' . $row['End Time']  . '</h2>';
             $output .= '</td>';
             $output .= '<td>';
             $output .= '<h3 style="margin-top:0;">' . $row['Exhibit']  . '</h3>';
-	
+	    $output .= $row['Presenters'];
             $output .= '<tr><td colspan="2"><div style="border-bottom:2px solid #ccc;"></div></td></tr>';
             $output .= '</td>';
             $output .= '</tr>';
@@ -91,14 +124,6 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
 		</style>
 	</head>
 	<body>
-		<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;"><?php echo get_the_title( $location ); ?></h1>
-		<?php if ( ! empty( $term->description ) ) {
-			echo '<div style="font-weight:normal; margin-top:-15px; margin-left:5px; text-decoration:italic;">' . Markdown( esc_html( $term->description ) ) . '</div>';
-		} ?>
-		<h2 style="position:absolute; top:16px; right:30px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
-		<p></p>
-		<p></p>
-		<p></p>
 		<?php echo get_schedule_list( $location, $short_description, $day ); ?>
 	</body>
 </html>

@@ -56,6 +56,8 @@ include_once TEMPLATEPATH. '/classes/gf-jdb-helper.php';
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';
 
+//cron job
+include_once TEMPLATEPATH. '/classes/cronJob.php';
 
 require_once( 'taxonomies/type.php' );
 require_once( 'taxonomies/sponsor-category.php' );

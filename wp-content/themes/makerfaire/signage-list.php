@@ -34,8 +34,8 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                 (SELECT GROUP_CONCAT(DISTINCT concat(maker_view2.`First Name`, ' ', maker_view2.`Last Name`)  
                             ORDER BY maker_view2.Name SEPARATOR ', ') AS presenters
                         FROM wp_mf_maker maker_view2
-                            where 	maker_view2.lead_id = maker_view.lead_id AND
-                                            maker_view2.`First Name` is NOT NULL
+                            where 	maker_view2.lead_id = maker_view.lead_id
+        		and length(maker_view2.`First Name`) > 0
                            ORDER BY maker_view2.Name
                             ) as 'Presenters'
                 from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location

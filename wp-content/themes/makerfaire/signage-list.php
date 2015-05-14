@@ -39,19 +39,23 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         		and length(maker_view2.`First Name`) > 0
                            ORDER BY maker_view2.Name
                             ) as 'Presenters'
-                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location
+                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location, `wp_rg_lead` lead
 
                 where   schedule.faire = 'BA15' AND
                         maker_view.lead_id   = schedule.entry_id AND
                         maker_view.Status    = 'Accepted' AND
-                        maker_view.lead_id   = location.entry_id AND "
+                        maker_view.lead_id   = location.entry_id AND 
+        				 maker_view.lead_id  = lead.ID AND
+					    lead.Status = 'active' AND
+                    "
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
                 "       maker_view.Name = 'Contact'";
         if($orderBy=='time'){
-            $sql .= " order by Day ASC, schedule.start_dt ASC, schedule.end_dt ASC, niceName ASC, 'Exhibit' ASC";            
+            $sql .= "  schedule.start_dt ASC, schedule.end_dt ASC, niceName ASC, 'Exhibit' ASC";            
         }else{
-            $sql .= " order by niceName ASC, Day ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
+            $sql .= " order by niceName ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
+        echo $sql;
      
         //group by stage and date
         $dayOfWeek = '';
@@ -93,7 +97,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                     $stage = $row['niceName'];
                     $dayOfWeek=$row['Day']; 
                     
-                    $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stage.' ('.$row['area'].') </h1>
+                    $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stage.' <small>('.$row['area'].')</small> </h1>
                                 <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
                                 <p></p>
                                 <p></p>

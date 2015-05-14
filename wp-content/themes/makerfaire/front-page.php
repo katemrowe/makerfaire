@@ -26,15 +26,15 @@ get_header();
                     <?php foreach ($entries as $entry): ?>
                     <div class="slide" data-url="<?php echo $entry['4'] ?>">
                         <div class="bg-stretch">
-                            <a href="<?php echo $entry['4'] ?>"><img src="<?php echo legacy_get_resized_remote_image_url($entry['1'],1274,370); ?>" height="370" width="1274" alt=""></a>
+                            <a href="<?php echo $entry['4'] ?>"><img src="<?php echo legacy_get_resized_remote_image_url($entry['1'],1274,370); ?>" alt="Maker Faire slide show image"></a>
                         </div>
                         <div class="text-box">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-xs-12">
                                     <a href="<?php echo $entry['4'] ?>" style="color:#FFF;">
-                                            <h1><?php echo $entry['2'] ?></h1>
-                                            <p><?php echo $entry['3'] ?></p> 
+                                        <h1><?php echo $entry['2'] ?></h1>
+                                        <p><?php echo $entry['3'] ?></p> 
                                     </a>         
                                     </div>
                                 </div>
@@ -59,13 +59,10 @@ get_header();
         </div>
     </div>
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-    
     <?php the_content(); ?>
     <!-- The last holder-->
-	<?php endwhile; ?>
-    
-			<?php endif; ?>
-    
+	<?php endwhile; ?>    
+<?php endif; ?> 
 
 </main>
 <?php get_footer(); ?>

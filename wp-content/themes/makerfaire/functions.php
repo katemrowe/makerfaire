@@ -124,7 +124,6 @@ function make_enqueue_jquery() {
 	// Styles
 	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );
 	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.min.css' );
-	//wp_enqueue_style( 'make-bootstrap-responisve', get_stylesheet_directory_uri() . '/css/bootstrap-responsive.css' );
 	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
 	wp_enqueue_style( 'ytv', get_stylesheet_directory_uri() . '/css/ytv.css' );
@@ -380,21 +379,18 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
       $values[2] = $entries = GFAPI::get_entry(esc_attr($entry3_id)); 
        $entry3_description = isset($entry3_description) ? $entry3_description : $values[2]['151'];
    }
-    
-    
-  
 
-$output = '<div class="filter-container">' 
-          . ' <div class="col"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
-          . '   <img src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" height="402" width="622" alt="image description">'
+$output = '<div class="row filter-container">' 
+          . ' <div class="col-xs-12 col-sm-8"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
+          . '   <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" alt="Featured Maker 1">'
           . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
-          . ' </div><div class="small col">'
-          . '   <a href="/maker/entry/' . $values[1]['id'] . '" class="post">'
-          . '     <img src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" height="402" width="622" alt="image description">'
+          . ' </div><div class="col-xs-12 col-sm-4">'
+          . '   <a style="margin-bottom: 20px;" href="/maker/entry/' . $values[1]['id'] . '" class="post">'
+          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" alt="Featured Maker 2">'
           . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
           . '   </a>'
           . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
-          . '     <img src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" height="402" width="622" alt="image description">'
+          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" alt="Featured Maker 3">'
           . '     <div class="text-box"><span class="section">' . $entry3_description . '</span></div>'
           . '   </a>'
           . '</div></div>';
@@ -403,6 +399,60 @@ $output = '<div class="filter-container">'
 }
 
 add_shortcode( 'mmakers', 'makerfaire_meet_the_makers_shortcode' );
+
+/**
+ * 3 Maker Faire tagged posts from Makezine - for homepage
+ */
+function makerfaire_makezine_rss_news() {
+
+	$rss = fetch_feed('http://makezine.com/tag/maker-faire/feed/');
+	if (!is_wp_error($rss)) :
+		$maxitems = $rss -> get_item_quantity(3); //gets latest 3 items This can be changed to suit your requirements
+		$rss_items = $rss -> get_items(0, $maxitems);
+	endif;
+	//grabs our post thumbnail image
+	function get_first_image_url($html) {
+		if (preg_match('/<img.+?src="(.+?)"/', $html, $matches)) {
+			return $matches[1];
+		}
+	}
+
+	if ($maxitems == 0) 
+		echo '<li>No items.</li>';
+	else foreach ( $rss_items as $item ) :
+	?>
+		<div style="display:none;">
+			<a class="" href="<?php echo esc_url($item -> get_permalink()); ?>" target="_blank">
+				<?php echo '<img class="" src="' . get_first_image_url($item -> get_content()) . '" alt="Maker Faire post featured image" />'; ?>
+			</a>
+			<a href='<?php echo esc_url($item -> get_permalink()); ?>' title='<?php echo esc_html($item -> get_title()); ?>' target="_blank">
+				<?php echo esc_html($item -> get_title()); ?>
+			</a>
+		</div>
+	<?php endforeach;
+
+	$output = '<div class="row filter-container">'
+	          . '<div class="col-xs-12 col-sm-4">'
+	          . '   <a style="margin-bottom: 20px;" href="/maker/entry/' . $values[1]['id'] . '" class="post">'
+	          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" alt="Featured Maker Faire post 1">'
+	          . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
+	          . '   </a>'
+	          . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
+	          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" alt="Featured Maker Faire post 2">'
+	          . '     <div class="text-box"><span class="section">' . $entry3_description . '</span></div>'
+	          . '   </a>'
+	          . '</div>'
+	          . ' <div class="col-xs-12 col-sm-8"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
+	          . '   <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" alt="Featured Maker Faire post 3">'
+	          . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
+	          . '</div>'
+	          . '</div>';
+	  
+	return $output;
+}
+
+add_shortcode( 'mf-news', 'makerfaire_makezine_rss_news' );
+
 
 
 function makerfaire_featured_makers_shortcode($atts, $content = null) {
@@ -466,7 +516,9 @@ add_shortcode( 'modal', 'make_modal_builder' );
 function makerfaire_news_rss() { ?>
 	<div class="newsies">
 		<div class="news post">
-			<h3 style="color: #fc040c;"><a href="http://makezine.com/tag/maker-faire/">Latest Maker Faire News</a></h3>
+			<h3 style="color: #fc040c;">
+				<a href="http://makezine.com/tag/maker-faire/">Latest Maker Faire News</a>
+			</h3>
 			<?php
 			$fs = makerfaire_index_feed();
 

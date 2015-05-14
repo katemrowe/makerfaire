@@ -110,7 +110,7 @@
 Topbar
 ======
 -->
-<header id="header" class="quora" style="height:auto !important;">
+<header id="header" class="quora">
 
 <?php
   $menu_name = 'Main Navigation Version 2';
@@ -118,12 +118,78 @@ Topbar
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
 
 ?>
-	<nav class="navbar">
+	<nav class="navbar navbar-default navbar-fixed-top visible-xs-block">
+		<div class="container">
+		    <div class="navbar-header">
+		    	<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+				<button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+		    </div>
+
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="#">Action</a></li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li><a href="#">Separated link</a></li>
+		            <li><a href="#">One more separated link</a></li>
+		          </ul>
+		      	</li>
+		      	<li class="divider"></li>
+		      	<li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bay Area <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="#">Action</a></li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li><a href="#">Separated link</a></li>
+		            <li><a href="#">One more separated link</a></li>
+		          </ul>
+		      	</li>
+		      	<li class="divider"></li>
+		      	<li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">New York <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="#">Action</a></li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li><a href="#">Separated link</a></li>
+		            <li><a href="#">One more separated link</a></li>
+		          </ul>
+		      	</li>
+		      	<li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Around the World <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="#">Action</a></li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li><a href="#">Separated link</a></li>
+		            <li><a href="#">One more separated link</a></li>
+		          </ul>
+		        </li>
+		        <li><a href="#">Shop</a></li>
+		      </ul>
+		    </div>
+
+
+		</div>
+	</nav>
+
+	<nav class="navbar hidden-xs">
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
 			</div>
-	        <div class="collapse navbar-collapse hidden-xs">
+
+	        <div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 				    <?php
 				    $count = 0;
@@ -157,29 +223,27 @@ Topbar
 				            <div class="drop-holder">
 				                <div class="drop">
 				                    <div class="container">
-				                        <div class="row">
-				                            <div class="col-xs-12">
-				                                <div class="drop-logo about">
-				                                	
-				                                </div>
-				                                <div class="column">
-				                                	<div class="top-holder">
-				                                    </div>
-				                                	<div class="col no-border">
-				                                        <ul class="sub-menu">
-				            <?php endif; ?>
-				                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
-				                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
-				                                                <div class="description"><?php echo $description; ?></div>
-				                                            </li>
-				            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
-				                                        </ul>
-				                                    </div>
-				                                    <div class="col dinamic-content">
-				                                    	
-				                                    </div>
-				                                </div>
-				                        	</div>      
+				                        <div class="row padtop padbottom">
+			                                <div class="col-sm-3 drop-logo about text-center padtop">
+			                                	
+			                                </div>
+			                                <div class="col-sm-9 column padtop">
+			                                	<div class="top-holder">
+			                                    </div>
+			                                	<div class="col-sm-9 col no-border">
+			                                        <ul class="sub-menu">
+			            <?php endif; ?>
+			                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
+			                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
+			                                                <div class="description"><?php echo $description; ?></div>
+			                                            </li>
+			            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
+			                                        </ul>
+			                                    </div>
+			                                    <div class="col-sm-3 col dinamic-content">
+			                                    	
+			                                    </div>
+			                                </div>    
 				            			</div>
 				            		</div>
 				            	</div>

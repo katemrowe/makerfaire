@@ -55,8 +55,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         }else{
             $sql .= " order by niceName ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
-        echo $sql;
-     
+       
         //group by stage and date
         $dayOfWeek = '';
         $stage     = '';

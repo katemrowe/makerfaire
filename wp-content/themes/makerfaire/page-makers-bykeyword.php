@@ -45,6 +45,12 @@ get_header(); ?>
 					<h3 class="nomargins">Search: "<?php echo  $search_term; ?>", <span class="text-muted"><?php echo $total_count; echo ($total_count == 1) ? ' result' : ' results'; ?></span></h3>
 				</div>
 			</div>
+                        <div class="clear"></div>
+                      
+                        <form role="search" method="get" class="form-search" id="searchform" action="<?php echo $_SERVER['REDIRECT_URL'];?>">
+                                <input type="text"  name="s_term" id="s_term" class="form-control re-search fleft" />
+                                <input type="submit" id="searchsubmit" class="btn btn-primary fleft" value="Search Again">
+                        </form>
 			<div class="clear"></div>
 			<div class="clear"></div>
 			

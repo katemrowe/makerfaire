@@ -109,7 +109,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
            
             $output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . $row['Start Time']  . ' &mdash; ' . $row['End Time']  . '</h2>';
             if($orderBy=='time')    {
-                $output .= $stage;
+                $output .= $stage.' ('.$row['area'].')' ;
             }
             $output .= '</td>';
             $output .= '<td>';

@@ -9,6 +9,7 @@ if ( ! isset( $_GET['description'] ) ) {
 	$short_description = false;
 }
 
+$orderBy = (isset( $_GET['orderBy'])?$_GET['orderBy']:'' );
 
 if ( isset( $_GET['day'] ) )
 	$day = sanitize_title_for_query( $_GET['day'] );
@@ -22,11 +23,11 @@ if ( ! empty( $location ) )
  * @return [type]           [description]
  */
 function get_schedule_list( $location, $short_description = false, $day_set = '' ) {
-
+    global $orderBy;
     global $wpdb;
         $output = '';
         //retrieve Data
-        $sql = "select location.subarea,
+        $sql = "select location.niceName,
 		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
 		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
 		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
@@ -45,11 +46,12 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                         maker_view.Status    = 'Accepted' AND
                         maker_view.lead_id   = location.entry_id AND "
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
-                "       maker_view.Name = 'Contact'
-
-                order by subarea ASC, Day ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC
-
-";
+                "       maker_view.Name = 'Contact'";
+        if($orderBy=='time'){
+            $sql .= " order by Day ASC, schedule.start_dt ASC, schedule.end_dt ASC, niceName ASC, 'Exhibit' ASC";            
+        }else{
+            $sql .= " order by niceName ASC, Day ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
+        }
      
         //group by stage and date
         $dayOfWeek = '';
@@ -71,20 +73,35 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                             'South Lot: South: Race Track'                  =>'Race Track',
                             'Expo: South Center: Game of Drones'            =>'Game of Drones',);
         foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {
-            ?>
-                
-            <?php
-            if($stage!=$row['subarea'] || $dayOfWeek!=$row['Day']){
-                if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
-                $stage = $row['subarea'];
-                $dayOfWeek=$row['Day']; 
-                $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stageArray[$stage].'</h1>
-                            <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
-                            <p></p>
-                            <p></p>
-                            <p></p>';
-                $output .= '<div style="clear:both"><h2>'.$dayOfWeek.'</h2></div>';
-            }                                      
+            
+            if($orderBy=='time'){ //break by stage. day goes in h1
+                $stage = $row['niceName'];
+                if( $dayOfWeek!=$row['Day']){
+                    //skip the page break after if this is the first time
+                    if($dayOfWeek != '')    $output.= '<div style="page-break-after: always;"></div>';
+                    $dayOfWeek=$row['Day']; 
+                    
+                    $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$dayOfWeek.'</h1>
+                                <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
+                                <p></p>
+                                <p></p>
+                                <p></p>';                    
+               } 
+            }else{
+               if($stage!=$row['niceName']){                    
+                   //skip the page break after if this is the first time 
+                   if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
+                    $stage = $row['niceName'];
+                    $dayOfWeek=$row['Day']; 
+                    
+                    $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stage.'</h1>
+                                <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
+                                <p></p>
+                                <p></p>
+                                <p></p>';
+                    $output .= '<div style="clear:both"><h2>'.$dayOfWeek.'</h2></div>';
+               } 
+            }            
             
             $output .= '<table style="width:100%;">';
 
@@ -92,6 +109,9 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
             $output .= '<td width="25%" style="padding:15px 0;" valign="top">';
            
             $output .= '<h2 style="font-size:.9em; color:#333; margin-top:3px;">' . $row['Start Time']  . ' &mdash; ' . $row['End Time']  . '</h2>';
+            if($orderBy=='time')    {
+                $output .= $stage;
+            }
             $output .= '</td>';
             $output .= '<td>';
             $output .= '<h3 style="margin-top:0;">' . $row['Exhibit']  . '</h3>';

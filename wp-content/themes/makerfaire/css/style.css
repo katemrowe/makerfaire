@@ -2912,6 +2912,12 @@ li:nth-child(1) .drop-holder .column .col {
 .search-box .form-group button:hover {
   background: #bacad0;
 }
+.form-search input.re-search {
+  width: 75%;
+}
+.form-search .fleft {
+  float: left;
+}
 .browse-box {
   background: url(../images/bg-border.png) repeat-x 0 100%;
   padding: 30px 0;

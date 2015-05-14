@@ -36,7 +36,8 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                             ORDER BY maker_view2.Name SEPARATOR ', ') AS presenters
                         FROM wp_mf_maker maker_view2
                             where 	maker_view2.lead_id = maker_view.lead_id
-        		and length(maker_view2.`First Name`) > 0
+                                    and length(maker_view2.`First Name`) > 0 and length(maker_view2.`LAST NAME`) > 0
+                                    and  Name != 'Contact'
                            ORDER BY maker_view2.Name
                             ) as 'Presenters'
                 from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location, `wp_rg_lead` lead, `wp_mf_faire_subarea` subarea

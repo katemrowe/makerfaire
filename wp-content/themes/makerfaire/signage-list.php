@@ -27,7 +27,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
     global $wpdb;
         $output = '';
         //retrieve Data
-        $sql = "select location.niceName, location.area,
+        $sql = "select subarea.nicename, location.area,
 		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
 		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
 		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
@@ -39,21 +39,22 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         		and length(maker_view2.`First Name`) > 0
                            ORDER BY maker_view2.Name
                             ) as 'Presenters'
-                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location, `wp_rg_lead` lead
-
+                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location, `wp_rg_lead` lead, `wp_mf_faire_subarea` subarea
+				
                 where   schedule.faire = 'BA15' AND
                         maker_view.lead_id   = schedule.entry_id AND
                         maker_view.Status    = 'Accepted' AND
                         maker_view.lead_id   = location.entry_id AND 
         				 maker_view.lead_id  = lead.ID AND
 					    lead.Status = 'active' AND
+        		subarea.subarea=location.subarea AND
                     "
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
                 "       maker_view.Name = 'Contact'";
         if($orderBy=='time'){
-            $sql .= "  schedule.start_dt ASC, schedule.end_dt ASC, niceName ASC, 'Exhibit' ASC";            
+            $sql .= "  schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
         }else{
-            $sql .= " order by niceName ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
+            $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
        
         //group by stage and date

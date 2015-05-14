@@ -26,7 +26,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
     global $wpdb;
         $output = '';
         //retrieve Data
-        $sql = "select location.subarea,
+        $sql = "select location.area,location.subarea,
 		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
 		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
 		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
@@ -67,7 +67,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                             'West Lot: Traveling Spectacular Stage'         =>'The Traveling Spectacular',
                             'West Lot: North: Coke Zero & Mentos Stage'     =>'Coke Zero & Mentos',
                             'Midway: Center: Pedal Powered Stage'           =>'Pedal Powered Stage',
-                            'North Courtyard: Battle Pond"'                 =>'Battle Pond',
+                            'North Courtyard: Battle Pond'                 =>'Battle Pond',
                             'South Lot: South: Race Track'                  =>'Race Track',
                             'Expo: South Center: Game of Drones'            =>'Game of Drones',);
         foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {
@@ -77,8 +77,9 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
             if($stage!=$row['subarea'] || $dayOfWeek!=$row['Day']){
                 if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
                 $stage = $row['subarea'];
+                $area = $row['area'];
                 $dayOfWeek=$row['Day']; 
-                $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stageArray[$stage].'</h1>
+                $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stageArray[$stage].' ('.$area.') </h1>
                             <h2 style="float:right;margin-top:31px;"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" style="width:200px;" alt="" ></h2>
                             <p></p>
                             <p></p>

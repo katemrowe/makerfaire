@@ -56,7 +56,6 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         }else{
             $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
-       
         //group by stage and date
         $dayOfWeek = '';
         $stage     = '';
@@ -78,7 +77,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                             'Expo: South Center: Game of Drones'            =>'Game of Drones',);
         foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {            
             if($orderBy=='time'){ //break by stage. day goes in h1
-                $stage = $row['niceName'];
+                $stage = $row['nicename'];
                 if( $dayOfWeek!=$row['Day']){
                     //skip the page break after if this is the first time
                     if($dayOfWeek != '')    $output.= '<div style="page-break-after: always;"></div>';
@@ -91,10 +90,10 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                                 <p></p>';                    
                } 
             }else{
-               if($stage!=$row['niceName']){                    
+               if($stage!=$row['nicename']){                    
                    //skip the page break after if this is the first time 
                    if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
-                    $stage = $row['niceName'];
+                    $stage = $row['nicename'];
                     $dayOfWeek=$row['Day']; 
                     
                     $output .='<h1 style="font-size:2.2em; margin:31px 0 0; max-width:75%;float:left">'.$stage.' <small>('.$row['area'].')</small> </h1>

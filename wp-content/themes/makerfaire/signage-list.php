@@ -90,7 +90,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                                 <p></p>';                    
                } 
             }else{
-               if($stage!=$row['nicename']){                    
+               if($stage!=$row['nicename'] || $dayOfWeek!=$row['Day']){                    
                    //skip the page break after if this is the first time 
                    if($stage != '')    $output.= '<div style="page-break-after: always;"></div>';
                     $stage = $row['nicename'];

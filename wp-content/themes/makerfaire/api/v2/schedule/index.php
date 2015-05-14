@@ -55,12 +55,14 @@ if ( $type == 'schedule' ) {
     `wp_mf_faire_area`.`area`,
 	`wp_mf_api_entity`.`child_id_ref`
 	FROM `wp_mf_schedule` 
-    left outer join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
-    left outer join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
-    left outer join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
-	left outer join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
-    left outer join `wp_mf_api_venue` on `wp_mf_faire_area`.ID=`wp_mf_api_venue`.area_id and `wp_mf_faire_subarea`.ID=`wp_mf_api_venue`.subarea_id
-			WHERE `wp_mf_schedule`.faire = '$faire' ");
+    inner  join `wp_mf_api_entity` on `wp_mf_schedule`.entry_id=`wp_mf_api_entity`.ID
+    inner join `wp_mf_location` on `wp_mf_schedule`.entry_id=`wp_mf_location`.entry_id
+    inner join `wp_mf_faire_area` on `wp_mf_faire_area`.area=`wp_mf_location`.area
+	inner join `wp_mf_faire_subarea` on `wp_mf_faire_subarea`.subarea=`wp_mf_location`.subarea
+    inner join `wp_mf_api_venue` on `wp_mf_faire_area`.ID=`wp_mf_api_venue`.area_id and `wp_mf_faire_subarea`.ID=`wp_mf_api_venue`.subarea_id
+	 inner join `wp_gravityforms_entity_view` on `wp_mf_schedule`.entry_id=`wp_gravityforms_entity_view`.entry_id AND  `wp_gravityforms_entity_view`.status = 'Accepted'
+        AND  `wp_gravityforms_entity_view`.entry_status = 'active'
+   		WHERE `wp_mf_schedule`.faire = '$faire' ");
  	$mysqli->query("SET NAMES 'utf8'");
  	
 	$result = $mysqli->query ( $select_query );

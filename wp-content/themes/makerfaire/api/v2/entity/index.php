@@ -72,6 +72,8 @@ FROM
         INNER JOIN
     `wp_mf_faire` ON FIND_IN_SET(wp_gravityforms_entity_view.form_id,
             `wp_mf_faire`.`form_ids`) > 0
+			AND  `wp_gravityforms_entity_view`.status = 'Accepted'
+        AND  `wp_gravityforms_entity_view`.entry_status = 'active'
         AND `wp_mf_faire`.`faire` = '$faire'");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );

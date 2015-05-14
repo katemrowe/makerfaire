@@ -42,8 +42,11 @@ if ( $type == 'maker' ) {
     `wp_mf_faire` ON FIND_IN_SET(wp_mf_maker.form_id,
             `wp_mf_faire`.`form_ids`) > 0
         AND `wp_mf_faire`.`faire` = '$faire'
+	INNER JOIN
+	wp_rg_lead on wp_rg_lead.ID = `wp_mf_maker`.`lead_id` and wp_rg_lead.status = 'active'
 	WHERE name != 'Contact' 
-    and `Status` = 'Accepted'");
+	and length(`FIRST NAME`) > 0 and length(`LAST NAME`) > 0
+    and wp_mf_maker.`Status` = 'Accepted'");
 	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
 	

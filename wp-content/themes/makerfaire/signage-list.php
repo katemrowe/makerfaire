@@ -53,7 +53,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
                 "       maker_view.Name = 'Contact'";
         if($orderBy=='time'){
-            $sql .= "  schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
+            $sql .= "  order by schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
         }else{
             $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }

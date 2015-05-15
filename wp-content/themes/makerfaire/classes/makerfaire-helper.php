@@ -100,15 +100,16 @@ function mf_display_schedule_by_area( $atts ) {
                 . '<div class="span1 pull-right" style="position:relative; top:25px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
-	$days = array( 'saturday', 'sunday' );
+	$days = array( 'friday','saturday', 'sunday' );
         
         $output .= ' <div class="tab-content">';
         //$first sets the first day to active
         //at the end of the first day loop we set $first to blank
         $first = 'active';
-	foreach ( $days as 	 $day ) {
+	foreach ( $days as 	 $day ) {         
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                    
+                       $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
                         
                                 
                         // Start the schedule
@@ -166,6 +167,7 @@ function mf_display_schedule_by_area( $atts ) {
 		} 
 	}
         $output .='</div>';
+        
         $output = str_replace('||navtabs||', $navTabs, $output);
 	return $output;
 }

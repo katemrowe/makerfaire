@@ -36,7 +36,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                             ORDER BY maker_view2.Name SEPARATOR ', ') AS presenters
                         FROM wp_mf_maker maker_view2
                             where 	maker_view2.lead_id = maker_view.lead_id
-                                    and length(maker_view2.`First Name`) > 0 and length(maker_view2.`LAST NAME`) > 0
+                                    and length(maker_view2.`First Name`) > 0 
                                     and  Name != 'Contact'
                            ORDER BY maker_view2.Name
                             ) as 'Presenters'
@@ -46,8 +46,8 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                         maker_view.lead_id   = schedule.entry_id AND
                         maker_view.Status    = 'Accepted' AND
                         maker_view.lead_id   = location.entry_id AND 
-        				 maker_view.lead_id  = lead.ID AND
-					    lead.Status = 'active' AND
+                        maker_view.lead_id  = lead.ID AND
+                        lead.Status = 'active' AND
         		subarea.subarea=location.subarea AND
                     "
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').

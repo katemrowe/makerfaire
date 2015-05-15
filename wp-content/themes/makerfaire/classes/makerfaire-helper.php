@@ -106,6 +106,7 @@ function mf_display_schedule_by_area( $atts ) {
         //$first sets the first day to active
         //at the end of the first day loop we set $first to blank
         $first = 'active';
+        $navTabs = '';
 	foreach ( $days as 	 $day ) {         
 		if ( count(${ $day }) > 0 ) {
                     
@@ -225,7 +226,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	    FROM
 	        `wp_mf_maker`
 	    WHERE
-	        Name != 'Contact' and length(`FIRST NAME`) > 0 and length(`LAST NAME`) > 0
+	        Name != 'Contact' and length(`FIRST NAME`) > 0 
 	    GROUP BY lead_id) AS `makerlist` ON `wp_mf_schedule`.entry_id = `makerlist`.lead_id
 				WHERE `wp_mf_schedule`.faire = '%s' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
@@ -234,6 +235,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 		order by `wp_mf_schedule`.`start_dt`
 		",$faire,$day,$area,$subarea);
 		$mysqli->set_charset("utf8");
+                //echo $select_query.'<br/><br/>';
 $result = $mysqli->query( $select_query );
 // Initalize the schedule container
 $schedules = array();

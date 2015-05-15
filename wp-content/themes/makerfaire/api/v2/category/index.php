@@ -57,7 +57,10 @@ $header = array(
 		
 	
 	}
+	//Handle Manual Categories
 	array_push($venues , array('id'=>'222','name'=>'makers'));
+	array_push($venues , array('id'=>absint('333'),'name'=>'Sponsors'));
+	$child_id_refs [] = absint('333');
 	array_push($venues , array('id'=>'999','name'=>'exhibit categories','child_id_refs'=>$child_id_refs));
 	$merged = array_merge( $header, array( 'entity' =>$venues  ));
 	// Output the JSON

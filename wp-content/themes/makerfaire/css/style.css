@@ -1070,6 +1070,20 @@ li.hidelink a:visited {
   color: #999 !important;
   cursor: default !important;
 }
+.drop-holder .column:nth-child(4) {
+  width: 800px;
+}
+ul.navhack li {
+  width: 200px !important;
+  float: left !important;
+  border-left: 1px dashed #999 !important;
+  padding-left: 30px !important;
+}
+ul.navhack li:first-child {
+  width: 200px !important;
+  float: left !important;
+  border: none !important;
+}
 .tab-content h3 {
   line-height: 100%;
 }

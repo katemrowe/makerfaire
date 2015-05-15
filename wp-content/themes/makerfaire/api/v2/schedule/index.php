@@ -73,6 +73,7 @@ if ( $type == 'schedule' ) {
 	while ( $row = $result->fetch_row () ) {
 	
 		// Return some post meta
+		$schedule_id = $row[0];
 		$entry_id = $row[1];
 		$app_id = $entry_id;
 		$day = $row[6];
@@ -81,7 +82,7 @@ if ( $type == 'schedule' ) {
 		//$dates = mf_get_faire_date( $faire );
 
 		// REQUIRED: Schedule ID
-		$schedule['id'] = $entry_id;
+		$schedule['id'] = $schedule_id;
 		$schedule_name = isset ( $row[10] ) ? $row[10] : '';
 		$project_photo =  isset ( $row[7] ) ? $row[7] : '';
 		// REQUIED: Application title paired to scheduled item

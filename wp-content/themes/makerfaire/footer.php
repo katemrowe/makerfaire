@@ -392,7 +392,7 @@ if ( is_page( '459885' ) ) {
 			<input type="hidden" name="custom_host" value="makerfaire.com" />
 			<input type="hidden" name="custom_incentive" value="none" />
 			<input type="hidden" name="custom_source" value="modal" />
-			<input type="hidden" name="goto" value="/global/school/?thankyou" />
+			<input type="hidden" name="goto" value="http://makerfaire.com/global/school/?thankyou" />
 			<input type="hidden" name="custom_url" value="makerfaire.com/global/school" />
 			<label>Your Email:</label>
 			<input type="email" id="titllrt-titllrt" name="email" required>

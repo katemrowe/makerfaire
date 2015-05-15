@@ -1071,7 +1071,7 @@ li.hidelink a:visited {
   cursor: default !important;
 }
 .navbar-nav > li:nth-child(4) .drop-holder .drop .col.no-border {
-  width: 700px;
+  width: 700px !important;
 }
 ul li.navhack {
   width: 200px !important;

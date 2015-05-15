@@ -179,7 +179,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	}
 	
 	
-		$select_query = sprintf("SELECT DISTINCT
+		$select_query = sprintf("SELECT
 	    `wp_mf_schedule`.`ID`,
 	    `wp_mf_schedule`.`entry_id`,
 	    `wp_mf_schedule`.`location_id`,
@@ -187,11 +187,11 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	    `wp_mf_schedule`.`start_dt`,
 	    `wp_mf_schedule`.`end_dt`,
 	    DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`,
-	    `wp_gravityforms_entity_view`.`Photo`,
-	    `wp_gravityforms_entity_view`.`ThumbPhoto`,
-	    `wp_gravityforms_entity_view`.`Categories`,
-	    `wp_gravityforms_entity_view`.`Title`,
-	    `wp_gravityforms_entity_view`.`Description`,
+	    `wp_mf_api_entity`.`large_image_url`,
+	    `wp_mf_api_entity`.`thumb_image_url`,
+	    `wp_mf_api_entity`.`category_id`,
+	    `wp_mf_api_entity`.`project_title`,
+	    `wp_mf_api_entity`.`project_description`,
 	    `wp_mf_location`.`faire`,
 	    `wp_mf_location`.`area`,
 	    `wp_mf_location`.`subarea`,
@@ -199,7 +199,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	    `wp_mf_location`.`latitude`,
 	    `wp_mf_location`.`longitude`,
 	    `wp_mf_location`.`location_element_id`,
-	    `wp_gravityforms_entity_view`.`entry_status`,
+	    `wp_rg_lead`.`status`,
 	    makerlist.Makers,
 	    `wp_mf_maker`.photo,
 	    `wp_mf_maker`.`First Name` AS first_name,
@@ -207,8 +207,9 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	FROM
 	    `wp_mf_schedule`
 	        INNER JOIN
-	    `wp_gravityforms_entity_view` ON `wp_mf_schedule`.entry_id = `wp_gravityforms_entity_view`.entry_id
-	        AND `wp_gravityforms_entity_view`.`entry_status` = 'active'
+	    `wp_mf_api_entity` ON `wp_mf_schedule`.entry_id = `wp_mf_api_entity`.ID
+	        INNER JOIN 
+		`wp_rg_lead` ON `wp_rg_lead`.ID = `wp_mf_schedule`.entry_id  and `wp_rg_lead`.`status` = 'active'
 	        left outer JOIN
 	    `wp_mf_maker` ON `wp_mf_schedule`.entry_id = `wp_mf_maker`.lead_id
 	        AND wp_mf_maker.name = 'Presenter'
@@ -224,7 +225,7 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
 	    WHERE
 	        Name != 'Contact' and length(`FIRST NAME`) > 0 and length(`LAST NAME`) > 0
 	    GROUP BY lead_id) AS `makerlist` ON `wp_mf_schedule`.entry_id = `makerlist`.lead_id
-WHERE `wp_mf_schedule`.faire = '%s' 
+				WHERE `wp_mf_schedule`.faire = '%s' 
 			and DAYNAME(`wp_mf_schedule`.`start_dt`) = '%s'
 			and `wp_mf_location`.`area` = '%s'
 			and `wp_mf_location`.`subarea` = '%s'

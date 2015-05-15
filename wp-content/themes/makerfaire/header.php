@@ -116,7 +116,7 @@ Topbar
   $menu_name = 'Main Navigation Version 2';
   $menu = wp_get_nav_menu_object( $menu_name );
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
-
+  $menuitemsmobile = wp_get_nav_menu_items( $menu_name, $args );
 ?>
 	<nav class="navbar navbar-default navbar-fixed-top visible-xs-block">
 		<div class="container">
@@ -133,48 +133,57 @@ Topbar
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
+
+
+
+			
+				<?php
+				  foreach ( wp_get_nav_menu_items('$menu_name') as $key => $item ) {
+
+				    //Create an array representation of this nav item
+				    //that includes some important properties we will need.
+				    //The first item needs a special grid class to be positioned correctly
+				    $this_nav_item = array(
+				      'url' => ($item -> url),
+				      'title' => ($item -> title)
+				    );
+
+				    if($item -> menu_item_parent == 0){
+				      //Only add top-level items to the main array
+				      $menu_arr[$item->ID] = $this_nav_item;
+				    }else{
+						//Only add top-level items to the main array
+				      	$menu_arr[$item->ID] = $this_nav_item;
+				    }
+
+				    //Increment the counter
+				    $i++;
+				  }
+
+				  $menu_html="";
+
+				  //Loop through the array we created above...
+				  foreach ($menu_arr as $key => $item) {
+
+				    //Build up the needed output
+				    $menu_html.= '<a href="' . $item['url'] . '" class="alt-link-color">' . $item['title'] . '</a>';
+				  }
+				  
+				  //Output the final menu HTML
+				  echo $menu_html;
+
+				?>
+
+
+
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li><a href="#">One more separated link</a></li>
+		            <li><a href="#">menulink</a></li>
 		          </ul>
 		      	</li>
 		      	<li class="divider"></li>
-		      	<li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bay Area <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li><a href="#">One more separated link</a></li>
-		          </ul>
-		      	</li>
-		      	<li class="divider"></li>
-		      	<li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">New York <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li><a href="#">One more separated link</a></li>
-		          </ul>
-		      	</li>
-		      	<li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Around the World <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li><a href="#">One more separated link</a></li>
-		          </ul>
-		        </li>
+
 		        <li><a href="#">Shop</a></li>
 		      </ul>
 		    </div>

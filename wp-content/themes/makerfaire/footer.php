@@ -353,7 +353,10 @@ if ( is_page( '459885' ) ) {
 		            date.setTime(date.getTime()+(7*24*60*60*1000));
 		            date = date.toGMTString();
 		            document.cookie="Newsletter-closed=; expires=" + date + "; path=/";
-			  	}
+			  	},
+			  	afterLoad   : function() {
+                	this.content = this.content.html();
+            	}
 	        }).trigger("click");   
 
 	        jQuery( ".newsletter-set-cookie" ).click(function() {

@@ -14,11 +14,11 @@
 					</h1>
 				</div>
 			</div>
-			<div class="row">
+<!-- 			<div class="row">
 				<div class="col-xs-12">
 					<h2 style="font-size:14px;color:#333;margin-top:0px;">Saturday 10am-8pm PT | Sunday 10am-6pm PT</h2>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="col-xs-2">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/robot.png" width="auto" alt="makey robot" />
@@ -47,22 +47,22 @@
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">
 				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
+					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=//makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-twitter-32" href="https://twitter.com/home?status=makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
+					<a class="sprite-twitter-32" href="https://twitter.com/home?status=//makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/live&media=http://makerfaire.com/live&description=The%20first%20Friday%20%40%20Maker%20Faire%20marked%20the%2010th%20Annual%20Maker%20Faire%20Bay%20Area%20anniversary%20by%20opening%20up%20the%20show%20one%20day%20early.%20The%20event%20gave%20special%20preference%20to%20school%20groups%20and%20families%20so%20they%20could%20get%20close-up%20access%20and%20relatively%20crowd-free%20access%20to%20all%20the%20exhibits" title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=//makerfaire.com/bay-area-2015/slideshow/&media=//makerfaire.com/bay-area-2015/slideshow&description=The%20first%20Friday%20%40%20Maker%20Faire%20marked%20the%2010th%20Annual%20Maker%20Faire%20Bay%20Area%20anniversary%20by%20opening%20up%20the%20show%20one%20day%20early.%20The%20event%20gave%20special%20preference%20to%20school%20groups%20and%20families%20so%20they%20could%20get%20close-up%20access%20and%20relatively%20crowd-free%20access%20to%20all%20the%20exhibits" title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=makerfaire.com/bay-area-2015/slideshow" rel="publisher" title="Google+" target="_blank">
+					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=//makerfaire.com/bay-area-2015/slideshow/" rel="publisher" title="Google+" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>

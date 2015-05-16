@@ -45,7 +45,7 @@ if ( $type == 'maker' ) {
 	INNER JOIN
 	wp_rg_lead on wp_rg_lead.ID = `wp_mf_maker`.`lead_id` and wp_rg_lead.status = 'active'
 	WHERE name != 'Contact' 
-	and length(`FIRST NAME`) > 0 and length(`LAST NAME`) > 0
+	and length(`FIRST NAME`) > 0
     and wp_mf_maker.`Status` = 'Accepted'");
 	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );

@@ -1,6 +1,6 @@
 <?php
 	/*
-	Template name: Live Video
+	Template name: Slideshow
 	*/
 	get_header(); ?>
 <div class="clear"></div>
@@ -10,15 +10,15 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 style="margin-top:0px;">
-						Experience Maker Faire LIVE
+						Day One: First Friday @ Maker Faire
 					</h1>
 				</div>
 			</div>
-			<div class="row">
+<!-- 			<div class="row">
 				<div class="col-xs-12">
 					<h2 style="font-size:14px;color:#333;margin-top:0px;">Saturday 10am-8pm PT | Sunday 10am-6pm PT</h2>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="col-xs-2">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/robot.png" width="auto" alt="makey robot" />
@@ -42,27 +42,27 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-9">
-			<p>Here Massimo Banzi, co-founder of the Arduino Project, talks about the latest developments for the Arduino open-source microcontroller.</p>
+			<p>The first Friday @ Maker Faire marked the 10th Annual Maker Faire Bay Area by opening up the show one day early. The event gave special preference to school groups and families so they could get close-up, relatively crowd-free, access to the exhibits. </p>
 		</div>
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">
 				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/live" title="Facebook" target="_blank">
+					<a class="sprite-facebook-32" href="https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-twitter-32" href="https://twitter.com/home?status=http://makerfaire.com/live" title="Twitter" target="_blank">
+					<a class="sprite-twitter-32" href="https://twitter.com/home?status=https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/live/&media=http://makerfaire.com/wp-content/themes/makerfaire/images/robot.png&description=May%2016-17,%202015%20The%20Make:%20Video%20Team%20takes%20you%20to%20Maker%20Faire%20at%20the%20San%20Mateo%20County%20Fairgrounds.%20We'll%20be%20wandering,%20wondering,%20exploring,%20making%20stuff,%20connecting%20and%20being%20amazed%20the%20whole%20weekend.%20(But%20it's%20NOT%20as%20good%20as%20being%20there...)" title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/bay-area-2015/slideshow&media=http://i2.wp.com/makerfaire.com/wp-content/uploads/2015/05/RobotResurrection-ShootsFlames.jpg?resize=2000%252C1333?w=900&description=The%20first%20Friday%20%40%20Maker%20Faire%20marked%20the%2010th%20Annual%20Maker%20Faire%20Bay%20Area%20by%20opening%20up%20the%20show%20one%20day%20early.%20The%20event%20gave%20special%20preference%20to%20school%20groups%20and%20families%20so%20they%20could%20get%20close-up,%20relatively%20crowd-free,%20access%20to%20the%20exhibits." title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=http://makerfaire.com/live" rel="publisher" title="Google+" target="_blank">
+					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=//makerfaire.com/bay-area-2015/slideshow/" rel="publisher" title="Google+" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>

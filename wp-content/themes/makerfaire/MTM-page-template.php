@@ -181,21 +181,21 @@ Browse by Topic
         <div class="follow-wrap">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-xs-4">
+					<!-- <div class="col-xs-4">
 						<div class="social-holder timer-box">
 
-                                        <div class="title">
-                                            <h2>Maker Faire countdown</h2>
-                                        </div>
-                        				<h1>Maker Faire <strong>Bay Area</strong></h1>
+			                                        <div class="title">
+			                                            <h2>Maker Faire countdown</h2>
+			                                        </div>
+			                        				<h1>Maker Faire <strong>Bay Area</strong></h1>
 
-                                        <div class="countdown">
+			                                        <div class="countdown">
 
 
-                                        </div>
+			                                        </div>
 
 						</div>
-					</div>
+					</div> -->
 					<div class="col-xs-4">
 						<div class="social-holder twitter">
 							<div class="title">
@@ -205,7 +205,7 @@ Browse by Topic
                            <a href="http://twitter.com/makerfaire" class="follow" target="_blank">Follow us on Twitter</a>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-8">
 						<div class="social-holder instagram">
 							<div class="title">
 								<h1>Instagram, <a href="http://instagram.com/makerfaire" target="_blank">#makerfaire</a></h1>

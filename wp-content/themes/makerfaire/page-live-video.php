@@ -42,7 +42,7 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-9">
-			<p>May 16-17, 2015 The Make: Video Team takes you to Maker Faire at the San Mateo County Fairgrounds. We'll be wandering, wondering, exploring, making stuff, connecting and being amazed the whole weekend. (But it's NOT as good as being there...)</p>
+			<p>May 16-17, 2015 The Make: Video Team takes you to Maker Faire at the San Mateo County Event Center. We'll be wandering, wondering, exploring, making stuff, connecting and being amazed the whole weekend. (But it's NOT as good as being there...)</p>
 		</div>
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">

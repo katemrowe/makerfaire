@@ -1,7 +1,7 @@
 
 <div class="span4">
 
-	<div class="sidebar-bordered">
+<!-- 	<div class="sidebar-bordered">
 
                 <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
                 <h3 class="counter-title">Maker Faire Bay Area<br />May 16 &amp; 17, 2015</h3>
@@ -21,7 +21,7 @@
                                 });
                         </script>
             	</div>
-	</div>
+	</div> -->
 
 	<div class="center">
 		<a href="https://mfba2015.eventbrite.com/" target="_blank">

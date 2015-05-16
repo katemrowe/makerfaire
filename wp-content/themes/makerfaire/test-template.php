@@ -546,7 +546,7 @@
 		<div class="follow-wrap">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-xs-4">
+<!-- 					<div class="col-xs-4">
 						<div class="social-holder timer-box">
 							<div class="title">
 								<h2><a href="#">Maker Faire countdown</a></h2>
@@ -571,7 +571,7 @@
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div> -->
 					<div class="col-xs-4">
 						<div class="social-holder twitter">
 							<div class="title">
@@ -582,7 +582,7 @@
 							<a href="#" class="follow">Follow @makerfaire</a>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-8">
 						<div class="social-holder instagram">
 							<div class="title">
 								<h1>Instagram, <a href="#">#makerfaire</a></h1>

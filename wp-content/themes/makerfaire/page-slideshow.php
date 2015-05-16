@@ -10,7 +10,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 style="margin-top:0px;">
-						Day One: First Friday @ Maker Faire Slideshow
+						Day One: First Friday @ Maker Faire
 					</h1>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-9">
-			<p>The first Friday @ Maker Faire marked the 10th Annual Maker Faire Bay Area anniversary by opening up the show one day early. The event gave special preference to school groups and families so they could get close-up access and relatively crowd-free access to the exhibits. </p>
+			<p>The first Friday @ Maker Faire marked the 10th Annual Maker Faire Bay Area by opening up the show one day early. The event gave special preference to school groups and families so they could get close-up, relatively crowd-free, access to the exhibits. </p>
 		</div>
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">

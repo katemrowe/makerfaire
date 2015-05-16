@@ -42,7 +42,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-9">
-			<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. Git dom html markdown FTP page SQL page speed css javascript bootstrap Django javascript hosting jQuery yaml ember tablet. Git dom javascript Django TCP page.</p>
+			<p>May 16-17, 2015 The Make: Video Team takes you to Maker Faire at the San Mateo County Fairgrounds. We'll be wandering, wondering, exploring, making stuff, connecting and being amazed the whole weekend. (But it's NOT as good as being there...)</p>
 		</div>
 		<div class="col-md-3 social">
 			<div class="social-foot-col">

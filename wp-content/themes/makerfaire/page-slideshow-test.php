@@ -9,7 +9,7 @@
 		<div class="col-xs-7">
 			<div class="row">
 				<div class="col-xs-12">
-					<?php echo get_the_title(); ?>
+					<h1><?php echo get_the_title(); ?></h1>
 				</div>
 			</div>
 		</div>

@@ -43,7 +43,7 @@
 	<div class="row">
 		<div class="col-xs-9">
 			<p>May 16-17, 2015 The Make: Video Team takes you to Maker Faire at the San Mateo County Fairgrounds. We'll be wandering, wondering, exploring, making stuff, connecting and being amazed the whole weekend. (But it's NOT as good as being there...)</p>
-			<p class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"></span>See all the Make: Video Coverage from Maker Faire Bay Area 2015</a></strong></p>
+			<p class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" width="16" height="16" alt=""/></span>See all the Make: Video Coverage from Maker Faire Bay Area 2015</a></strong></p>
 		</div>
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">

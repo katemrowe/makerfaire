@@ -6,7 +6,7 @@
 <div class="clear"></div>
 <div class="container live-page">
 	<div class="row" style="margin-bottom:0px;padding-bottom:0px;">
-		<div class="col-xs-8">
+		<div class="col-xs-7">
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 style="margin-top:0px;">
@@ -22,28 +22,6 @@
 		</div>
 		<div class="col-xs-2">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/robot.png" width="auto" alt="makey robot" />
-		</div>
-		<div class="col-xs-2">
-			<a class="btn btn-danger pull-right" href="//mfba2015.eventbrite.com/" target="_blank">BUY TICKETS</a>
-		</div>
-	</div>
-	<div class="row">
-		<div class="content col-xs-12">
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-			<article <?php post_class(); ?>>
-				<?php the_content(); ?>
-			</article>
-			<?php endwhile; ?>
-			<?php else: ?>
-			<p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
-			<?php endif; ?>
-			<div class="clearfix">&nbsp;</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-9">
-			<p>May 16-17, 2015 The Make: Video Team takes you to Maker Faire at the San Mateo County Fairgrounds. We'll be wandering, wondering, exploring, making stuff, connecting and being amazed the whole weekend. (But it's NOT as good as being there...)</p>
-			<p class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" width="16" height="16" alt=""/></span>See all the Make: Video Coverage from Maker Faire Bay Area 2015</a></strong></p>
 		</div>
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">
@@ -70,6 +48,19 @@
 					</a>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="content col-xs-12">
+			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<article <?php post_class(); ?>>
+				<?php the_content(); ?>
+			</article>
+			<?php endwhile; ?>
+			<?php else: ?>
+			<p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
+			<?php endif; ?>
+			<div class="clearfix">&nbsp;</div>
 		</div>
 	</div>
 </div>

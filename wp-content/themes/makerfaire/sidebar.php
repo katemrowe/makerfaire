@@ -23,11 +23,11 @@
             	</div>
 	</div> -->
 
-	<div class="center">
+<!-- 	<div class="center">
 		<a href="https://mfba2015.eventbrite.com/" target="_blank">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
 		</a>
-	</div>
+	</div> -->
 
           <div class="sidebar-bordered sponsored">
 

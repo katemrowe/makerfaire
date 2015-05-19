@@ -999,3 +999,134 @@ function create_post_type() {
     }
 
 
+/**
+ * The Better Gallery shortcode, courtesy of WordPress Core
+ *
+ * Wanted to extend our Bootstrap Slideshow so that you could put in Post IDs and get back a slideshow.
+ * Basically the same thing that the default slideshow does, so why not use that! Updated for Bootstrap 3!
+ *
+ * @since 1.0
+ *
+ * @param array $attr Attributes of the shortcode.
+ * @return string HTML content to display gallery.
+ */
+function make_new_gallery_shortcode($attr) {
+	$post = get_post();
+
+	static $instance = 0;
+	$instance++;
+
+	if ( ! empty( $attr['ids'] ) ) {
+		// 'ids' is explicitly ordered, unless you specify otherwise.
+		if ( empty( $attr['orderby'] ) )
+			$attr['orderby'] = 'post__in';
+		$attr['include'] = $attr['ids'];
+	}
+
+	// We're trusting author input, so let's at least make sure it looks like a valid orderby statement
+	if ( isset( $attr['orderby'] ) ) {
+		$attr['orderby'] = sanitize_sql_orderby( $attr['orderby'] );
+		if ( !$attr['orderby'] )
+			unset( $attr['orderby'] );
+	}
+
+	extract(shortcode_atts(array(
+		'order'      => 'ASC',
+		'orderby'    => 'menu_order ID',
+		'id'         => $post->ID,
+		'itemtag'    => 'dl',
+		'icontag'    => 'dt',
+		'captiontag' => 'dd',
+		'columns'    => 3,
+		'size'       => 'medium',
+		'include'    => '',
+		'exclude'    => ''
+	), $attr));
+
+	
+	$rand = mt_rand( 0, $id );
+
+	$id = intval($id);
+	if ( 'RAND' == $order )
+		$orderby = 'none';
+
+	if ( !empty($include) ) {
+		$_attachments = get_posts( array('include' => $include, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+
+		$attachments = array();
+		foreach ( $_attachments as $key => $val ) {
+			$attachments[$val->ID] = $_attachments[$key];
+		}
+	} elseif ( !empty($exclude) ) {
+		$attachments = get_children( array('post_parent' => $id, 'exclude' => $exclude, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	} else {
+		$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	}
+
+	if ( empty($attachments) )
+		return '';
+
+	$output = '<div id="carousel-example-generic-' . $rand . '" class="carousel slide" data-interval="" data-ride="carousel"><div class="carousel-inner">';
+
+	$i = 0;
+	foreach( $attachments as $id => $attachment ) {
+		$i++;
+		if ($i == 1) {
+			$output .= '<div class="item active">';	
+		} else {
+			$output .= '<div class="item">';
+		}
+		$output .= wp_get_attachment_link( $attachment->ID, sanitize_title_for_query( $size ) );
+		if ( isset( $attachment->post_excerpt ) && ! empty( $attachment->post_excerpt ) ) {
+			$attachment_caption = $attachment->post_excerpt;
+		} elseif ( isset( $attachment->post_title ) && ! empty( $attachment->post_title ) ) {
+			$attachment_caption = $attachment->post_title;
+		} else {
+			$attachment_caption = '';
+		}
+		if ( isset( $attachment_caption ) && ! empty( $attachment_caption ) ) {
+			$output .= '<div class="carousel-caption">';
+			$output .= '<h4>' . Markdown( wp_kses_post( $attachment_caption ) ) . '</h4>';
+			$output .= '</div>';
+			
+		}
+		$output .= '</div>';
+		
+	} //foreach
+	$output .= '</div>
+		<a class="left carousel-control" href="#carousel-example-generic-' . $rand . '" role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#carousel-example-generic-' . $rand . '" role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>';
+	$output .= '<p class="pull-right"><span class="label viewall" style="cursor:pointer">View All</span></p>';
+	$output .= '
+		<script>
+			jQuery(document).ready(function(){
+				jQuery(".viewall").click(function() {
+					jQuery(".carousel-inner").removeClass("carousel-inner");
+					jQuery(".carousel-control").hide();
+					googletag.pubads().refresh();
+					ga(\'send\', \'pageview\');
+					urlref = location.href;
+					PARSELY.beacon.trackPageView({
+						url: urlref,
+						urlref: urlref,
+						js: 1,
+						action_name: "Next Slide"
+					});
+					jQuery(this).addClass(\'hide\');
+					return true;
+				})
+			});
+		</script>
+	';
+	$output .= '<div class="clearfix"></div>';
+	return $output;
+}
+
+add_shortcode( 'new_gallery', 'make_new_gallery_shortcode' );

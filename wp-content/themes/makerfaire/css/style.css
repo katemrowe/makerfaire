@@ -804,7 +804,8 @@ tr.time {
 .lead ul li {
   line-height: 120%;
 }
-.modal-fix #myModal {
+.modal-fix #myModal,
+.modal-fix .modal {
   overflow: hidden;
   right: 0;
   bottom: auto;
@@ -3604,11 +3605,8 @@ li:nth-child(1) .drop-holder .column .col {
 .newsies h4 {
   display: none;
 }
-.row .span6 h3 {
-  color: #FFF !important;
-}
 .newsies .news h3 {
-  color: #FFF !important;
+  color: #FFF;
 }
 .news.post div.row:nth-child(4) {
   display: none;

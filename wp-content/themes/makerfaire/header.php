@@ -122,7 +122,7 @@ Topbar
 <nav class="navbar">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+			<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="Maker Faire Logo"></a>
 		</div>
         	<div class="collapse navbar-collapse">
     		
@@ -198,10 +198,7 @@ Topbar
 <?php $count++; endforeach; ?>
  
 </ul>
-
 		</div>
 	</div>
 </nav>
-
-
 </header>

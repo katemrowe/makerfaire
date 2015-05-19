@@ -50,8 +50,8 @@ jQuery(function() {
 });
 /* Make all external link open in a new tab */
 jQuery(document).ready(function() {
-		jQuery( 'a[href^="http://"]' ).attr( 'target','_blank' );
-		});
+        jQuery('article a[href^="http"]').not('a[href^="http://www.makerfaire.com"]').attr('target', '_blank');
+});
 /* end of external link */
 
 // for images

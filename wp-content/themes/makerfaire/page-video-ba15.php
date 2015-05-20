@@ -827,14 +827,14 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 							</script>
 						</div>
 					</div>
-				<!--          <div class="col-xs-4">
+				         <div class="col-xs-4">
 						<a href="#myModal33" role="button" class="modal-archive" data-toggle="modal">
 						<span class="video-icon text-center" aria-hidden="true"></span>
-						<img class="img-responsive" src="http://img.youtube.com/vi/ER6FJgY-iFI/maxresdefault.jpg" alt="" /></a>
-						<p>Instead of taking it home from Maker Faire, Will Pemble put his backyard roller coaster on Ebay.</p>
+						<img class="img-responsive" src="http://img.youtube.com/vi/NfmZjG3LoIg/maxresdefault.jpg" alt="" /></a>
+						<p>Scratch Artist DJ QBert controls a tesla coil using his Edison-powered turntable setup.</p>
 					</div>
 					<!-- Video Modal  One-->
-				<!--	<div id="myModal33" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div id="myModal33" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h3 id="myModalLabel33" style="color:#000">Maker Faire Bay Area 2015</h3>
@@ -842,14 +842,14 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						<div class="modal-body">
 							<script>
 								jQuery('#myModal33').on('show', function () { 
-								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=ER6FJgY-iFI&index=30&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
+								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=NfmZjG3LoIg&index=33&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
 								});
 								jQuery('#myModa33').on('hide', function () {
 								 jQuery('div.modal-body').html('');
 								});
 							</script>
 						</div>
-					</div> -->
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12">

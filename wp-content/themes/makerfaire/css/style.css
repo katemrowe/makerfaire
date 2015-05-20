@@ -260,6 +260,25 @@ ul.side-nav > li > a:hover {
   border-bottom: 1px solid #ddd;
   border-radius: 0;
 }
+.container.live-page .row:nth-child (1) {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+.live-archive {
+  background-color: #075c78;
+  color: #fff;
+  padding-bottom: 30px;
+  font-size: 12px;
+}
+.flag-border {
+  height: 23px;
+  background: url(../images/bg-border.png) repeat-x;
+}
+.live-archive a:link,
+.live-archive a:visited {
+  color: #fff;
+  text-decoration: none;
+}
 #footer {
   overflow: hidden;
   width: 100%;

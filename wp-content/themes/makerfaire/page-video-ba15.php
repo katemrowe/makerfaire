@@ -853,7 +853,7 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<h4 class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" alt="Maker Faire Rocket logo" width="16" height="16" /></span> See all the Make: Videos from Maker Faire Bay Area 2015</a></strong></h4>
+						<h4 class="text-right"><strong><a href="http://makezine.com/video/" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" alt="Maker Faire Rocket logo" width="16" height="16" /></span> See more Make: videos</a></strong></h4>
 					</div>
 				</div>
 			</div>

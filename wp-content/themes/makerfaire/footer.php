@@ -347,7 +347,7 @@ if ( is_page( '459885' ) ) {
 	            closeEffect : "none",
 	            autoSize : false,
 	            width  : 500,
-	            height  : 210,
+	            height  : 225,
 	            beforeClose : function() {
 		            var date = new Date();
 		            date.setTime(date.getTime()+(7*24*60*60*1000));
@@ -385,7 +385,7 @@ if ( is_page( '459885' ) ) {
 	});
 	</script>
 	<div class="fancybox" style="display:none;">
-	    <h3>Yes, please send more info on the <br/>School Maker Faire Program.</h3>
+	    <h3>Yes, I\'m interested in the <br/>School Maker Faire Program.</h3>
 		<form name="MailingList" action="http://whatcounts.com/bin/listctrl" method="POST">
 			<input type=hidden name="slid" value="6B5869DC547D3D4637EA6E33C6C8170D" />
 			<input type="hidden" name="cmd" value="subscribe" />

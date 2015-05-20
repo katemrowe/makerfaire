@@ -34,7 +34,7 @@
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/live/&media=http://makerfaire.com/wp-content/themes/makerfaire/images/robot.png&description=May%2016-17,%202015%20The%20Make:%20Video%20Team%20takes%20you%20to%20Maker%20Faire%20at%20the%20San%20Mateo%20County%20Fairgrounds.%20We'll%20be%20wandering,%20wondering,%20exploring,%20making%20stuff,%20connecting%20and%20being%20amazed%20the%20whole%20weekend.%20(But%20it's%20NOT%20as%20good%20as%20being%20there...)" title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>

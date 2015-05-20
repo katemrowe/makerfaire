@@ -15,22 +15,22 @@
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">
 				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/live" title="Facebook" target="_blank">
+					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/live" title="Facebook" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-twitter-32" href="https://twitter.com/home?status=http://makerfaire.com/live" title="Twitter" target="_blank">
+					<a class="sprite-twitter-32" href="//twitter.com/home?status=http://makerfaire.com/bay-area-2015/live" title="Twitter" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/live/&media=http://makerfaire.com/wp-content/themes/makerfaire/images/robot.png&description=May%2016-17,%202015%20The%20Make:%20Video%20Team%20takes%20you%20to%20Maker%20Faire%20at%20the%20San%20Mateo%20County%20Fairgrounds.%20We'll%20be%20wandering,%20wondering,%20exploring,%20making%20stuff,%20connecting%20and%20being%20amazed%20the%20whole%20weekend.%20(But%20it's%20NOT%20as%20good%20as%20being%20there...)" title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=http://makerfaire.com/live" rel="publisher" title="Google+" target="_blank">
+					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=http://makerfaire.com/bay-area-2015/live" rel="publisher" title="Google+" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
@@ -61,8 +61,8 @@
 				<h2>Make: Editors Report from Maker Faire Bay Area 2015</h2>
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal1" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/ForzIQZy5ZA/maxresdefault.jpg" alt="" /></a>
 						<p>Big makey flyover.</p>
 					</div>
@@ -84,8 +84,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal2" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/Xgwqy2lJ3_g/maxresdefault.jpg" alt="" /></a>
 						<p>Microsoft's Tony Goodhew chats about the Microsoft booth.</p>
 					</div>
@@ -107,8 +107,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal3" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/81kJuLI94O0/maxresdefault.jpg" alt="" /></a>
 						<p>Celebrate the universal love of high-fiving with this sensor-equipped high-five rig.</p>
 					</div>
@@ -133,8 +133,8 @@
 				<!-- new row 2-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal4" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/fxHyAgybbZs/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to Jason Krinder of Beagleboard.org about the new Beaglebone Green. The new board is a clone of the Beaglebone Black produced by Seeed Studio based on the original open hardware design.</p>
 					</div>
@@ -156,8 +156,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal5" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/H3sWm-OOjYk/maxresdefault.jpg" alt="" /></a>
 						<p>Karen Diggs' company Kraut Source sells fermenting kits. All of her products are sustainably made and expertly crafted. They each help you create any fermented food product you can think of.</p>
 					</div>
@@ -179,8 +179,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal6" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/eJxZtn2gdT0/maxresdefault.jpg" alt="" /></a>
 						<p>Succulent Wine Cork From UC Davis making people aware of the drought.</p>
 					</div>
@@ -205,8 +205,8 @@
 				<!-- new row 3-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal7" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/rLC8G7fM9PA/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to Gagan Luthra from Cypress Semiconductor about Cypress PSoC, the differences between it and a standard microcontroller, their development kits and the Cypress PSoC Challenge.</p>
 					</div>
@@ -228,8 +228,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal8" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/JGBzHCmAPI0/maxresdefault.jpg" alt="" /></a>
 						<p>Learn how Laney College created a giant plywood geodesic structure.</p>
 					</div>
@@ -251,8 +251,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal9" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/gFCPnohdz-c/maxresdefault.jpg" alt="" /></a>
 						<p>Contestants - i.e. kids - build their own cardboard buttons and tap them for points, while trying to avoid the whack of a mole - it's Whack-a-Mole, but in reverse.</p>
 					</div>
@@ -277,8 +277,8 @@
 				<!-- new row 4-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal10" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/bHa97MYju9I/maxresdefault.jpg" alt="" /></a>
 						<p>During MakerCon we caught up with Anouk Wipprecht in the Maker Media Lab, who was furiously working to complete her latest work — the Bubble Gum Dress — in time for Maker Faire Bay Area.</p>
 					</div>
@@ -300,8 +300,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal11" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/hVHPsIiBVpk/maxresdefault.jpg" alt="" /></a>
 						<p>During MakerCon we caught up with Anouk Wipprecht in the Maker Media Lab, who was furiously working to complete her latest work — the Bubble Gum Dress — in time for Maker Faire Bay Area.</p>
 					</div>
@@ -323,8 +323,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal12" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/2HW1YUT1CMw/maxresdefault.jpg" alt="" /></a>
 						<p>The KaLEDoscope inserts the crowd into the performance.</p>
 					</div>
@@ -349,8 +349,8 @@
 				<!-- new row 5-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal13" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/BaJczW6HgUU/maxresdefault.jpg" alt="" /></a>
 						<p>When one Rubens' tube isn't enough, you need a Rubens' organ!</p>
 					</div>
@@ -372,8 +372,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal14" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/b2fRyiC8JKg/maxresdefault.jpg" alt="" /></a>
 						<p>Robby Cuthbert shows off his unique sculptures and furniture that rely on tension to hold together.</p>
 					</div>
@@ -395,8 +395,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal15" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/85PVwyqkOdk/maxresdefault.jpg" alt="" /></a>
 						<p>We caught up w/ Hector from DF Robot to learn about their booth and how they help make making easier.</p>
 					</div>
@@ -421,8 +421,8 @@
 				<!-- new row 6-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal16" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/0bFHzlEYdAg/maxresdefault.jpg" alt="" /></a>
 						<p>Maker Kids, a makerspace for kids in Toronto, brought all the fixins for kids to build their own Rube Goldberg contraptions , made to fire paintballs.</p>
 					</div>
@@ -444,8 +444,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal17" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/8hsorBt59NE/maxresdefault.jpg" alt="" /></a>
 						<p>Zachary from the Bot Bash Party service shows us their flea-weight battling robots, and unveils their plans for a Bot Bash Summer Program.</p>
 					</div>
@@ -467,8 +467,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal18" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/2DxGPWJBB_M/maxresdefault.jpg" alt="" /></a>
 						<p>The Mosaic</p>
 					</div>
@@ -493,8 +493,8 @@
 				<!-- new row 7-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal19" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/-Z6qYhwIN6U/maxresdefault.jpg" alt="" /></a>
 						<p>The self-aligning hand router formerly known as Taktia is renamed Shaper, while getting 2-depth and a slick new case.</p>
 					</div>
@@ -516,8 +516,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal20" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/inJNN6WibxM/maxresdefault.jpg" alt="" /></a>
 						<p>Megabots are chasing the dream of bringing giant humanoid combat robots to life. Their early build, shown here, moves about on tank treads and fires giant paintballs.</p>
 					</div>
@@ -539,8 +539,8 @@
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal21" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/0UVn3QaI3zc/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to Pebble about their new watch, the Pebble Time, and the dueling sumo bots you can control with it.
 We also see Seeed Studio's Xadow-based Smartstrap for the very first time in public.</p>
@@ -566,8 +566,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				<!-- new row 8-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal22" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/ByOAkOnS7O4/maxresdefault.jpg" alt="" /></a>
 						<p>Charles "Chuck" Swiger, the winner of the first-ever PSoC Challenge. The contest challenged Makers to design IoT projects using the newly released PSoC 4 BLE Pioneer Kit. Ten Maker prujects competed for one grand prize, $2,500. A few travel here to Maker Faire Bay Area.</p>
 					</div>
@@ -589,8 +589,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal23" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/njlz6NfXxjM/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to Zach Shelby from ARM about the Internet of Things and he shows off his in-house team's project , an mbed connected espresso machine, as well as an internet connected wine rack made by  a partner company.</p>
 					</div>
@@ -612,8 +612,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal24" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/HyWn4_22cN8/maxresdefault.jpg" alt="" /></a>
 						<p>We check in with Sheau-Lan from the Sprout team to see how the Sprout is inspiring makers to learn and create.</p>
 					</div>
@@ -638,8 +638,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				<!-- new row 9-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal25" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/4enXl57BjG8/maxresdefault.jpg" alt="" /></a>
 						<p>Ramon shows off his modern day player piano. Some new technology grafted to the existing player mechanisms allow Ramon to play a multitude of songs, often drawing a crowd.</p>
 					</div>
@@ -661,8 +661,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal26" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/fgquWO_D-_8/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to George Yakoleve from Facebook about Parse for IoT, a new SDK supporting both Arduio and Raspberry Pi, as well as targeting selected RTOS platforms.</p>
 					</div>
@@ -684,8 +684,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal27" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/2dcPd_H9gnQ/maxresdefault.jpg" alt="" /></a>
 						<p>We talked to Kristin Salomon and Paul Rothman from littleBits about the littleBits module system, BitLabs, and the towering analog arcade machine they've brought here to the Faire.</p>
 					</div>
@@ -710,8 +710,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				<!-- new row  10-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal28" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/jOUALurj5P4/maxresdefault.jpg" alt="" /></a>
 						<p>We talk to Atmel's Wizard of Make, Bob Martin, about the Arduino Zero.</p>
 					</div>
@@ -733,8 +733,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal29" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/Zhu4JWEMlwg/maxresdefault.jpg" alt="" /></a>
 						<p>Sketchup and Materialise team up to allow for automatic, 3D-printable .stl generation for your sketchup designs.</p>
 					</div>
@@ -756,8 +756,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal30" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/ER6FJgY-iFI/maxresdefault.jpg" alt="" /></a>
 						<p>Instead of taking it home from Maker Faire, Will Pemble put his backyard roller coaster on Ebay.</p>
 					</div>
@@ -782,8 +782,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				<!-- new row  11-->
 				<div class="row" style="margin-bottom: 30px;">
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal31" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/Kw37VfXIbCg/maxresdefault.jpg" alt="" /></a>
 						<p>Bart Pascoli of Makers Italia talks about the current state of the maker movement in Italy - from Arduino to Motorcycles to growing plants in space.</p>
 					</div>
@@ -796,7 +796,7 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						<div class="modal-body">
 							<script>
 								jQuery('#myModal31').on('show', function () { 
-								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=Kw37VfXIbCg&index=28&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
+								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=Kw37VfXIbCg&index=31&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
 								});
 								jQuery('#myModal31').on('hide', function () {
 								 jQuery('div.modal-body').html('');
@@ -805,8 +805,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 					<div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal32" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/eGMLwIjoWog/maxresdefault.jpg" alt="" /></a>
 						<p>Scratch Artists DJ Qbert and Yoga Frog talk about how Intel Edison is helping artists through technology by reducing the tools they need to use for a performance.</p>
 					</div>
@@ -819,7 +819,7 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						<div class="modal-body">
 							<script>
 								jQuery('#myModal32').on('show', function () { 
-								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=eGMLwIjoWog&index=29&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
+								 jQuery('div.modal-body').html('<iframe src="https://www.youtube.com/embed/watch?v=eGMLwIjoWog&index=32&list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');  
 								});
 								jQuery('#myModal32').on('hide', function () {
 								 jQuery('div.modal-body').html('');
@@ -828,8 +828,8 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 						</div>
 					</div>
 				<!--          <div class="col-xs-4">
-						<span class="video-icon text-center" aria-hidden="true"></span>
 						<a href="#myModal33" role="button" class="modal-archive" data-toggle="modal">
+						<span class="video-icon text-center" aria-hidden="true"></span>
 						<img class="img-responsive" src="http://img.youtube.com/vi/ER6FJgY-iFI/maxresdefault.jpg" alt="" /></a>
 						<p>Instead of taking it home from Maker Faire, Will Pemble put his backyard roller coaster on Ebay.</p>
 					</div>
@@ -853,7 +853,7 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<p class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" alt="Maker Faire Rocket logo" width="16" height="16" /></span> See all the Make: Videos from Maker Faire Bay Area 2015</a></strong></p>
+						<h4 class="text-right"><strong><a href="https://www.youtube.com/playlist?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" target="_blank"><span class="icon-rocket"><img src="http://makerfaire.com/wp-content/uploads/2015/05/rocket@2x.png" alt="Maker Faire Rocket logo" width="16" height="16" /></span> See all the Make: Videos from Maker Faire Bay Area 2015</a></strong></h4>
 					</div>
 				</div>
 			</div>

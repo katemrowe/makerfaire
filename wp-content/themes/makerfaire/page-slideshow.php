@@ -19,17 +19,17 @@
 		<div class="col-xs-3 social">
 			<div class="social-foot-col">
 				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
+					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-twitter-32" href="https://twitter.com/home?status=https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
+					<a class="sprite-twitter-32" href="//twitter.com/home?status=https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/bay-area-2015/slideshow&media=http://i2.wp.com/makerfaire.com/wp-content/uploads/2015/05/RobotResurrection-ShootsFlames.jpg?resize=2000%252C1333?w=900&description=The%20first%20Friday%20%40%20Maker%20Faire%20marked%20the%2010th%20Annual%20Maker%20Faire%20Bay%20Area%20by%20opening%20up%20the%20show%20one%20day%20early.%20The%20event%20gave%20special%20preference%20to%20school%20groups%20and%20families%20so%20they%20could%20get%20close-up,%20relatively%20crowd-free,%20access%20to%20the%20exhibits." title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>

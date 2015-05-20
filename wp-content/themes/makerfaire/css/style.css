@@ -279,6 +279,17 @@ ul.side-nav > li > a:hover {
   color: #fff;
   text-decoration: none;
 }
+.live-archive .col-xs-4 p {
+  margin-top: 15px;
+}
+.live-archive .video-icon {
+  position: absolute;
+  height: 45px;
+  width: 65px;
+  background: url('../images/play.png') no-repeat center;
+  top: 25%;
+  left: 40%;
+}
 #footer {
   overflow: hidden;
   width: 100%;

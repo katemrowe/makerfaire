@@ -79,7 +79,7 @@
 					<div id="myModal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h3 id="myModalLabel" style="color:#000">Maker Faire Bay Area 2015 1</h3>
+							<h3 id="myModalLabel" style="color:#000">Maker Faire Bay Area 2015</h3>
 						</div>
 						<div class="modal-body">
 							<script>
@@ -102,7 +102,7 @@
 					<div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h3 id="myModalLabel2" style="color:#000">Maker Faire Bay Area 2015 2</h3>
+							<h3 id="myModalLabel2" style="color:#000">Maker Faire Bay Area 2015</h3>
 						</div>
 						<div class="modal-body">
 							<script>

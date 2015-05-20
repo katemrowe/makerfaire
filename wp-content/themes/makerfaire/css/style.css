@@ -906,7 +906,6 @@ li.hidelink a:visited {
   /*Shop link*/
   /*end of shop link*/
   /* end of header(including navigation) section*/
-  /* Fixing the menu problem */
   /* News from MakeZine */
   /*
     .news.post div.row:nth-child(1) { width: 630px;  float:right; position: relative; }	
@@ -1760,10 +1759,6 @@ li.hidelink a:visited {
 .quora #wrapper {
   overflow: hidden;
 }
-.quora .container {
-  margin: 0 auto !important;
-  padding: 0 15px !important;
-}
 .quora#header {
   padding: 22px 0 0;
   margin-bottom: 20px;
@@ -2430,20 +2425,8 @@ li.hidelink a:visited {
   padding: 30px 0 34px;
 }
 .quora .search-box strong {
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  width: 70%;
   font: 26px/28px "latolight", Helvetica, Arial, sans-serif;
   color: #fff;
-}
-.quora .search-box .form-group {
-  display: inline-block;
-  vertical-align: middle;
-  float: none;
-  margin: 0;
-  position: relative;
-  width: 26%;
 }
 .quora .search-box .form-group .input-placeholder-text {
   padding: 6px 6px 6px 12px;
@@ -2701,7 +2684,6 @@ li.hidelink a:visited {
   border-top: 2px solid #67bde1;
 }
 .quora .gallery-holder .carousel .mask .slide {
-  width: 94px;
   float: left;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
@@ -3050,9 +3032,6 @@ li.hidelink a:visited {
   position: absolute;
   top: 0;
   left: 0;
-}
-.quora .navbar .container {
-  /* width: 1002px !important; */
 }
 .quora .beat-report {
   display: none;
@@ -3699,14 +3678,40 @@ li.hidelink a:visited {
     padding-top: 0;
     margin-bottom: 0;
   }
+  .quora .text-holder,
+  .quora .maker-slider-btn {
+    display: none;
+  }
+  .quora .browse-box .columns {
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+  }
+  .quora .sponsors-wrap .open-close {
+    position: relative;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    border: none;
+  }
 }
 @media (min-width: 768px) {
   .quora .navbar-collapse {
     padding: 0;
   }
 }
+@media (min-width: 768px) and (max-width: 992px) {
+  .quora .browse-box .columns {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+  }
+}
 @media (max-width: 992px) {
   #div-gpt-ad-664089004995786621-2 {
     margin-right: 15px;
+  }
+  .cycle-gallery .mask .slide .text-holder p {
+    line-height: 1.2;
   }
 }

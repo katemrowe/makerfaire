@@ -353,7 +353,7 @@ function initThumbnailsGallery() {
 
 
         holder.find('.slideset').carouFredSel({
-            responsive: false,
+            responsive: true,
             auto: false,
             circular: true,
             infinite: true,

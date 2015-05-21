@@ -42,16 +42,16 @@
       $url = wp_get_referer();    
       $path_parts = pathinfo($url);  
       if (strpos($url, 'topics') !== false) {
-          echo '<a href="'. $url.'" target="_self">&#65513; Back to Topics: '.$path_parts['filename']. "</a>"; 
+          echo '<a class="backLink" href="'. $url.'" target="_self">&#65513; Back to Topics: '.$path_parts['filename']. "</a>"; 
       }elseif (strpos($url, 'search') !== false) {
-          echo '<a href="'. $url.'" target="_self">&#65513; Back to Search Results</a>';
+          echo '<a class="backLink" href="'. $url.'" target="_self">&#65513; Back to Search Results</a>';
       }else{
-          echo '<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>';
+          echo '<a class="backLink" href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>';
       }
               
                       
         ?>
-      <div class="page-header">
+      <div class="page-header entryPage <?php echo ($entry['304.11']!=''?'blueRibbon ':'');echo ($entry['304.9']!=''?'redRibbon':'');?>">
 
         <h1><?php echo $entry['151']; ?></h1>
 

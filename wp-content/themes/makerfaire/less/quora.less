@@ -1801,6 +1801,109 @@ li:nth-child(1) .drop-holder .column .col { /* Cristi */
     margin: 0 0 12px;
 }
 
+//logic to display award ribbons
+.cycle-gallery{
+    border:none;
+}
+.cycle-gallery .mask {
+    padding-top: 35px;
+}
+.cycle-gallery .mask .slide {
+  border: 3px solid #67bde1;
+}
+
+//slideshow on meet the makers page
+.featured-holder .slide a.redRibbon::before,
+.featured-holder .slide a.blueRibbon::after{
+    position:absolute;
+    top: -37px;
+    left: 10px;
+}
+
+.featured-holder .slide a.redRibbon::before{
+    content: url(../images/red-ribbon-large.png);
+}
+
+.featured-holder .slide a.blueRibbon::after{
+    content: url(../images/blue-ribbon-large.png);
+}
+.featured-holder .slide a.redRibbon.blueRibbon::after{
+  left: 175px;;
+}
+
+//ribbon entry page
+/*.backLink{float:left}
+.entryPage.redRibbon,
+.entryPage.blueRibbon{
+  overflow:hidden;
+}
+
+.entryPage.redRibbon::before,
+.entryPage.blueRibbon::before{
+  padding-right: 5px;
+  clear:both;
+}
+.entryPage.blueRibbon h1, .entryPage.blueRibbon:before,
+.entryPage.redRibbon h1, .entryPage.redRibbon:before{
+    float:left;
+}*/
+
+.entryPage.redRibbon,.entryPage.blueRibbon{position:relative}
+
+.entryPage.redRibbon:before,
+.entryPage.blueRibbon h1::before{
+    position:absolute;
+    top: -10px;
+    left: 0px;
+}
+.entryPage.redRibbon:before{
+  content: url(../images/red-ribbon-small.png);
+}
+
+.entryPage.blueRibbon h1::before{
+  content: url(../images/blue-ribbon-small.png);
+}
+
+.entryPage.blueRibbon.redRibbon h1::before{
+  left: 65px;
+}
+.entryPage.blueRibbon h1,
+.entryPage.redRibbon h1{
+  padding-left: 65px;  
+}
+.entryPage.blueRibbon.redRibbon h1{
+  padding-left: 136px;
+}
+
+//MAKER RESULTS PAGE/topics page
+.makersByTopic .redRibbon,.makersByTopic .blueRibbon{position:relative}
+.makersByTopic .redRibbon:before,
+.makersByTopic .blueRibbon h3::before{
+    position:absolute;
+    top: -38px;
+  left: -22px;
+      transform: scale(.5);
+}
+.makersByTopic .redRibbon:before{
+  content: url(../images/red-ribbon-small.png);
+}
+
+.makersByTopic .blueRibbon h3::before{
+  content: url(../images/blue-ribbon-small.png);
+}
+
+.makersByTopic .blueRibbon.redRibbon h3::before{
+  left: 10px;
+}
+.makersByTopic .blueRibbon h3,
+.makersByTopic .redRibbon h3{
+  padding-left: 30px;  
+}
+.makersByTopic .blueRibbon.redRibbon h3{
+  padding-left: 62px;
+}
+//end ribbon logic
+
 .post-holder {
     margin: 0 0 97px;
 }
@@ -2350,7 +2453,7 @@ li:nth-child(1) .drop-holder .column .col { /* Cristi */
 
 .cycle-gallery {
     position: relative;
-    border: 3px solid #67bde1;
+   /* border: 3px solid #67bde1;*/
 }
 
 .cycle-gallery .mask {

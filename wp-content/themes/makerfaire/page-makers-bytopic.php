@@ -28,7 +28,7 @@ $cats_tags = get_categories(array('hide_empty' => 0));
 get_header(); ?>
 <div class="clear"></div>
 
-<div class="container">
+<div class="container makersByTopic">
 	<div class="row">
 		<div class="content span8">
 
@@ -56,7 +56,7 @@ get_header(); ?>
 			?>
 			<hr>
 			<div class="row">
-				<div class="span8">
+				<div class="span8 <?php echo ($entry['304.11']!=''?'blueRibbon ':'');echo ($entry['304.9']!=''?'redRibbon':'');?>">
 					<h3 class="nomargins maker-results"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 				</div>
 			</div>

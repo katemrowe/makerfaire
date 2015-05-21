@@ -9,9 +9,7 @@
 		<div class="col-xs-7">
 			<div class="row">
 				<div class="col-xs-12">
-					<h1 style="margin-top:0px;">
-						Experience Maker Faire LIVE
-					</h1>
+					<h1><?php echo get_the_title(); ?></h1>
 				</div>
 			</div>
 			<div class="row">
@@ -36,7 +34,7 @@
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-pinterest-32" href="https://pinterest.com/pin/create/button/?url=http://makerfaire.com/live/&media=http://makerfaire.com/wp-content/themes/makerfaire/images/robot.png&description=May%2016-17,%202015%20The%20Make:%20Video%20Team%20takes%20you%20to%20Maker%20Faire%20at%20the%20San%20Mateo%20County%20Fairgrounds.%20We'll%20be%20wandering,%20wondering,%20exploring,%20making%20stuff,%20connecting%20and%20being%20amazed%20the%20whole%20weekend.%20(But%20it's%20NOT%20as%20good%20as%20being%20there...)" title="Pinterest" target="_blank">
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
@@ -51,7 +49,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="content col-xs-12">
+		<div class="col-xs-12">
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 			<article <?php post_class(); ?>>
 				<?php the_content(); ?>
@@ -64,8 +62,7 @@
 		</div>
 	</div>
 </div>
-<div style="height:23px;background-repeat: repeat-x;background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/images/bg-border.png'); " >
-</div>
+<div class="flag-border"></div>
 <!-- Sponsor carusel section-->
 <div class="sponsors-wrap">
 	<div class="container-fluid">
@@ -83,7 +80,7 @@
 								<li><a href="#tab1">Silversmith</a></li>
 								<li><a href="#tab3">Coppersmith</a></li>
 								<!-- <li><a href="#tab4">Media</a></li>
-								<li><a href="#tab4">Presenting</a></li> -->
+									<li><a href="#tab4">Presenting</a></li> -->
 							</ul>
 						</div>
 					</div>
@@ -101,13 +98,13 @@
 								<?php echo mf_sponsor_list('Coppersmith Sponsor') ?>
 							</div>
 							<!--
-							<div class="slide">
-							<?php // echo mf_sponsor_list('Media Sponsor') ?>
-							</div>
-							<div class="slide">
-							<?php // echo mf_sponsor_list('Presenting Sponsor') ?>
-							</div>
-							-->
+								<div class="slide">
+								<?php // echo mf_sponsor_list('Media Sponsor') ?>
+								</div>
+								<div class="slide">
+								<?php // echo mf_sponsor_list('Presenting Sponsor') ?>
+								</div>
+								-->
 						</div>
 					</div>
 				</div>
@@ -115,52 +112,6 @@
 		</div>
 	</div>
 </div>
-<!--end of Sponsor carusel section--> 
-<!-- <div style="background-color: #075c78;color:#fff;padding-bottom:30px;font-size:12px;">
-	<div class="container live-archive" >
-		<h2>Make: Editors Report fom Maker Faire</h2>
-	
-			<div class="row" style="margin-bottom:30px;">
-				<div class="col-md-4">
-					<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-					<h3 style="font-size:18px;margin-top:12px;">Denny the Urban Bike</h3>
-					<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-				</div>
-				<div class="col-md-4">
-					<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-					<h3 style="font-size:18px;margin-top:12px;">Botfactory and Squink and Bay Area Maker</h3>
-					<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-	
-				</div>
-				<div class="col-md-4">
-					<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-					<h3 style="font-size:18px;margin-top:12px;">Denny the Urban Bike</h3>
-					<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-				</div>
-			</div> 
-			<!-- new row-->
-<!-- 			<div class="row" style="margin-bottom:30px;">
-	<div class="col-md-4">
-		<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-		<h3 style="font-size:18px;margin-top:12px;">Denny the Urban Bike</h3>
-		<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-	</div>
-	<div class="col-md-4">
-		<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-		<h3 style="font-size:18px;margin-top:12px;">Botfactory and Squink and Bay Area Maker</h3>
-		<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-	
-	</div>
-	<div class="col-md-4">
-		<a href="#"><img class ="img-responsive" src="http://img.youtube.com/vi/be2k5b_4YBc/0.jpg" alt="" /></a>
-		<h3 style="font-size:18px;margin-top:12px;">Denny the Urban Bike</h3>
-		<p>App c# jQuery page speed dom python html markdown javascript tablet hosting bootstrap yaml FTP puppet sql page dom css TCP. </p>
-	</div>
-	</div>
-	
-	
-	</div>
-	</div>
-	</div>
-	<!--Container-->
+<!--End of Sponsor carousel section--> 
+<!--End  Container-->
 <?php get_footer(); ?>

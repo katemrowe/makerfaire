@@ -845,7 +845,7 @@ function make_cpt_icons() { ?>
  * Adds footer copyright information
  */
 function make_copyright_footer() { ?>
-	<div class="row footer_copyright">
+	<div class="col-xs-12 footer_copyright">
 		<div class="text-center">
 			<p class="muted"><small>Make: and Maker Faire are registered trademarks of Maker Media, Inc.</small></p>
 			<p class="muted"><small>Copyright &copy; 2004-<?php echo date("Y") ?> Maker Media, Inc.  All rights reserved</small></p>

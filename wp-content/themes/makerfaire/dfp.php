@@ -7,7 +7,6 @@
  */
 global $post; ?>
 
-
 		<script type='text/javascript'>
 			var googletag = googletag || {};
 			googletag.cmd = googletag.cmd || [];

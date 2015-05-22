@@ -2,6 +2,8 @@
 <html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
 	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object#">
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-itunes-app" content="app-id=463248665"/>
 
 	<title><?php bloginfo('name'); ?> | <?php is_front_page() ? bloginfo('description') : wp_title(''); ?></title>

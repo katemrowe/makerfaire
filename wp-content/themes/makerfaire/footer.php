@@ -189,42 +189,49 @@
 	<?php echo make_copyright_footer(); ?>
 </footer><!-- END new-footer -->
 
-<script type="text/javascript">
-
+<!-- Clear the WP admin bar when in mobile fixed header -->
+<script>
 	jQuery(document).ready(function(){
+		if ((jQuery("#wpadminbar").length > 0) && (jQuery(window).width() < 768)) {
+			jQuery(".quora .navbar").css( "margin-top", 46 );
+		}
+	});
+</script>
 
+<!-- Quora dropdown toggle stuff -->
+<script type="text/javascript">
+	jQuery(document).ready(function(){
 		jQuery('.dropdown-toggle').dropdown();
 		jQuery('#north').tab('show');
 		jQuery('#featuredMakers').carousel({
 			interval: 5000
 		});
-                        jQuery('#mf-featured-slider').carousel({
-                            interval: 8000
-                        });
-                        
+        jQuery('#mf-featured-slider').carousel({
+            interval: 8000
+        });             
 		jQuery( ".carousel" ).each( function() {
 	        jQuery(this).carousel({
-			interval: 4000
-			        });
-	    });
-		
+				interval: 4000
+			});
+	    });	
 	});
-
 </script>
 
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
+
+<script>
+(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=216859768380573";
   fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+}(document, 'script', 'facebook-jssdk'));
+</script>
 
 <!-- Quantcast Tag -->
 <script type="text/javascript">
 var _qevents = _qevents || [];
-
 (function() {
 var elem = document.createElement('script');
 elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
@@ -233,16 +240,14 @@ elem.type = "text/javascript";
 var scpt = document.getElementsByTagName('script')[0];
 scpt.parentNode.insertBefore(elem, scpt);
 })();
-
 _qevents.push({
 qacct:"p-c0y51yWFFvFCY"
 });
 </script>
-
 <noscript>
-<div style="display:none;">
-<img src="//pixel.quantserve.com/pixel/p-c0y51yWFFvFCY.gif" border="0" height="1" width="1" alt="Quantcast"/>
-</div>
+	<div style="display:none;">
+		<img src="//pixel.quantserve.com/pixel/p-c0y51yWFFvFCY.gif" border="0" height="1" width="1" alt="Quantcast"/>
+	</div>
 </noscript>
 <!-- End Quantcast tag -->
 
@@ -294,13 +299,14 @@ jQuery(document).ready(function(){
 });
 </script>
 
-<?php // Adding Crazy Egg tracking ?>
+<!-- Crazy Egg tracking
+<?php ?>
 <script type="text/javascript">
 setTimeout(function(){var a=document.createElement("script");
 var b=document.getElementsByTagName("script")[0];
 a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0013/2533.js?"+Math.floor(new Date().getTime()/3600000);
 a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
-</script>
+</script>-->
 
 <?php wp_footer(); ?>
 

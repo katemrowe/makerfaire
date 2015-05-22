@@ -43,6 +43,9 @@
 * {
   font-family: 'latoregular', Helvetica, Arial, sans-serif;
 }
+body {
+  font-size: 16px;
+}
 h1,
 h2,
 h3,
@@ -191,6 +194,24 @@ a:focus {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.embed-youtube,
+.embed-vimeo,
+.googlemaps {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  margin-bottom: 15px;
+  position: relative;
+  height: 0;
+}
+.embed-youtube iframe,
+.embed-vimeo iframe,
+.googlemaps iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 .home .quora#header {
   margin-bottom: 0;
@@ -670,8 +691,8 @@ tr.time {
 .separator {
   color: #000 !important;
 }
-.twitter-widget-1 {
-  width: 100%;
+#twitter-widget-1 {
+  width: 100% !important;
 }
 .lead ul li {
   line-height: 120%;
@@ -2899,7 +2920,7 @@ li.hidelink a:visited {
   top: 0;
   width: 194px;
   left: 0;
-  padding: 10px 20px 8px 10px;
+  padding: 0 20px 8px 10px;
   right: 0;
   background: #fff;
 }
@@ -2908,8 +2929,7 @@ li.hidelink a:visited {
 }
 .quora .sponsors-wrap .open-close .opener i {
   position: absolute;
-  top: 16px;
-  right: 20px;
+  padding-left: 12px;
   font-size: 20px;
   -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
@@ -3515,8 +3535,12 @@ li.hidelink a:visited {
   .navbar {
     background-color: #fff;
   }
+  #wpadminbar {
+    position: fixed;
+  }
   .quora#header {
     padding: 0;
+    margin-bottom: 40px;
   }
   .quora .navbar .navbar-brand {
     margin-left: 15px;
@@ -3694,6 +3718,21 @@ li.hidelink a:visited {
     z-index: 10;
     border: none;
   }
+  .quora .follow-wrap .social-holder.instagram,
+  .quora .follow-wrap .social-holder,
+  .quora .follow-wrap .social-holder {
+    border-right: none;
+    border-left: none;
+  }
+  .quora .follow-wrap .social-holder.timer-box {
+    padding: 0 5%;
+  }
+  .quora .sponsors-wrap .title {
+    border-right: none;
+  }
+  .quora .head-box .title {
+    padding: 0 0 30px 0;
+  }
 }
 @media (min-width: 768px) {
   .quora .navbar-collapse {
@@ -3708,9 +3747,6 @@ li.hidelink a:visited {
   }
 }
 @media (max-width: 992px) {
-  #div-gpt-ad-664089004995786621-2 {
-    margin-right: 15px;
-  }
   .cycle-gallery .mask .slide .text-holder p {
     line-height: 1.2;
   }

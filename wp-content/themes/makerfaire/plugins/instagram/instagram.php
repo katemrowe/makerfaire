@@ -32,7 +32,7 @@ class Make_Instagram {
 
 		$base_url = 'https://api.instagram.com/v1/tags/makerfaire/media/recent';
 		$params = array(
-			'access_token' => '227901753.1fb234f.b4dd629a578c47cda3f6fd579935190e',
+			'access_token' => '227901753.5b9e1e6.7b46b974b69e434e9d3322f1e4463894',
 			'count' => 3
 		);
 

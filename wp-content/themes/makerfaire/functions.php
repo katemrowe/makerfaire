@@ -410,6 +410,12 @@ function makerfaire_makezine_rss_news() {
 		$maxitems = $rss -> get_item_quantity(3); //gets latest 3 items This can be changed to suit your requirements
 		$rss_items = $rss -> get_items(0, $maxitems);
 	endif;
+	//grabs our post thumbnail image
+	function get_first_image_url($html) {
+		if (preg_match('/<img.+?src="(.+?)"/', $html, $matches)) {
+			return $matches[1];
+		}
+	}
 
 	if ($maxitems == 0) 
 		echo '<li>No items.</li>';

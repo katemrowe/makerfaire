@@ -11,9 +11,13 @@
   .navbar {
     background-color: #fff;
   }
+  #wpadminbar {
+    position: fixed;
+  }
   .quora {
     &#header {
       padding:0;
+      margin-bottom: 40px;
     }
     .navbar .navbar-brand {
       margin-left: 15px;
@@ -204,6 +208,19 @@
     z-index: 10;
     border: none;
   }
+  .quora .follow-wrap .social-holder.instagram, .quora .follow-wrap .social-holder, .quora .follow-wrap .social-holder {
+    border-right: none;
+    border-left: none;
+  }
+  .quora .follow-wrap .social-holder.timer-box {
+    padding: 0 5%;
+  }
+  .quora .sponsors-wrap .title {
+    border-right: none;
+  }
+  .quora .head-box .title {
+    padding: 0 0 30px 0;
+  }
 }
 @media(min-width:768px) {
   .quora .navbar-collapse {
@@ -225,9 +242,6 @@
   // }
 }
 @media(max-width:992px) {
-  #div-gpt-ad-664089004995786621-2 {  
-    margin-right: 15px;
-  }
   .cycle-gallery .mask .slide .text-holder p {
     line-height: 1.2;
   }

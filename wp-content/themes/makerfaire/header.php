@@ -134,9 +134,6 @@ Topbar
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
 
-
-
-			
 				<?php
 				  foreach ( wp_get_nav_menu_items('$menu_name') as $key => $item ) {
 
@@ -173,7 +170,6 @@ Topbar
 				  echo $menu_html;
 
 				?>
-
 
 
 		        <li class="dropdown">
@@ -241,17 +237,15 @@ Topbar
 			                                    </div>
 			                                	<div class="col-sm-9 col no-border">
 			                                        <ul class="sub-menu">
-			            <?php endif; ?>
+			            	<?php endif; ?>
 			                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
 			                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
 			                                                <div class="description"><?php echo $description; ?></div>
 			                                            </li>
-			            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
+			            	<?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
 			                                        </ul>
 			                                    </div>
-			                                    <div class="col-sm-3 col dinamic-content">
-			                                    	
-			                                    </div>
+			                                    <div class="col-sm-3 col dinamic-content"></div>
 			                                </div>    
 				            			</div>
 				            		</div>

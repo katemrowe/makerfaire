@@ -3538,6 +3538,9 @@ li.hidelink a:visited {
   #wpadminbar {
     position: fixed;
   }
+  .carousel-holder .text-box {
+    margin-top: -10px;
+  }
   .quora#header {
     padding: 0;
     margin-bottom: 40px;
@@ -3682,10 +3685,11 @@ li.hidelink a:visited {
     width: 100%;
   }
   .advertisement-container h2 {
-    font-size: 21px;
+    font-size: 16px;
   }
   .quora .advertisement-container div {
     margin-left: 70px;
+    padding-right: 0;
   }
   .quora .advertisement-container img {
     bottom: -15px;

@@ -3564,9 +3564,6 @@ li.hidelink a:visited {
   #wpadminbar {
     position: fixed;
   }
-  .carousel-holder .text-box {
-    margin-top: -10px;
-  }
   .quora#header {
     padding: 0;
     margin-bottom: 40px;
@@ -3678,6 +3675,7 @@ li.hidelink a:visited {
     padding: 15px 0 0;
     height: 100%;
     background: #085a7e;
+    margin-top: -10px;
   }
   .quora .carousel-holder .carousel-inner p {
     font-family: 'latolight', Helvetica, Arial, sans-serif;

@@ -815,6 +815,28 @@ li.hidelink a:visited {
   position: relative;
   top: -33px;
 }
+.navbar-fixed-top .mobile-nav-tickets {
+  background-color: red;
+  color: #fff !important;
+}
+.navbar-fixed-top .mobile-nav-tickets:active,
+.navbar-fixed-top .mobile-nav-tickets:focus {
+  background-color: #0084B5;
+  color: #fff;
+}
+.navbar-fixed-top .mobile-li-buttons {
+  background-color: #fff;
+  height: 61px;
+  padding: 10px 0;
+}
+.navbar-fixed-top .mobile-li-buttons .btn-cyan {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+}
+.navbar-fixed-top .mobile-li-buttons .btn-cyan:hover {
+  color: #fff;
+}
 .tab-content h3 {
   line-height: 100%;
 }

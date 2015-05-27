@@ -270,7 +270,8 @@ function isc_register_menus() {
   register_nav_menus(
 	array( 'header-menu' => __( 'Header Menu' ),
             'footer' => __( 'footer' ),
-			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ) )
+			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ),
+			'mobile-nav' => __( 'Mobile Navigation' ) )
   );
 }
 add_action( 'init', 'isc_register_menus' );
@@ -403,56 +404,61 @@ add_shortcode( 'mmakers', 'makerfaire_meet_the_makers_shortcode' );
 /**
  * 3 Maker Faire tagged posts from Makezine - for homepage
  */
+
+function get_first_image_url($html) {
+            if (preg_match('/<img.+?src="(.+?)"/', $html, $matches)) {
+              return $matches[1];
+            }
+}
+
 function makerfaire_makezine_rss_news() {
+    $url = 'http://makezine.com/tag/maker-faire/feed/';
+    $rss = fetch_feed( $url);
+    // Figure out how many total items there are, but limit it to 5. 
+    $maxitems = $rss->get_item_quantity( 3 );
+    // Build an array of all the items, starting with element 0 (first element).
+    $rss_items = $rss->get_items( 0, $maxitems );
 
-	$rss = fetch_feed('http://makezine.com/tag/maker-faire/feed/');
-	if (!is_wp_error($rss)) :
-		$maxitems = $rss -> get_item_quantity(3); //gets latest 3 items This can be changed to suit your requirements
-		$rss_items = $rss -> get_items(0, $maxitems);
-	endif;
-	//grabs our post thumbnail image
-	function get_first_image_url($html) {
-		if (preg_match('/<img.+?src="(.+?)"/', $html, $matches)) {
-			return $matches[1];
-		}
-	}
-
-	if ($maxitems == 0) 
-		echo '<li>No items.</li>';
-	else foreach ( $rss_items as $item ) :
-	?>
-		<div style="display:none;">
-			<a class="" href="<?php echo esc_url($item -> get_permalink()); ?>" target="_blank">
-				<?php echo '<img class="" src="' . get_first_image_url($item -> get_content()) . '" alt="Maker Faire post featured image" />'; ?>
-			</a>
-			<a href='<?php echo esc_url($item -> get_permalink()); ?>' title='<?php echo esc_html($item -> get_title()); ?>' target="_blank">
-				<?php echo esc_html($item -> get_title()); ?>
-			</a>
-		</div>
-	<?php endforeach;
-
+    //image #2
+    $description=$rss_items[1]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[1]->get_title() ); 
+    $url=esc_url( $rss_items[1]->get_permalink());
 	$output = '<div class="row filter-container">'
-	          . '<div class="col-xs-12 col-sm-4">'
-	          . '   <a style="margin-bottom: 20px;" href="/maker/entry/' . $values[1]['id'] . '" class="post">'
-	          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" alt="Featured Maker Faire post 1">'
-	          . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
-	          . '   </a>'
-	          . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
-	          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" alt="Featured Maker Faire post 2">'
-	          . '     <div class="text-box"><span class="section">' . $entry3_description . '</span></div>'
-	          . '   </a>'
-	          . '</div>'
-	          . ' <div class="col-xs-12 col-sm-8"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
-	          . '   <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" alt="Featured Maker Faire post 3">'
-	          . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
-	          . '</div>'
-	          . '</div>';
-	  
-	return $output;
+            . '<div class="col-xs-12 col-sm-4">'
+            . '  <a style="margin-bottom: 20px;" href="'.$url.'" class="post">'
+            . '    <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 1">'               
+            . '    <div class="text-box"><span class="section">' . $title . '</span></div>'
+            . '  </a>';
+
+    //image #3
+    $description=$rss_items[2]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[2]->get_title() ); 
+    $url=esc_url( $rss_items[2]->get_permalink());  
+    $output .= '  <a href="'.$url . '" class="post">'
+            . '    <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 2">'
+            . '    <div class="text-box"><span class="section">' . $title . '</span></div>'
+            . '  </a>'
+            . '</div>';
+
+    //image #1
+    $description=$rss_items[0]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[0]->get_title() ); 
+    $url=esc_url( $rss_items[0]->get_permalink()); 
+    $output .= ' <div class="col-xs-12 col-sm-8"><a href="' . $url. '" class="post">'
+            . '  <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 3">'
+            . '  <div class="text-box"><span class="section">' . $title . '</span></div></a>'
+            . '</div>'
+            . '</div>';
+    RETURN $output;
 }
 
 add_shortcode( 'mf-news', 'makerfaire_makezine_rss_news' );
-
 
 
 function makerfaire_featured_makers_shortcode($atts, $content = null) {

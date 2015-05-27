@@ -15,7 +15,7 @@
  	//See mf_get_terms
  	//array_merge for atts here to avoid breaking code term display code
  	$cats_tags = get_categories(array('hide_empty' => 0));
- 	$output = '<ul class="columns">';
+ 	$output = '<ul class="columns list-unstyled">';
  	foreach ($cats_tags as $cat) {
  		  if ($cat->slug != 'uncategorized') {
    			// $atts['faire'] has been deprecated and will be removed once the production server has been updated.

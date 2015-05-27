@@ -134,56 +134,64 @@ Topbar
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav">
 
 				<?php
-				  foreach ( wp_get_nav_menu_items('$menu_name') as $key => $item ) {
 
-				    //Create an array representation of this nav item
-				    //that includes some important properties we will need.
-				    //The first item needs a special grid class to be positioned correctly
-				    $this_nav_item = array(
-				      'url' => ($item -> url),
-				      'title' => ($item -> title)
-				    );
+				//     echo '<li  class="dropdown '.$class.'"><a href="'.$parent['url'].'"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">'.$parent['title'].'<span class="caret"></span></a>';
+				//     if(is_array($parent)){
+				//         echo '<ul class="dropdown-menu" role="menu">';
+				//         foreach($parent as $key=>$child){
+				//             if(is_array($child)  && $key!='classes'){
+				//                 $class = '';
+				//                 if(isset($child['classes']) && is_array($child['classes'])){
+				//                     foreach($child['classes'] as $childClass){
+				//                         $class .= $childClass;
+				//                     }
+				//                 }
+				//                 echo '<li class="'.$class.'"><a href="'.$child['url'].'">'.$child['title'].'</a></li>';
+				//             }
+				//         }
+				//         echo '</ul>';
+				//     }
+				//     echo '</li>';
+				// }
+				// echo '</ul>';
 
-				    if($item -> menu_item_parent == 0){
-				      //Only add top-level items to the main array
-				      $menu_arr[$item->ID] = $this_nav_item;
-				    }else{
-						//Only add top-level items to the main array
-				      	$menu_arr[$item->ID] = $this_nav_item;
-				    }
-
-				    //Increment the counter
-				    $i++;
-				  }
-
-				  $menu_html="";
-
-				  //Loop through the array we created above...
-				  foreach ($menu_arr as $key => $item) {
-
-				    //Build up the needed output
-				    $menu_html.= '<a href="' . $item['url'] . '" class="alt-link-color">' . $item['title'] . '</a>';
-				  }
-				  
-				  //Output the final menu HTML
-				  echo $menu_html;
-
+				$mobileNavName = 'mobile-nav';
+				wp_nav_menu( array(
+				        'theme_location' => '$mobileNavName',
+				        'menu'            => 'Main Navigation Version 2 Mobile',
+				        'container' => false
+				) );
 				?>
 
+		      <div class="mobile-nav-social padtop padbottom">
 
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="#">menulink</a></li>
-		          </ul>
-		      	</li>
-		      	<li class="divider"></li>
+		      	<span class="nav-follow-us text-muted padright">Follow us:</span>
 
-		        <li><a href="#">Shop</a></li>
-		      </ul>
+				<div class="social-profile-icons">
+					<a class="sprite-facebook-32" href="//www.facebook.com/makerfaire" title="Facebook" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-twitter-32" href="//twitter.com/makerfaire" title="Twitter" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-googleplus-32" href="//plus.google.com/104410464300110463062/posts" rel="publisher" title="Google+" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+				</div>
+			  </div>
 		    </div>
 
 
@@ -199,6 +207,7 @@ Topbar
 	        <div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 				    <?php
+				    $menu_name = 'Main Navigation Version 2';
 				    $count = 0;
 				    $submenu = false;
 

@@ -46,7 +46,28 @@ class GFEntryList {
 		$read       = $filter == 'unread' ? 0 : null;
 		$status     = in_array( $filter, array( 'trash', 'spam' ) ) ? $filter : 'active';
 		$form       = RGFormsModel::get_form_meta( $form_id );
+                
+                $choices= array();
+                foreach ($form['fields'] as $key=>$entry){
+                    if ($entry['displayAllCategories']==true){
+                        //build choices array                        
+                            $args = array('type'                     => 'post',
+                                            'orderby'                  => 'name',
+                                            'order'                    => 'ASC',                                            
+                                            'taxonomy'                 => 'category'); 
+                                    $categories = get_categories( $args ); 
 
+                                    foreach ($categories as $category) {                                            
+                                            $choices[] = array("text" => $category->name, "value" => $category->name.':'.$category->cat_ID);
+                                            //$inputs[] = array("label" => $category->name, "id" => "3.".$x); // replace the 3 in "3." with your field ID.
+                                    }
+                                    $form['fields'][$key]['choices']=$choices;
+                        
+                        //echo 'all categories=true<br/>';
+                        //var_dump($entry);
+                        //echo '<br/><br/>';
+                    }
+                }
 		$search_criteria['status'] = $status;
 
 		if ( $star ) {

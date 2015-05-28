@@ -95,12 +95,12 @@ function mf_display_schedule_by_area( $atts ) {
 
 	
 	//$output = '<div class="row"><div class="col-md-4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="col-md-1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
-        $output = '<div class="row">'
+        $output = '<div class="padtop" style="height: 58px;overflow: hidden;">'
                 . '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
-                . '<div class="col-md-1 pull-right" style="position:relative; top:25px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
+                . '<div class="pull-right" style="position:relative; top:-31px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" class="padright" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
-	$days = array( 'friday', 'saturday', 'sunday' );
+	$days = array( 'Friday', 'Saturday', 'Sunday' );
         
         $output .= ' <div class="tab-content">';
         //$first sets the first day to active

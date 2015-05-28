@@ -97,8 +97,8 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img src="'+templateUrl+'/images/about-logo.png" height="154" width="113" alt="">');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<img src="'+templateUrl+'/images/area-logo.png" height="130" width="184" alt=""><a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<img src="'+templateUrl+'/images/newyork-logo.png" height="157" width="157" alt="">');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<img src="'+templateUrl+'/images/area-logo.png" height="130" width="184" alt="">');//<a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<img src="'+templateUrl+'/images/newyork-logo.png" height="157" width="157" alt="">');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img src="'+templateUrl+'/images/world-logo.png" height="130" width="130" alt="">');
 
     /**
@@ -149,7 +149,7 @@ function makeStyle(){
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
 
-    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>BAY AREA 2015</h2>');
+    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>NEW YORK 2015</h2>');
 	jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
 	jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');

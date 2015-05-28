@@ -40,7 +40,7 @@
   font-weight: normal;
   font-style: normal;
 }
-* {
+body {
   font-family: 'latoregular', Helvetica, Arial, sans-serif;
 }
 body {
@@ -52,7 +52,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'latolight', Helvetica, Arial, sans-serif;
+  font-family: "latomedium", Helvetica, Arial, sans-serif;
+  font-weight: 400;
 }
 b,
 strong {
@@ -60,6 +61,7 @@ strong {
 }
 h1 {
   margin-bottom: 15px;
+  font-size: 42px;
 }
 h4 {
   margin-top: 12px;
@@ -85,6 +87,9 @@ a:focus {
 }
 .clear {
   clear: both;
+}
+.lead {
+  font-size: 18px;
 }
 .first {
   width: 195px;
@@ -445,6 +450,9 @@ a:focus {
 .filter-container .post .section {
   font: 14px/18px "latomedium", Helvetica, Arial, sans-serif;
   display: block;
+}
+#recent-twitter {
+  min-height: 222px;
 }
 .sidebar-bordered {
   border: 1px solid #d7d7d7;
@@ -1890,6 +1898,9 @@ li.hidelink a:visited {
 }
 .quora .nav > li > a {
   padding: 14px 15px 22px;
+  color: #085a7e;
+  -webkit-transition: none;
+  transition: none;
 }
 .quora .drop-holder {
   position: absolute;
@@ -2293,7 +2304,6 @@ li.hidelink a:visited {
 }
 .quora .carousel-holder .text-box {
   width: 100%;
-  padding: 95px 0 0;
 }
 .quora .pagination {
   background: #085a7e;
@@ -3788,6 +3798,9 @@ li.hidelink a:visited {
 @media (min-width: 768px) {
   .quora .navbar-collapse {
     padding: 0;
+  }
+  .col-md-8 article {
+    padding-right: 45px;
   }
 }
 @media (min-width: 768px) and (max-width: 992px) {

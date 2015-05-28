@@ -21,7 +21,7 @@
 
 	<div class="center">
 		<a href="https://mfba2015.eventbrite.com/" target="_blank">
-			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
+			<img class="img-responsive" width="100%" src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
 		</a>
 	</div>
 

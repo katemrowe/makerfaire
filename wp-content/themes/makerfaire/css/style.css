@@ -206,7 +206,8 @@ a:focus {
 }
 .embed-youtube iframe,
 .embed-vimeo iframe,
-.googlemaps iframe {
+.googlemaps iframe,
+.embed-resp object {
   left: 0;
   top: 0;
   height: 100%;
@@ -3588,7 +3589,7 @@ li.hidelink a:visited {
   }
   .quora#header {
     padding: 0;
-    margin-bottom: 40px;
+    margin-bottom: 66px;
   }
   .quora .navbar .navbar-brand {
     margin-left: 15px;

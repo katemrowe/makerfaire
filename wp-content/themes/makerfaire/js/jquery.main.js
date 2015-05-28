@@ -337,6 +337,13 @@ function initCustomGallery() {
 
 function initThumbnailsGallery() {
     jQuery('.gallery-holder div.carousel').each(function() {
+        if (jQuery(window).width() < 768) {
+           var thumbNumber = 5;
+        } else if (jQuery(window).width() > 1199) {
+            var thumbNumber = 12;
+        } else {
+           var thumbNumber = 9;
+        }
         var holder = jQuery(this),
             btnPrev = holder.find('.btn-prev'),
             btnNext = holder.find('.btn-next'),
@@ -363,7 +370,7 @@ function initThumbnailsGallery() {
             next: btnNext,
             mousewheel: false,
             items: {
-                visible: 9
+                visible: thumbNumber
             },
             scroll: {
                 items: 1,

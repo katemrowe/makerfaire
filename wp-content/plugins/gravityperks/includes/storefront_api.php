@@ -130,6 +130,7 @@ class GWAPI {
 
 			if( $is_perk_installed && version_compare( $local_perk_version, $remote_perk->new_version, '<' ) ) {
 				GravityPerks::log_debug( 'Perk update found. Adding to local perk update data.' . print_r( $remote_perk, true ) );
+				$remote_perk->slug = basename( $remote_perk->slug, '.php' );
 				$perk_update_data[$remote_perk_file] = $remote_perk;
 			}
 		}

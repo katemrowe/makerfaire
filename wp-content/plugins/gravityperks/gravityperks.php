@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Perks
  * Plugin URI: http://gravitywiz.com/2012/03/03/what-is-a-perk/?from=perks
  * Description: Effortlessly install and manage small functionality enhancements (aka "perks") for Gravity Forms.
- * Version: 1.2.8
+ * Version: 1.2.8.2
  * Author: David Smith
  * Author URI: http://gravitywiz.com/
  * License: GPL2
@@ -29,7 +29,7 @@ class GravityPerks {
     private static $basename;
     private static $slug = 'gravityperks';
     private static $url = 'http://gravitywiz.com/gravity-perks/';
-    private static $version = '1.2.8';
+    private static $version = '1.2.8.2';
     private static $min_gravity_forms_version = '1.8';
     private static $min_wp_version = '3.7';
     private static $api;

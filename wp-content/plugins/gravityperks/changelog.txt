@@ -1,6 +1,15 @@
 
 # Changelog
 
+## 1.2.8.2
+
+    - Fixed issue where updates for perks with WP 4.2 were not working due to invalid slug
+
+## 1.2.8.1
+
+    - Fixed strict standards notices in GWNotice class
+    - Fixed styling issue in Perks Settings view
+
 ## 1.2.8
 
     - Added support for dynamic hooks for the "gform_field_appearance_settings" filter

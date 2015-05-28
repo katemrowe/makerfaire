@@ -1,6 +1,18 @@
 
 # Changelog
 
+## 1.2.4
+
+    - Added support for targeting Quantity inputs on Single Product fields
+
+## 1.2.3
+
+    - Fixed issue where targetting specific input of email field did not allow copying of value
+
+## 1.2.2
+
+    - Added support for copying from specific inputs of multi-input fields to single input fields or specific inputs of other multi-input fields
+
 ## 1.2.1
 
     - Added support for copying textareas

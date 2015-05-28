@@ -3,7 +3,7 @@
 * Plugin Name: GP Copy Cat
 * Description: Allow users to copy the value of one field to another by clicking a checkbox. Is your shipping address the same as your billing? Copy cat!
 * Plugin URI: http://gravitywiz/category/perks/
-* Version: 1.2.1
+* Version: 1.2.4
 * Author: David Smith
 * Author URI: http://gravitywiz.com/
 * License: GPL2
@@ -19,8 +19,8 @@ if(!require_once(dirname($gw_perk_file) . '/safetynet.php'))
 
 class GWCopyCat extends GWPerk {
 
-    protected $min_perks_version = '1.0.6';
-    public $version = '1.2.1';
+	public $version = '1.2.4';
+	protected $min_perks_version = '1.0.6';
 
     private $script_loaded;
 
@@ -37,7 +37,7 @@ class GWCopyCat extends GWPerk {
 
         foreach($form['fields'] as &$field) {
 
-            preg_match_all('/copy-([0-9]+)-to-([0-9]+)/', $field['cssClass'], $matches, PREG_SET_ORDER);
+            preg_match_all('/copy-([0-9]+(?:.[0-9]+)?)-to-([0-9]+(?:.[0-9]+)?)/', $field['cssClass'], $matches, PREG_SET_ORDER);
 
             if(empty($matches))
                 continue;
@@ -98,9 +98,30 @@ class GWCopyCat extends GWPerk {
                 for( var i = 0; i < fields.length; i++ ) {
 
                     var field        = fields[i],
+                        source       = parseInt( field.source ),
+                        target       = parseInt( field.target ),
                         sourceValues = [],
-                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + field.source ).find( 'input, select, textarea' ),
-                        targetGroup  = jQuery( '#field_' + this._formId + '_' + field.target ).find( 'input, select, textarea' );
+                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + source ).find( 'input, select, textarea' ),
+                        targetGroup  = jQuery( '#field_' + this._formId + '_' + target ).find( 'input, select, textarea' );
+
+                    if( target != field.target ) {
+                        var targetInputId = field.target.split( '.' )[1];
+	                    // search for field by ID - or - by name attribute
+                        targetGroup = targetGroup.filter( '#input_' + this._formId + '_' + target + '_' + targetInputId + ', input[name="input_' + field.target + '"]' );
+                    }
+
+	                if( source != field.source ) {
+
+		                var sourceInputId       = field.source.split( '.' )[1],
+			                filteredSourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source + '_' + sourceInputId + ', input[name="input_' + field.source + '"]' );
+
+		                // some fields (like email with confirmation enabled) have multiple inputs but the first input has no HTML ID (input_1_1 vs input_1_1_1)
+		                if( filteredSourceGroup.length <= 0 ) {
+			                sourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source );
+		                } else {
+			                sourceGroup = filteredSourceGroup;
+		                }
+	                }
 
                     if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
                         sourceGroup = sourceGroup.filter( ':checked' );
@@ -129,7 +150,7 @@ class GWCopyCat extends GWPerk {
                         }
                         // if there is only one input, join the source values
                         else {
-                            targetElem.val(sourceValues.join(' '));
+                            targetElem.val( sourceValues.join( ' ' ) );
                         }
 
                     } ).change();
@@ -146,9 +167,28 @@ class GWCopyCat extends GWPerk {
                 for( var i = 0; i < fields.length; i++ ) {
 
                     var field        = fields[i],
-                        targetGroup  = jQuery( '#field_' + this._formId + '_' + field.target ).find( 'input, select, textarea' ),
+                        source       = parseInt( field.source ),
+                        target       = parseInt( field.target ),
                         sourceValues = [],
-                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + field.source ).find( 'input, select, textarea' );
+                        targetGroup  = jQuery( '#field_' + this._formId + '_' + target ).find( 'input, select, textarea' ),
+                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + source ).find( 'input, select, textarea' );
+
+                    if( target != field.target ) {
+                        var targetInputId = field.target.split( '.' )[1];
+	                    targetGroup = targetGroup.filter( '#input_' + this._formId + '_' + target + '_' + targetInputId + ', input[name="input_' + field.target + '"]' );
+                    }
+
+                    if( source != field.source ) {
+
+                        var sourceInputId       = field.source.split( '.' )[1],
+	                        filteredSourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source + '_' + sourceInputId + ', input[name="input_' + field.source + '"]' );
+
+	                    if( filteredSourceGroup.length <= 0 ) {
+		                    sourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source );
+	                    } else {
+		                    sourceGroup = filteredSourceGroup;
+	                    }
+                    }
 
                     if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
                         sourceGroup = sourceGroup.filter( ':checked' );

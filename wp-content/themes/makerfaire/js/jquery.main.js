@@ -149,7 +149,7 @@ function makeStyle(){
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
 
-    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>BAY AREA 2015</h2>');
+    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>NEW YORK 2015</h2>');
 	jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');

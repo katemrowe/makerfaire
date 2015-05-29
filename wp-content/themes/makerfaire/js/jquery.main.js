@@ -97,8 +97,8 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo"><a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo">');//<a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**

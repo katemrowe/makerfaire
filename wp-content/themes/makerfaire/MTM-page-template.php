@@ -15,7 +15,7 @@
  	//See mf_get_terms
  	//array_merge for atts here to avoid breaking code term display code
  	$cats_tags = get_categories(array('hide_empty' => 0));
- 	$output = '<ul class="columns">';
+ 	$output = '<ul class="columns list-unstyled">';
  	foreach ($cats_tags as $cat) {
  		  if ($cat->slug != 'uncategorized') {
    			// $atts['faire'] has been deprecated and will be removed once the production server has been updated.
@@ -23,17 +23,16 @@
  			$output .= '<li><a href="topics/' .  $cat->slug . '">' . esc_html( $cat->name ) . '</a></li>';
  		}
  	}
- 
  	$output .= '</ul>';
  	return $output;
  }
- 
  ?>
- <div id="wrapper">
+
+ <div id="wrapper" class="quora">
  <main id="main" role="main">
  
 	    
-        <!-- The header section with a fullwidth image--> 
+<!-- The header section with a fullwidth image--> 
 <?php
  $criteria = array(
      'field_filters' => array(
@@ -48,177 +47,192 @@
   $randEntryId = $randEntry['id'];
 ?> 
       
-        <!-- The slider -->
-    	<div class="featured-holder">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12">
-						<h1>Featured 2015 Bay Area Makers: </h1>
-						<div class="gallery-holder">
-							<div class="cycle-gallery">
-								<div class="mask">
-									<div class="slideset">
-			      <div class="slide">
-   		                <a class="<?php echo ($randEntry['304.11']!=''?'blueRibbon ':'');echo ($randEntry['304.9']!=''?'redRibbon':'');?>" href="/maker/entry/<?php echo $randEntry['id']; ?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],936,442); ?>" height="442" width="936" alt=""></a>
-				<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
-				   <strong class="title">Featured Maker Story</strong>
-				   <p><mark><?php echo $randEntry['151']; ?>: </mark><?php echo $randEntry['16']; ?></p>
-				</div></a>
-			      </div>
-                              <?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
+<!-- The slider -->
+<div class="featured-holder">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1>Featured 2015 Bay Area Makers: </h1>
+				<div class="gallery-holder">
+					<div class="cycle-gallery">
+						<div class="mask">
+							<div class="slideset">
+			      				<div class="slide">
+   		                			<a href="/maker/entry/<?php echo $randEntry['id']; ?>">
+   		                				<span class="maker-slider-btn">Learn More About This Maker</span>
+   		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],1134,442); ?>" alt="Slide Show from Maker Faire Bay Area 2015"></a>
+									<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
+									<div class="text-holder">
+				   						<strong class="title">Featured Maker Story</strong>
+				   						<p><mark><?php echo $randEntry['151']; ?>: </mark><?php echo $randEntry['16']; ?></p>
+									</div></a>
+			      				</div>
+                              	<?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
+	                                <div class="slide">
+	   		                  			<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
+	   		                  				<span class="maker-slider-btn">Learn More About This Maker</span>
+	   		                  				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],1134,442); ?>" alt="Slide Show from Maker Faire Bay Area 2015"></a>
+					  					<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
+					  					<div class="text-holder">
+					     					<strong class="title">Featured Maker Story</strong>
+					     					<p><mark><?php echo $entries[$i]['151']; ?>: </mark><?php echo $entries[$i]['16']; ?></p>
+					  					</div></a>
+				        			</div>
+                              	<?php } // end for ?>
+							</div>
+						</div>
+					</div>
+					<div class="carousel">
+						<div class="mask">
+							<div class="slideset">
                                 <div class="slide">
-   		                  <a href="/maker/entry/<?php echo $entries[$i]['id']; ?>" class="<?php echo ($entries[$i]['304.11']!=''?'blueRibbon ':'');echo ($entries[$i]['304.9']!=''?'redRibbon':'');?>"><span class="maker-slider-btn">Learn More About This Maker</span><img src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],936,442); ?>" height="442" width="936" alt=""></a>
-				  <a href="/maker/entry/<?php echo $entries[$i]['id']; ?>"><div class="text-holder">
-				     <strong class="title">Featured Maker Story</strong>
-				     <p><mark><?php echo $entries[$i]['151']; ?>: </mark><?php echo $entries[$i]['16']; ?></p>
-				  </div></a>
-			        </div>
-                              <?php } // end for ?>
-									</div>
-								</div>
-							</div>
-							<div class="carousel">
-								<div class="mask">
-									<div class="slideset">
-                                  <div class="slide">
-				     <a href="#"><img src="<?php echo $randEntry['22']; ?>" height="94" width="94" alt=""></a>
-				 </div>
-                              <?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
-				 <div class="slide">
-				     <a href="#"><img src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],94,94); ?>" height="94" width="94" alt=""></a>
-				 </div>
-                             <?php } // end for ?>
-									</div>
-								</div>
-								<a class="btn-prev" href="#"><i class="icon-arrow-left"></i></a>
-								<a class="btn-next" href="#"><i class="icon-arrow-right"></i></a>
+				     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],95,95); ?>" alt="Slide gallery thumbnail"></a>
+				 				</div>
+                              	<?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
+					 				<div class="slide">
+					     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],95,95); ?>" alt="Slide gallery thumbnail"></a>
+					 				</div>
+                             	<?php } // end for ?>
 							</div>
 						</div>
+						<a class="btn-prev" href="#"><i class="icon-arrow-left"></i></a>
+						<a class="btn-next" href="#"><i class="icon-arrow-right"></i></a>
 					</div>
 				</div>
 			</div>
 		</div>
-    <!--End of slider -->
+	</div>
+</div>
+<!--End of slider -->
   
-	<div class="search-box">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12">
-						<strong>Looking for a specific Maker? Search by Keyword:</strong>
-						<div class="form-group">
-                        	       <form role="search" method="get" class="form-search" id="searchform" action="search/">
-										<input type="text"  name="s_term" id="s_term" class="form-control" />
-										<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
-									</form>
-						</div>
-					</div>
+<div class="search-box">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-8 text-center padbottom">
+				<strong>Looking for a specific Maker? Search by Keyword:</strong>
+			</div>
+			<div class="col-sm-6 col-md-4 text-center">
+				<div class="form-group visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
+        	       	<form role="search" method="get" class="form-search" id="searchform" action="search/">
+						<input type="text"  name="s_term" id="s_term" class="form-control evilquora" />
+						<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
+					</form>
 				</div>
 			</div>
 		</div>
-		<div class="browse-box">
-<div class="container-fluid">
-<div class="row">
-<div class="col-xs-12">
-Browse by Topic 
-<?php echo mf_get_topics();?></div>
+	</div>
 </div>
-</div>
+<div class="browse-box">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				Browse by Topic 
+				<?php echo mf_get_topics();?>
+			</div>
+		</div>
+	</div>
 </div>
         
-					<?php the_content(); ?>
+<?php the_content(); ?>
 
-       <!-- Sponsor carusel section-->                 
-       <div class="sponsors-wrap">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12 sponsor-carousel-holder">
-						<div class="head-box">
+<!-- Sponsor carusel section-->                 
+<div class="sponsors-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 sponsor-carousel-holder">
+				<div class="head-box">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
 							<div class="title">
-								<h1>Bay Area Maker Faire Sponsors <mark><a href="/bay-area-2015/sponsors/">Become a sponsor</a></mark></h1>
+								<h1>Bay Area Maker Faire Sponsors</h1>
 							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
 							<div class="open-close">
 								<a class="opener" href="#"><span class="selected">Silversmith</span><i class="icon-arrow-right"></i></a>
 								<div class="slide">
 									<ul class="tabset">
-                                        <li class="active"><a href="#tab2">Goldsmith</a></li>
+		                                <li class="active"><a href="#tab2">Goldsmith</a></li>
 										<li><a href="#tab1">Silversmith</a></li>
 										<li><a href="#tab3">Coppersmith</a></li>
-                                        <!-- <li><a href="#tab4">Media</a></li>
-                                        <li><a href="#tab4">Presenting</a></li> -->
+		                                <!-- <li><a href="#tab4">Media</a></li>
+		                                <li><a href="#tab4">Presenting</a></li> -->
 									</ul>
 								</div>
 							</div>
 						</div>
-						<div class="sponsor-carousel">
-							<div class="mask">
-								<div class="slideset">
-                                    <div class="slide">
-                                        <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
-                                    </div>
-								    <div class="slide">
-                                            <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
-							        </div>
-								    <div class="slide">
-							              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
-								    </div>
-                                    <!--
-                                    <div class="slide">
-							              <?php // echo mf_sponsor_list('Media Sponsor') ?>
-								    </div>
-                                    <div class="slide">
-							              <?php // echo mf_sponsor_list('Presenting Sponsor') ?>
-								    </div>
-								    -->
-								</div>
-							</div>
+					</div>
+				</div>
+				<div class="sponsor-carousel">
+					<div class="mask">
+						<div class="slideset">
+                            <div class="slide">
+                                <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
+                            </div>
+						    <div class="slide">
+                                    <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
+					        </div>
+						    <div class="slide">
+					              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
+						    </div>
+                            <!--
+                            <div class="slide">
+					              <?php // echo mf_sponsor_list('Media Sponsor') ?>
+						    </div>
+                            <div class="slide">
+					              <?php // echo mf_sponsor_list('Presenting Sponsor') ?>
+						    </div>
+						    -->
 						</div>
 					</div>
 				</div>
+				<div class"col-xs-12 visible-xs-12">
+					<a class="pull-right" href="/bay-area-2015/sponsors/">Become a sponsor</a></mark>
+				</div>
 			</div>
-		</div><!--end of Sponsor carusel section--> 
+		</div>
+	</div>
+</div><!--end of Sponsor carusel section--> 
         
-        <!-- The last section --> 
-        <div class="follow-wrap">
-			<div class="container-fluid">
-				<div class="row">
-					<!-- <div class="col-xs-4">
-						<div class="social-holder timer-box">
+<!-- The last section --> 
+<div class="follow-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-4">
+				<div class="social-holder timer-box">
 
-			                                        <div class="title">
-			                                            <h2>Maker Faire countdown</h2>
-			                                        </div>
-			                        				<h1>Maker Faire <strong>Bay Area</strong></h1>
+                    <div class="title">
+                        <h2>Maker Faire countdown</h2>
+                    </div>
+    				<h1>Maker Faire <strong>Bay Area</strong></h1>
 
-			                                        <div class="countdown">
-
-
-			                                        </div>
-
-						</div>
-					</div> -->
-					<div class="col-xs-4">
-						<div class="social-holder twitter">
-							<div class="title">
-								<h1><a href="http://twitter.com/makerfaire" target="_blank">#MakerFaire</a></h1>
-							</div>
-                            <div id="recent-twitter"></div>
-                           <a href="http://twitter.com/makerfaire" class="follow" target="_blank">Follow us on Twitter</a>
-						</div>
-					</div>
-					<div class="col-xs-8">
-						<div class="social-holder instagram">
-							<div class="title">
-								<h1>Instagram, <a href="http://instagram.com/makerfaire" target="_blank">#makerfaire</a></h1>
-							</div>
-							<ul class="img-list">
-                                                          <?php echo $instagram->getFirstImage(); ?>
-							</ul>
-							<a href="http://instagram.com/makerfaire" target="_blank" class="follow">Follow us on Instagram</a>
-						</div>
-					</div>
+                    <div class="countdown">
+                    </div>
 				</div>
 			</div>
-		</div> 
+			<div class="col-xs-12 col-sm-4">
+				<div class="social-holder twitter">
+					<div class="title">
+						<h1><a href="http://twitter.com/makerfaire" target="_blank">#MakerFaire</a></h1>
+					</div>
+                    <div id="recent-twitter"></div>
+                   <a href="http://twitter.com/makerfaire" class="follow" target="_blank">Follow us on Twitter</a>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4">
+				<div class="social-holder instagram">
+					<div class="title">
+						<h1>Instagram, <a href="http://instagram.com/makerfaire" target="_blank">#makerfaire</a></h1>
+					</div>
+					<ul class="img-list">
+                        <?php echo $instagram->getFirstImage(); ?>
+					</ul>
+					<a href="http://instagram.com/makerfaire" target="_blank" class="follow">Follow us on Instagram</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
              
  </main>  
  </div> <!-- end of wrapper -->         
@@ -250,5 +264,4 @@ Browse by Topic
         window.location = "http://example.com/automated/action.jsp?action=register&errorPage=/automated/action.jsp&gid=12345678&uemail="+uemail+"&user.CustomAttribute.NewsletterPopUp=Global&user.CustomAttribute.NewsletterOptIn=True";
         return false;
       });
-      </script>
-    
+</script>

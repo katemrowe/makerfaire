@@ -125,7 +125,7 @@ function my_custom_fav_ico() {
 function make_enqueue_jquery() {
 	// Styles
 	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );
-	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.css' );
+	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.min.css' );
 	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
 	wp_enqueue_style( 'ytv', get_stylesheet_directory_uri() . '/css/ytv.css' );
@@ -272,7 +272,8 @@ function isc_register_menus() {
   register_nav_menus(
 	array( 'header-menu' => __( 'Header Menu' ),
             'footer' => __( 'footer' ),
-			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ) )
+			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ),
+			'mobile-nav' => __( 'Mobile Navigation' ) )
   );
 }
 add_action( 'init', 'isc_register_menus' );
@@ -381,21 +382,18 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
       $values[2] = $entries = GFAPI::get_entry(esc_attr($entry3_id)); 
        $entry3_description = isset($entry3_description) ? $entry3_description : $values[2]['151'];
    }
-    
-    
-  
 
-$output = '<div class="filter-container">' 
-          . ' <div class="col"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
-          . '   <img src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" height="402" width="622" alt="image description">'
+$output = '<div class="row filter-container mmakers">' 
+          . ' <div class="col-xs-12 col-sm-8"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
+          . '   <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" alt="Featured Maker 1">'
           . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
-          . ' </div><div class="small col">'
+          . ' </div><div class="col-xs-12 col-sm-4">'
           . '   <a href="/maker/entry/' . $values[1]['id'] . '" class="post">'
-          . '     <img src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" height="402" width="622" alt="image description">'
+          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" alt="Featured Maker 2">'
           . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
           . '   </a>'
           . '   <a href="/maker/entry/' . $values[2]['id'] . '" class="post">'
-          . '     <img src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" height="402" width="622" alt="image description">'
+          . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[2]['22'],622,402) . '" alt="Featured Maker 3">'
           . '     <div class="text-box"><span class="section">' . $entry3_description . '</span></div>'
           . '   </a>'
           . '</div></div>';
@@ -404,6 +402,65 @@ $output = '<div class="filter-container">'
 }
 
 add_shortcode( 'mmakers', 'makerfaire_meet_the_makers_shortcode' );
+
+/**
+ * 3 Maker Faire tagged posts from Makezine - for homepage
+ */
+
+function get_first_image_url($html) {
+            if (preg_match('/<img.+?src="(.+?)"/', $html, $matches)) {
+              return $matches[1];
+            }
+}
+
+function makerfaire_makezine_rss_news() {
+    $url = 'http://makezine.com/tag/maker-faire/feed/';
+    $rss = fetch_feed( $url);
+    // Figure out how many total items there are, but limit it to 5. 
+    $maxitems = $rss->get_item_quantity( 3 );
+    // Build an array of all the items, starting with element 0 (first element).
+    $rss_items = $rss->get_items( 0, $maxitems );
+
+    //image #2
+    $description=$rss_items[1]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[1]->get_title() ); 
+    $url=esc_url( $rss_items[1]->get_permalink());
+	$output = '<div class="row filter-container mf-news">'
+            . '<div class="col-xs-12 col-sm-4">'
+            . '  <a href="'.$url.'" class="post">'
+            . '    <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 1">'               
+            . '    <div class="text-box"><span class="section">' . $title . '</span></div>'
+            . '  </a>';
+
+    //image #3
+    $description=$rss_items[2]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[2]->get_title() ); 
+    $url=esc_url( $rss_items[2]->get_permalink());  
+    $output .= '  <a href="'.$url . '" class="post">'
+            . '    <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 2">'
+            . '    <div class="text-box"><span class="section">' . $title . '</span></div>'
+            . '  </a>'
+            . '</div>';
+
+    //image #1
+    $description=$rss_items[0]->get_description();
+    $image = get_first_image_url($description);
+    $description = strip_tags($description);
+    $title =esc_html( $rss_items[0]->get_title() ); 
+    $url=esc_url( $rss_items[0]->get_permalink()); 
+    $output .= ' <div class="col-xs-12 col-sm-8"><a href="' . $url. '" class="post">'
+            . '  <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 3">'
+            . '  <div class="text-box"><span class="section">' . $title . '</span></div></a>'
+            . '</div>'
+            . '</div>';
+    RETURN $output;
+}
+
+add_shortcode( 'mf-news', 'makerfaire_makezine_rss_news' );
 
 
 function makerfaire_featured_makers_shortcode($atts, $content = null) {
@@ -467,22 +524,24 @@ add_shortcode( 'modal', 'make_modal_builder' );
 function makerfaire_news_rss() { ?>
 	<div class="newsies">
 		<div class="news post">
-			<h3 style="color: #fc040c;"><a href="http://makezine.com/tag/maker-faire/">Latest Maker Faire News</a></h3>
+			<h3 style="color: #fc040c;">
+				<a href="http://makezine.com/tag/maker-faire/">Latest Maker Faire News</a>
+			</h3>
 			<?php
 			$fs = makerfaire_index_feed();
 
 			foreach($fs as $f) : $a = $f['i']->get_authors(); ?>
 				<div class="row">
-					<div class="span2">
-						<a href="<?php echo esc_url($f['i']->get_link()); ?>" title="<?php echo esc_attr($f['i']->get_title()); ?>"><img class="thumbnail faire-thumb " alt="<?php echo legacy_get_resized_remote_image_url(esc_attr($f['i']->get_title()),308,202); ?>" src="<?php echo esc_url($f['src']); ?>" /></a>
+					<div class="col-md-2">
+						<a href="<?php echo esc_url($f['i']->get_link()); ?>" title="<?php echo esc_attr($f['i']->get_title()); ?>"><img class="img-thumbnail faire-thumb " alt="<?php echo legacy_get_resized_remote_image_url(esc_attr($f['i']->get_title()),308,202); ?>" src="<?php echo esc_url($f['src']); ?>" /></a>
 					</div>
-					<div class="span6">
+					<div class="col-md-6">
 					<h2><a href="<?php echo esc_url($f['i']->get_link()); ?>"><?php echo esc_html($f['i']->get_title()); ?></a></h2>
 					<?php echo str_replace(array($f['img'], '<p><a href="'.$f['i']->get_link().'">Read the full article on MAKE</a></p>'), '', html_entity_decode(esc_html($f['i']->get_description()))); ?>
 					
 					<!-- READ FULL STORY BUTTON AND LINK
 					 <p class="read_more" style="margin:10px 0"><strong>
-					<a class="btn btn-primary btn-mini" href="<?php /*  echo esc_url($f['i']->get_link()); */ ?>">Read full story &raquo;</a></strong></p> 
+					<a class="btn btn-primary btn-xs" href="<?php /*  echo esc_url($f['i']->get_link()); */ ?>">Read full story &raquo;</a></strong></p> 
 					-->
 
 					<!-- AUTHOR AND CATEGORY DESCRIPTIONS
@@ -794,7 +853,7 @@ function make_cpt_icons() { ?>
  * Adds footer copyright information
  */
 function make_copyright_footer() { ?>
-	<div class="row footer_copyright">
+	<div class="col-xs-12 footer_copyright">
 		<div class="text-center">
 			<p class="muted"><small>Make: and Maker Faire are registered trademarks of Maker Media, Inc.</small></p>
 			<p class="muted"><small>Copyright &copy; 2004-<?php echo date("Y") ?> Maker Media, Inc.  All rights reserved</small></p>

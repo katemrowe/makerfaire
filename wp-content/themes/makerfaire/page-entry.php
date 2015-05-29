@@ -36,22 +36,11 @@
 
   <div class="row">
 
-    <div class="content span8">
-      <?php 
-        
-      $url = wp_get_referer();    
-      $path_parts = pathinfo($url);  
-      if (strpos($url, 'topics') !== false) {
-          echo '<a class="backLink" href="'. $url.'" target="_self">&#65513; Back to Topics: '.$path_parts['filename']. "</a>"; 
-      }elseif (strpos($url, 'search') !== false) {
-          echo '<a class="backLink" href="'. $url.'" target="_self">&#65513; Back to Search Results</a>';
-      }else{
-          echo '<a class="backLink" href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>';
-      }
-              
-                      
-        ?>
-      <div class="page-header entryPage <?php echo ($entry['304.11']!=''?'blueRibbon ':'');echo ($entry['304.9']!=''?'redRibbon':'');?>">
+    <div class="content col-md-8">
+
+      <a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
+
+      <div class="page-header">
 
         <h1><?php echo $entry['151']; ?></h1>
 
@@ -69,7 +58,7 @@
       <?php if (!empty($project_video)) {
           echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
-      <div class="clearfix">&nbsp;</div>
+      <br />
 
       <!-- Video Modal -->
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -90,41 +79,46 @@
             <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
-      <div class="clearfix">&nbsp;</div>
 
+
+<!-- Commenting out for now via Clair
+      <h2>Schedule</h2>
+      <hr />
       <?php
         if (!empty(display_entry_schedule($entryId))) {
           display_entry_schedule($entryId);
         }
       ?>
+      <br />
+-->
       <div class="clearfix">&nbsp;</div>
-      
+      <div class="clearfix">&nbsp;</div>
       <h2>Makers/Group</h2>
       <hr />
       <?php
       if (!empty($groupbio)) {
         echo '<div class="row padbottom">
-                ',(!empty($groupphoto) ? '<img class="span3 pull-left" src="' . $groupphoto . '" alt="Group Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
-        echo    '<div class="span5">
+                ',(!empty($groupphoto) ? '<img class="col-md-3 pull-left img-responsive" src="' . $groupphoto . '" alt="Group Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
+        echo    '<div class="col-md-5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
                   <p>' . $groupbio . '</p>
                 </div>
               </div>';
       } 
       else {
-        foreach($makers as $maker) {
-          echo '<div class="row padbottom">
-                  ',(!empty($maker['photo']) ? '<img class="span3 pull-left" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="span3 pull-left" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
-          echo    '<div class="span5">
+    		foreach($makers as $maker) {
+      		echo '<div class="row padbottom">
+                  ',(!empty($maker['photo']) ? '<img class="col-md-3 pull-left img-responsive" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
+          echo    '<div class="col-md-5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
                     <p>' . $maker['bio'] . '</p>
                   </div>
                 </div>';
-        }
+    		}
       }
       ?>
 
-    </div><!--span8-->
+    </div><!--col-md-8-->
 
     <?php get_sidebar(); ?>
 
@@ -147,48 +141,35 @@ Duplicate to $entry['151']
  <?php get_footer();
  
 function display_entry_schedule($entry_id) {
-  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>');
+  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+      <h4><label class="detail-label">Schedule:</label></h4>');
   $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
   if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
   }
-  $query_text = sprintf("SELECT `wp_mf_schedule`.`ID`,
+  $result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
     `wp_mf_schedule`.`entry_id`,
     `wp_mf_schedule`.`location_id`,
     `wp_mf_schedule`.`faire`,
     `wp_mf_schedule`.`start_dt`,
     `wp_mf_schedule`.`end_dt`,
-   DAYNAME(`wp_mf_schedule`.`start_dt`) AS `day`,
-	    `wp_mf_location`.`area`,`wp_mf_location`.`subarea`
-  FROM `wp_mf_schedule`
-  left outer join `wp_mf_location` on `wp_mf_schedule`.`entry_id`= `wp_mf_location`.`entry_id`
-	where `wp_mf_schedule`.`entry_id`=$entry_id");
-  $result = $mysqli->query($query_text);
+    `wp_mf_schedule`.`day`
+  FROM `wp_mf_schedule` where entry_id=$entry_id");
+
   if ($result)
   {
-    if ($result->num_rows === 0) echo '';
+    if ($result->num_rows === 0) echo 'No schedule found';
     else 
     {
-    	echo ' <h2>Schedule</h2>  <hr />';
-    	$schedule_area = '';
-    	$schedule_subarea = '';
+    echo '<ul>';
     while($row = $result->fetch_row())
     {
-      //NOTE: This will need to be changed for future logic when more than one area and subarea could be assigned.
-      $schedule_area = $row[7];
-      $schedule_subarea=$row[8];
       $start_dt = strtotime( $row[4]);
       $end_dt = strtotime($row[5]);
-      
-      $schedule_time_start = date('h:i A', strtotime( '0 hour',  $start_dt ) );
-      $schedule_time_end = date('h:i A', strtotime( '0 hour', $end_dt ) );
-      $schedule_day = $row[6];
-      
       $schedule_entry_id = $row[0];
-      $schedule_list .= ('<li style="margin: 0; padding: 0;">'.$schedule_day.' : '. $schedule_time_start.' to '.$schedule_time_end.'</li>');
+      echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
     }
-    echo '<h4>'.$schedule_area.' '.$schedule_subarea.'';
-    echo '<ul class="unstyled" style="margin: 0; padding: 0;">'.$schedule_list.'</ul></h4>';
+    echo '</ul>';
     }
   }
 }

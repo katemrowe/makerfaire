@@ -6,7 +6,7 @@
 
 	<div class="row">
 
-		<div class="content span8">
+		<div class="content col-md-8">
 
 			<?php
 				$term_obj = get_queried_object();

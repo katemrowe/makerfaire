@@ -2,6 +2,8 @@
 <html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
 	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object#">
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-itunes-app" content="app-id=463248665"/>
 
 	<title><?php bloginfo('name'); ?> | <?php is_front_page() ? bloginfo('description') : wp_title(''); ?></title>
@@ -49,10 +51,6 @@
 		   if(oldonload){oldonload()}};
 		}());
 	</script>
-
-	<!-- TypeKit -->
-	<link rel="stylesheet" href="http://use.typekit.com/c/4690c1/museo-slab:n8:n9:n1:n3,bebas-neue:n4,proxima-nova:n4:i4:n7:i7,museo-slab:n5.QL3:F:2,QL5:F:2,QL7:F:2,SKB:F:2,TGd:F:2,W0V:F:2,W0W:F:2,W0Y:F:2,W0Z:F:2,WH7:F:2/d?3bb2a6e53c9684ffdc9a98f6135b2a62e9fd3f37bbbb30d58844c72ca542eb12d9fc18cda0192bd960a04b65e2f2facc738d907514640137ac74942ecfe54dd35844bc349bb4c1279a7aaf8651616db7b59a075388454f5f4a07fb5c0b8f09dcccc3d70f9605ca7a1dbf9b12b3c351656254cd3fc59e92f2e542459e636860be01542f5c784cda4fe2fc310798ac7c1670eeda393aa990e8b58d73431e6bae280cf620ce09d0a49a9554ea7f25339dd274cf69ee61d55e93d9cb159fd2848203940e4eb67ad0455b5b574d1a27fec0ae65">
-	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 	<?php get_template_part('dfp'); ?>
 
@@ -110,95 +108,167 @@
 Topbar
 ======
 -->
-<header id="header" style="height:auto !important;">
+<header id="header" class="quora">
 
 <?php
   $menu_name = 'Main Navigation Version 2';
   $menu = wp_get_nav_menu_object( $menu_name );
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
-
 ?>
- 
-<nav class="navbar">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="Maker Faire Logo"></a>
-		</div>
-        	<div class="collapse navbar-collapse">
-    		
-    
-<ul class="nav navbar-nav">
-    <?php
-    $count = 0;
-    $submenu = false;
+	<nav class="navbar navbar-default navbar-fixed-top visible-xs-block">
+		<div class="container">
+		    <div class="navbar-header">
+		    	<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+				<button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+		    </div>
 
-    foreach( $menuitems as $item ):
-            //4/23/15
-        $new_window     = (isset($item->target)?$item->target:'');
-        $link           = $item->url;
-        $title          = $item->title;
-        $classes        = $item->classes;
-        $description    = $item->description ;
-        // item does not have a parent so menu_item_parent equals 0 (false)
-        if ( !$item->menu_item_parent ):
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-        // save this id for later comparison with sub-menu items
-        $parent_id = $item->ID;
-    ?>
- 
-    <li class="dropdown">
-        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <?php echo $title; ?> 
-            <span class="caret"></span>
-        </a>
-    <?php endif; ?>
- 
-        <?php if ( $parent_id == $item->menu_item_parent ): ?>
- 
-            <?php if ( !$submenu ): $submenu = true; ?>
-            
-            <div class="drop-holder">
-                <div class="drop">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="drop-logo about">
-                                	
-                                </div>
-                                <div class="column">
-                                	<div class="top-holder">
-                                    </div>
-                                	<div class="col no-border">
-                                        <ul class="sub-menu">
-            <?php endif; ?>
-                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
-                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
-                                                <div class="description"><?php echo $description; ?></div>
-                                            </li>
-            <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
-                                        </ul>
-                                    </div>
-                                    <div class="col dinamic-content">
-                                    	
-                                    </div>
-                                </div>
-                        	</div>      
-            			</div>
-            		</div>
-            	</div>
-            </div>
-            <?php $submenu = false; endif; ?>
- 
-        <?php endif; ?>
- 	
-    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
-    </li>                           
-    <?php $submenu = false; endif; ?>
- 	
-<?php $count++; endforeach; ?>
- 
-</ul>
+				<?php
+
+				//     echo '<li  class="dropdown '.$class.'"><a href="'.$parent['url'].'"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">'.$parent['title'].'<span class="caret"></span></a>';
+				//     if(is_array($parent)){
+				//         echo '<ul class="dropdown-menu" role="menu">';
+				//         foreach($parent as $key=>$child){
+				//             if(is_array($child)  && $key!='classes'){
+				//                 $class = '';
+				//                 if(isset($child['classes']) && is_array($child['classes'])){
+				//                     foreach($child['classes'] as $childClass){
+				//                         $class .= $childClass;
+				//                     }
+				//                 }
+				//                 echo '<li class="'.$class.'"><a href="'.$child['url'].'">'.$child['title'].'</a></li>';
+				//             }
+				//         }
+				//         echo '</ul>';
+				//     }
+				//     echo '</li>';
+				// }
+				// echo '</ul>';
+
+				$mobileNavName = 'mobile-nav';
+				wp_nav_menu( array(
+				        'theme_location' => '$mobileNavName',
+				        'menu'            => 'Main Navigation Version 2 Mobile',
+				        'container' => false
+				) );
+				?>
+
+		      <div class="mobile-nav-social padtop padbottom">
+
+		      	<span class="nav-follow-us text-muted padright">Follow us:</span>
+
+				<div class="social-profile-icons">
+					<a class="sprite-facebook-32" href="//www.facebook.com/makerfaire" title="Facebook" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-twitter-32" href="//twitter.com/makerfaire" title="Twitter" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+					<a class="sprite-googleplus-32" href="//plus.google.com/104410464300110463062/posts" rel="publisher" title="Google+" target="_blank">
+						<div class="social-profile-cont">	
+							<span class="sprite"></span>
+						</div>
+					</a>
+				</div>
+			  </div>
+		    </div>
+
+
 		</div>
-	</div>
-</nav>
+	</nav>
+
+	<nav class="navbar hidden-xs">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="<?php bloginfo('url'); ?>"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" height="43" width="183" alt="maker faire"></a>
+			</div>
+
+	        <div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+				    <?php
+				    $menu_name = 'Main Navigation Version 2';
+				    $count = 0;
+				    $submenu = false;
+
+				    foreach( $menuitems as $item ):
+				            //4/23/15
+				        $new_window     = (isset($item->target)?$item->target:'');
+				        $link           = $item->url;
+				        $title          = $item->title;
+				        $classes        = $item->classes;
+				        $description    = $item->description ;
+				        // item does not have a parent so menu_item_parent equals 0 (false)
+				        if ( !$item->menu_item_parent ):
+
+				        // save this id for later comparison with sub-menu items
+				        $parent_id = $item->ID;
+				    ?>
+				 
+				    <li class="dropdown">
+				        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+				            <?php echo $title; ?> 
+				            <span class="caret"></span>
+				        </a>
+				    <?php endif; ?>
+				 
+				        <?php if ( $parent_id == $item->menu_item_parent ): ?>
+				 
+				            <?php if ( !$submenu ): $submenu = true; ?>
+				            
+				            <div class="drop-holder">
+				                <div class="drop">
+				                    <div class="container">
+				                        <div class="row padtop padbottom">
+			                                <div class="col-sm-3 drop-logo about text-center padtop">
+			                                	
+			                                </div>
+			                                <div class="col-sm-9 column padtop">
+			                                	<div class="top-holder">
+			                                    </div>
+			                                	<div class="col-sm-9 col no-border">
+			                                        <ul class="sub-menu">
+			            	<?php endif; ?>
+			                                            <li class="item <?php foreach ($classes as $class) {echo $class.' ';}; ?>">
+			                                                <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="title"><?php echo $title; ?></a>
+			                                                <div class="description"><?php echo $description; ?></div>
+			                                            </li>
+			            	<?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id && $submenu ): ?>
+			                                        </ul>
+			                                    </div>
+			                                    <div class="col-sm-3 col dinamic-content"></div>
+			                                </div>    
+				            			</div>
+				            		</div>
+				            	</div>
+				            </div>
+				            <?php $submenu = false; endif; ?>
+				 
+				        <?php endif; ?>
+				 	
+				    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
+				    </li>                           
+				    <?php $submenu = false; endif; ?>
+				 	
+				<?php $count++; endforeach; ?>
+				 
+				</ul>
+			</div>
+		</div>
+	</nav>
 </header>

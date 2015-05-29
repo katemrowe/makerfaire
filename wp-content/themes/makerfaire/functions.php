@@ -1130,3 +1130,24 @@ function make_new_gallery_shortcode($attr) {
 }
 
 add_shortcode( 'new_gallery', 'make_new_gallery_shortcode' );
+
+//add jquery for gravity forms
+add_filter('gform_register_init_scripts', 'gform_addScript');
+function gform_addScript($form) {    
+    $script = '(function($){' .
+        '$("input[type=radio][name=input_1]").change(function(){
+            if ($(this).val().indexOf("Standard Presentation") > -1) {
+                //disable "45 minutes" option
+                $("#choice_12_2_3").attr("disabled",true);
+                //if option is already checked, uncheck it
+                $("#choice_12_2_3").attr("checked",false);
+            }else{
+                $("#choice_12_2_3").attr("disabled",false);
+            }
+        });' .
+    '})(jQuery);';
+    
+    GFFormDisplay::add_init_script($form['id'], 'formScript', GFFormDisplay::ON_PAGE_RENDER, $script);
+    
+    return $form;
+}

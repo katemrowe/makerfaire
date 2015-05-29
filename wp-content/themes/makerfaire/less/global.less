@@ -46,8 +46,26 @@
     font-style: normal;
 }
 
+body {
+ 	font-family: 'latoregular', Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "latomedium", Helvetica, Arial, sans-serif;
+  	font-weight: 400;
+}
+
+b, strong {
+	font-family: 'latobold', Helvetica, Arial, sans-serif;
+}
+
 h1 {
 	margin-bottom:15px;
+  	font-size: 42px;
 }
 
 h4 {
@@ -55,22 +73,13 @@ h4 {
 }
 
 a {
-	color: #085a7e;
+	color: #397b98;
+	-webkit-transition: all .3s ease;
+  	transition: all .3s ease;
 }
 a:hover, a:focus {
 	color: #00bef3;
 	text-decoration: none;
-}
-
-hr {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-ul.unstyled,
-ol.unstyled {
-	margin-left: 0;
-  	list-style: none;
 }
 
 .no-js .mf-form div.step, .no-js .mf-breadcrumbs, .js .hide-if-js, .no-js .hide-if-no-js {
@@ -82,7 +91,11 @@ ol.unstyled {
 }
 
 .clear {
-	clear:both;
+	clear: both;
+}
+
+.lead {
+  	font-size: 18px;
 }
 
 // Special layout
@@ -132,16 +145,16 @@ ol.unstyled {
 
 // Add 15px padding to any side
 .padtop {
-	padding-top:15px;
+	padding-top:15px !important;
 }
 .padbottom {
-	padding-bottom:15px;
+	padding-bottom:15px !important;
 }
 .padleft {
-	padding-left:15px;
+	padding-left:15px !important;
 }
 .padright {
-	padding-right:15px;
+	padding-right:15px !important;
 }
 
 // Get rid of all margin
@@ -151,16 +164,16 @@ ol.unstyled {
 
 // makerfaire_news_rss()
 .faire-thumb {
-	max-width:130px;
+	max-width: 130px;
 	max-height: 130px;
 }
 
 // Makes text..... small and small small?
 .smaller {
-	font-size:16px;
-	line-height:24px;
+	font-size: 16px;
+	line-height: 24px;
 	small {
-		font-size:14px;
+		font-size: 14px;
 	}
 }
 
@@ -218,139 +231,18 @@ ol.unstyled {
 	box-sizing: border-box;
 }
 
-.wpcom-protected-iframe {
-	width: 608px !important;
-	height: 1360px !important;
-	overflow: auto;
-}
-
-.page-id-47374 .wpcom-protected-iframe {
-	width: 620px !important;
-	height: 425px !important;
-	overflow: auto;
-}
-
-.ytv-canvas {
-	margin-top: 0;
-	margin-bottom: 0 !important;
-}
-
-body.page-id-79 .carousel-caption h3 {
-	color: #fff !important;
-}
-
-article.post-35441 {
-	margin-top: -40px;
-}
-
-/* Bold menu items- no hover pointer */
-#menu-item-19371 a, #menu-item-43067 a, #menu-item-19340 a {
-	cursor: default;
-}
-
-.home .content h1:first-child {
-	padding-top: 0;
-	margin-top: 0;
-	margin-bottom: 40px;
-	display: none !important;
-}
-
-#header {
-	height: 230px !important;
-}
-
-/*COUNTDOWN CLOCK*/
-.sidebar-bordered {
-	margin-bottom: 10px;
-}
-
-.sidebar-bordered .countdown {
-	margin-left: 10px;
-}
-
-.sidebar-bordered .counter-title {
-	font-size: 19px;
-}
-
-.twitter {
-	margin: 20px auto;
-}
-
-.sponsored {
-	margin-top: 20px;
-}
-
-.page-id-458948 h4 {
+// Youtube responsiveness for Jetpack shortcode
+.embed-youtube, .embed-vimeo, .googlemaps {
+	overflow: hidden;
+	padding-bottom: 56.25%;
 	margin-bottom: 15px;
+	position: relative;
+	height: 0;
 }
-
-/*Subnav for "Make a Makerfaire" school pages */
-ul.side-nav > li {
-	margin: 0;
-}
-
-ul.side-nav > li > a {
-	padding: 10px 15px;
-	margin-right: 0;
-}
-
-ul.side-nav {
-	border: 1px solid #ddd;
-}
-
-.nav-tabs > li.active > a {
-	border: none;
-}
-
-ul.side-nav > li.active > a:hover {
-	border: none;
-}
-
-ul.side-nav > li > a:hover {
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	border-radius: 0;
-}
-
-// Slideshow and live page for mf events
-
-.container.live-page .row:nth-child (1) {
-	margin-bottom:0px;
-	padding-bottom:0px;
-}
-
-// Live video and video archive page
-.live-archive{
-	background-color: #075c78;
-	color:#fff;
-	padding-bottom:30px;
-	font-size:12px;
-}
-
-.flag-border {
-	height:23px;
-	background: url(../images/bg-border.png) repeat-x;
-}
-
-.live-archive a:link, .live-archive a:visited {
-	color:#fff;
-	text-decoration: none;
-}
-
-// .live-archive .col-md-4 {
-// z-index:2;
-// background: url(../images/glyphicon glyphicon-play-circle.png) repeat-x;
-// }
-
-.live-archive .col-xs-4 p {
-	margin-top:15px;
-}
-
-.live-archive .video-icon{
-  position:absolute;
-  height: 45px;
-  width: 65px;
-  background: url('../images/play.png') no-repeat center;
-  top:25%;
-  left:40%;
+.embed-youtube iframe, .embed-vimeo iframe, .googlemaps iframe, .embed-resp object {
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
 }

@@ -53,7 +53,7 @@ function mf_better_name( $str ) {
 add_filter('get_avatar','mf_change_avatar_css');
 
 function mf_change_avatar_css( $class ) {
-	$class = str_replace("class='avatar", "class='media-object thumbnail pull-left avatar", $class) ;
+	$class = str_replace("class='avatar", "class='media-object img-thumbnail pull-left avatar", $class) ;
 	return $class;
 }
 
@@ -69,7 +69,7 @@ function mf_public_blurb( $json ) {
 		if (!empty($json->project_photo)) {
 			$url = $json->project_photo;
 			$url = add_query_arg( 'w', 610, $url );
-			echo '<img src="'. legacy_get_resized_remote_image_url( $url, 610, 610 ) . '" class="thumbnail" />';
+			echo '<img src="'. legacy_get_resized_remote_image_url( $url, 610, 610 ) . '" class="img-thumbnail" />';
 		}
 		echo '<hr>';
 
@@ -103,7 +103,7 @@ function mf_public_blurb( $json ) {
 				echo '<h3>About the Maker</h3>';
 				echo '<div class="media">';
 				if (!empty($json->maker_photo)) {
-					echo '<img src="' . legacy_get_resized_remote_image_url( $json->maker_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
+					echo '<img src="' . legacy_get_resized_remote_image_url( $json->maker_photo, 130, 130, true ) . '" class="media-object img-thumbnail pull-left"/>';
 				}
 				echo '<div class="media-body">';
 				echo '<h4>' . wp_kses_post( $json->maker_name ) . '</h4>';
@@ -119,7 +119,7 @@ function mf_public_blurb( $json ) {
 				echo '<h3>Group Association</h3>';
 				echo '<div class="media">';
 				if (!empty($json->group_photo)) {
-					echo '<img src="' . legacy_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+					echo '<img src="' . legacy_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object img-thumbnail pull-left" />';
 				}
 				echo '<div class="media-body">';
 				echo '<h4>' . wp_kses_post( $json->group_name ) . '</h4>';
@@ -137,7 +137,7 @@ function mf_public_blurb( $json ) {
 				foreach ($makers as $maker) {
 					echo '<div class="media">';
 					if ( !empty( $json->m_maker_photo[ $i ] ) && strlen( $json->m_maker_photo[ $i ] ) > 1 ) {
-						echo '<img src="' . legacy_get_resized_remote_image_url( $json->m_maker_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . legacy_get_resized_remote_image_url( $json->m_maker_photo[ $i ], 130, 130, true ) . '" class="media-object img-thumbnail pull-left" />';
 					} elseif (isset( $json->m_maker_email[ $i ] ) ) {
 						echo get_avatar( $json->m_maker_email[ $i ], 130 );
 					}
@@ -154,7 +154,7 @@ function mf_public_blurb( $json ) {
 		if (!empty($json->presentation_photo)) {
 			$url = $json->presentation_photo;
 			$url = add_query_arg( 'w', 610, $url );
-			echo '<img src="'. esc_url( $url ) . '" class="thumbnail" />';
+			echo '<img src="'. esc_url( $url ) . '" class="img-thumbnail" />';
 		}
 		echo '<hr>';
 
@@ -197,13 +197,13 @@ function mf_public_blurb( $json ) {
 				echo '<div class="media">';
 				if ( is_array( $json->presenter_photo ) ) {
 					if ( !empty( $json->presenter_photo[ $i ] ) && strlen( $json->presenter_photo[ $i ] ) > 1 ) {
-						echo '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo[ $i ], 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo[ $i ], 130, 130, true ) . '" class="media-object img-thumbnail pull-left" />';
 					} elseif (isset( $json->presenter_email[ $i ] )) {
 						echo get_avatar( $json->presenter_email[ $i ], 130 );
 					}
 				} else {
 					if ( !empty( $json->presenter_photo ) && strlen( $json->presenter_photo ) > 1 ) {
-						echo '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+						echo '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo, 130, 130, true ) . '" class="media-object img-thumbnail pull-left" />';
 					} elseif (isset( $json->presenter_email[ $i ] )) {
 						echo get_avatar( $json->presenter_email[ $i ], 130 );
 					}
@@ -223,7 +223,7 @@ function mf_public_blurb( $json ) {
 			echo '<h3>Group Association</h3>';
 			echo '<div class="media">';
 			if (!empty($json->group_photo)) {
-				echo '<img src="' . legacy_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left" />';
+				echo '<img src="' . legacy_get_resized_remote_image_url( $json->group_photo, 130, 130, true ) . '" class="media-object img-thumbnail pull-left" />';
 			}
 			echo '<div class="media-body">';
 			echo '<h4>' . wp_kses_post( $json->group_name ) . '</h4>';
@@ -237,7 +237,7 @@ function mf_public_blurb( $json ) {
 		if (!empty($json->performer_photo)) {
 			$url = $json->performer_photo;
 			$url = add_query_arg( 'w', 610, $url );
-			echo '<img src="'. esc_url( $url ) . '" class="thumbnail" />';
+			echo '<img src="'. esc_url( $url ) . '" class="img-thumbnail" />';
 		}
 		echo '<hr>';
 
@@ -297,7 +297,7 @@ function mf_public_blurb( $json ) {
 					$json = json_decode( html_entity_decode( mf_convert_newlines( str_replace( array("\'", "u03a9"), array("'", '&#8486;'), $the_post->post_content ), "\n"), ENT_COMPAT, 'utf-8' ) );
 					echo  '<div class="media">';
 					if ( !empty( $json->maker_photo ) ) {
-						echo  '<img src="' . legacy_get_resized_remote_image_url( $json->project_photo, 130, 130, true ) . '" class="media-object thumbnail pull-left"/>';
+						echo  '<img src="' . legacy_get_resized_remote_image_url( $json->project_photo, 130, 130, true ) . '" class="media-object img-thumbnail pull-left"/>';
 					}
 					echo  '<div class="media-body">';
 					echo  ( !empty( $json->project_name ) ) ? '<h4><a href="' . get_permalink( $the_post->ID ) . '">' . wp_kses_post( $json->project_name ) . '</a></h4>' : '' ;
@@ -415,9 +415,9 @@ function the_mf_content() {
 	if ( get_post_type() == 'mf_form' ) {
 		$content = get_the_content();
 		$json = json_decode( mf_convert_newlines( mf_character_fixer( str_replace( "\'", "'", $content ) ) ) );
-		echo '<div class="row"><div class="span2">';
+		echo '<div class="row"><div class="col-md-2">';
 		mf_the_maker_image( $json );
-		echo '</div><div class="span6">';
+		echo '</div><div class="col-md-6">';
 		the_title( '<h3><a href="' . get_permalink() . '">', '</a></h3>' );
 		echo ( isset( $json->form_type ) ) ? '<span class="label label-info">' . wp_kses_post( ucfirst( $json->form_type ) ) . '</span>' : '';
 		if (!empty($json->public_description)) {
@@ -726,17 +726,17 @@ function mf_schedule( $atts ) {
 		$output .= '<p>' . esc_html( $start ) . ' &mdash; ' . esc_html( $stop ) . '</p>';
 		if ( isset( $json->presenter_photo ) or isset($json->project_photo) or isset($json->presentation_photo) or isset($json->performer_photo) or has_post_thumbnail( get_the_ID() ) ) {
 			if ( get_the_post_thumbnail() ) {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= get_the_post_thumbnail( get_the_ID(), 'schedule-thumb' );
 				$output .= '</a></div>';
 			} elseif ( isset( $json->presenter_photo[0] ) && !is_array( $json->presenter_photo[0] ) && strlen( $json->presenter_photo[0] ) > 5 ) {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			} else {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= '<img src="' . legacy_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
@@ -760,7 +760,7 @@ function mf_schedule( $atts ) {
 		}
 
 		if ( ! empty( $meta['mfei_coverage'][0] ) )
-			$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-mini btn-primary">Watch Video</a></p>';
+			$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-xs btn-primary">Watch Video</a></p>';
 		// $output .= '<ul class="unstyled">';
 		// $terms = get_the_terms( $sched_post->ID, array( 'category', 'post_tag' ) );
 		// if (!empty($terms)) {
@@ -820,17 +820,17 @@ function mf_schedule( $atts ) {
 		$output .= '<p>' . esc_html( $start ) . ' &mdash; ' . esc_html( $stop ) . '</p>';
 		if ( isset( $json->presenter_photo ) or isset($json->project_photo) or isset($json->presentation_photo) or isset($json->performer_photo) or has_post_thumbnail( get_the_ID() ) ) {
 			if ( get_the_post_thumbnail() ) {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= get_the_post_thumbnail( get_the_ID(), 'schedule-thumb' );
 				$output .= '</a></div>';
 			} elseif ( isset( $json->presenter_photo[0] ) && !is_array( $json->presenter_photo[0] ) && strlen( $json->presenter_photo[0] ) > 5 ) {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= '<img src="' . legacy_get_resized_remote_image_url( $json->presenter_photo[0], 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
 			} else {
-				$output .= '<div class="pull-left thumbnail"><a href="';
+				$output .= '<div class="pull-left img-thumbnail"><a href="';
 				$output .= get_permalink( $sched_post ) . '">';
 				$output .= '<img src="' . legacy_get_resized_remote_image_url( mf_get_the_maker_image( $json ), 140, 140 ) . '" alt="' . esc_attr( get_the_title( $sched_post->ID ) ) .'" />';
 				$output .= '</a></div>';
@@ -854,7 +854,7 @@ function mf_schedule( $atts ) {
 		}
 
 		if ( ! empty( $meta['mfei_coverage'][0] ) )
-			$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-mini btn-primary">Watch Video</a></p>';
+			$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-xs btn-primary">Watch Video</a></p>';
 		// $output .= '<ul class="unstyled">';
 		// $terms = get_the_terms( $sched_post->ID, array( 'category', 'post_tag' ) );
 		// if (!empty($terms)) {
@@ -926,7 +926,7 @@ function mf_get_scheduled_item( $the_ID ) {
 				$output .= '<td>' . get_the_term_list( get_the_ID(), 'location' ) . '</td>';
 			}
 			if ( ! empty( $coverage ) ) {
-				$output .= '<td class="has-video"><a href="' . esc_url( $coverage ) . '" class="btn btn-mini btn-primary">Watch Video</a></td>';
+				$output .= '<td class="has-video"><a href="' . esc_url( $coverage ) . '" class="btn btn-xs btn-primary">Watch Video</a></td>';
 			} else {
 				$output .= '<td class="no-video"></td>';
 			}
@@ -979,7 +979,7 @@ function mf_get_scheduled_item( $the_ID ) {
 				$output .= '<td>' . get_the_term_list( get_the_ID(), 'location' ) . '</td>';
 			}
 			if ( ! empty( $coverage ) ) {
-				$output .= '<td class="has-video"><a href="' . esc_url( $coverage ) . '" class="btn btn-mini btn-primary">Watch Video</a></td>';
+				$output .= '<td class="has-video"><a href="' . esc_url( $coverage ) . '" class="btn btn-xs btn-primary">Watch Video</a></td>';
 			} else {
 				$output .= '<td class="no-video">No Video Available</td>';
 			}
@@ -1141,7 +1141,7 @@ function mf_display_schedule_by_location( $atts ) {
 		wp_cache_set( sanitize_title( $location->post_title ) . '_sunday_schedule_' . sanitize_title( $data['faire'] ), $sunday, 'locations', 300 );
 	}
 
-	$output = '<div class="row"><div class="span4"><h2><a href="' . esc_url( get_permalink( absint( $data['location_id'] ) ) . '?faire=' . $data['faire'] ) . '">' . esc_html( $location->post_title ) . '</a></h2></div> <div class="span1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
+	$output = '<div class="row"><div class="col-md-4"><h2><a href="' . esc_url( get_permalink( absint( $data['location_id'] ) ) . '?faire=' . $data['faire'] ) . '">' . esc_html( $location->post_title ) . '</a></h2></div> <div class="col-md-1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
 
 	if ( ! empty( $location->post_excerpt ) )
 		$output .= '<div class="alert alert-info">' . wp_kses_post( Markdown( $location->post_excerpt ) ) . '</div>';
@@ -1169,7 +1169,7 @@ function mf_display_schedule_by_location( $atts ) {
 							$output .= '<h5>' . esc_html( $meta['mfei_day'][0] ) . '</h5>';
 							$output .= '<p>' . esc_html( $meta['mfei_start'][0] ) . ' &mdash; ' . esc_html( $meta['mfei_stop'][0] ) . '</p>';
 							if ( isset( $app->{ $mfform->merge_fields( 'form_photo', $app->form_type ) } ) || has_post_thumbnail( absint( $event_id ) ) || isset( $app->{ $mfform->merge_fields( 'user_photo', $app->form_type ) } ) ) {
-								$output .= '<div class="pull-left thumbnail">';
+								$output .= '<div class="pull-left img-thumbnail">';
 									// We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
 									if ( has_post_thumbnail( absint( $event_id ) ) ) {
 										$output .= get_the_post_thumbnail( absint( $event_id ), 'schedule-thumb' );
@@ -1198,7 +1198,7 @@ function mf_display_schedule_by_location( $atts ) {
 
 							// Add our video link for video coverage
 							if ( ! empty( $meta['mfei_coverage'][0] ) )
-								$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-mini btn-primary">Watch Video</a></p>';
+								$output .= '<p><a href="' . esc_url( $meta['mfei_coverage'][0] ) . '" class="btn btn-xs btn-primary">Watch Video</a></p>';
 						$output .= '</td>';
 					$output .= '</tr>';
 				endwhile;

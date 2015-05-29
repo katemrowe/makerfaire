@@ -14,7 +14,7 @@
 
 	<div class="row">
 
-		<div class="content span8">
+		<div class="content col-md-8">
 	<br />
 	<h4>Please sign in using one of the following providers:</h4><br /><br />
 	<div id="loginDiv"></div>

@@ -28,22 +28,22 @@ $cats_tags = get_categories(array('hide_empty' => 0));
 get_header(); ?>
 <div class="clear"></div>
 
-<div class="container makersByTopic">
+<div class="container">
 	<div class="row">
-		<div class="content span8">
+		<div class="content col-md-8">
 
 			<div class="row padbottom">
-				<div class="span8">
+				<div class="col-md-8">
 					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">
-				<div class="span8">
+				<div class="col-md-8">
 					<h1>Bay Area 2015 Makers</h1>
 				</div>
 			</div>
 			<div class="row">
-				<div class="span8">
+				<div class="col-md-8">
 					<h3 class="nomargins">Topic: <?php echo $category->name;?>, <span class="text-muted"><?php echo $total_count; echo ($total_count == 1) ? ' result' : 'results'; ?></span></h3>
 				</div>
 			</div>
@@ -56,7 +56,7 @@ get_header(); ?>
 			?>
 			<hr>
 			<div class="row">
-				<div class="span8 <?php echo ($entry['304.11']!=''?'blueRibbon ':'');echo ($entry['304.9']!=''?'redRibbon':'');?>">
+				<div class="col-md-8">
 					<h3 class="nomargins maker-results"><a href="/maker/entry/<?php echo $entry_id; ?>"><?php echo $project_name;?></a></h3>
 				</div>
 			</div>
@@ -66,7 +66,7 @@ get_header(); ?>
 			<?php
 			if ($total_count > 30) {
 				echo '<div class="row padtop padbottom">
-					<div class="span8">
+					<div class="col-md-8">
 						' . pagination_display($current_url,$currentpage,$page_size,$total_count) . '
 					</div>
 				</div>';

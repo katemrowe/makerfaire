@@ -49,7 +49,7 @@ Topbar
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		<a class="btn navbar-btn" data-toggle="collapse" data-target=".nav-collapse">
 			<span class="i-bar"></span>
 			<span class="i-bar"></span>
 			<span class="i-bar"></span>
@@ -68,7 +68,7 @@ Topbar
 				<li>
 					<form action="http://makezine.com/search/" class="form-horizontal form-search">
 						<input type="hidden" name="as_sitesearch" value="makerfaire.com" />
-						<input type="text" name="q" class="span2" />
+						<input type="text" name="q" class="col-md-2" />
 						<input type="submit" class="btn btn-primary" value="Search" />
 					</form>
 				</li>
@@ -88,13 +88,13 @@ Topbar
 
 			<div class="row">
 
-				<div class="span5">
+				<div class="col-md-5">
 
 					<h1><a href="http://makerfaire.com" title="Maker Faire"><img src="http://cdn.makezine.com/make/makerfaire/bayarea/2012/images/logo.jpg" width="380" alt="Maker Faire" title="Maker Faire"></a></h1>
 
 				</div>
 
-				<div class="span7">
+				<div class="col-md-7">
 					<!--<p class="blurb">
 						Maker Faire is the premier event for grassroots American innovation.
 						<img src="http://makerfaire.com/new/images/cross.png" alt="Cross" />

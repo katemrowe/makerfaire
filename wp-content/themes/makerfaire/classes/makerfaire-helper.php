@@ -53,19 +53,18 @@ function my_query_vars( $query_vars ){
 function mf_display_schedule_by_area( $atts ) {
 	global $mfform;
 
-	$data = shortcode_atts( array(
+	/*$data = shortcode_atts( array(
 			'area' 	=> '',
 			'subarea' 	=> '',
 			'faire'			=> '',
 	), $atts );
-
+	*/
 	// Get the faire date array. If the
-	$faire = $data['faire'];
-	$area =$data['area'] ;
-	$subarea = $data['subarea'] ;
-	$subarea_clean_name = str_replace(' ', '', str_replace(':','',$data['subarea'] ));
-	$subarea_array = explode(': ',$subarea);
+	$faire = $atts['faire'];
+	$area =$atts['area'] ;
+	$subarea = htmlspecialchars_decode($atts['subarea']);
 	
+	$subarea_clean_name = strtolower(str_replace('&','',(str_replace(' ', '', str_replace(':','',$subarea )))));
 	// Make sure we actually passed a valid faire...
 	//if ( empty( $faire_date ) )
 	//	return '<h3>Not a valid faire!</h3>';
@@ -75,42 +74,43 @@ function mf_display_schedule_by_area( $atts ) {
 	//$sunday_schedule = get_mf_schedule_by_faire($faire, 'Sunday', $area);
 	
 	// Get Friday events by location
-	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea, 'area' );
+	$friday = wp_cache_get( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name, 'area' );
 	if ( $friday === false ) {
 		$friday = get_mf_schedule_by_faire($faire, 'Friday', $area, $subarea);
-		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea , $friday, 'area', 300 );
+		wp_cache_set( $faire . '_friday_schedule_'.$area.'_'.$subarea_clean_name , $friday, 'area', 3000 );
 	}
 	// Get Saturday events by location
-	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea , 'area' );
-	if ( $saturday === false ) {
+	$saturday = wp_cache_get( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
+	if ( $saturday === false  ) {
 		$saturday = get_mf_schedule_by_faire($faire, 'Saturday', $area, $subarea);
-		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea , $saturday, 'area', 300 );
+		wp_cache_set( $faire . '_saturday_schedule_'.$area.'_'.$subarea_clean_name , $saturday, 'area', 3000 );
 	}
 	// Get Saturday events by location
-	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea , 'area' );
-	if ( $sunday === false ) {
+	$sunday = wp_cache_get( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , 'area' );
+	if ( $sunday === false  ) {
 		$sunday = get_mf_schedule_by_faire($faire, 'Sunday', $area, $subarea);
-		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea , $sunday, 'area', 300 );
+		wp_cache_set( $faire . '_sunday_schedule_'.$area.'_'.$subarea_clean_name , $sunday, 'area', 3000 );
 	}
 
 	
 	//$output = '<div class="row"><div class="col-md-4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="col-md-1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
-        $output = '<div class="padtop" style="height: 58px;overflow: hidden;">'
+        $output = '<div class="row padtop" style="height:58px;overflow:hidden;margin:0;">'
                 . '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
                 . '<div class="pull-right" style="position:relative; top:-31px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" class="padright" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
-	$days = array( 'Friday', 'Saturday', 'Sunday' );
+	$days = array( 'friday', 'saturday', 'sunday' );
         
         $output .= ' <div class="tab-content">';
         //$first sets the first day to active
         //at the end of the first day loop we set $first to blank
         $first = 'active';
-	foreach ( $days as 	 $day ) {
+        $navTabs = '';
+	foreach ( $days as 	 $day ) {         
 		if ( count(${ $day }) > 0 ) {
-                       $navTabs .= '<li class="'.$first.'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
-                        
-                                
+                    
+                       $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                              
                         // Start the schedule
 			$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
                         $output .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';

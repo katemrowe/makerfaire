@@ -114,7 +114,6 @@ Topbar
   $menu_name = 'Main Navigation Version 2';
   $menu = wp_get_nav_menu_object( $menu_name );
   $menuitems = wp_get_nav_menu_items( $menu->term_id, array( 'order' => 'DESC', 'walker' => new Description_Walker ) );
-  $menuitemsmobile = wp_get_nav_menu_items( $menu_name, $args );
 ?>
 	<nav class="navbar navbar-default navbar-fixed-top visible-xs-block">
 		<div class="container">

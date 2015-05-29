@@ -381,12 +381,12 @@ function makerfaire_meet_the_makers_shortcode($atts, $content = null) {
        $entry3_description = isset($entry3_description) ? $entry3_description : $values[2]['151'];
    }
 
-$output = '<div class="row filter-container">' 
+$output = '<div class="row filter-container mmakers">' 
           . ' <div class="col-xs-12 col-sm-8"><a href="/maker/entry/' . $values[0]['id'] . '" class="post">'
           . '   <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[0]['22'],622,402) . '" alt="Featured Maker 1">'
           . '   <div class="text-box"><span class="section">' . $entry1_description . '</span></div></a>'
           . ' </div><div class="col-xs-12 col-sm-4">'
-          . '   <a style="margin-bottom: 20px;" href="/maker/entry/' . $values[1]['id'] . '" class="post">'
+          . '   <a href="/maker/entry/' . $values[1]['id'] . '" class="post">'
           . '     <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($values[1]['22'],622,402) . '" alt="Featured Maker 2">'
           . '     <div class="text-box"><span class="section">' . $entry2_description . '</span></div>'
           . '   </a>'
@@ -425,9 +425,9 @@ function makerfaire_makezine_rss_news() {
     $description = strip_tags($description);
     $title =esc_html( $rss_items[1]->get_title() ); 
     $url=esc_url( $rss_items[1]->get_permalink());
-	$output = '<div class="row filter-container">'
+	$output = '<div class="row filter-container mf-news">'
             . '<div class="col-xs-12 col-sm-4">'
-            . '  <a style="margin-bottom: 20px;" href="'.$url.'" class="post">'
+            . '  <a href="'.$url.'" class="post">'
             . '    <img class="img-responsive" src="' . legacy_get_resized_remote_image_url($image,622,402) . '" alt="Featured Maker Faire post 1">'               
             . '    <div class="text-box"><span class="section">' . $title . '</span></div>'
             . '  </a>';

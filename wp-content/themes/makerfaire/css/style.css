@@ -129,16 +129,16 @@ a:focus {
   margin: 10px auto 0;
 }
 .padtop {
-  padding-top: 15px;
+  padding-top: 15px !important;
 }
 .padbottom {
-  padding-bottom: 15px;
+  padding-bottom: 15px !important;
 }
 .padleft {
-  padding-left: 15px;
+  padding-left: 15px !important;
 }
 .padright {
-  padding-right: 15px;
+  padding-right: 15px !important;
 }
 .nomargins {
   margin: 0px !important;
@@ -3454,6 +3454,11 @@ li.hidelink a:visited {
   color: #999;
   padding: 6px 14px 0 0;
 }
+.quora ul li.navhack {
+  width: 33%;
+  border-left: 1px dashed #999 !important;
+  padding-left: 30px !important;
+}
 .quora .countdown .countdown-numbers {
   margin: 0;
   padding: 0;
@@ -3799,19 +3804,27 @@ li.hidelink a:visited {
   .quora .navbar-collapse {
     padding: 0;
   }
-  .col-md-8 article {
-    padding-right: 45px;
+  .mmakers .col-sm-4 {
+    padding-left: 0;
+  }
+  .mf-news .col-sm-4 {
+    padding-right: 0;
   }
 }
-@media (min-width: 768px) and (max-width: 992px) {
+@media (min-width: 768px) and (max-width: 991px) {
   .quora .browse-box .columns {
     -moz-column-count: 3;
     -webkit-column-count: 3;
     column-count: 3;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .cycle-gallery .mask .slide .text-holder p {
     line-height: 1.2;
+  }
+}
+@media (min-width: 992px) {
+  .col-md-8 article {
+    padding-right: 45px;
   }
 }

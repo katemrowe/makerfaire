@@ -1,5 +1,5 @@
 <div class="col-md-4">
-	<div class="sidebar-bordered">
+<!--	<div class="sidebar-bordered">
         <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
         <h3 class="counter-title">Maker Faire Bay Area<br />May 16 &amp; 17, 2015</h3>
 
@@ -24,6 +24,7 @@
 			<img class="img-responsive" width="100%" src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
 		</a>
 	</div>
+-->
 
     <div class="sidebar-bordered sponsored">
        <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Presenting Sponsor</a></h3>

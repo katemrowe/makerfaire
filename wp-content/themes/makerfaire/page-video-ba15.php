@@ -4,7 +4,7 @@
 	*/
 	get_header(); ?>
 <div class="clear"></div>
-<div class="container live-page">
+<div class="container live-page quora">
 	<div class="row" style="margin-bottom:0px;padding-bottom:0px;">
 		<div class="col-xs-7">
 			<h1><?php echo get_the_title(); ?></h1>
@@ -935,59 +935,61 @@ We also see Seeed Studio's Xadow-based Smartstrap for the very first time in pub
 </div>
 </div>
 <div class="flag-border"></div>
-<!-- Sponsor carusel section-->                 
-<div class="sponsors-wrap">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 sponsor-carousel-holder">
-				<div class="head-box">
-					<div class="row">
-						<div class="col-xs-12 col-sm-8">
-							<div class="title">
-								<h1>Bay Area Maker Faire Sponsors</h1>
+<!-- Sponsor carusel section-->
+<div class="quora">              
+	<div class="sponsors-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 sponsor-carousel-holder">
+					<div class="head-box">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="title">
+									<h1>Bay Area Maker Faire Sponsors</h1>
+								</div>
 							</div>
-						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="open-close">
-								<a class="opener" href="#"><span class="selected">Silversmith</span><i class="icon-arrow-right"></i></a>
-								<div class="slide">
-									<ul class="tabset">
-		                                <li class="active"><a href="#tab2">Goldsmith</a></li>
-										<li><a href="#tab1">Silversmith</a></li>
-										<li><a href="#tab3">Coppersmith</a></li>
-		                                <!-- <li><a href="#tab4">Media</a></li>
-		                                <li><a href="#tab4">Presenting</a></li> -->
-									</ul>
+							<div class="col-xs-12 col-sm-4">
+								<div class="open-close">
+									<a class="opener" href="#"><span class="selected">Silversmith</span><i class="icon-arrow-right"></i></a>
+									<div class="slide">
+										<ul class="tabset">
+			                                <li class="active"><a href="#tab2">Goldsmith</a></li>
+											<li><a href="#tab1">Silversmith</a></li>
+											<li><a href="#tab3">Coppersmith</a></li>
+			                                <!-- <li><a href="#tab4">Media</a></li>
+			                                <li><a href="#tab4">Presenting</a></li> -->
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="sponsor-carousel">
-					<div class="mask">
-						<div class="slideset">
-                            <div class="slide">
-                                <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
-                            </div>
-						    <div class="slide">
-                                    <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
-					        </div>
-						    <div class="slide">
-					              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
-						    </div>
-                            <!--
-                            <div class="slide">
-					              <?php // echo mf_sponsor_list('Media Sponsor') ?>
-						    </div>
-                            <div class="slide">
-					              <?php // echo mf_sponsor_list('Presenting Sponsor') ?>
-						    </div>
-						    -->
+					<div class="sponsor-carousel">
+						<div class="mask">
+							<div class="slideset">
+	                            <div class="slide">
+	                                <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
+	                            </div>
+							    <div class="slide">
+	                                    <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
+						        </div>
+							    <div class="slide">
+						              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
+							    </div>
+	                            <!--
+	                            <div class="slide">
+						              <?php // echo mf_sponsor_list('Media Sponsor') ?>
+							    </div>
+	                            <div class="slide">
+						              <?php // echo mf_sponsor_list('Presenting Sponsor') ?>
+							    </div>
+							    -->
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class"col-xs-12 visible-xs-12">
-					<a class="pull-right" href="/bay-area-2015/sponsors/">Become a sponsor</a></mark>
+					<div class"col-xs-12 visible-xs-12">
+						<a class="pull-right" href="/bay-area-2015/sponsors/">Become a sponsor</a></mark>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -50,18 +50,18 @@ jQuery(function() {
 });
 /* Make all external link open in a new tab */
 // jQuery(document).ready(function() {
-// 		jQuery( 'a[href^="http://"]' ).attr( 'target','_blank' );
-// 		});
+//      jQuery( 'a[href^="http://"]' ).attr( 'target','_blank' );
+//      });
 /* end of external link */
 
 // for images
 /* No longer needed.
 function getInitialImageSize() {
-	
-	jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src').replace('?resize=130%2C130', ''));
+    
+    jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(1) a").children('img').attr('src').replace('?resize=130%2C130', ''));
     jQuery(".news.post div.row:nth-child(2) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(2) a").children('img').attr('src').replace('?resize=130%2C130', ''));
     jQuery(".news.post div.row:nth-child(3) a").children('img').attr('src', jQuery(".news.post div.row:nth-child(3) a").children('img').attr('src').replace('?resize=130%2C130', ''));
-	
+    
 }
 */
 
@@ -71,7 +71,7 @@ function makeStyle(){
      jQuery('.menu .sub-menu').each(function (index) {
      var categ_item_li = jQuery(this);
 
-     categ_item_li.wrapAll('<div class="drop-holder"><div class="drop"><div class="container-fluid"><div class="row"><div class="col-xs-12"><div class="column">');
+     categ_item_li.wrapAll('<div class="drop-holder"><div class="drop"><div class="container"><div class="row"><div class="col-xs-12"><div class="column">');
      });
      */
     //jQuery('#menu-main-navigation').addClass('nav navbar-nav');
@@ -89,7 +89,7 @@ function makeStyle(){
      categ_item_li.slice(categ_item_li_half, categ_item_li_full).wrapAll('<div class="col"><ul>');
      }); */
     /*
-     jQuery('.sub-menu').before('<div class="drop-holder"><div class="drop"><div class="container-fluid"><div class="row"><div class="col-xs-12"><div class="drop-logo about"><img src="images/about-logo.png" height="154" width="113" alt=""></div><div class="column">');
+     jQuery('.sub-menu').before('<div class="drop-holder"><div class="drop"><div class="container"><div class="row"><div class="col-xs-12"><div class="drop-logo about"><img src="images/about-logo.png" height="154" width="113" alt=""></div><div class="column">');
      jQuery('.sub-menu').after('</div></div></div></div></div></div>');
      */
     //nav navbar-nav
@@ -97,8 +97,8 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo"><a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo">');//<a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**
@@ -140,7 +140,7 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(2) > div").addClass('area');
 
-    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
+    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info disabled">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info disabled">MakerCon</a></div></div>');
 
     /**
      * This splits into 3 blocks the menu links
@@ -149,24 +149,24 @@ function makeStyle(){
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
 
-    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>BAY AREA 2015</h2>');
-	jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
+    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>NEW YORK 2015</h2>');
+    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');
-	// For the Around World submenu
-	jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .right').prepend('<h2>GET STARTED</h2>');
-	/*
-	jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
+    // For the Around World submenu
+    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .right').prepend('<h2>GET STARTED</h2>');
+    /*
+    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
-	*/
-	/* col2 separator blankLink - for separator in wp-menu */
+    */
+    /* col2 separator blankLink - for separator in wp-menu */
 /* navbar-collapse */
-	/*Shop link*/
-	//jQuery('.navbar-nav > li:nth-child(5)').removeClass('drop-holder, drop, dropdown, open');
-	//jQuery('.navbar-nav > li:nth-child(5) > a').removeClass('dropdown-toggle');
-	//jQuery('.navbar-nav > li:nth-child(5) > a').removeAttr('data-toggle');
-	//jQuery('.navbar-nav > li:nth-child(5) > a').attr("target","_blank");
-	/*end of shop link*/
+    /*Shop link*/
+    //jQuery('.navbar-nav > li:nth-child(5)').removeClass('drop-holder, drop, dropdown, open');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').removeClass('dropdown-toggle');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').removeAttr('data-toggle');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').attr("target","_blank");
+    /*end of shop link*/
 
     jQuery(".nav li:nth-child(2) .dinamic-content").addClass('box').prepend('<h2>Download</h2>');
     //jQuery(".nav li:nth-child(2) .dinamic-content").prepend('<div class="box"><div class="title"><h2>Download</h2></div><ul><li class="app"><a href="#">Maker App</a></li><li class="program"><a href="#">Program Guide</a></li><li class="map"><a href="#">Map</a></li></ul></div>');
@@ -3206,7 +3206,7 @@ function bindReady(handler){
 }
 
 /* News from MakeZine section*/
-//	jQuery('.gallery-holder div.carousel').switchClass( "newsies", "filter-container style" );
+//  jQuery('.gallery-holder div.carousel').switchClass( "newsies", "filter-container style" );
 /*
  $(function() {
  jQuery('.newsies').attr('id', 'test');
@@ -3223,16 +3223,16 @@ if(Object.create){!function(a,b,c,d){"use strict";function e(a,b,c){return setTi
 
 
 /*
- *	jQuery carouFredSel 6.2.0
- *	Demo's and documentation:
- *	caroufredsel.dev7studios.com
+ *  jQuery carouFredSel 6.2.0
+ *  Demo's and documentation:
+ *  caroufredsel.dev7studios.com
  *
- *	Copyright (c) 2013 Fred Heusschen
- *	www.frebsite.nl
+ *  Copyright (c) 2013 Fred Heusschen
+ *  www.frebsite.nl
  *
- *	Dual licensed under the MIT and GPL licenses.
- *	http://en.wikipedia.org/wiki/MIT_License
- *	http://en.wikipedia.org/wiki/GNU_General_Public_License
+ *  Dual licensed under the MIT and GPL licenses.
+ *  http://en.wikipedia.org/wiki/MIT_License
+ *  http://en.wikipedia.org/wiki/GNU_General_Public_License
  */
 
 

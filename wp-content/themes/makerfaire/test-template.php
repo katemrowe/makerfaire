@@ -204,7 +204,7 @@
 				</div>
 			</nav>
 		</header>
-	<main id="main" role="main">
+	<main id="main" class="quora" role="main">
 		<div class="banner">
 			<div class="container">
 				<img class="visual" src="images/img9.jpg" height="369" width="940" alt="">
@@ -666,3 +666,4 @@
 
 ?>
  <?php get_footer(); ?>
+ 

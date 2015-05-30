@@ -194,49 +194,11 @@
 	</div>
 </div><!--end of Sponsor carusel section--> 
         
-<!-- The last section --> 
-<div class="follow-wrap">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-4">
-				<div class="social-holder timer-box">
-
-                    <div class="title">
-                        <h2>Maker Faire countdown</h2>
-                    </div>
-    				<h1>Maker Faire <strong>Bay Area</strong></h1>
-
-                    <div class="countdown">
-                    </div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-4">
-				<div class="social-holder twitter">
-					<div class="title">
-						<h1><a href="http://twitter.com/makerfaire" target="_blank">#MakerFaire</a></h1>
-					</div>
-                    <div id="recent-twitter"></div>
-                   <a href="http://twitter.com/makerfaire" class="follow" target="_blank">Follow us on Twitter</a>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-4">
-				<div class="social-holder instagram">
-					<div class="title">
-						<h1>Instagram, <a href="http://instagram.com/makerfaire" target="_blank">#makerfaire</a></h1>
-					</div>
-					<ul class="img-list">
-                        <?php echo $instagram->getFirstImage(); ?>
-					</ul>
-					<a href="http://instagram.com/makerfaire" target="_blank" class="follow">Follow us on Instagram</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div> 
+<?php echo do_shortcode('[show_instagram]'); ?>
              
- </main>  
- </div> <!-- end of wrapper -->         
- <?php get_footer(); ?>
+</main>  
+</div> <!-- end of wrapper -->         
+<?php get_footer(); ?>
 
 <script>// twitter function
     (function(v,n){"function"===typeof define&&define.amd?define([],n):"object"===typeof exports?module.exports=n():n()})(this,function(){function v(a){return a.replace(/<b[^>]*>(.*?)<\/b>/gi,function(a,f){return f}).replace(/class=".*?"|data-query-source=".*?"|dir=".*?"|rel=".*?"/gi,"")}function n(a){a=a.getElementsByTagName("a");for(var c=a.length-1;0<=c;c--)a[c].setAttribute("target","_blank")}function m(a,c){for(var f=[],g=new RegExp("(^| )"+c+"( |$)"),h=a.getElementsByTagName("*"),b=0,k=h.length;b<

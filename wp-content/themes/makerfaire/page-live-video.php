@@ -65,7 +65,7 @@
 <div class="flag-border"></div>
 <!-- Sponsor carusel section-->
 <div class="sponsors-wrap">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 sponsor-carousel-holder">
 				<div class="head-box">

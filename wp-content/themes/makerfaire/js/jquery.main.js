@@ -71,7 +71,7 @@ function makeStyle(){
      jQuery('.menu .sub-menu').each(function (index) {
      var categ_item_li = jQuery(this);
 
-     categ_item_li.wrapAll('<div class="drop-holder"><div class="drop"><div class="container-fluid"><div class="row"><div class="col-xs-12"><div class="column">');
+     categ_item_li.wrapAll('<div class="drop-holder"><div class="drop"><div class="container"><div class="row"><div class="col-xs-12"><div class="column">');
      });
      */
     //jQuery('#menu-main-navigation').addClass('nav navbar-nav');
@@ -89,7 +89,7 @@ function makeStyle(){
      categ_item_li.slice(categ_item_li_half, categ_item_li_full).wrapAll('<div class="col"><ul>');
      }); */
     /*
-     jQuery('.sub-menu').before('<div class="drop-holder"><div class="drop"><div class="container-fluid"><div class="row"><div class="col-xs-12"><div class="drop-logo about"><img src="images/about-logo.png" height="154" width="113" alt=""></div><div class="column">');
+     jQuery('.sub-menu').before('<div class="drop-holder"><div class="drop"><div class="container"><div class="row"><div class="col-xs-12"><div class="drop-logo about"><img src="images/about-logo.png" height="154" width="113" alt=""></div><div class="column">');
      jQuery('.sub-menu').after('</div></div></div></div></div></div>');
      */
     //nav navbar-nav

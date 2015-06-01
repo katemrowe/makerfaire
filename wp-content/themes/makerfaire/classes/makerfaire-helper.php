@@ -96,7 +96,7 @@ function mf_display_schedule_by_area( $atts ) {
 	//$output = '<div class="row"><div class="col-md-4"><h2><a href="' . esc_url( get_permalink( absint( $data['area'] ) ) . '?faire=' . $data['faire'] ) . '">' . $subarea_array[2] . '</a></h2></div> <div class="col-md-1 pull-right" style="position:relative; top:7px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';
         $output = '<div class="row padtop" style="height:58px;overflow:hidden;margin:0;">'
                 . '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
-                . '<div class="pull-right" style="position:relative; top:-31px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" class="padright" alt="Print this schedule" /></a></div></div>';    
+                . '<div class="pull-right" style="position:relative; top:-31px;"><a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a></div></div>';    
 	
 	// Let's loop through each day and spit out a schedule?
 	$days = array( 'friday', 'saturday', 'sunday' );
@@ -108,7 +108,7 @@ function mf_display_schedule_by_area( $atts ) {
                 
 		if ( count(${ $day }) > 0 ) {
                     
-                       $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
+                       $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a class="text-capitalize" href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
                               
                         // Start the schedule
 			$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.($day=='saturday'?'active':'').'">';
@@ -126,19 +126,19 @@ function mf_display_schedule_by_area( $atts ) {
 			//$app = json_decode( mf_convert_newlines( str_replace( "\'", "'", $app_obj->post_content ) ) );
 
 			$output .= '<tr>';
-			$output .= '<td width="200" style="max-width:200px;" class="dateTime">';
-			$output .= '<h4 style="font-weight:bold">' . esc_html($scheduleditem['day'] ) . '</h4>';
-			$output .= '<p>' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; ' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
+			$output .= '<td class="dateTime col-xs-2 col-sm-3 col-md-3 col-lg-3">';
+			$output .= '<h4>' . esc_html($scheduleditem['day'] ) . '</h4>';
+			$output .= '<p><span class="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; </span>' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
 			if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
-				$output .= '<div class="pull-left img-thumbnail">';
+				$output .= '<div class="pull-left">';
 				// We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
 				if (  $scheduleditem['thumb_img_url'] ) {
-					$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['thumb_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+					$output .= '<a class="thumbnail" href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['thumb_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '"></a>';
 					
 				}
 				else {
 				
-					$output .= '<a href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '" width="140" height="140"></a>';
+					$output .= '<a class="thumbnail" href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '"></a>';
 				}
 				$output .= '</div>';
 			}

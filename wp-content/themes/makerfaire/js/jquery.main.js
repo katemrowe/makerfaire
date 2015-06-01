@@ -7,7 +7,12 @@ var templateUrl = object_name.templateUrl;
 
 
 jQuery( document ).ready(function() {
-
+    
+    /* Allows users to add a class of 'disabled' to the navigation menu to disable a navigation link*/   
+    jQuery("li.disabled a").each(function(){        
+            jQuery(this).removeAttr("href");        
+    });
+    
     mfba = new Date(2015, 5-1, 16, 9, 00);
     jQuery('.countdown').countdown({
         until: mfba,

@@ -388,7 +388,7 @@ if ( is_page( '459885' ) ) {
 	});
 	</script>
 	<div class="fancybox" style="display:none;">
-	    <h3>Yes, I\'m interested in the <br/>School Maker Faire Program.</h3>
+	    <h3>Yes, I\'m interested in staying in touch with the School Maker Faire Program</h3>
 		<form name="MailingList" action="http://whatcounts.com/bin/listctrl" method="POST">
 			<input type=hidden name="slid" value="6B5869DC547D3D4637EA6E33C6C8170D" />
 			<input type="hidden" name="cmd" value="subscribe" />

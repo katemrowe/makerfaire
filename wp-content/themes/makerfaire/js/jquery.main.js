@@ -102,8 +102,8 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo">');//<a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/area-logo.png" alt="Maker Faire Bay Area Badge logo"><a href="https://www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank" class="btn btn-danger">BUY TICKETS</a>');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**
@@ -145,7 +145,7 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(2) > div").addClass('area');
 
-    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info disabled">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info disabled">MakerCon</a></div></div>');
+    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
 
     /**
      * This splits into 3 blocks the menu links
@@ -154,7 +154,7 @@ function makeStyle(){
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
 
-    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>NEW YORK 2015</h2>');
+    jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>BAY AREA 2015</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');

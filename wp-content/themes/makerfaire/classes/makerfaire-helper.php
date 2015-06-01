@@ -102,17 +102,16 @@ function mf_display_schedule_by_area( $atts ) {
 	$days = array( 'friday', 'saturday', 'sunday' );
         
         $output .= ' <div class="tab-content">';
-        //$first sets the first day to active
-        //at the end of the first day loop we set $first to blank
-        $first = 'active';
+        
         $navTabs = '';
-	foreach ( $days as 	 $day ) {         
+	foreach ( $days as 	 $day ) {    
+                
 		if ( count(${ $day }) > 0 ) {
                     
                        $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a href="#'.str_replace(' ', '', $subarea_clean_name).esc_attr( $day ).'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                       
                               
                         // Start the schedule
-			$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.$first.'">';
+			$output .= '<div id="' . str_replace(' ', '', $subarea_clean_name).esc_attr( $day ) . '" class="tab-pane fade in '.($day=='saturday'?'active':'').'">';
                         $output .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';
 			//$output .= '<thead><tr><th colspan="2">' . $day  . '</th></tr></thead>';
 			//$output .= '<thead><tr><th colspan="2">' . esc_html( date( 'l dS, Y', strtotime( $scheduleditem['start_time']  ) ) ) . '</th></tr></thead>';
@@ -162,7 +161,7 @@ function mf_display_schedule_by_area( $atts ) {
 			endforeach;
 
 			$output .= '</table></div>';
-			$first = '';
+			
 		} 
 	}
         $output .='</div>';

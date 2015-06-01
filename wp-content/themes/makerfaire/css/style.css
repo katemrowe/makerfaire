@@ -889,6 +889,32 @@ li.hidelink a:visited {
 .alert p a {
   color: red;
 }
+#scheduleTab .nav-tabs > li > a {
+  border: 0;
+  background-color: transparent;
+  text-transform: capitalize;
+  padding: 10px;
+}
+#scheduleTab .nav-tabs > li {
+  border: thin solid #ddd;
+  font-size: 18px;
+  margin-right: 5px;
+}
+#scheduleTab .nav-tabs > li.active {
+  background-color: #00bef3;
+}
+#scheduleTab .nav-tabs > li.active a {
+  color: #fff;
+}
+#scheduleTab .dateTime {
+  color: #085a7e;
+}
+#scheduleTab table tr {
+  background-color: #f9f9f9;
+}
+#scheduleTab .thumbnail img {
+  min-width: 90px;
+}
 .meetthemakers {
   background-color: #fff;
   background: rgba(255, 255, 255, 0.8);
@@ -3593,35 +3619,6 @@ li.hidelink a:visited {
   opacity: 0.3;
   padding: 10px 25px 10px 25px;
   border-radius: 5px;
-}
-.quora #scheduleTab .nav-tabs {
-  float: left;
-  padding-top: 10px;
-  margin: 0 15px;
-}
-.quora #scheduleTab .nav-tabs > li > a {
-  border: 0;
-  background-color: transparent;
-  text-transform: capitalize;
-  padding: 10px;
-}
-.quora #scheduleTab .nav-tabs > li {
-  border: thin solid #ddd;
-  margin: 0;
-  font-size: 18px;
-  border-bottom: none;
-}
-.quora #scheduleTab .nav-tabs > li.active {
-  background-color: #00bef3;
-}
-.quora #scheduleTab .nav-tabs > li.active a {
-  color: #fff;
-}
-.quora #scheduleTab .dateTime {
-  color: #085a7e;
-}
-.quora #scheduleTab table tr {
-  background-color: #f9f9f9;
 }
 @media (max-width: 767px) {
   #main {

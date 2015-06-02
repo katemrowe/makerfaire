@@ -588,7 +588,7 @@ get_header();
 							<a href="#myModal22" role="button" class="modal-archive" data-toggle="modal">
 							<span class="video-icon text-center" aria-hidden="true"></span>
 							<img class="img-responsive" src="http://img.youtube.com/vi/ByOAkOnS7O4/maxresdefault.jpg" alt="" /></a>
-							<p>Charles "Chuck" Swiger, the winner of the first-ever PSoC Challenge. The contest challenged Makers to design IoT projects using the newly released PSoC 4 BLE Pioneer Kit. Ten Maker projects competed for one grand prize, $2,500. A few travel here to Maker Faire Bay Area.</p>
+							<p>Charles "Chuck" Swiger, the winner of the first-ever PSoC Challenge. The contest challenged Makers to design IoT projects using the newly released PSoC 4 BLE Pioneer Kit. Ten Maker prujects competed for one grand prize, $2,500. A few travel here to Maker Faire Bay Area.</p>
 						</div>
 						<!-- Video Modal -->
 						<div class="modal" id="myModal22">

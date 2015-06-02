@@ -95,7 +95,7 @@ if (isset($menu_locations[ $location_id ])) {
 			'meta'  => array( 'class' => 'my-toolbar-page' ),
 		'parent' => 'mf_admin_parent'
 		);
-
+                
 		$wp_admin_bar->add_node( $args );
 
 		foreach ( (array) $menu_items as $key => $menu_item ) {
@@ -113,6 +113,50 @@ if (isset($menu_locations[ $location_id ])) {
 	}
 }
 
+
+//new york
+$location_id = 'mf-admin-newyork-register-menu';
+
+if (isset($menu_locations[ $location_id ])) {
+	foreach ($menus as $menu) {
+		// If the ID of this menu is the ID associated with the location we're searching for
+		if ($menu->term_id == $menu_locations[ $location_id ]) {
+                    // This is the correct menu
+                    $menu_items = wp_get_nav_menu_items($menu);
+
+                    $args = array(
+                                    'id'    => 'mf_admin_parent',
+                                    'title' => 'MF Admin',
+                                    'meta'  => array( 'class' => 'my-toolbar-page' ),
+                    );
+
+                    $wp_admin_bar->add_node( $args );
+
+                    $args = array(
+                    'id'    => 'mf_admin_parent_newyork',
+                    'title' => 'New York',
+                    'meta'  => array( 'class' => 'my-toolbar-page' ),
+                    'parent' => 'mf_admin_parent'
+                    );
+
+                    $wp_admin_bar->add_node( $args );
+
+                    foreach ( (array) $menu_items as $key => $menu_item ) {
+                            $args = array(
+                                    'id'    => $menu_item->object_id,
+                                    'title' => $menu_item->title,
+                                    'href'  => $menu_item->url,
+                                    'meta'  => array( 'class' => 'my-toolbar-page' ),
+                                    'parent' => 'mf_admin_parent_newyork'
+                            );
+
+                            $wp_admin_bar->add_node( $args );
+                    }
+		}
+	}
+}
+
+//faire setup
 $location_id = 'mf-admin-fairesetup-register-menu';
 
 if (isset($menu_locations[ $location_id ])) {

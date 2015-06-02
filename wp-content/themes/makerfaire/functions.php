@@ -273,7 +273,8 @@ function isc_register_menus() {
 	array( 'header-menu' => __( 'Header Menu' ),
             'footer' => __( 'footer' ),
 			'mf-admin-bayarea-register-menu' => __( 'MF BayArea Admin Bar' ),
-			'mobile-nav' => __( 'Mobile Navigation' ) )
+                        'mf-admin-newyork-register-menu' => __( 'MF NewYork Admin Bar' ),
+			'mobile-nav' => __( 'Mobile Navigation' ) )        
   );
 }
 add_action( 'init', 'isc_register_menus' );

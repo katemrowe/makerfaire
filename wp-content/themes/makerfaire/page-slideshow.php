@@ -1,30 +1,26 @@
 <?php
-	/*
-	Template name: Slideshow
-	*/
-	get_header(); ?>
+/*
+Template name: Slideshow
+*/
+get_header(); ?>
 <div class="clear"></div>
 <div class="container live-page">
 	<div class="row" style="margin-bottom:0px;padding-bottom:0px;">
-		<div class="col-xs-7">
-			<div class="row">
-				<div class="col-xs-12">
-					<h1><?php echo get_the_title(); ?></h1>
-				</div>
-			</div>
+		<div class="col-xs-12 col-sm-7">
+			<h1><?php echo get_the_title(); ?></h1>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-sm-2 hidden-xs">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/robot.png" width="auto" alt="makey robot" />
 		</div>
-		<div class="col-xs-3 social">
+		<div class="col-sm-3 social hidden-xs">
 			<div class="social-foot-col">
 				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Facebook" target="_blank">
+					<a class="sprite-facebook-32" href="//www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/live" title="Facebook" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-twitter-32" href="//twitter.com/home?status=https://www.facebook.com/sharer/sharer.php?u=http://makerfaire.com/bay-area-2015/slideshow" title="Twitter" target="_blank">
+					<a class="sprite-twitter-32" href="//twitter.com/home?status=http://makerfaire.com/bay-area-2015/live" title="Twitter" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>
@@ -34,7 +30,7 @@
 							<span class="sprite"></span>
 						</div>
 					</a>
-					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=//makerfaire.com/bay-area-2015/slideshow/" rel="publisher" title="Google+" target="_blank">
+					<a class="sprite-googleplus-32" href="//plus.google.com/share?url=http://makerfaire.com/bay-area-2015/live" rel="publisher" title="Google+" target="_blank">
 						<div class="social-profile-cont">
 							<span class="sprite"></span>
 						</div>

@@ -396,7 +396,7 @@ a:focus {
 }
 .advertisement-container div {
   margin-bottom: 5px;
-  margin-left: 100px;
+  margin-left: 80px;
 }
 .advertisement-container img {
   position: absolute;
@@ -761,6 +761,10 @@ tr.time {
 .fancybox-wrap .fancybox-skin {
   padding-bottom: 45px!important;
   background: rgba(247, 247, 247, 0.94) url(http://makerfaire.com/wp-content/themes/makerfaire/images/bg-border.png) repeat-x 0 100%;
+}
+.submenu-right-sidebar .dropdown-menu {
+  left: auto;
+  right: 0;
 }
 .search .search-title {
   margin-bottom: 5px;
@@ -3745,6 +3749,8 @@ li.hidelink a:visited {
     height: 100%;
     background: #085a7e;
     margin-top: -10px;
+    min-height: 125px;
+    max-height: 125px;
   }
   .quora .carousel-holder .carousel-inner p {
     font-family: 'latolight', Helvetica, Arial, sans-serif;

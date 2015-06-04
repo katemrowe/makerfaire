@@ -38,7 +38,7 @@ nav.wh ul li:last-of-type {
 
 <div class="blue" style="text-align:center; height:60px; background-color:#D9F0FA; padding-top:20px; margin-bottom:80px; margin-top:20px;">
 	<div class="container">
-		<img src="https://makerfaire.files.wordpress.com/2014/06/white-house2.png" width="160" class="pull-left" style="margin-top:-60px; margin-bottom:40px;">
+		<img src="//makerfaire.com/wp-content/uploads/2014/06/white-house2.png" width="160" class="pull-left" style="margin-top:-60px; margin-bottom:40px;">
 		<nav class="wh">
 			<ul class="inline">
 				<li data-show="activities" class="linker nav-map"><a href="http://makezine.com/day-of-making/#activities">Day of<br> Making</a></li>

@@ -3624,6 +3624,9 @@ li.hidelink a:visited {
   padding: 10px 25px 10px 25px;
   border-radius: 5px;
 }
+.gform_wrapper .gform_page_footer .button.gform_next_button {
+  margin-bottom: .5em;
+}
 @media (max-width: 767px) {
   #main {
     margin-top: 66px;

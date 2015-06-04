@@ -215,9 +215,14 @@ function note_to_jdb( $noteid,$entryid,$userid,$username,$note,$notetype ) {
 //action to modify field 320 to display the text instead of the taxonomy code
 add_filter("gform_entry_field_value", "setTaxName", 10, 4);
 function setTaxName($value, $field, $lead, $form){
-    if($field["id"] != 320)
-        return $value;
+    $field_type = RGFormsModel::get_input_type($field);
+
+	if( in_array( $field_type, array('checkbox', 'select', 'radio') ) ){
+		$value = RGFormsModel::get_lead_field_value( $lead, $field );
+		return GFCommon::get_lead_field_display( $field, $value, $lead["currency"], true );
+	}
+	else{
+		return $value;
+	}
     
-    $term = get_term( $value, 'makerfaire_category');
-    return $term->name;
 }

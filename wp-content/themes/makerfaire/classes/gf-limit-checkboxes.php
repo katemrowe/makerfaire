@@ -202,53 +202,26 @@ class GFLimitCheckboxes {
     }
 
 }
-new GFLimitCheckboxes(9, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(10, array(
-    147 => array(
-        'max' => 5
-        )
-    ));
-new GFLimitCheckboxes(20, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(12, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(13, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(14, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(15, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(16, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(17, array(
-		147 => array(
-				'max' => 5
-		)
-));
-new GFLimitCheckboxes(18, array(
-		147 => array(
-				'max' => 5
-		)
-));
+
+/*  
+ * array to limit checkboxes.  
+ * 
+ * to add a new limit, add a new array to limitArray array(fieldID,max#, array of formID's)
+ * 
+ */
+$limitArray = array(
+                array(321,4,array(25, 26, 27, 28, 29, 30, 31)), //limit additional categories field to 4
+                array(147,5,array( 9, 10, 20, 12, 13, 14, 15, 16, 17, 18))
+              );
+
+foreach($limitArray as $limit){
+    $field = $limit[0];
+    $max   = $limit[1];
+    foreach($limit[2] as $form){          
+        new GFLimitCheckboxes($form, array(
+            $field => array('max' => $max)
+        ));
+    }
+}
+
+

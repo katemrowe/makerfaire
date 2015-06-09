@@ -102,14 +102,18 @@ function build_wp_mf_maker(){
     foreach($wpdb->get_results($sql) as $row){
         //build array of leads
         $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->value;
-        $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status, 'descLong'=>$row->desc_Long);
+        if(isset($row->descLong)&&$row->descLong!=NULL){
+            $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->descLong;
+        }
+        $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status);
     }
     $x = 0; $m = 0;
     
     foreach($dataArray as $form_id=>$formEntries){        
         foreach($formEntries as $key=>$lead){               
             $status=(isset($lead[$crossRef['wp_mf_entity_array']['status']])?$lead[$crossRef['wp_mf_entity_array']['status']]:'');
-            //ensure field 303 is set
+          
+//ensure field 303 is set
             if($status !=''){
                 //build wp_mf_entity table
                 $wp_mf_entitysql = "insert into wp_mf_entity "
@@ -140,6 +144,7 @@ function build_wp_mf_maker(){
                     $firstName  = (isset($typeArray['First Name']) ? esc_sql($lead[(string) $typeArray['First Name']]) : '');
                     $lastName   = (isset($typeArray['Last Name'])  ? esc_sql($lead[(string) $typeArray['Last Name']])  : '');
                     $bio        = (isset($typeArray['Bio'])        ? esc_sql($lead[$typeArray['Bio']])        : '');
+
                     $email      = (isset($typeArray['Email'])      ? esc_sql($lead[$typeArray['Email']])      : '');
                     $phone      = (isset($typeArray['phone'])      ? esc_sql($lead[$typeArray['phone']])      : '');
                     $twitter    = (isset($typeArray['TWITTER'])    ? esc_sql($lead[$typeArray['TWITTER']])    : '');

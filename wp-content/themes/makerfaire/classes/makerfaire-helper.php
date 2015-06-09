@@ -232,7 +232,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	$schedule['entity_id_refs'] = array( absint( $entry_id) );
 
 	// Application Makers
-	$schedule['maker_list']   = ( ! empty( $row[26] ) ) ? $row[26] : null;
+	$schedule['maker_list']   = ( ! empty( $row['makers_list'] ) ) ? $row['makers_list'] : null;
 	
 	$maker_ids = array();
 

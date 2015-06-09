@@ -220,14 +220,14 @@ Topbar
 				        $parent_id = $item->ID;
 				    ?>
 				 
-				    <li class="dropdown">
-				        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                       <li class="<?php echo ($new_window!=''?'':'dropdown');?>">
+				        <a href="<?php echo $link; ?>" <?php echo ($new_window!=''?'target="'.$new_window.'"':'');?> <?php echo ($new_window!=''?'':'class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"');?>>
 				            <?php echo $title; ?> 
 				            <span class="caret"></span>
 				        </a>
 				    <?php endif; ?>
 				 
-				        <?php if ( $parent_id == $item->menu_item_parent ): ?>
+				    <?php if ( $parent_id == $item->menu_item_parent ): ?>
 				 
 				            <?php if ( !$submenu ): $submenu = true; ?>
 				            

@@ -52,30 +52,45 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                     "
                 .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
                 "       maker_view.Name = 'Contact'";
+        $faire = 'ba15';
+        $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
+                       DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
+                       DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
+                       subarea.nicename, area.area, entity.presentation_title as 'Exhibit',
+                    (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
+                        from    wp_mf_maker maker, 
+                                wp_mf_maker_to_entity maker_to_entity, 
+                                wp_mf_entity
+                        where   schedule.entry_id           = wp_mf_entity.lead_id AND
+                                wp_mf_entity.lead_id        = maker.lead_id        AND 
+                                maker_to_entity.maker_id    = maker.maker_id       AND                                 
+                                maker_to_entity.maker_type != 'Contact' 
+                        group by maker.lead_id
+                    ) as Presenters        
+
+            FROM    wp_mf_schedule schedule, 
+                    wp_mf_entity entity, 
+                    wp_mf_location location, 
+                    wp_mf_faire_subarea subarea, 
+                    wp_mf_faire_area area
+
+            where   schedule.faire          = '".$faire."' 
+                    AND schedule.entry_id   = entity.lead_id 
+                    AND entity.status       = 'Accepted' 
+                    and location.entry_id   = schedule.entry_id
+                    and subarea.id          = location.subarea_id
+                    and area.id             = subarea.area_id"                    
+                    .($day_set!=''?" and DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."'":'');    
+                   
         if($orderBy=='time'){
-            $sql .= "  order by schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
+            $sql .= " order by schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
         }else{
             $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
         //group by stage and date
         $dayOfWeek = '';
         $stage     = '';
-        $stageArray = array('Midway: Meeting Pavilion: Center Stage'        =>'Center Stage',
-                            'Expo: Center: Make: Live Stage'                =>'Make: Live',
-                            'Expo: Center: Make: Electronics Stage'         =>'Make: Electronics',
-                            'North Courtyard: Make: Science Stage'          =>'Make: Science',
-                            'Midway: Grass M: Make: Education Stage'        =>'Make: Education',
-                            'West Green: Grass K: Make: DIY Stage'          =>'Make: DIY',
-                            'Show Barn: Homegrown Village: Maker Square Stage'          =>'Maker Square',
-                            'Show Barn: Homegrown Village: Hands-On Homegrown Workshop' =>'Hands-On HomeGrown Village',
-                            'South Lot: Center: Swap-O-Rama-Rama: Textile Talk Lounge'  =>'Textile Talk Lounge',
-                            'Fiesta: Main Room: Tesla Stage'                =>'Tesla Stage',
-                            'West Lot: Traveling Spectacular Stage'         =>'The Traveling Spectacular',
-                            'West Lot: North: Coke Zero & Mentos Stage'     =>'Coke Zero & Mentos',
-                            'Midway: Center: Pedal Powered Stage'           =>'Pedal Powered Stage',
-                            'North Courtyard: Battle Pond'                 =>'Battle Pond',
-                            'South Lot: South: Race Track'                  =>'Race Track',
-                            'Expo: South Center: Game of Drones'            =>'Game of Drones',);
+ 
         foreach( $wpdb->get_results($sql, ARRAY_A ) as $key=>$row) {            
             if($orderBy=='time'){ //break by stage. day goes in h1
                 $stage = $row['nicename'];

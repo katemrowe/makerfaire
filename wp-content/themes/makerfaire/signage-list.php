@@ -27,43 +27,16 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
     global $wpdb;
         $output = '';
         //retrieve Data
-        $sql = "select subarea.nicename, location.area,
-		DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
-		DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',
-		DAYNAME(`schedule`.`start_dt`) AS `Day`,		
-		maker_view.PresentationTitle as 'Exhibit',	
-                (SELECT GROUP_CONCAT(DISTINCT concat(maker_view2.`First Name`, ' ', maker_view2.`Last Name`)  
-                            ORDER BY maker_view2.Name SEPARATOR ', ') AS presenters
-                        FROM wp_mf_maker maker_view2
-                            where 	maker_view2.lead_id = maker_view.lead_id
-                                    and length(maker_view2.`First Name`) > 0 
-                                    and  Name != 'Contact'
-                           ORDER BY maker_view2.Name
-                            ) as 'Presenters'
-                from wp_mf_maker maker_view, wp_mf_schedule schedule, wp_mf_location location, `wp_rg_lead` lead, `wp_mf_faire_subarea` subarea
-				
-                where   schedule.faire = 'BA15' AND
-                        maker_view.lead_id   = schedule.entry_id AND
-                        maker_view.Status    = 'Accepted' AND
-                        maker_view.lead_id   = location.entry_id AND 
-                        maker_view.lead_id  = lead.ID AND
-                        lead.Status = 'active' AND
-        		subarea.subarea=location.subarea AND
-                    "
-                .($day_set!=''?" DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."' AND":'').
-                "       maker_view.Name = 'Contact'";
-        $faire = 'ba15';
+        $faire = 'ba15'; //need to have this field passed in as a parameter.  default to newest faire?
         $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
                        DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
                        DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
                        subarea.nicename, area.area, entity.presentation_title as 'Exhibit',
                     (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
                         from    wp_mf_maker maker, 
-                                wp_mf_maker_to_entity maker_to_entity, 
-                                wp_mf_entity
-                        where   schedule.entry_id           = wp_mf_entity.lead_id AND
-                                wp_mf_entity.lead_id        = maker.lead_id        AND 
-                                maker_to_entity.maker_id    = maker.maker_id       AND                                 
+                                wp_mf_maker_to_entity maker_to_entity
+                        where   schedule.entry_id           = maker_to_entity.entity_id  AND
+                                maker_to_entity.maker_id = maker.maker_id AND
                                 maker_to_entity.maker_type != 'Contact' 
                         group by maker.lead_id
                     ) as Presenters        

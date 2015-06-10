@@ -163,14 +163,12 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
                                 entity.presentation_title, entity.desc_short as description,  
                                 (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
                                     from    wp_mf_maker maker, 
-                                            wp_mf_maker_to_entity maker_to_entity, 
-                                            wp_mf_entity
-                                    where   schedule.entry_id           = wp_mf_entity.lead_id AND
-                                            wp_mf_entity.lead_id        = maker.lead_id        AND 
-                                            maker_to_entity.maker_id    = maker.maker_id       AND 
+                                            wp_mf_maker_to_entity maker_to_entity
+                                    where   schedule.entry_id           = maker_to_entity.entity_id  AND
+                                            maker_to_entity.maker_id    = maker.maker_id AND
                                             maker_to_entity.maker_type != 'Contact' 
                                     group by maker.lead_id
-                                ) as makers_list        
+                                )  as makers_list        
                         
                         FROM    wp_mf_schedule schedule, 
                                 wp_mf_entity entity, 

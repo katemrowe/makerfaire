@@ -113,12 +113,22 @@ function build_wp_mf_maker(){
         foreach($formEntries as $key=>$lead){               
             $status=(isset($lead[$crossRef['wp_mf_entity_array']['status']])?$lead[$crossRef['wp_mf_entity_array']['status']]:'');
           
-//ensure field 303 is set
+            //ensure field 303 is set
             if($status !=''){
+                //build array of categories
+                $leadCategory = array();
+                foreach($lead as $leadKey=>$leadValue){
+                    $pos = strpos($leadKey, '147');
+                    if ($pos !== false) {
+                        $leadCategory[]=substr($leadValue, strpos($leadValue, ":") + 1);
+                    }
+                }
+                $catList = implode(', ', $leadCategory);
+
                 //build wp_mf_entity table
                 $wp_mf_entitysql = "insert into wp_mf_entity "
                          . "    (lead_id, presentation_title, presentation_type, special_request, "
-                         . "     OnsitePhone, desc_short, desc_long, project_photo, status) "
+                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category) "
                          . " VALUES ('".$key."',"
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_title']]) .'", '
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  .'", '
@@ -127,20 +137,18 @@ function build_wp_mf_maker(){
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_short']])         .'", '
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_long']])          .'", '
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['project_photo']])      .'", '
-                            . ' "'.$status                                                      .'") '; 
+                            . ' "'.$status                                                      .'", '
+                            . ' "'.$catList                                                     .'") '; 
                 $x++;
 
                 $wpdb->get_results($wp_mf_entitysql);
                 if($wpdb->insert_id==false){
                     echo 'error inserting record wp_mf_entity:'.$wp_mf_entitysql.'<br/><br/>';
                     $entityID = 0;
-                }else{
-                    $entityID = $wpdb->insert_id;
                 }
                 
                 //build wp_mf_maker table (up to 10 rows)
-                foreach($crossRef['wp_mf_maker_array'] as $type =>$typeArray){
-                    
+                foreach($crossRef['wp_mf_maker_array'] as $type =>$typeArray){                   
                     $firstName  = (isset($typeArray['First Name']) ? esc_sql($lead[(string) $typeArray['First Name']]) : '');
                     $lastName   = (isset($typeArray['Last Name'])  ? esc_sql($lead[(string) $typeArray['Last Name']])  : '');
                     $bio        = (isset($typeArray['Bio'])        ? esc_sql($lead[$typeArray['Bio']])        : '');
@@ -167,7 +175,7 @@ function build_wp_mf_maker(){
                         //build maker to entity table
                         $wp_mf_maker_to_entity = "INSERT INTO `wp_mf_maker_to_entity`"
                                                      . " (`maker_id`, `entity_id`, `maker_type`) "
-                                                . ' VALUES ("'.$guid.'",'.$entityID.',"'.$type.'")';
+                                                . ' VALUES ("'.$guid.'",'.$key.',"'.$type.'")';
                         
                         $wpdb->get_results($wp_mf_maker_to_entity);
                         if($wpdb->insert_id==false){

@@ -211,6 +211,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	
         //$maker_photo    = isset ( $row[27] ) ? $row[27] : '';
 	$maker_photo    = $project_photo;
+        
 	// REQUIED: Application title paired to scheduled item
 	$schedule['name']                = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 	$schedule['time_start']          = date( DATE_ATOM,   $start );

@@ -10,16 +10,19 @@ function mf_sidebar_entry_locations($form_id, $lead) {
 	}
 	$entry_id=$lead['id'];
 	$result = $mysqli->query("SELECT `wp_mf_location`.`ID`,
-    `wp_mf_location`.`entry_id`,
-    `wp_mf_location`.`faire`,
-    `wp_mf_location`.`area`,
-    `wp_mf_location`.`subarea`,
-    `wp_mf_location`.`location`,
-    `wp_mf_location`.`latitude`,
-    `wp_mf_location`.`longitude`,
-    `wp_mf_location`.`location_element_id`
-	FROM `wp_mf_location`
-			 where entry_id=$entry_id");
+                                        `wp_mf_location`.`entry_id`,
+                                        `wp_mf_faire`.`faire`,
+                                        `wp_mf_faire_area`.`area`,
+                                        `wp_mf_faire_subarea`.`subarea`,
+                                        `wp_mf_location`.`location`,
+                                        `wp_mf_location`.`latitude`,
+                                        `wp_mf_location`.`longitude`,
+                                        `wp_mf_location`.`location_element_id`
+                                            FROM `wp_mf_location`, wp_mf_faire_subarea, wp_mf_faire_area, wp_mf_faire
+			 where entry_id=$entry_id 
+                         and   wp_mf_location.subarea_id = wp_mf_faire_subarea.ID
+                         and   wp_mf_faire_subarea.area_id = wp_mf_faire_area.ID 
+                         and   wp_mf_faire_area.faire_id   = wp_mf_faire.ID") or trigger_error($mysqli->error);
 	
 	if ($result)
 	{
@@ -37,9 +40,11 @@ function mf_sidebar_entry_locations($form_id, $lead) {
 			onclick="jQuery(\'#action\').val(\'delete_entry_location\');"/><br />';
 		echo $entry_delete_button;
 	}
-	$result_subareas = $mysqli->query("select area ,subarea from wp_mf_faire_subarea 
-								join wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_subarea.faire_id=wp_mf_faire.ID
-							order by subarea,area");
+	$result_subareas = $mysqli->query("select   wp_mf_faire_area.area ,subarea "
+                . "                        from     wp_mf_faire_subarea "
+                . "                        join     wp_mf_faire_area on wp_mf_faire_subarea.area_id = wp_mf_faire_area.ID "
+                . "                        join     wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_area.faire_id=wp_mf_faire.ID "
+                . "                        order by subarea,area") or trigger_error($mysqli->error);
 	if (isset($result_subareas))
 	{
 	echo ('<h5>Add Location:</h5>');
@@ -74,13 +79,13 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 	}
 	$entry_id=$lead['id'];
 	$result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
-    `wp_mf_schedule`.`entry_id`,
-    `wp_mf_schedule`.`location_id`,
-    `wp_mf_schedule`.`faire`,
-    `wp_mf_schedule`.`start_dt`,
-    `wp_mf_schedule`.`end_dt`,
-    `wp_mf_schedule`.`day`
-	FROM `wp_mf_schedule` where entry_id=$entry_id");
+                                    `wp_mf_schedule`.`entry_id`,
+                                    `wp_mf_schedule`.`location_id`,
+                                    `wp_mf_schedule`.`faire`,
+                                    `wp_mf_schedule`.`start_dt`,
+                                    `wp_mf_schedule`.`end_dt`,
+                                    `wp_mf_schedule`.`day`
+                                FROM `wp_mf_schedule` where entry_id=$entry_id")  or trigger_error($mysqli->error);
 	if ($result)
 	{
 	while($row = $result->fetch_row())
@@ -706,20 +711,17 @@ function set_entry_location($lead,$form){
 	
 	$insert_query = sprintf("
 				INSERT INTO `wp_mf_location`
-				(`entry_id`,
-				`faire`,
-				`area`,
-				`subarea`,
+				(`entry_id`,				
+				`subarea_id`,
 				`location`,
 				`location_element_id`)
 				Select $entry_info_entry_id
-				,wp_mf_faire.faire
-				,area
-				,subarea 
+				,wp_mf_faire_subarea.ID 
 				,'$update_entry_location_code'
 				,3
 				from wp_mf_faire_subarea 
-				join wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_subarea.faire_id=wp_mf_faire.ID
+                                join wp_mf_faire_area on wp_mf_faire_subarea.area_id = wp_mf_faire_area.ID
+				join wp_mf_faire on find_in_set($form_id,form_ids) > 0 and wp_mf_faire_area.faire_id=wp_mf_faire.ID
 				where subarea='$entry_schedule_change';");
 	//MySqli Insert Query
 	$insert_row = $mysqli->query($insert_query);

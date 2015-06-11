@@ -54,12 +54,187 @@ get_header();
 			</div>
 		</div>
 	</div>
+<?php //build array of video's 
+    $videoArray =   array(
+                        array('title'=>'Learn about the latest developments in Arduino open-source microcontroller from Massimo Banzi, co-founder of the Arduino Project.',
+                              'youtubeID' => 'k_Elf1XBsQ4'),
+                        array('title'=>'Large scale art requires a special set of skills and circumstances to produce, and to show. It also elicits a particular level of attention from an audience. Come listen to a panel of artists and curators (FiveTonCrane, Burning Man, Flux Foundation, Zach Coffin, Maker Faire) who have gone deep into the science of building and showing monumental art.',
+                              'youtubeID' => 'algOJYY1i_g'),
+                        array('title'=>'The talk will outline everything that goes into making a portable, precise milling machine: from wiring harnesses, HDPE frames, packaging, to the process by which we went from making everything in-house to using outside manufacturers.',
+                                'youtubeID' => '9agSwwtZYA8'),
+                        array('title'=>'Since Maker Faire was founded in 2006, new maker tools and tech have taken hold, crowdfunding was born, makerspaces have taken off. Dale will share his thoughts on the Maker Movement: where we\'ve come and what\'s next.',
+                              'youtubeID'=> 'jM7GbCke8Yo'),
+                        array('title'=>'Failing in life is inevitable, but sometimes as a maker you fail in epic proportions. Come listen to dedicated makers Jimmy Diresta, Bob Clagett, David Picciuto, and Make: editor Mike Senese tell tales of when things go very wrong — and what you learn from the process.',
+                              'youtubeID' => 'bJDhtP6qb-I'),
+                        array('title' => 'Eben will share the highlights of the first four years of the Raspberry Pi project. From their accidental announcement to the launch of Pi 2 and their five-millionth unit, Eben will draw a few lessons for other maker-oriented hardware projects.',
+                              'youtubeID' => 'JGMJcU87kYU'),
+                        array('title' => 'Space exploration is limited by the cost of launching materials off earth. Biology could solve this problem making possible the dream of producing bespoke tools, food, smart fabrics and even replacement organs on demand on earth or beyond!',
+                              'youtubeID' => '5HfQReYgMlo'),
+                        array('title' => 'Six years after its birth, Kickstarter is home to a thriving community of makers, one that\'s growing and maturing in interesting ways. Established companies and young creators alike are part of Kickstarter\'s dense fabric.',
+                              'youtubeID' => 'HjmT-YYSO_w'),
+                        array('title' => 'Known for the Eyewriter, Project Daniel, the Brainwriter and introducing collaborative initiatives to teach kids with cerebral palsy to walk, Not Impossible\'s Elliot Kotek wants to inspire you to be part of a community of do-ers and dynamos making the world a more "human" place.',
+                              'youtubeID' => 'bchESLbH8D8'),
+                        array('title' => 'John Collins, world record holder, shows off a collection of paper airplanes that has wowed audiences on four continents. See the world record plane fly across the room.',
+                              'youtubeID' => 'Z5msJXVv918'),
+                        array('title' => 'The OpenROV team talks about the history of underwater exploration, the current landscape of vehicles and devices, as well as glimpse into the very near future.',
+                              'youtubeID' => 'XWx6pOh62io'),
+                        array('title' => 'Cutting edge technology has never ceased to entertain users through accomplishing "magic". Let\'s look back at the history of tech so we can inform the future with inventions that resonate through magic and whimsy.',
+                              'youtubeID' => 'yF10LI-3DbI'),
+                        array('title' => 'A panel of Maker Faire veterans will discuss Maker Faires of the past, sharing favorite moments and ways that Maker Faire has changed their lives. Moderated by Lenore of Evil Mad Scientist Laboratories.',
+                              'youtubeID' => 'FofQ0kbIT3U'),
+                        array('title' => 'Join Autodesk CEO Carl Bass as he talks about how kids can use the latest hardware and software tools to make new things in new ways.',
+                              'youtubeID' => 'xy3wwfoa3RA'),
+                        array('title' => 'Since those early Maker Faires of 8-bit Arduinos and 3D printers much has changed, from the the wide availability of powerful smartphone-class electronics to the rise of polished crowdfunded campaigns. So what’s now at the DIY bleeding edge?',
+                              'youtubeID' => 'TKDv37fHZu0'),
+                        array('title' => 'Big & Bad is all relative in robotics. Don\'t judge a robot by its size. Join Robogames founder David Caulkins with roboticists Mark Setrakian (Robot Combat League) and Gui Cavalcanti (MegaBots) and artist Christan Ristow (Hand of Man) to discuss the nuances of what is "big and bad."',
+                              'youtubeID' => 'MCokwPXncxY'),
+                        array('title' => 'The Maker Movement obviously impacts all facets of our lives - including the home. Brit Morin will talk about the most interesting inevitables (and possibilities) that will soon hit our tables (and bathrooms and closets and kitchens).',
+                              'youtubeID' => '4imNbsPazVc'),
+                        array('title' => 'Rise of a Nation of Makers',
+                              'youtubeID' => 'jLGaddMZP_M'),
+                        array('title' => 'For a Maker culture to thrive it needs a healthy habitat: affordable workspaces, tools and supplies, job training and entrepreneurship services, makerspaces, and celebrations. Four people actively engaged in building Maker Cities discuss state of the art initiatives, policies and recipes towards better Maker habitat.',
+                              'youtubeID' => 'zwa8ZRvY90g'),
+                        array('title' => 'Jennifer George, Rube\'s Granddaughter, will discuss the making of her best selling book, "The Art of Rube Goldberg." Jennifer will also share memories of growing up with the Pulitzer Prize winning cartoonist and the legacy of invention that she\'s building into a brand.',
+                              'youtubeID' => '69gE5pG6MZ4'),
+                        array('title' => 'Executive Editor of Make: magazine Mike Senese will survey the various practical and beneficial ways consumer drones are being employed today: tracking endangered species, searching for missing persons, disaster area mapping and surveying, and more.',
+                              'youtubeID' => 'f0Swa5pkuYk'),
+                        array('title' => 'Charles & Ray Eames\' philosophy of learning-by-doing process was inquisitive, and thorough, resulting in projects that ranged from architecture, exhibits, and furniture to toys, films, and photography. Join Llisa Demetrios, granddaughter of Charles & Ray, in conversation with Exploratorium\'s Karen Wilkinson, on the Eames\' maker design process.',
+                              'youtubeID' => 'MD_xJYrRCEQ'),
+                        array('title' => 'Yobie Benjamin has been involved in two crowdfunded IoT startups, Avegant and Skully Systems and advises several other startups. He will explore the challenges of getting your product to market and the challenges of contract manufacturing.',
+                              'youtubeID' => 'cZ6U8Ts_GZM'),
+                        array('title' => 'Robotics are the future. From sci-fi to research labs, robots have captured our imagination about inventing a better world. Surgical roboticist Carol Reiley will share insights into the world of robotics as a researcher and as a maker. Join the robot revolution!',
+                              'youtubeID' => 'unbi3q-RxXY')
+        
+                    );
+    $output = '<h2>Make: Center Stage Videos from Maker Faire Bay Area 2015</h2>';
+    
+    
+    $videoCount = 0;
+    foreach ($videoArray as $video){
+        //check if we need a new row
+        if($videoCount % 3 == 0) {
+            $output.= '<div class="row" style="margin-bottom: 30px;"><!-- New row of 3 video\'s -->';
+        }
+        $videoCount++;
+        $output .= '<div class="col-xs-4"><!-- Video '.$videoCount.' -->
+                        <a href="#'.$video['youtubeID'].'" role="button" class="modal-archive" data-toggle="modal">
+                        <span class="video-icon text-center" aria-hidden="true"></span>
+                        <img class="img-responsive" src="http://img.youtube.com/vi/'.$video['youtubeID'].'/maxresdefault.jpg" alt="" /></a>
+                        <p>'.$video['title'].'</p>
+                    </div> <!-- close .col-xs-4-->
+                    <!-- Start Video Modal -->
+                    <div class="modal" id="'.$video['youtubeID'].'">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                              <h4 class="modal-title">Maker Faire Bay Area 2015</h4>
+                            </div>
+                            <div class="modal-body embed-youtube">
+                                <iframe src="https://www.youtube.com/embed/'.$video['youtubeID'].'" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="#" data-dismiss="modal" class="btn">Close</a>
+                            </div>
+                          </div><!-- close .modal-content -->
+                        </div> <!-- close .modal-dialog -->
+                    </div><!-- close .modal -->';
+        if($videoCount % 3 == 0) {           
+            $output.= '</div><!-- close .row-->';
+        }        
+    }
+    //add final close div if needed
+    if($videoCount % 3 != 0) {
+            $output.= '</div><!-- close .row-->';
+    }
+    
+?>
 	<div class="flag-border"></div>
 	<div class="live-archive">
 		<div class="container live-page">
 			<div class="row padtop">
+                            <div class="content col-xs-12">
+                                <?php echo $output;?>				
+                            </div>    <!-- end .content col-xs-12 -->        
 				<div class="content col-xs-12">
 					<h2>Make: Editors Report from Maker Faire Bay Area 2015</h2>
+                                        <div class="row" style="margin-bottom: 30px;"><!-- New row of 3 video's -->
+
+						<div class="col-xs-4"><!-- Video 1 -->
+							<a href="#myModal34" role="button" class="modal-archive" data-toggle="modal">
+							<span class="video-icon text-center" aria-hidden="true"></span>
+							<img class="img-responsive" src="http://img.youtube.com/vi/hVHPsIiBVpk/maxresdefault.jpg" alt="" /></a>
+							<p>Arduino Founder Massimo Shares the future of Arduino.cc, including a manufacturing partnership with Adafruit, and the start of a new brand to protect manufacturers from litigation.</p>
+						</div>
+						<!-- Video 1 Modal -->
+						<div class="modal" id="myModal34">
+							<div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						          <h4 class="modal-title">Maker Faire Bay Area 2015</h4>
+						        </div>
+						        <div class="modal-body embed-youtube">
+									<iframe src="https://www.youtube.com/embed/hVHPsIiBVpk?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+						        </div>
+						        <div class="modal-footer">
+						          <a href="#" data-dismiss="modal" class="btn">Close</a>
+						        </div>
+						      </div>
+						    </div>
+						</div>
+
+						<div class="col-xs-4"> <!-- video 2 -->
+							<a href="#myModal2" role="button" class="modal-archive" data-toggle="modal">
+								<span class="video-icon text-center" aria-hidden="true"></span>
+								<img class="img-responsive" src="http://img.youtube.com/vi/Xgwqy2lJ3_g/maxresdefault.jpg" alt="Video Thumbnail" />
+							</a>
+							<p>Microsoft's Tony Goodhew chats about the Microsoft booth.</p>
+						</div>
+						<!-- Video2 Modal -->
+						<div class="modal" id="myModal2">
+							<div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						          <h4 class="modal-title">Maker Faire Bay Area 2015</h4>
+						        </div>
+						        <div class="modal-body embed-youtube">
+									<iframe src="https://www.youtube.com/embed/Xgwqy2lJ3_g?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+						        </div>
+						        <div class="modal-footer">
+						          <a href="#" data-dismiss="modal" class="btn">Close</a>
+						        </div>
+						      </div>
+						    </div>
+						</div>
+
+
+						<div class="col-xs-4"> <!-- Video 3 -->
+							<a href="#myModal3" role="button" class="modal-archive" data-toggle="modal">
+							<span class="video-icon text-center" aria-hidden="true"></span>
+							<img class="img-responsive" src="http://img.youtube.com/vi/81kJuLI94O0/maxresdefault.jpg" alt="" /></a>
+							<p>Celebrate the universal love of high-fiving with this sensor-equipped high-five rig.</p>
+						</div>
+						<!-- Video3 Modal -->
+						<div class="modal" id="myModal3">
+							<div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						          <h4 class="modal-title">Maker Faire Bay Area 2015</h4>
+						        </div>
+						        <div class="modal-body embed-youtube">
+									<iframe src="https://www.youtube.com/embed/81kJuLI94O0?list=PLwhkA66li5vC06gyQNvo6I6nd9AXjN5us" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+						        </div>
+						        <div class="modal-footer">
+						          <a href="#" data-dismiss="modal" class="btn">Close</a>
+						        </div>
+						      </div>
+						    </div>
+						</div>
+					</div> <!-- End Row -->
+                                        
 					<div class="row" style="margin-bottom: 30px;">
 
 						<div class="col-xs-4">

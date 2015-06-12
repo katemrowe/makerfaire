@@ -194,11 +194,27 @@ function mf_sidebar_forms($form_id, $lead) {
 	echo('</select><input type="submit" name="change_form_id" value="Change Form" class="button"
 	 style="width:auto;padding-bottom:2px;"
 	onclick="jQuery(\'#action\').val(\'change_form_id\');"/><br />');
-
-
 }
 
+function mf_sidebar_dup($form_id, $lead) {
+	// Load Fields to show on entry info
+	$forms = GFAPI::get_forms(true,false);
+        
+	echo ('<h4><label class="detail-label" for="entry_form_copy">Duplicate/Copy Entry ID '.$lead['id'].'</label></h4>');
+	echo 'Into Form:<br/>';
+        echo ('<select style="width:250px" name="entry_form_copy">');
+	foreach( $forms as $choice )
+	{
+		$selected = '';
 
+		if ($choice['id'] == $form_id) $selected=' selected ';
+
+		echo('<option '.$selected.' value="'.$choice['id'].'">'.$choice['title'].'</option>');
+	}
+	echo('</select><Br/><br/><input type="submit" name="duplicate_entry_id" value="Duplicate Entry" class="button"
+	 style="width:auto;padding-bottom:2px;"
+	 onclick="jQuery(\'#action\').val(\'duplicate_entry_id\');"/><br />');
+}
 
 /* Side bar Layout */
 add_action("gform_entry_detail_sidebar_before", "add_sidebar_text_before", 10,2);
@@ -361,13 +377,17 @@ if ($mode == 'view') {
 		?>
 			</div>
 			
-		<div class='postbox' style="float:none;padding: 10px;">
-		
-		
-	<?php
-	mf_sidebar_forms($form['id'], $lead );
-	?>
-	</div>
+		<div class='postbox' style="float:none;padding: 10px;">				
+                <?php
+                    mf_sidebar_forms($form['id'], $lead );
+                ?>
+                </div>
+
+		<div class='postbox' style="float:none;padding: 10px;">				
+                <?php
+                    mf_sidebar_dup($form['id'], $lead );
+                ?>
+                </div>
 	<?php endif;?>
 		
 	<div class="detail-view-print">
@@ -468,7 +488,10 @@ if (!empty($mfAction))
 		case 'change_form_id' :
 			set_form_id($lead,$form);
 			break;
-		case 'sync_jdb' :
+                case 'duplicate_entry_id' :
+                        duplicate_entry_id($lead,$form);
+                        break;
+                case 'sync_jdb' :
 			GFJDBHELPER::gravityforms_send_entry_to_jdb($entry_info_entry_id);
 			break;
 		case 'sync_status_jdb' :
@@ -580,6 +603,63 @@ function set_entry_status($lead,$form){
 
 	}
 }
+
+/* Copy entry record into specific form*/
+function duplicate_entry_id($lead,$form){
+    $form_change         = $_POST['entry_form_copy']; //selected form field
+    $entry_info_entry_id = $_POST['entry_info_entry_id']; //id to copy    
+	
+    error_log('$duplicating entry id ='.$entry_info_entry_id.' into form '.$form_change);    
+    
+    $result     = duplicate_entry_data($form_change,$entry_info_entry_id);
+    error_log('UPDATE RESULTS = '.print_r($result,true));
+}
+
+    /**
+     * Duplicates the contents of a specified entry id into the specified form
+     * Adapted from forms_model.php, RGFormsModel::save_lead($Form, $lead) and
+     * gravity -forms-addons.php for the gravity forms addon plugin
+     * @param  array $form Form object.
+     * @param  array $lead Lead object
+     * @return void
+     */
+    function duplicate_entry_data($form_change,$current_entry_id ){
+        global $wpdb;
+
+        $lead_table        = GFFormsModel::get_lead_table_name();
+	$lead_detail_table = GFFormsModel::get_lead_details_table_name();
+	$lead_meta_table   = GFFormsModel::get_lead_meta_table_name();
+        
+        //pull existing entries information
+        $current_lead   = $wpdb->get_results($wpdb->prepare("SELECT * FROM $lead_table          WHERE      id=%d", $current_entry_id));
+        $current_fields = $wpdb->get_results($wpdb->prepare("SELECT wp_rg_lead_detail.field_number, wp_rg_lead_detail.value, wp_rg_lead_detail_long.value as long_detail FROM $lead_detail_table left outer join wp_rg_lead_detail_long on  wp_rg_lead_detail_long.lead_detail_id = wp_rg_lead_detail.id WHERE lead_id=%d", $current_entry_id));                
+
+        //insert new lead
+        $user_id = $current_user && $current_user->ID ? $current_user->ID : 'NULL';
+        $user_agent = GFCommon::truncate_url($_SERVER["HTTP_USER_AGENT"], 250);
+        $currency = GFCommon::get_currency();
+        $source_url = GFCommon::truncate_url(RGFormsModel::get_current_page_url(), 200);
+        $wpdb->query($wpdb->prepare("INSERT INTO $lead_table(form_id, ip, source_url, date_created, user_agent, currency, created_by) VALUES(%d, %s, %s, utc_timestamp(), %s, %s, {$user_id})", $form_change, RGFormsModel::get_ip(), $source_url, $user_agent, $currency));
+        $lead_id = $wpdb->insert_id;
+        echo 'Entry '.$lead_id.' created in Form '.$form_change;
+        //echo 'SELECT wp_rg_lead_detail.field_number, wp_rg_lead_detail.value, wp_rg_lead_detail_long.value as long_detail FROM $lead_detail_table left outer join wp_rg_lead_detail_long on  wp_rg_lead_detail_long.lead_detail_id = wp_rg_lead_detail.id WHERE lead_id='.$current_entry_id;
+        //var_dump($current_fields);
+        foreach($current_fields as $row){
+            $fieldValue = ($row->field_number != 303? $row->value: 'Proposed');          
+            
+            $wpdb->query($wpdb->prepare("INSERT INTO $lead_detail_table(lead_id, form_id, field_number, value) VALUES(%d, %s, %s, %s)", 
+                    $lead_id, $form_change, $row->field_number, $fieldValue));                            
+            
+            //if detail long is set, add row for new record
+            
+            if($row->long_detail != 'NULL'){                
+                $lead_detail_id = $wpdb->insert_id;
+                
+                $wpdb->query($wpdb->prepare("INSERT INTO wp_rg_lead_detail_long(lead_detail_id, value) VALUES(%d, %s)", 
+                    $lead_detail_id, $row->long_detail));
+            }
+        }        
+    }
 
 /* Modify Form Id Status */
 function set_form_id($lead,$form){

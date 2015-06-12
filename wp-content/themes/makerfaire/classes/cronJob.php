@@ -90,11 +90,12 @@ function build_wp_mf_maker(){
     $crossRef = buildCrossRef();
     //retrieve data 
     $sql = "SELECT detail.lead_id, detail.form_id, detail.field_number, detail.value, 
-                    lead.status,
+                    lead.status,wp_mf_faire.faire,
                     detail_long.value as descLong 
-            FROM wp_rg_lead lead, wp_rg_lead_detail detail
+            FROM wp_mf_faire, wp_rg_lead lead, wp_rg_lead_detail detail
             left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id)   
-            WHERE lead.id = detail.lead_id and lead.status != 'trash'
+            WHERE lead.id = detail.lead_id and lead.status != 'trash' AND              
+                  INSTR (wp_mf_faire.form_ids,detail.form_id)> 0 
             ORDER BY detail.form_id ASC, lead.id ASC";
     
     $dataArray = array();
@@ -105,12 +106,13 @@ function build_wp_mf_maker(){
         if(isset($row->descLong)&&$row->descLong!=NULL){
             $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->descLong;
         }
-        $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status);
+        $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status, 'faire'=>$row->faire);
     }
     $x = 0; $m = 0;
     
-    foreach($dataArray as $form_id=>$formEntries){        
-        foreach($formEntries as $key=>$lead){               
+    foreach($dataArray as $form_id=>$formEntries){           
+        foreach($formEntries as $key=>$lead){       
+            $faire = $lead['data']['faire'];
             $status=(isset($lead[$crossRef['wp_mf_entity_array']['status']])?$lead[$crossRef['wp_mf_entity_array']['status']]:'');
           
             //ensure field 303 is set
@@ -128,7 +130,7 @@ function build_wp_mf_maker(){
                 //build wp_mf_entity table
                 $wp_mf_entitysql = "insert into wp_mf_entity "
                          . "    (lead_id, presentation_title, presentation_type, special_request, "
-                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category) "
+                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category,faire) "
                          . " VALUES ('".$key."',"
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_title']]) .'", '
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  .'", '
@@ -138,7 +140,8 @@ function build_wp_mf_maker(){
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_long']])          .'", '
                             . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['project_photo']])      .'", '
                             . ' "'.$status                                                      .'", '
-                            . ' "'.$catList                                                     .'") '; 
+                            . ' "'.$catList                                                     .'", '
+                            . ' "'.$faire                                                       .'") '; 
                 $x++;
 
                 $wpdb->get_results($wp_mf_entitysql);

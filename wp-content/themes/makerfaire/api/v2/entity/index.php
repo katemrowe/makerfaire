@@ -67,7 +67,7 @@ if ( $type == 'entity' ) {
                     ) as venue_id
                 FROM `wp_mf_entity` entity                  
 
-                WHERE entity.status = 'Accepted'"
+                        WHERE entity.status = 'Accepted' AND LOWER(entity.faire)='".strtolower($faire)."'"
                 );
  	$mysqli->query("SET NAMES 'utf8'");
         

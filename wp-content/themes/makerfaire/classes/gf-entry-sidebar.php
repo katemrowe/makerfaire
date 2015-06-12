@@ -642,6 +642,10 @@ function duplicate_entry_id($lead,$form){
         $wpdb->query($wpdb->prepare("INSERT INTO $lead_table(form_id, ip, source_url, date_created, user_agent, currency, created_by) VALUES(%d, %s, %s, utc_timestamp(), %s, %s, {$user_id})", $form_change, RGFormsModel::get_ip(), $source_url, $user_agent, $currency));
         $lead_id = $wpdb->insert_id;
         echo 'Entry '.$lead_id.' created in Form '.$form_change;
+        
+        //add a note to the new entry
+        $results=mf_add_note( $lead_id, 'Copied Entry ID:'.$current_entry_id.' into form '.$form_change.'. New Entry ID ='.$lead_id);
+        
         //echo 'SELECT wp_rg_lead_detail.field_number, wp_rg_lead_detail.value, wp_rg_lead_detail_long.value as long_detail FROM $lead_detail_table left outer join wp_rg_lead_detail_long on  wp_rg_lead_detail_long.lead_detail_id = wp_rg_lead_detail.id WHERE lead_id='.$current_entry_id;
         //var_dump($current_fields);
         foreach($current_fields as $row){

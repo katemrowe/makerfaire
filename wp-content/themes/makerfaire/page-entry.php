@@ -48,7 +48,7 @@
 
       <img class="img-responsive padbottom" src="<?php echo $entry['22']; ?>" />
 
-      <p class="lead"><?php echo $project_short; ?></p> 
+      <p class="lead"><?php echo make_clickable($project_short); ?></p> 
 
       <?php if (!empty($project_website)) {
           echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';
@@ -101,7 +101,7 @@
                 ',(!empty($groupphoto) ? '<img class="col-md-3 pull-left img-responsive" src="' . $groupphoto . '" alt="Group Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
         echo    '<div class="col-md-5">
                   <h3 style="margin-top: 0px;">' . $groupname . '</h3>
-                  <p>' . $groupbio . '</p>
+                  <p>' . make_clickable($groupbio) . '</p>
                 </div>
               </div>';
       } 
@@ -111,7 +111,7 @@
                   ',(!empty($maker['photo']) ? '<img class="col-md-3 pull-left img-responsive" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
           echo    '<div class="col-md-5">
                     <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
-                    <p>' . $maker['bio'] . '</p>
+                    <p>' . make_clickable($maker['bio']) . '</p>
                   </div>
                 </div>';
     		}

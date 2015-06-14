@@ -95,7 +95,7 @@ function build_wp_mf_maker(){
             FROM wp_mf_faire, wp_rg_lead lead, wp_rg_lead_detail detail
             left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id)   
             WHERE lead.id = detail.lead_id and lead.status != 'trash' AND              
-                  INSTR (wp_mf_faire.form_ids,detail.form_id)> 0 
+                  FIND_IN_SET (detail.form_id, wp_mf_faire.form_ids)> 0 
             ORDER BY detail.form_id ASC, lead.id ASC";
     
     $dataArray = array();

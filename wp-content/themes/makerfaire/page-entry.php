@@ -48,7 +48,7 @@
 
       <img class="img-responsive padbottom" src="<?php echo $entry['22']; ?>" />
 
-      <p class="lead"><?php echo make_clickable($project_short); ?></p> 
+      <p class="lead"><?php echo nl2br(make_clickable($project_short)); ?></p> 
 
       <?php if (!empty($project_website)) {
           echo '<a href="' . $project_website . '" class="btn btn-info pull-left" target="_blank" style="margin-right:15px;">Project Website</a>';

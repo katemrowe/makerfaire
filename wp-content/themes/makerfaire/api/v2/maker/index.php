@@ -24,32 +24,24 @@ if ( $type == 'maker' ) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
 	$select_query = sprintf("SELECT `wp_mf_maker`.`lead_id`,
-    `wp_mf_maker`.`First Name`,
-    `wp_mf_maker`.`Last Name`,
-    `wp_mf_maker`.`Bio`,
-    `wp_mf_maker`.`Email`,
-    `wp_mf_maker`.`OnsitePhone`,
-    `wp_mf_maker`.`TWITTER`,
-    `wp_mf_maker`.`SpecialRequest`,
-    `wp_mf_maker`.`PresentationTitle`,
-    `wp_mf_maker`.`PresentationType`,
-    `wp_mf_maker`.`Name`,
-    `wp_mf_maker`.`Location`,
-    `wp_mf_maker`.`form_id`,
-    `wp_mf_maker`.`maker_id`
-	FROM `wp_mf_maker`
-	INNER JOIN
-    `wp_mf_faire` ON FIND_IN_SET(wp_mf_maker.form_id,
-            `wp_mf_faire`.`form_ids`) > 0
-        AND `wp_mf_faire`.`faire` = '$faire'
-	INNER JOIN
-	wp_rg_lead on wp_rg_lead.ID = `wp_mf_maker`.`lead_id` and wp_rg_lead.status = 'active'
-	WHERE name != 'Contact' 
-	and length(`FIRST NAME`) > 0
-    and wp_mf_maker.`Status` = 'Accepted'");
+                                        `wp_mf_maker`.`First Name` as first_name,
+                                        `wp_mf_maker`.`Last Name` as last_name,
+                                        `wp_mf_maker`.`Bio`,
+                                        `wp_mf_maker`.`Email`,
+                                        `wp_mf_maker`.`TWITTER`,    
+                                        `wp_mf_maker`.`form_id`,
+                                        `wp_mf_maker`.`maker_id`,
+                                        wp_mf_entity.category
+                                FROM `wp_mf_maker`, wp_mf_maker_to_entity, wp_mf_entity,wp_mf_faire
+                                where wp_mf_maker.maker_id = wp_mf_maker_to_entity.maker_id AND
+                                      wp_mf_maker_to_entity.entity_id = wp_mf_entity.lead_id AND
+                                      wp_mf_entity.status = 'Accepted' AND
+                                      LOWER(wp_mf_faire.faire) = '$faire' AND
+                                      INSTR (wp_mf_faire.form_ids,form_id)> 0 AND                                      
+                                      wp_mf_maker_to_entity.maker_type !='contact'");
 	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
-	
+
 	// Define the API header (specific for Eventbase)
 	$header = array(
 		'header' => array(
@@ -62,24 +54,24 @@ if ( $type == 'maker' ) {
 	$makers = array();
 
 	// Loop through the posts
-	while ( $row = $result->fetch_row () ) {
+	while ( $row = $result->fetch_array(MYSQLI_ASSOC)  ) {
 	
 		//Check for null makers
-		if (!isset($row['1'])) continue;
+		if (!isset($row['lead_id'])) continue;
 			
 		// REQUIRED: The maker ID
-		$maker['id'] = $row['13'];
+		$maker['id'] = $row['maker_id'];
 
 		// REQUIRED: The maker name
-		$maker['first_name']=$row['1'];
-		$maker['last_name']=$row['2'];
-		$maker['description']=$row['3'];
-		$maker['email']=$row['4'];
-		$maker['twitter']=$row['6'];
+		$maker['first_name']=$row['first_name'];
+		$maker['last_name']=$row['last_name'];
+		$maker['description']=$row['Bio'];
+		$maker['email']=$row['Email'];
+		$maker['twitter']=$row['TWITTER'];
 		
-		$maker['name'] = $row['1'].' '.$row['2'];
+		$maker['name'] = $row['first_name'].' '.$row['last_name'];
 		$maker['child_id_refs'] = array(); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
-		$maker['category_id'] = array('222'); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
+		$maker['category_id'] = array($row['category']); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
 		
 		// Application ID this maker is assigned to
 		

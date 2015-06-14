@@ -3,13 +3,13 @@
  * this script will hold all the cronjobs for makerfaire
  */
 
-/*
+
 //for testing
-define( 'BLOCK_LOAD', true );
+/*define( 'BLOCK_LOAD', true );
 require_once( '../../../../wp-config.php' );
 require_once( '../../../../wp-includes/wp-db.php' );
 $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-dailyCronFunction(); //for testing*/
+build_wp_mf_maker(); //for testing*/
 
 add_action('dailyCronHook', 'dailyCronFunction');
 
@@ -77,47 +77,250 @@ function build_wp_mf_api_entity(){
 }
 function build_wp_mf_maker(){
     global $wpdb;
-    //first empty existing table
+    //first empty existing tables
+    $sql = "Truncate Table wp_mf_entity;";
+    $wpdb->get_results($sql);
+    
     $sql = "Truncate Table wp_mf_maker;";
     $wpdb->get_results($sql);
-    //now populate with new data
-    $sql = "INSERT INTO `wp_mf_maker`
-    (`lead_id`,
-    `First Name`,
-    `Last Name`,
-    `Bio`,
-    `Email`,
-    `OnsitePhone`,
-    `TWITTER`,
-    `SpecialRequest`,
-    `PresentationTitle`,
-    `PresentationType`,
-    `Name`,
-    `Location`,
-    `Status`,
-    `Photo`,
-    `form_id`,
-    `maker_id`
-    )
-    SELECT `wp_gravityforms_maker_view`.`lead_id`,
-        `wp_gravityforms_maker_view`.`First Name`,
-        `wp_gravityforms_maker_view`.`Last Name`,
-        `wp_gravityforms_maker_view`.`Bio`,
-        `wp_gravityforms_maker_view`.`Email`,
-        `wp_gravityforms_maker_view`.`OnsitePhone`,
-        `wp_gravityforms_maker_view`.`TWITTER`,
-        `wp_gravityforms_maker_view`.`SpecialRequest`,
-        `wp_gravityforms_maker_view`.`PresentationTitle`,
-        `wp_gravityforms_maker_view`.`PresentationType`,
-        `wp_gravityforms_maker_view`.`Name`,
-        `wp_gravityforms_maker_view`.`Location`,
-        `wp_gravityforms_maker_view`.`Status`,
-        `wp_gravityforms_maker_view`.`Photo`,
-        `wp_gravityforms_maker_view`.`form_id`,
-        `wp_gravityforms_maker_view`.`maker_id`
-    FROM `wp_gravityforms_maker_view`;";
-     $wpdb->get_results($sql);
     
+    $sql = "Truncate Table wp_mf_maker_to_entity;";
+    $wpdb->get_results($sql);
+    
+    $crossRef = buildCrossRef();
+    //retrieve data 
+    $sql = "SELECT detail.lead_id, detail.form_id, detail.field_number, detail.value, 
+                    lead.status,
+                    detail_long.value as descLong 
+            FROM wp_rg_lead lead, wp_rg_lead_detail detail
+            left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id)   
+            WHERE lead.id = detail.lead_id and lead.status != 'trash'
+            ORDER BY detail.form_id ASC, lead.id ASC";
+    
+    $dataArray = array();
+    $leadArray = array();
+    foreach($wpdb->get_results($sql) as $row){
+        //build array of leads
+        $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->value;
+        if(isset($row->descLong)&&$row->descLong!=NULL){
+            $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->descLong;
+        }
+        $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status);
+    }
+    $x = 0; $m = 0;
+    
+    foreach($dataArray as $form_id=>$formEntries){        
+        foreach($formEntries as $key=>$lead){               
+            $status=(isset($lead[$crossRef['wp_mf_entity_array']['status']])?$lead[$crossRef['wp_mf_entity_array']['status']]:'');
+          
+            //ensure field 303 is set
+            if($status !=''){
+                //build array of categories
+                $leadCategory = array();
+                foreach($lead as $leadKey=>$leadValue){
+                    $pos = strpos($leadKey, '147');
+                    if ($pos !== false) {
+                        $leadCategory[]=substr($leadValue, strpos($leadValue, ":") + 1);
+                    }
+                }
+                $catList = implode(', ', $leadCategory);
+
+                //build wp_mf_entity table
+                $wp_mf_entitysql = "insert into wp_mf_entity "
+                         . "    (lead_id, presentation_title, presentation_type, special_request, "
+                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category) "
+                         . " VALUES ('".$key."',"
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_title']]) .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['special_request']])    .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['OnsitePhone']])        .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_short']])         .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_long']])          .'", '
+                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['project_photo']])      .'", '
+                            . ' "'.$status                                                      .'", '
+                            . ' "'.$catList                                                     .'") '; 
+                $x++;
+
+                $wpdb->get_results($wp_mf_entitysql);
+                if($wpdb->insert_id==false){
+                    echo 'error inserting record wp_mf_entity:'.$wp_mf_entitysql.'<br/><br/>';
+                    $entityID = 0;
+                }
+                
+                //build wp_mf_maker table (up to 10 rows)
+                foreach($crossRef['wp_mf_maker_array'] as $type =>$typeArray){                   
+                    $firstName  = (isset($typeArray['First Name']) ? esc_sql($lead[(string) $typeArray['First Name']]) : '');
+                    $lastName   = (isset($typeArray['Last Name'])  ? esc_sql($lead[(string) $typeArray['Last Name']])  : '');
+                    $bio        = (isset($typeArray['Bio'])        ? esc_sql($lead[$typeArray['Bio']])        : '');
+
+                    $email      = (isset($typeArray['Email'])      ? esc_sql($lead[$typeArray['Email']])      : '');
+                    $phone      = (isset($typeArray['phone'])      ? esc_sql($lead[$typeArray['phone']])      : '');
+                    $twitter    = (isset($typeArray['TWITTER'])    ? esc_sql($lead[$typeArray['TWITTER']])    : '');
+                    $photo      = (isset($typeArray['Photo'])      ? esc_sql($lead[$typeArray['Photo']])      : '');
+                    $website    = (isset($typeArray['website'])    ? esc_sql($lead[$typeArray['website']])    : '');
+                    $guid       = createGUID($key .'-'.$typeArray['identifier']);
+                    if(trim($firstName)=='' && trim($LastName)==''){
+                        //don't write the record, no maker here
+                    }else{                    
+                        $wp_mf_makersql = "INSERT INTO wp_mf_maker(lead_id, `First Name`, `Last Name`, `Bio`, `Email`, `phone`, "
+                                                                . " `TWITTER`,  `form_id`, `maker_id`, `Photo`, `website`) "
+                                            . " VALUES (".$key.", '".$firstName."','".$lastName."','".$bio."','".$email."', '".$phone."',"
+                                                      . " '".$twitter."', ".$form_id.",'".$guid."','".$photo."','".$website."')";
+                        $wpdb->get_results($wp_mf_makersql);
+                        if($wpdb->insert_id==false){
+                            echo 'error inserting record wp_mf_maker:'.$wp_mf_makersql.'<br/><br/>';
+                        }                                    
+                        $m++;
+                        
+                        //build maker to entity table
+                        $wp_mf_maker_to_entity = "INSERT INTO `wp_mf_maker_to_entity`"
+                                                     . " (`maker_id`, `entity_id`, `maker_type`) "
+                                                . ' VALUES ("'.$guid.'",'.$key.',"'.$type.'")';
+                        
+                        $wpdb->get_results($wp_mf_maker_to_entity);
+                        if($wpdb->insert_id==false){
+                            echo 'error inserting record wp_mf_maker_to_entity:'.$wp_mf_maker_to_entity.'<br/><br/>';
+                        }  
+                    }
+                }                                                                    
+            } //end check field 303 status            
+        }
+    }
+    echo 'added '.$x. ' entity records<br/>';
+    echo 'added '.$m. ' maker records<br/>';   
+}
+
+function createGUID($id){
+
+        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid($id, true)));
+        $hyphen = chr(45);// "-"
+        $uuid = chr(123)// "{"
+            .substr($charid, 0, 8).$hyphen
+            .substr($charid, 8, 4).$hyphen
+            .substr($charid,12, 4).$hyphen
+            .substr($charid,16, 4).$hyphen
+            .substr($charid,20,12)
+            .chr(125);// "}"
+        return $uuid;
+}
+
+    /*
+     * We can get up to 10 records from one form entry 
+     * Contact, Presenter 1-7, and group
+     */
+function buildCrossRef(){
+    //fields for wp_mf_maker
+    $crossRef['wp_mf_maker_array'] = 
+    array(  'contact'       =>  array(
+                                    'First Name'    =>  96.3,
+                                    'Last Name'     =>  96.6,
+                                    'Email'         =>  98,
+                                    'phone'         =>  99,
+                                    'identifier'    =>   1
+                                ),
+            'presenter'     =>  array(
+                                    'First Name'    => 160.3,
+                                    'Last Name'     => 160.6,
+                                    'Bio'           => 234,
+                                    'Email'         => 161,
+                                    'phone'         => 185,
+                                    'TWITTER'       => 201,
+                                    'Photo'         => 217,
+                                    'website'       => 209,
+                                    'identifier'    =>   2
+                                ),
+            'presenter2'    =>  array(
+                                    'First Name'    => 158.3,
+                                    'Last Name'     => 158.6,
+                                    'Bio'           => 258,
+                                    'Email'         => 162,
+                                    'phone'         => 224,
+                                    'TWITTER'       => 208,
+                                    'Photo'         => 192,
+                                    'website'       => 216,
+                                    'identifier'    =>   3
+                                ),
+            'presenter3'    =>  array(
+                                    'First Name'    => 155.3,
+                                    'Last Name'     => 155.6,
+                                    'Bio'           => 259,
+                                    'Email'         => 167,
+                                    'phone'         => 190,
+                                    'TWITTER'       => 207,
+                                    'Photo'         => 223,
+                                    'website'       => 215,
+                                    'identifier'    =>   4
+                                ),
+            'presenter4'    =>  array(
+                                    'First Name'    => 156.3,
+                                    'Last Name'     => 156.6,
+                                    'Bio'           => 260,
+                                    'Email'         => 166,
+                                    'phone'         => 191,
+                                    'TWITTER'       => 206,
+                                    'Photo'         => 222,
+                                    'website'       => 214,
+                                    'identifier'    =>   5
+                                ),
+            'presenter5'    =>  array(
+                                    'First Name'    => 157.3,
+                                    'Last Name'     => 157.6,
+                                    'Bio'           => 261,
+                                    'Email'         => 165,
+                                    'phone'         => 189,
+                                    'TWITTER'       => 205,
+                                    'Photo'         => 220,
+                                    'website'       => 213,
+                                    'identifier'    =>   6
+                                ),
+            'presenter6'    =>  array(
+                                    'First Name'    => 159.3,
+                                    'Last Name'     => 159.6,
+                                    'Bio'           => 262,
+                                    'Email'         => 164,
+                                    'phone'         => 188,
+                                    'TWITTER'       => 204,
+                                    'Photo'         => 221,
+                                    'website'       => 211,
+                                    'identifier'    =>   7
+                                ),
+            'presenter7'    =>  array(
+                                    'First Name'    => 154.3,
+                                    'Last Name'     => 154.6,
+                                    'Bio'           => 263,
+                                    'Email'         => 163,
+                                    'phone'         => 187,
+                                    'TWITTER'       => 203,
+                                    'Photo'         => 219,
+                                    'website'       => 212,
+                                    'identifier'    =>   8
+                                ),
+            'group'         =>  array(
+                                    'First Name'    => 109.3,
+                                    'Last Name'     => 109.6,
+                                    'Bio'           => 110,                                
+                                    'Photo'         => 111,
+                                    'website'       => 112,
+                                    'identifier'    =>   9
+                                )
+    );       
+    
+    //fields for wp_mf_entity
+    $crossRef['wp_mf_entity_array']  = 
+        array(  'presentation_title'     =>	151,
+                'presentation_type'	=>	  1,
+                'special_request'	=>	 64,
+                'OnsitePhone'           =>	265,
+                'desc_short'            =>	 16,
+                'desc_long'		=>       11,
+                'project_photo'         =>	 22,
+                'project_website'	=>	 27,
+                'project_video'         =>	 32,
+                'status'                =>      303
+            ); 
+    
+    return $crossRef;
 }
 
 

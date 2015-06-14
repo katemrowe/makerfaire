@@ -12,11 +12,13 @@ $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 build_wp_mf_maker(); //for testing*/
 
 add_action('dailyCronHook', 'dailyCronFunction');
+add_action('dailyCronHook', 'dailyCronAPIFunction');
 
 function dailyCronFunction(){    
-   build_wp_mf_maker();
-   build_wp_mf_api_entity();
-    
+   build_wp_mf_maker();    
+}
+function dailyCronAPIFunction(){    
+   build_wp_mf_api_entity();   
 }
 function build_wp_mf_api_entity(){
     global $wpdb;

@@ -85,14 +85,8 @@ function build_wp_mf_maker(){
     
     $crossRef = buildCrossRef();
     //retrieve data 
-    $sql = "SELECT detail.lead_id, detail.form_id, detail.field_number, detail.value, 
-                    lead.status,wp_mf_faire.faire,
-                    detail_long.value as descLong 
-            FROM wp_mf_faire, wp_rg_lead lead, wp_rg_lead_detail detail
-            left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id)   
-            WHERE lead.id = detail.lead_id and lead.status != 'trash' AND              
-                  FIND_IN_SET (detail.form_id, wp_mf_faire.form_ids)> 0 
-            ORDER BY detail.form_id ASC, lead.id ASC";
+    $sql = "SELECT detail.lead_id, detail.form_id, detail.field_number, detail.value, lead.status, wp_mf_faire.faire, detail_long.value as descLong 
+            FROM wp_rg_lead lead join wp_rg_lead_detail detail on lead.id = detail.lead_id and lead.status != 'trash' left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id) join wp_mf_faire on FIND_IN_SET (detail.form_id, wp_mf_faire.form_ids)> 0";
     
     $dataArray = array();
     $leadArray = array();

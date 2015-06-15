@@ -122,19 +122,27 @@ function build_wp_mf_maker(){
                     }
                 }
                 $catList = implode(', ', $leadCategory);
-
+                    
                 //build wp_mf_entity table
+                $presentationType   = (isset($lead[$crossRef['wp_mf_entity_array']['presentation_type']])   ? esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  : '');
+                $presentationTitle  = (isset($lead[$crossRef['wp_mf_entity_array']['presentation_title']])  ? esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_title']]) : '');
+                $specialRequest     = (isset($lead[$crossRef['wp_mf_entity_array']['special_request']])     ? esc_sql($lead[$crossRef['wp_mf_entity_array']['special_request']])    : '');
+                $onSitePhone        = (isset($lead[$crossRef['wp_mf_entity_array']['OnsitePhone']])         ? esc_sql($lead[$crossRef['wp_mf_entity_array']['OnsitePhone']])        : '');
+                $descShort          = (isset($lead[$crossRef['wp_mf_entity_array']['desc_short']])          ? esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_short']])         : '');
+                $descLong           = (isset($lead[$crossRef['wp_mf_entity_array']['desc_long']])           ? esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_long']])          : '');
+                $projectPhoto       = (isset($lead[$crossRef['wp_mf_entity_array']['project_photo']])       ? esc_sql($lead[$crossRef['wp_mf_entity_array']['project_photo']])      : '');
+                
                 $wp_mf_entitysql = "insert into wp_mf_entity "
                          . "    (lead_id, presentation_title, presentation_type, special_request, "
                          . "     OnsitePhone, desc_short, desc_long, project_photo, status,category,faire) "
                          . " VALUES ('".$key."',"
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_title']]) .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['special_request']])    .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['OnsitePhone']])        .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_short']])         .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['desc_long']])          .'", '
-                            . ' "'.esc_sql($lead[$crossRef['wp_mf_entity_array']['project_photo']])      .'", '
+                            . ' "'.$presentationTitle .'", '
+                            . ' "'.$presentationType  .'", '
+                            . ' "'.$specialRequest    .'", '
+                            . ' "'.$onSitePhone       .'", '
+                            . ' "'.$descShort         .'", '
+                            . ' "'.$descLong          .'", '
+                            . ' "'.$projectPhoto      .'", '
                             . ' "'.$status                                                      .'", '
                             . ' "'.$catList                                                     .'", '
                             . ' "'.$faire                                                       .'") '; 
@@ -147,20 +155,26 @@ function build_wp_mf_maker(){
                 }
                 
                 //build wp_mf_maker table (up to 10 rows)
-                foreach($crossRef['wp_mf_maker_array'] as $type =>$typeArray){                   
-                    $firstName  = (isset($typeArray['First Name']) ? esc_sql($lead[(string) $typeArray['First Name']]) : '');
-                    $lastName   = (isset($typeArray['Last Name'])  ? esc_sql($lead[(string) $typeArray['Last Name']])  : '');
-                    $bio        = (isset($typeArray['Bio'])        ? esc_sql($lead[$typeArray['Bio']])        : '');
-
-                    $email      = (isset($typeArray['Email'])      ? esc_sql($lead[$typeArray['Email']])      : '');
-                    $phone      = (isset($typeArray['phone'])      ? esc_sql($lead[$typeArray['phone']])      : '');
-                    $twitter    = (isset($typeArray['TWITTER'])    ? esc_sql($lead[$typeArray['TWITTER']])    : '');
-                    $photo      = (isset($typeArray['Photo'])      ? esc_sql($lead[$typeArray['Photo']])      : '');
-                    $website    = (isset($typeArray['website'])    ? esc_sql($lead[$typeArray['website']])    : '');
-                    $guid       = createGUID($key .'-'.$typeArray['identifier']);
-                    if(trim($firstName)=='' && trim($LastName)==''){
+                foreach($crossRef['wp_mf_maker_array'] as $type =>$typeArray){  
+                    $fNameLoc = (string) $typeArray['First Name'];
+                    //if first name is set for this type and the field numer is set in the returned table data, then use this data else use a blank 
+                    $firstName  =  (isset($typeArray['First Name']) && isset($lead[$fNameLoc])              ? esc_sql($lead[$fNameLoc]) : '');
+                    
+                    $lNameLoc = (string) $typeArray['Last Name'];
+                    //if first name is set for this type and the field numer is set in the returned table data, then use this data else use a blank 
+                    $lastName   = (isset($typeArray['Last Name'])  && isset($lead[$lNameLoc])               ? esc_sql($lead[$lNameLoc])                : '');
+                    
+                    if(trim($firstName)=='' && trim($lastName)==''){
                         //don't write the record, no maker here
-                    }else{                    
+                    }else{
+                        $bio        = (isset($typeArray['Bio'])        && isset($lead[$typeArray['Bio']])       ? esc_sql($lead[$typeArray['Bio']])        : '');
+                        $email      = (isset($typeArray['Email'])      && isset($lead[$typeArray['Email']])     ? esc_sql($lead[$typeArray['Email']])      : '');
+                        $phone      = (isset($typeArray['phone'])      && isset($lead[$typeArray['phone']])     ? esc_sql($lead[$typeArray['phone']])      : '');
+                        $twitter    = (isset($typeArray['TWITTER'])    && isset($lead[$typeArray['TWITTER']])   ? esc_sql($lead[$typeArray['TWITTER']])    : '');
+                        $photo      = (isset($typeArray['Photo'])      && isset($lead[$typeArray['Photo']])     ? esc_sql($lead[$typeArray['Photo']])      : '');
+                        $website    = (isset($typeArray['website'])    && isset($lead[$typeArray['website']])   ? esc_sql($lead[$typeArray['website']])    : '');
+                        $guid       = createGUID($key .'-'.$typeArray['identifier']);
+                    
                         $wp_mf_makersql = "INSERT INTO wp_mf_maker(lead_id, `First Name`, `Last Name`, `Bio`, `Email`, `phone`, "
                                                                 . " `TWITTER`,  `form_id`, `maker_id`, `Photo`, `website`) "
                                             . " VALUES (".$key.", '".$firstName."','".$lastName."','".$bio."','".$email."', '".$phone."',"
@@ -172,9 +186,8 @@ function build_wp_mf_maker(){
                         $m++;
                         
                         //build maker to entity table
-                        $wp_mf_maker_to_entity = "INSERT INTO `wp_mf_maker_to_entity`"
-                                                     . " (`maker_id`, `entity_id`, `maker_type`) "
-                                                . ' VALUES ("'.$guid.'",'.$key.',"'.$type.'")';
+                        $wp_mf_maker_to_entity = "INSERT INTO `wp_mf_maker_to_entity`" . " (`maker_id`, `entity_id`, `maker_type`) " 
+                                              . ' VALUES ("'.$guid.'",'.$key.',"'.$type.'")';
                         
                         $wpdb->get_results($wp_mf_maker_to_entity);
                         if($wpdb->insert_id==false){

@@ -881,6 +881,24 @@ li.hidelink a:visited {
 .navbar-fixed-top .mobile-li-buttons .btn-cyan:hover {
   color: #fff;
 }
+.quora .drop-holder.area .drop-logo .nav-thanks {
+  padding-right: 40px;
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+  font-family: 'latoregular', Helvetica, Arial, sans-serif;
+}
+.quora .drop-holder.area .drop-logo .nav-thanks img {
+  margin-bottom: 10px;
+}
+.quora .drop-holder.area .drop-logo .nav-thanks span {
+  color: #333;
+  font-size: 14px;
+  font-family: 'latobold', Helvetica, Arial, sans-serif;
+}
+.quora .drop-holder.area .drop-logo .nav-thanks span strong {
+  color: red;
+}
 .tab-content h3 {
   line-height: 100%;
 }

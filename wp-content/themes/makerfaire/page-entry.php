@@ -26,6 +26,9 @@
   $project_short = $entry['16'];
   $project_website = $entry['27'];
   $project_video = $entry['32'];
+  $project_title = (string)$entry['151'];
+  
+  $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
   
   get_header();
 ?>
@@ -42,7 +45,7 @@
 
       <div class="page-header">
 
-        <h1><?php echo $entry['151']; ?></h1>
+        <h1><?php echo $project_title; ?></h1>
 
       </div>
 

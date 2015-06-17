@@ -146,17 +146,17 @@ if ( isset( $long_description ) ) {
 			<td>
 				<label >Email Note To:</label><br />
 				<?php 
-				$emailto1 = array("Alasdair Allan" => "alasdair@makezine.com",
-		"Brian Jepson" => "bjepson@makermedia.com",
-		"Bridgette Vanderlaan" => "bvanderlaan@mac.com",
-		"Dale Dougherty" => "dale@makermedia.com",
-		"DC Denison" => "dcdenison@makermedia.com",
-		"Jason Babler" => "jbabler@makermedia.com",
-		"Jay Kravitz" => "jay@thecrucible.org",
-		"Jess Hobbs" => "jessica@jesshobbs.com",
-		"Jonathan Maginn" => "jonathan.maginn@sbcglobal.net",
-		"Kate Rowe" => "krowe@makermedia.com",
-		"Kerry Moore" => "kerry@contextfurniture.com");
+				$emailto1 = array("Alasdair Allan"          => "alasdair@makezine.com",
+                                                  "Brian Jepson"            => "bjepson@makermedia.com",
+                                                  "Bridgette Vanderlaan"    => "bvanderlaan@mac.com",
+                                                  "Dale Dougherty"          => "dale@makermedia.com",
+                                                  "DC Denison"              => "dcdenison@makermedia.com",
+                                                  "Jason Babler"            => "jbabler@makermedia.com",
+                                                  "Jay Kravitz"             => "jay@thecrucible.org",
+                                                  "Jess Hobbs"              => "jess@makermedia.com",
+                                                  "Jonathan Maginn"         => "jonathan.maginn@sbcglobal.net",
+                                                  "Kate Rowe"               => "krowe@makermedia.com",
+                                                  "Kerry Moore"             => "kerry@contextfurniture.com");
 $emailto2 = array(
 		"Kim Dow" => "dow@dowhouse.com",
 		"Louise Glasgow" => "lglasgow@makermedia.com",

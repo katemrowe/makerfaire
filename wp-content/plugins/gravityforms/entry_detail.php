@@ -31,27 +31,33 @@ class GFEntryDetail {
 		}
 		
 		/* Change Lead_ID Logic */
-		$lead_id = rgget( 'lid' );
-		if ( ! $lead_id ) {
-			$lead = ! empty( $leads ) ? $leads[0] : false;
-		} else {
-			$lead = GFAPI::get_entry( $lead_id );
-		}
-		
-		if ( ! $lead ) {
-			_e( "Oops! We couldn't find your entry. Please try again", 'gravityforms' );
-		
-			return;
-		}
-		
+		if(isset($_GET['lid'])){
+                    $lead_id = rgget( 'lid' );
+                    if ( ! $lead_id ) {
+                            $lead = ! empty( $leads ) ? $leads[0] : false;
+                    } else {
+                            $lead = GFAPI::get_entry( $lead_id );
+                    }
+
+                    if ( ! $lead ) {
+                            _e( "Oops! We couldn't find your entry. Please try again", 'gravityforms' );
+
+                            return;
+                    }
+                }
 		echo GFCommon::get_remote_message();
 		
-		//Change form from different ID
-		$form_id    =  isset($lead['form_id']) ? $lead['form_id'] : 0;
-		$form = RGFormsModel::get_form_meta($form_id);
-		
-		$form    = apply_filters( 'gform_admin_pre_render_' . $form['id'], apply_filters( 'gform_admin_pre_render', $form ) );
-		$lead_id = rgget( 'lid' );
+                if(isset($_GET['lid'])){
+                    //Change form from different ID
+                    $form_id    =  isset($lead['form_id']) ? $lead['form_id'] : 0;
+                    $form = RGFormsModel::get_form_meta($form_id);		
+                    $form    = apply_filters( 'gform_admin_pre_render_' . $form['id'], apply_filters( 'gform_admin_pre_render', $form ) );
+                }else{
+                    $form    = RGFormsModel::get_form_meta( absint( $_GET['id'] ) );
+                    $form_id = absint( $form['id'] );
+                    $form    = apply_filters( 'gform_admin_pre_render_' . $form_id, apply_filters( 'gform_admin_pre_render', $form ) );                    
+                }
+                $lead_id = rgget( 'lid' );
 
 		$filter = rgget( 'filter' );
 		$status = in_array( $filter, array( 'trash', 'spam' ) ) ? $filter : 'active';

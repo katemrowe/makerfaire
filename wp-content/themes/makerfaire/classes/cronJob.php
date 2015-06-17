@@ -243,9 +243,9 @@ function buildCrossRef(){
                                     'Last Name'     => 158.6,
                                     'Bio'           => 258,
                                     'Email'         => 162,
-                                    'phone'         => 224,
+                                    'phone'         => 192,
                                     'TWITTER'       => 208,
-                                    'Photo'         => 192,
+                                    'Photo'         => 224,
                                     'website'       => 216,
                                     'identifier'    =>   3
                                 ),

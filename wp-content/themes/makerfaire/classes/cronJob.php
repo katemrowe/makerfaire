@@ -97,16 +97,7 @@ function build_wp_mf_maker(){
             $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->descLong;
         }
         $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status, 'faire'=>$row->faire);
-        
-        if($row->lead_id == 50067 || $row->lead_id == 50213){
-            echo 'lead-'.$row->lead_id.'<br/>';
-            echo 'incoming data <br/>';
-            print_r($row);
-            echo '<br/>updated data<br/>';
-            print_r($dataArray[$row->form_id][$row->lead_id]);
-                    
-                    echo '<br/><br/>';
-        }
+                
     }
     $x = 0; $m = 0;
     

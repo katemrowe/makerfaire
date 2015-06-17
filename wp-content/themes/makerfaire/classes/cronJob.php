@@ -85,18 +85,28 @@ function build_wp_mf_maker(){
     
     $crossRef = buildCrossRef();
     //retrieve data 
-    $sql = "SELECT detail.lead_id, detail.form_id, detail.field_number, detail.value, lead.status, wp_mf_faire.faire, detail_long.value as descLong 
+    $sql = "SELECT detail.lead_id, lead.form_id, detail.field_number, detail.value, lead.status, wp_mf_faire.faire, detail_long.value as descLong 
             FROM wp_rg_lead lead join wp_rg_lead_detail detail on lead.id = detail.lead_id and lead.status != 'trash' left outer JOIN wp_rg_lead_detail_long detail_long ON (detail.id = detail_long.lead_detail_id) join wp_mf_faire on FIND_IN_SET (detail.form_id, wp_mf_faire.form_ids)> 0";
     
     $dataArray = array();
     $leadArray = array();
-    foreach($wpdb->get_results($sql) as $row){
+    foreach($wpdb->get_results($sql) as $row){        
         //build array of leads
         $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->value;
         if(isset($row->descLong)&&$row->descLong!=NULL){
             $dataArray[$row->form_id][$row->lead_id][$row->field_number] = $row->descLong;
         }
         $dataArray[$row->form_id][$row->lead_id]['data'] = array('status'=>$row->status, 'faire'=>$row->faire);
+        
+        if($row->lead_id == 50067 || $row->lead_id == 50213){
+            echo 'lead-'.$row->lead_id.'<br/>';
+            echo 'incoming data <br/>';
+            print_r($row);
+            echo '<br/>updated data<br/>';
+            print_r($dataArray[$row->form_id][$row->lead_id]);
+                    
+                    echo '<br/><br/>';
+        }
     }
     $x = 0; $m = 0;
     
@@ -109,10 +119,11 @@ function build_wp_mf_maker(){
             if($status !=''){
                 //build array of categories
                 $leadCategory = array();
+                
                 foreach($lead as $leadKey=>$leadValue){
-                    $pos = strpos($leadKey, '147');
+                    $pos = strpos($leadKey, '321');
                     if ($pos !== false) {
-                        $leadCategory[]=substr($leadValue, strpos($leadValue, ":") + 1);
+                        $leadCategory[]=$leadValue;
                     }
                 }
                 $catList = implode(', ', $leadCategory);

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-itunes-app" content="app-id=463248665"/>
 
-	<title><?php bloginfo('name'); ?> | <?php is_front_page() ? bloginfo('description') : wp_title(''); ?></title>
+	<title><?php bloginfo('name'); ?> | <?php is_front_page() ? echo "Make • Create • Craft • Build • Play" : wp_title(''); ?></title>
 
 	<?php
 		// Make sure we stop indexing of any maker pages, the application forms, author pages or attachment pages

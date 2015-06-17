@@ -71,44 +71,11 @@ require_once( 'post-types/sponsor.php' );
 require_once( 'post-types/location.php' );
 if ( defined( 'WP_CLI' ) && WP_CLI )
 	require_once( 'plugins/wp-cli/wp-cli.php' );
-/*
-if ( function_exists( 'wpcom_vip_load_plugin' ) ) {
-	wpcom_vip_load_plugin( 'easy-custom-fields' );
-}
 
-// load edit-flow plugin
-if ( function_exists( 'wpcom_vip_load_plugin' ) ) {
-	wpcom_vip_load_plugin( 'edit-flow' );
-}
-*/
 // add post-thumbnails support to theme
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'schedule-thumb', 140, 140, true );
-/*
-if ( function_exists( 'wpcom_vip_enable_opengraph' ) ) {
-	wpcom_vip_enable_opengraph();
-}
 
-if ( function_exists( 'vip_contrib_add_upload_cap' ) ) {
-	vip_contrib_add_upload_cap();
-}
-
-if ( function_exists( 'wpcom_vip_sharing_twitter_via' ) ) {
-	wpcom_vip_sharing_twitter_via( 'make' );
-}
-*/
-
-// Defer jQuery Parsing using the HTML5 defer property
-/*if (!(is_admin() )) {
-    function defer_parsing_of_js ( $url ) {
-        if ( FALSE === strpos( $url, '.js' ) ) return $url;
-        if ( strpos( $url, 'jquery.js' ) ) return $url;
-        // return "$url' defer ";
-        return "$url' defer onload='";
-    }
-    add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
-}
-*/
 
 /* Rewrite rules */
 function custom_rewrite_rule() {
@@ -121,7 +88,10 @@ add_action('wp_head','my_custom_fav_ico');
 function my_custom_fav_ico() {
 	echo '<link rel="shortcut icon" href="'.get_stylesheet_directory_uri(). '/images/favicon.ico'.'" />';
 }
+/* Disable Conflicting Code using Filters */
+add_filter( 'jetpack_enable_opengraph', '__return_false', 99 );
 
+/* Load up jQuery */
 function make_enqueue_jquery() {
 	// Styles
 	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );

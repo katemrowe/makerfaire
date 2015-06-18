@@ -38,12 +38,19 @@ $wkey = $lead['27'];
 $vkey = $lead['32'];
 
 $makerfirstname1=$lead['160.3'];$makerlastname1=$lead['160.6'];
+$makerPhoto1    =$lead['217'];
 $makerfirstname2=$lead['158.3'];$makerlastname2=$lead['158.6'];
+$makerPhoto2    =$lead['224'];
 $makerfirstname3=$lead['155.3'];$makerlastname3=$lead['155.6'];
+$makerPhoto3    =$lead['223'];
 $makerfirstname4=$lead['156.3'];$makerlastname4=$lead['156.6'];
+$makerPhoto4    =$lead['222'];
 $makerfirstname5=$lead['157.3'];$makerlastname5=$lead['157.6'];
+$makerPhoto5    =$lead['220'];
 $makerfirstname6=$lead['159.3'];$makerlastname6=$lead['159.6'];
+$makerPhoto6    =(isset($lead['221'])?$lead['221']:'');
 $makerfirstname7=$lead['154.3'];$makerlastname7=$lead['154.6'];
+$makerPhoto7    =(isset($lead['219'])?$lead['219']:'');
 $makergroupname=$lead['109'];
 $field55=RGFormsModel::get_field($form,'55');
 $whatareyourplansvalues=$field55['choices'];
@@ -106,13 +113,48 @@ if ( isset( $long_description ) ) {
 					</tr>
 					<tr>
 						<td style="width: 80px;" valign="top"><strong>Maker Names:</strong></td>
-						<td valign="top"><?php echo !empty($makergroupname) ? $makergroupname.'(Group)</br>' : ''; ?> 
+						<td valign="top"><?php echo !empty($makergroupname) ? $makergroupname.'(Group)</br>' : ''; ?>
+                                                <?php if(!empty($makerPhoto1)){?>  
+                                                    <a href="<?php echo $makerPhoto1;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto1, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>    
 						<?php echo !empty($makerfirstname1) ?  $makerfirstname1.' '.$makerlastname1.'</br>' : '' ; ?>
-						<?php echo !empty($makerfirstname2) ?  $makerfirstname2.' '.$makerlastname2.'</br>' : '' ; ?>
+						<?php if(!empty($makerPhoto2)){?>  
+                                                    <a href="<?php echo $makerPhoto2;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto2, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?> 
+                                                <?php echo !empty($makerfirstname2) ?  $makerfirstname2.' '.$makerlastname2.'</br>' : '' ; ?>
+                                                <?php if(!empty($makerPhoto3)){?>  
+                                                    <a href="<?php echo $makerPhoto3;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto3, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>     
 						<?php echo !empty($makerfirstname3) ?  $makerfirstname3.' '.$makerlastname3.'</br>' : '' ; ?>
+                                                <?php if(!empty($makerPhoto4)){?>  
+                                                    <a href="<?php echo $makerPhoto4;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto4, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>     
 						<?php echo !empty($makerfirstname4) ?  $makerfirstname4.' '.$makerlastname4.'</br>' : '' ; ?>
+                                                <?php if(!empty($makerPhoto5)){?>  
+                                                    <a href="<?php echo $makerPhoto5;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto5, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>     
 						<?php echo !empty($makerfirstname5) ?  $makerfirstname5.' '.$makerlastname5.'</br>' : '' ; ?>
+                                                <?php if(!empty($makerPhoto6)){?>  
+                                                    <a href="<?php echo $makerPhoto6;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto6, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>     
 						<?php echo !empty($makerfirstname6) ?  $makerfirstname6.' '.$makerlastname6.'</br>' : '' ; ?>
+                                                <?php if(!empty($makerPhoto7)){?>  
+                                                    <a href="<?php echo $makerPhoto7;?>" class='thickbox'>
+                                                    <img width="30px" src="<?php echo legacy_get_resized_remote_image_url($makerPhoto7, 30,30);?>" alt="" />
+                                                    </a>
+                                                <?php  }?>     
 						<?php echo !empty($makerfirstname7) ?  $makerfirstname7.' '.$makerlastname7.'</br>' : '' ; ?>
 												
 </td>

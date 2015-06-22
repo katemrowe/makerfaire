@@ -3661,6 +3661,10 @@ li.hidelink a:visited {
   left: 60%;
   top: 0%;
 }
+.gFormLogo img {
+  height: 150px;
+  width: auto;
+}
 @media (max-width: 767px) {
   #main {
     margin-top: 66px;

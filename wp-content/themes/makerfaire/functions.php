@@ -129,6 +129,7 @@ function load_admin_scripts() {
 	wp_enqueue_script('make-gravityforms-admin',  get_stylesheet_directory_uri() . '/js/gravityformsadmin.js');
 	wp_enqueue_script( 'jquery-datetimepicker',  get_stylesheet_directory_uri() . '/js/jquery.datetimepicker.js', array( 'jquery' ), null );
 	wp_enqueue_style('jquery-datetimepicker-css',  get_stylesheet_directory_uri() . '/css/jquery.datetimepicker.css');
+        wp_enqueue_style('made-admin-style',  get_stylesheet_directory_uri() . '/css/make.admin.css');
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
 

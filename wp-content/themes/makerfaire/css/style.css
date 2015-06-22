@@ -3655,6 +3655,12 @@ li.hidelink a:visited {
   vertical-align: middle;
   margin-bottom: .5em;
 }
+.gFormLogo {
+  float: right;
+  position: absolute;
+  left: 60%;
+  top: 0%;
+}
 @media (max-width: 767px) {
   #main {
     margin-top: 66px;

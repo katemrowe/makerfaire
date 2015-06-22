@@ -1182,3 +1182,105 @@ function gform_addScript($form) {
     return $form;
 }
 
+add_filter('gform_pre_render_35','update_entry_data');
+function update_entry_data( $form ) {    
+        if(!isset($_GET['entry-id']) || trim($_GET['entry-id']) == ''){
+            echo "I'm sorry.  You must have a valid project ID to submit this form.  Please double check you are using the full URL from your email.";          
+            //need to find a way to remove submit button
+        } else{
+            return $form;
+        }         
+}
+
+/**
+ * Pre-populate fields based on GET variable
+ */
+add_filter('gform_field_value_GSP-project-name', 'GSP_project_name_population');
+function GSP_project_name_population(){
+  // if we have a valid entry id set in a GET variable - set the project name
+	if ( $_GET['entry-id'] ){
+            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
+            
+            return (isset($lead[151])?$lead[151]:'');
+	}
+ 
+}
+
+add_filter('gform_field_value_GSP-project-desc', 'GSP_project_desc_population');
+function GSP_project_desc_population(){
+  // if we have a valid entry id set in a GET variable - set the project desc
+	if ( $_GET['entry-id'] ){
+            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
+            $desc = (isset($lead[16])?$lead[16]:'');
+            if(trim($desc)==''){
+                //try field 11
+                $desc = (isset($lead[11])?$lead[11]:'');
+            }
+            return $desc;
+	}
+ 
+}
+
+//when form 35 is submitted, find the initial formid based on entry id and add the fields to that entry
+add_action( 'gform_after_submission_35', 'GSP_after_submission', 10, 2 );
+function GSP_after_submission($entry, $form ){
+    global $wpdb;
+    
+    //what if they submit the form more than once?    
+    $updateEntryID = get_value_by_label('entry-id', $form, $entry);    
+    $newEntryID = $entry['id'];
+    $sql = 'update wp_rg_lead_detail  set lead_id = '.$updateEntryID .
+            ' where lead_id ='. $newEntryID;
+    $wpdb->get_results($sql);
+}
+
+//if set, display form 35 fields at the bottom of the page
+add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
+function add_main_text_after( $form, $entry) {    
+    $formPullID = 35;
+    $formPull = GFAPI::get_form( $formPullID );
+    $results = get_extra_field_value($entry['id'], $formPullID);
+    if(is_array($results) && !empty($results)){        
+        echo '<table class="widefat fixed entry-detail-view" cellspacing="0">';
+        echo '<td colspan="2" class="entry-view-section-break">'.$formPull['title'].'</td>';
+        
+        foreach($formPull['fields'] as $field){
+            if($field['type']!='html' && $field['type']!='hidden'){
+               echo '<tr><td colspan="2" class="entry-view-field-name">'.$field['label'].'</td></tr>';
+               echo '<tr><td colspan="2" class="entry-view-field-value">'.$results[$field['id']].'</td></tr>';
+            }
+        }        
+        echo '</table>';          
+    }
+}
+
+//=============================================
+// Get a specefic value for an entry using
+// the Parameter Name instead of the id of the form input
+//=============================================
+function get_value_by_label($key, $form, $entry) {
+   
+    foreach ($form['fields'] as &$field) {    
+         $lead_key = $field['inputName'];
+        if ($lead_key == $key) {
+            return $entry[$field['id']];
+        }
+    }
+    return false;
+}
+
+/* New function to pull data specifically using entry_id, $field_id and $form_id
+ * This is needed as we add data to the entry using other forms and the form id does
+ * not match the original form id thus the forms could have the same field id's 
+ * for different fields
+ */
+function get_extra_field_value($entry_id, $form_id){
+    global $wpdb;
+    $results = $wpdb->get_results( 'SELECT * FROM wp_rg_lead_detail '
+            . '                     WHERE lead_id = '.$entry_id.' and form_id='.$form_id, OBJECT );
+    $return = array();
+    foreach($results as $data){
+        $return[$data->field_number] = $data->value;
+    }
+    return $return;
+}

@@ -1285,3 +1285,16 @@ function get_extra_field_value($entry_id, $form_id){
     }
     return $return;
 }
+
+/*
+ * function to allow easier testing of forms by skipping pages and going 
+ * directly to the page of the form you want to test 
+ * To skip a page, simply append the ?form_page=2 parameter to the URL of any 
+ * page on which you are displaying a Gravity Form
+ */
+add_filter("gform_pre_render", "gform_skip_page");
+function gform_skip_page($form) {
+    if(!rgpost("is_submit_{$form['id']}") && rgget('form_page') && is_user_logged_in())
+        GFFormDisplay::$submission[$form['id']]["page_number"] = rgget('form_page');
+    return $form;
+}

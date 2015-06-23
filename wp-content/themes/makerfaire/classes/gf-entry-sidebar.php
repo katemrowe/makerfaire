@@ -155,6 +155,7 @@ function mf_sidebar_entry_info($form_id, $lead) {
 }
 
 function mf_sidebar_entry_status($form_id, $lead) {
+    if ( current_user_can( 'update_maker_status') ) {                                             
 	// Load Fields to show on entry info
 	$form = GFAPI::get_form($form_id);
 
@@ -174,7 +175,10 @@ function mf_sidebar_entry_status($form_id, $lead) {
 	echo('</select><input type="submit" name="update_management" value="Save" class="button"
 	 style="width:auto;padding-bottom:2px;"
 	onclick="jQuery(\'#action\').val(\'update_entry_status\');"/><br />');
-
+        }else{
+            echo ('<label class="detail-label" for="entry_info_status_change">Status:</label>');           
+            echo '&nbsp;&nbsp; '.$lead[303].'<br/>';
+        }
 
 }
 

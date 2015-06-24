@@ -322,28 +322,28 @@ function add_sidebar_text_before($form, $lead){
 
 <?php /* Notes Sidebar Area */?>
 <div class="postbox" style="float:none;padding: 10px;">
-	<h3>
+        <h3>
 		<label for="name"><?php _e( 'Notes', 'gravityforms' ); ?></label>
 	</h3>
 
 		<?php wp_nonce_field( 'gforms_update_note', 'gforms_update_note' ) ?>
 		<div class="inside">
 			<?php
-								$notes = RGFormsModel::get_lead_notes( $lead['id'] );
+                        $notes = RGFormsModel::get_lead_notes( $lead['id'] );
 
-								//getting email values
-								$email_fields = GFCommon::get_email_fields( $form );
-								$emails = array();
+                        //getting email values
+                        $email_fields = GFCommon::get_email_fields( $form );
+                        $emails = array();
 
-								foreach ( $email_fields as $email_field ) {
-									if ( ! empty( $lead[ $email_field->id ] ) ) {
-										$emails[] = $lead[ $email_field->id ];
-									}
-								}
-								//displaying notes grid
-								$subject = '';
-								notes_sidebar_grid( $notes, true, $emails, $subject );
-								?>
+                        foreach ( $email_fields as $email_field ) {
+                                if ( ! empty( $lead[ $email_field->id ] ) ) {
+                                        $emails[] = $lead[ $email_field->id ];
+                                }
+                        }
+                        //displaying notes grid
+                        $subject = '';
+                        notes_sidebar_grid( $notes, true, $emails, $subject );
+                        ?>
 		</div>
 </div>
 
@@ -412,7 +412,24 @@ if ($mode == 'view') {
 
 /* Notes Sidebar Grid Function */
 function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = '' ) {
-		?>
+        if ( sizeof( $notes ) > 0 && $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+            ?>
+<!--
+            <div class="alignleft actions" style="padding:3px 0;">
+                    <label class="hidden" for="bulk_action"><?php _e( ' Bulk action', 'gravityforms' ) ?></label>
+                    <select name="bulk_action" id="bulk_action">
+                            <option value=''><?php _e( ' Bulk action ', 'gravityforms' ) ?></option>
+                            <option value='delete'><?php _e( 'Delete', 'gravityforms' ) ?></option>
+                    </select>
+                    <?php
+                    //$apply_button = '<input type="submit" class="button" value="' . __( 'Apply', 'gravityforms' ) . '" onclick="jQuery(\'#action\').val(\'bulk\');" style="width: 50px;" />';
+                    //echo apply_filters( 'gform_notes_apply_button', $apply_button );
+                    ?>
+            </div>-->
+            <input type="submit" name="delete_note_sidebar" value="Delete Selected Note(s)" class="button" style="width:100%;padding-bottom:2px;" onclick="jQuery('#action').val('delete_note_sidebar');">
+	<?php
+            } 		
+    ?>
 <table class="widefat fixed entry-detail-notes">
 	<tbody id="the-comment-list" class="list:comment">
 		<?php
@@ -423,11 +440,17 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 				$is_last = $count >= $notes_count ? true : false;
 				?>
 		<tr valign="top">
-			<td
-				class="entry-detail-note<?php echo $is_last ? ' lastrow' : '' ?>">
+                        <?php
+                        if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+                        ?>
+                        <th class="check-column" scope="row" style="padding:9px 3px 0 0">
+                                <input type="checkbox" value="<?php echo $note->id ?>" name="note[]" />                                
+                        </th>
+                        <?php } ?>
+			<td class="entry-detail-note<?php echo $is_last ? ' lastrow' : '' ?>">
 				<?php
-						$class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
-						?>
+                                $class = $note->note_type ? " gforms_note_{$note->note_type}" : '';
+                                ?>
 				<div style="margin-top: 4px;">
 					<div class="note-avatar">
 						<?php echo apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ); ?>
@@ -506,6 +529,12 @@ if (!empty($mfAction))
 		case 'add_note_sidebar' :
 			add_note_sidebar($lead, $form);
 			break;
+                //Sidebar Note Delete
+		case 'delete_note_sidebar' :
+                    if(is_array($_POST['note'])){
+                        delete_note_sidebar($_POST['note']);
+                    }
+                    break;
 	}
 	
 }
@@ -878,7 +907,9 @@ function add_note_sidebar($lead, $form)
 	
 }
 
-
+function delete_note_sidebar($notes){       
+    RGFormsModel::delete_notes( $notes);
+}
 function wpse27856_set_content_type(){
 	return "text/html";
 }

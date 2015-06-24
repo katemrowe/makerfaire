@@ -411,24 +411,7 @@ if ($mode == 'view') {
 
 
 /* Notes Sidebar Grid Function */
-function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = '' ) {
-        if ( sizeof( $notes ) > 0 && $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-            ?>
-<!--
-            <div class="alignleft actions" style="padding:3px 0;">
-                    <label class="hidden" for="bulk_action"><?php _e( ' Bulk action', 'gravityforms' ) ?></label>
-                    <select name="bulk_action" id="bulk_action">
-                            <option value=''><?php _e( ' Bulk action ', 'gravityforms' ) ?></option>
-                            <option value='delete'><?php _e( 'Delete', 'gravityforms' ) ?></option>
-                    </select>
-                    <?php
-                    //$apply_button = '<input type="submit" class="button" value="' . __( 'Apply', 'gravityforms' ) . '" onclick="jQuery(\'#action\').val(\'bulk\');" style="width: 50px;" />';
-                    //echo apply_filters( 'gform_notes_apply_button', $apply_button );
-                    ?>
-            </div>-->
-            <input type="submit" name="delete_note_sidebar" value="Delete Selected Note(s)" class="button" style="width:100%;padding-bottom:2px;" onclick="jQuery('#action').val('delete_note_sidebar');">
-	<?php
-            } 		
+function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = '' ) { 		
     ?>
 <table class="widefat fixed entry-detail-notes">
 	<tbody id="the-comment-list" class="list:comment">
@@ -474,6 +457,11 @@ function notes_sidebar_grid( $notes, $is_editable, $emails = null, $subject = ''
 	</tbody>
 </table>
 <?php
+       if ( sizeof( $notes ) > 0 && $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+            ?>
+            <input type="submit" name="delete_note_sidebar" value="Delete Selected Note(s)" class="button" style="width:100%;padding-bottom:2px;" onclick="jQuery('#action').val('delete_note_sidebar');">
+	<?php
+            } 
 }
 
 

@@ -155,7 +155,7 @@ function mf_sidebar_entry_info($form_id, $lead) {
 }
 
 function mf_sidebar_entry_status($form_id, $lead) {
-    if ( current_user_can( 'update_maker_status') ) {                                             
+    if ( current_user_can( 'update_entry_status') ) {                                             
 	// Load Fields to show on entry info
 	$form = GFAPI::get_form($form_id);
 

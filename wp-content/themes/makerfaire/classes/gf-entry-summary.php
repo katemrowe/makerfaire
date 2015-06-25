@@ -6,6 +6,7 @@ function add_main_text_before($form, $lead){
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;
 	echo gf_summary_metabox($form, $lead);
+        echo gf_collapsible_sections($form, $lead);
 }
 
 
@@ -250,6 +251,61 @@ $emailtoaliases = array(
 </table>
 <?php				
 } //end function
+
+function gf_collapsible_sections($form, $lead){
+    /*
+     * 1. Content
+Include field IDs:
+11 [Tell us about your project and exhibit.]
+16 [Provide a short description for our website, mobile app, and your sign.]
+2. Logistics
+Include field IDs:
+60 [Space Size Request]
+61 [Other: List the specific dimensions (__ft x __ft ) and provide additional details about the size of space you require.]
+62 [Tables and Chairs]
+288 [How many tables and chairs?]
+     */
+   
+    $fieldLabel = array();
+    foreach($form['fields'] as $field){
+        $fieldLabel[$field['id']] = $field['label'];
+    }
+    
+    $data = array('content'=> array(11,16),
+                  'logistics'=>array(60,61,62,288),
+        );
+    ?>
+    <table class="widefat fixed entry-detail-view" cellspacing="0">
+        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryContent').toggle();">Content</span></td></tr>
+        <tr id="entryContent" style="display:none"><td>
+                <table class="widefat fixed entry-detail-view" cellspacing="0">
+                    <?php echo displayContent($data['content'],$lead,$fieldLabel);?>                
+                </table>    
+         </td></tr>
+
+        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryLogistics').toggle();">Logistics/Production</span></td></tr>
+        <tr id="entryLogistics" style="display:none">
+            <td><table class="widefat fixed entry-detail-view" cellspacing="0">
+                <?php echo displayContent($data['logistics'],$lead,$fieldLabel);?>                      
+                </table>   
+            </td>
+        </tr>
+        <!--
+        <tr><td class="entry-view-collapse"><span onclick="jQuery('#makerInfo').toggle();">Maker Information</span></td></tr>
+        <tr id="makerInfo" style="display:none"><td>Maker Information goes here</td></tr>
+        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryMisc').toggle();">Misc</span></td></tr>
+        <tr id="entryMisc" style="display:none"><td>Misc goes here</td></tr>-->
+    </table>
+    <?php
+}
+
+function displayContent($content,$lead,$fieldLabel){
+   foreach($content as $fieldID){
+        $return .= '<tr><td  class="entry-view-field-name" colspan="2">Field '.$fieldID.': '.$fieldLabel[$fieldID].'</td></tr>'.
+                    '<tr><td>'. $lead[$fieldID].'</td></tr>';
+   }
+   return $return;
+}
 
 
 

@@ -10,3 +10,10 @@ and open the template in the editor.
 
 /*form 25 field 321 styling*/
 ul#input_321 li{width:50%;float:left;}
+
+.standoutParent{background-color: #FF8080;
+  border: 3px solid red;}
+.entryStandout, .entryStandout ul li {
+  font-size: 1.5em;
+  font-weight: bold;
+}

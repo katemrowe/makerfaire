@@ -8,14 +8,14 @@ jQuery( document ).ready(function() {
 		    		function() {
 		    			jQuery(this) .parents('table.entry-detail-view') .children('tbody') .toggle();
 		    		}
-		    	)
+		    	);
 		    jQuery($tableheader).click(
 		    		function() {
 		    			jQuery(this) .parents('table.entry-detail-view') .children('tbody') .toggle();
 		    		}
-		    	)
+		    	);
 		    	
-		    	jQuery('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+		    jQuery('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
 
 		    
 		    jQuery('#datetimepickerstart').datetimepicker({
@@ -35,6 +35,9 @@ jQuery( document ).ready(function() {
 			 function() {
 				 window.location="/wp-admin/admin.php?page=gf_entries&view=entry&id=20&lid="+prompt('Enter your ID!', ' ');
 				 }
-			 )
+			 );
 		});
+        jQuery('.entryStandout').each(function(){
+            jQuery(this).parent().addClass("standoutParent");
+        });
 });

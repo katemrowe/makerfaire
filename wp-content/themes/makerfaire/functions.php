@@ -1298,3 +1298,18 @@ function gform_skip_page($form) {
         GFFormDisplay::$submission[$form['id']]["page_number"] = rgget('form_page');
     return $form;
 }
+
+/* This filter is triggered before the entry detail page is displayed in admin 
+ * Using this to add class of entryStandout to specific fields 
+ */
+add_filter( 'gform_entry_field_value', 'entry_field_standout', 10, 4 );
+function entry_field_standout( $value, $field, $lead, $form ) {
+    //topics/category fields
+    if ( $field['id'] != 64)
+        return $value;
+    
+    $value = '<span class="entryStandout">'.$value.'</span>';
+    return $value;
+   
+}
+

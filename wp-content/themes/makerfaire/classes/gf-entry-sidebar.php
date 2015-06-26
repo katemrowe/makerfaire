@@ -667,8 +667,6 @@ function duplicate_entry_id($lead,$form){
         //add a note to the new entry
         $results=mf_add_note( $lead_id, 'Copied Entry ID:'.$current_entry_id.' into form '.$form_change.'. New Entry ID ='.$lead_id);
         
-        //echo 'SELECT wp_rg_lead_detail.field_number, wp_rg_lead_detail.value, wp_rg_lead_detail_long.value as long_detail FROM $lead_detail_table left outer join wp_rg_lead_detail_long on  wp_rg_lead_detail_long.lead_detail_id = wp_rg_lead_detail.id WHERE lead_id='.$current_entry_id;
-        //var_dump($current_fields);
         foreach($current_fields as $row){
             $fieldValue = ($row->field_number != 303? $row->value: 'Proposed');          
             
@@ -695,16 +693,19 @@ function set_form_id($lead,$form){
 	error_log('$$entry_info_entry_id='.$entry_info_entry_id);
 	$entry=GFAPI:: get_entry($entry_info_entry_id);
 	
-	$is_form_id_changed = (strcmp($entry['form_id'], $form_change) != 0);
-
+	$is_form_id_changed = (strcmp($entry['form_id'], $form_change) != 0);                
+                        
 	if (!empty($entry_info_entry_id))
 	{
 		if (!empty($is_form_id_changed))
 		{
 			//Update Field for Acceptance Status
 			$result = update_entry_form_id($entry,$form_change);
-			error_log('UPDATE RESULTS = '.print_r($result,true));
-			
+			error_log('UPDATE RESULTS = '.print_r($result,true));  
+                        
+                        //add note about form change
+                        $newForm = RGFormsModel::get_form_meta($form_change);                                                        
+                        mf_add_note( $entry_info_entry_id, 'Entry changed from '.$form['title'].' to '.$newForm['title']);                        
 		}
 	}
 }

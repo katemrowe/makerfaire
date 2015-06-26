@@ -12,10 +12,9 @@ and open the template in the editor.
 ul#input_321 li{width:50%;float:left;}
 
 .standoutParent{background-color: #FF8080;
-  border: 3px solid red;}
+  }
 .entryStandout, .entryStandout ul li {
-  font-size: 1.5em;
-  font-weight: bold;
+ 
 }
 .entry-view-collapse{background-color:#ccc}
 .entry-view-collapse span {display:block; width:100%}

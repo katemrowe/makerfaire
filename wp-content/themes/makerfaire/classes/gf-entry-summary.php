@@ -301,7 +301,7 @@ Include field IDs:
 
 function displayContent($content,$lead,$fieldLabel){
    foreach($content as $fieldID){
-        $return .= '<tr><td  class="entry-view-field-name" colspan="2">Field '.$fieldID.': '.$fieldLabel[$fieldID].'</td></tr>'.
+        $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$fieldLabel[$fieldID].'</td></tr>'.
                     '<tr><td>'. $lead[$fieldID].'</td></tr>';
    }
    return $return;

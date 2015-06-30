@@ -345,7 +345,7 @@ function add_sidebar_text_before($form, $lead){
     $ratingAvg =round($ratingTotal/$ratingNum);
     ?>
     <div class="postbox" style="float:none;padding: 10px">
-        <h3> <label for="name"><?php _e( 'Entry Rating', 'gravityforms'); ?></label></h3>
+        <h3> <label for="name"><?php _e( 'Entry Rating: '.$ratingAvg .' stars', 'gravityforms'); ?></label></h3>
         <div class="entryRating inside">
             
             <span class="star-rating">

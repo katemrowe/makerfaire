@@ -319,7 +319,55 @@ function add_sidebar_text_before($form, $lead){
 	</div>
 </div>
 		
+<?php /* Ratings Sidebar Area */
+    global $wpdb;
+    // Retrieve any ratings
+    $entry_id=$lead['id'];
+    $sql = "SELECT user_id, rating, ratingDate FROM `wp_rg_lead_rating` where entry_id = ".$entry_id;
+    $ratingTotal = 0;
+    $ratingNum   = 0;
+    $ratingResults = '';
+    $user_ID = get_current_user_id();
+    $currRating = '';
+    foreach($wpdb->get_results($sql) as $row){  
+        $user = get_userdata( $row->user_id );
 
+        //don't display current user in the list of rankings    
+        if($user_ID!=$row->user_id){
+            $ratingResults .= '<tr><td style="text-align: center;">'.$row->rating.'</td><td>'.$user->display_name.'</td><td class="alignright">'.date("m-d-Y", strtotime($row->ratingDate)).'</td></tr>';
+        }else{
+            $currRating = $row->rating;
+        }
+        $ratingTotal += $row->rating;
+        $ratingNum++;
+    }
+
+    $ratingAvg =round($ratingTotal/$ratingNum);
+    ?>
+    <div class="postbox" style="float:none;padding: 10px">
+        <h3> <label for="name"><?php _e( 'Entry Rating', 'gravityforms'); ?></label></h3>
+        <div class="entryRating inside">
+            
+            <span class="star-rating">
+                <input type="radio" name="rating" value="1" <?php echo ($currRating==1?'checked':'');?>><i></i>
+                <input type="radio" name="rating" value="2" <?php echo ($currRating==2?'checked':'');?>><i></i>
+                <input type="radio" name="rating" value="3" <?php echo ($currRating==3?'checked':'');?>><i></i>
+                <input type="radio" name="rating" value="4" <?php echo ($currRating==4?'checked':'');?>><i></i>
+                <input type="radio" name="rating" value="5" <?php echo ($currRating==5?'checked':'');?>><i></i>
+              </span>
+              (Your Rating)<br/>
+              <span id="updateMSG" style="font-size:smaller">Average Rating: <?php echo $ratingAvg; ?> Stars from <?php echo $ratingNum;?> users.</span>
+              <?php if($ratingResults!=''){
+                  echo '<table cellspacing="0" style="padding:10px 0">'
+                  . '       <tr>'
+                          . '   <td class="entry-view-field-name">Rating</td>'
+                          . '   <td class="entry-view-field-name">User</td>'
+                          . '   <td class="entry-view-field-name">Date Rated</td>'
+                          . '</tr>'.$ratingResults.'</table>';
+              }
+    ?>
+        </div>
+    </div>
 <?php /* Notes Sidebar Area */?>
 <div class="postbox" style="float:none;padding: 10px;">
         <h3>

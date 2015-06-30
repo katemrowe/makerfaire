@@ -1313,3 +1313,26 @@ function entry_field_standout( $value, $field, $lead, $form ) {
    
 }
 
+//ajax functionality to update the entry rating
+function myajax_update_entry_rating() {
+    $entry_id = $_POST['rating_entry_id'];
+    $rating   = $_POST['rating'];
+    $user     = $_POST['rating_user'];
+    
+    //update user rating
+    
+    //if there is already a record for this user, update it.
+    //else add it.
+    $sql = "Insert into wp_rg_lead_rating (entry_id, user_id, rating) "
+         . " values (".$entry_id.','.$user.','.$rating.")"
+         . " on duplicate key update rating=".$rating.", ratingDate=now()";
+    global $wpdb;
+    $wpdb->get_results($sql);
+    
+    echo ''
+    . 'Your Rating Has Been Saved';
+    // IMPORTANT: don't forget to "exit"
+    exit;
+}
+
+add_action( 'wp_ajax_update-entry-rating', 'myajax_update_entry_rating' );

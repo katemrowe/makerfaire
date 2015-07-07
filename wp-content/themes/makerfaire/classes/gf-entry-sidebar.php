@@ -962,14 +962,3 @@ function mf_add_note($leadid,$notetext)
 }
 
 
-//add new submenu for our custom built list page
-add_filter( 'gform_addon_navigation', 'add_menu_item' );
-function add_menu_item( $menu_items ) {
-    $menu_items[] = array( "name" => "mf_entries", "label" => "MakerFaire Entries", "callback" => "entries_list", "permission" => "edit_posts" );
-    return $menu_items;
-}
-
-function entries_list(){
-    include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
-    GFEntryList::all_leads_page();   
-}

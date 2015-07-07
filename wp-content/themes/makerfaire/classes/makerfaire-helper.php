@@ -1,5 +1,6 @@
 <?php 
 // BEGINING AMAZING HACKS
+
 function maker_url_vars( $rules ) {
 	$newrules = array();
 	$newrules['maker/entry/(\d*)/?'] = 'index.php?post_type=page&pagename=entry-page-do-not-delete&e_id=$matches[1]';
@@ -11,7 +12,7 @@ function maker_url_vars( $rules ) {
 }
 
 add_filter( 'rewrite_rules_array','maker_url_vars' );
-
+/*
 add_action( 'wp_loaded','my_flush_rules' );
 
 // flush_rules() if our rules are not yet included
@@ -24,7 +25,7 @@ function my_flush_rules(){
 	}
 	
 }
-
+*/
 add_filter( 'query_vars', 'my_query_vars' );
 function my_query_vars( $query_vars ){
     $query_vars[] = 'e_id';

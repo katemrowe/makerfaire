@@ -268,10 +268,10 @@ Include field IDs:
    
     $fieldLabel = array();
     foreach($form['fields'] as $field){
-        $fieldLabel[$field['id']] = $field['label'];
+        $fieldData[$field['id']] = $field;
     }
     
-    $data = array('content'=> array(11,16),
+    $data = array('content'=> array(11,16,320,321),
                   'logistics'=>array(60,61,62,288),
         );
     ?>
@@ -279,14 +279,14 @@ Include field IDs:
         <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryContent').toggle();">Content</span></td></tr>
         <tr id="entryContent" style="display:none"><td>
                 <table class="widefat fixed entry-detail-view" cellspacing="0">
-                    <?php echo displayContent($data['content'],$lead,$fieldLabel);?>                
+                    <?php echo displayContent($data['content'],$lead,$fieldData);?>                
                 </table>    
          </td></tr>
 
         <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryLogistics').toggle();">Logistics/Production</span></td></tr>
         <tr id="entryLogistics" style="display:none">
             <td><table class="widefat fixed entry-detail-view" cellspacing="0">
-                <?php echo displayContent($data['logistics'],$lead,$fieldLabel);?>                      
+                <?php echo displayContent($data['logistics'],$lead,$fieldData);?>                      
                 </table>   
             </td>
         </tr>
@@ -299,10 +299,15 @@ Include field IDs:
     <?php
 }
 
-function displayContent($content,$lead,$fieldLabel){
-   foreach($content as $fieldID){
-        $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$fieldLabel[$fieldID].'</td></tr>'.
-                    '<tr><td>'. $lead[$fieldID].'</td></tr>';
+function displayContent($content,$lead,$fieldData){
+   $return = '';
+    foreach($content as $fieldID){
+        $field = $fieldData[$fieldID];
+        $label = $fieldData[$fieldID]['label'];
+        $value = (isset($lead[$fieldID])?$lead[$fieldID]:'');
+        $value =  setTaxName($value, $field, $lead, array());
+        $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>'.
+                    '<tr><td>'.$value.'</td></tr>';
    }
    return $return;
 }

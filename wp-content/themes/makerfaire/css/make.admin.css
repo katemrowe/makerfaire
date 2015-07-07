@@ -73,3 +73,108 @@ ul#input_321 li{width:50%;float:left;}
   width: 100%;
 }
 
+
+/* Navigation */
+	#faire_nav ul {
+                border: thin solid lightgrey;
+		background: #ddd;
+		float: left;
+		-webkit-transition: .5s;
+		transition: .5s;
+	}
+	
+	#faire_nav li {
+		float: left;
+		position: relative;
+		width: 150px;
+		list-style: none;
+		-webkit-transition: .5s;
+		transition: .5s;
+                margin: 0;
+	}
+	#faire_nav ul li ul li {width:250px}
+        #faire_nav ul li ul li ul li{width:150px}
+	#faire_nav > ul > li > a, h1 {
+		text-transform: uppercase;
+	}
+	
+	#faire_nav a {
+		display: block;
+		text-decoration: none;
+		padding: 5px 15px;
+		color: #000;
+	}
+
+	#faire_nav ul ul {
+		position: absolute;
+		left: 0;
+		top: 100%;
+		visibility: hidden;
+		opacity: 0;
+	}
+	
+	#faire_nav ul ul ul {
+		left: 100%;
+		top: 0;
+	}
+	
+	#faire_nav li:hover, #faire_nav li:hover li {
+		background: #ddd;
+	}
+	
+	#faire_nav li li:hover, #faire_nav li li:hover li {
+		background: #bbb;
+	}
+	
+	#faire_nav li li li:hover {
+		background: #999;
+	}
+	
+	#faire_nav li:hover > ul {
+		visibility: visible;
+		opacity: 1;
+	}
+        
+        #faire_nav li a:after {
+          width: 0; 
+            height: 0; 
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 8px;
+            border-top: 4px solid rgba(0, 0, 0, 1);     
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+
+        #faire_nav li li a:after{
+            width: 0; 
+            height: 0; 
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+
+            border-left: 4px solid rgba(0, 0, 0, 1);
+            
+        }
+        #faire_nav li > a:only-child:after
+        {
+            content: '';
+            border:0;
+        }   
+    /* Entry List filters */
+    #entry_filters{float:right}
+        .title{margin-top: 10px;font-weight: bold;}
+        .appliedFilters{
+            padding:10px;
+            border: 1px solid #ddd;
+            -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+            background-color: #fff;
+            color: #32373c;
+            outline: 0;
+            -webkit-transition: .05s border-color ease-in-out;
+            transition: .05s border-color ease-in-out;
+        }     
+        .appliedFilters tr{        
+            border: 1px solid #ddd;
+        }

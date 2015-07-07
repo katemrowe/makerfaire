@@ -83,7 +83,34 @@ class GFEntryDetail {
 		}
 
 		$search_field_id = rgget( 'field_id' );
+                /*logic to allow multiple filters to be set */
+                if(isset($_GET['filterField']) && is_array($_GET['filterField'])){
+                    foreach($_GET['filterField'] as $key=>$value){
+                        $filterValues = explode("|",$value);
+                        $key             = $filterValues[0];
+                        $search_operator = $filterValues[1];
+                        $val             = $filterValues[2];     
+                        if ( 'entry_id' == $key ) {
+				//$key = 'id';
+			}
+			$filter_operator = empty( $search_operator ) ? 'is' : $search_operator;
 
+			$field = GFFormsModel::get_field( $form, $key );
+			if ( $field ) {
+				$input_type = GFFormsModel::get_input_type( $field );
+				if ( $field->type == 'product' && in_array( $input_type, array( 'radio', 'select' ) ) ) {
+					$filter_operator = 'contains';
+				}
+			}
+
+			$search_criteria['field_filters'][] = array(
+				'key'      => $key,
+				'operator' => $filter_operator,
+				'value'    => $val,
+			);
+                    }
+                } 
+                /*
 		if ( isset( $_GET['field_id'] ) && $_GET['field_id'] !== '' ) {
 			$key            = $search_field_id;
 			$val            = rgget( 's' );
@@ -106,7 +133,7 @@ class GFEntryDetail {
 					$search_criteria['type'] = 'global';
 				}
 			}
-		}
+		}*/
 
 		$paging = array( 'offset' => $position, 'page_size' => 1 );
 

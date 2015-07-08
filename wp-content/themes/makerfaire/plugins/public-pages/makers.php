@@ -367,8 +367,13 @@ function mf_featured_makers( $atts ) {
 		$i++;
 	endwhile;
 	$output .= '</div>
-		<a class="left carousel-control" href="#featuredMakers" data-slide="prev">‹</a>
-		<a class="right carousel-control" href="#featuredMakers" data-slide="next">›</a>
+		<a class="left carousel-control" href="#featuredMakers" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span></a>
+		</a>
+		<a class="right carousel-control" href="#featuredMakers" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span></a></a>
 	</div>';
 
 	wp_reset_postdata();
@@ -1050,8 +1055,14 @@ function make_video_photo_gallery( $attr ) {
 	} //foreach
 	wp_reset_postdata();
 	$output .= '</div>
-		<a class="topper left carousel-control" href="#myCarousel-' . $rand . '" data-slide="prev">‹</a>
-		<a class="topper right carousel-control" href="#myCarousel-' . $rand . '" data-slide="next">›</a>
+		<a class="topper left carousel-control" href="#myCarousel-' . $rand . '" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span></a>
+		</a>
+		<a class="topper right carousel-control" href="#myCarousel-' . $rand . '" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span></a>
+		</a>
 	</div>';
 	$output .= '<div class="clearfix"></div>';
 	return $output;

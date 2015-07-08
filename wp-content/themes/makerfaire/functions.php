@@ -254,8 +254,12 @@ add_action( 'init', 'isc_register_menus' );
 function makerfaire_carousel_shortcode( $atts ) {
 	extract( shortcode_atts( array( 'id' => 'biggins'), $atts ) );
 
-	return 	'<a class="carousel-control left" href="#' . esc_attr( $id ) . '" data-slide="prev">&lsaquo;</a>
-			<a class="carousel-control right" href="#' . esc_attr( $id ) . '" data-slide="next">&rsaquo;</a>';
+	return 	'<a class="carousel-control left" href="#' . esc_attr( $id ) . '" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span></a>
+			<a class="carousel-control right" href="#' . esc_attr( $id ) . '" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span></a>';
 }
 add_shortcode( 'arrows', 'makerfaire_carousel_shortcode' );
 

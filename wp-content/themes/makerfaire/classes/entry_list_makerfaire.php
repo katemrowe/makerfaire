@@ -240,7 +240,7 @@ class GFEntryList {
 		$sort_field_meta = RGFormsModel::get_field( $form, $sort_field );
 		$is_numeric      = $sort_field_meta['type'] == 'number';
 
-		$page_size        = 25 ; //apply_filters( 'gform_entry_page_size', apply_filters( "gform_entry_page_size_{$form_id}", 20, $form_id ), $form_id );
+		$page_size        = 50 ; //apply_filters( 'gform_entry_page_size', apply_filters( "gform_entry_page_size_{$form_id}", 20, $form_id ), $form_id );
 		$first_item_index = $page_index * $page_size;
 
 		if ( ! empty( $sort_field ) ) {
@@ -253,7 +253,9 @@ class GFEntryList {
 		$total_count = 0;
 
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		$summary           = RGFormsModel::get_form_counts( $form_id );
+		/* filter results based on star rating */
+                
+                $summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];
 		$starred_count     = $summary['starred'];
@@ -264,9 +266,10 @@ class GFEntryList {
                 
                 /* build filterField array for link */                
                 $outputVar = '';
-
-                foreach($_GET['filterField'] as $newValue){
-                    $outputVar .= '&filterField[]='.$newValue;
+                if(isset($_GET['filterField'])){
+                    foreach($_GET['filterField'] as $newValue){
+                        $outputVar .= '&filterField[]='.$newValue;
+                    }
                 }
                 
 		//$search_qs                  = empty( $search ) ? '' : '&s=' . urlencode( $search );
@@ -296,6 +299,20 @@ class GFEntryList {
 
 		$field_filters = GFCommon::get_field_filter_settings( $form );
 
+                /*$field_filters[] =  array(                
+                                    "key"=> "Entry Rating",
+                                    "preventMultiple"=> false,
+                                    "text" => "Entry Rating",
+                                    "operators"=>array("is","isnot",">","<"),    
+                                    "values"=> array(
+                                                array("text" => "Not Rated", "value"=> "Not Rated", "isSelected"=> false, "price" => ""),
+                                                array("text" =>    "1 Star", "value"=> "1 Star"   , "isSelected"=> false, "price" => ""),
+                                                array("text" =>   "2 Stars", "value"=> "2 Stars"  , "isSelected"=> false, "price" => ""),
+                                                array("text" =>   "3 Stars", "value"=> "3 Stars"  , "isSelected"=> false, "price" => ""),
+                                                array("text" =>   "4 Stars", "value"=> "4 Stars"  , "isSelected"=> false, "price" => ""),
+                                                array("text" =>   "5 Stars", "value"=> "5 Stars"  , "isSelected"=> false, "price" => ""),
+                                    ),   
+                                  ); //array end*/
 		$init_field_id       = empty( $search_field_id ) ? 0 : $search_field_id;
 		$init_field_operator = empty( $search_operator ) ? 'contains' : $search_operator;
 		$init_filter_vars = array(
@@ -926,7 +943,8 @@ class GFEntryList {
                             <div id="entry_filters"></div>
                         </div>
                         <div class="clear"></div>
-                        <div style="float:right">
+                        <?php if(isset($_GET['filterField'])){ ?>
+                        <div style="float:right">                            
                             <div class="title">Applied Filters:</div>
                             <table style="width:485px" class="appliedFilters">
                             <?php foreach($_GET['filterField'] as $key=>$value){
@@ -951,8 +969,7 @@ class GFEntryList {
                                         $newOutput .= '&filterField[]='.$newValue;
                                     }
                                     
-                                    $newURL  = "?page=mf_entries&view=entries&id=" .$form_id.
-                                    
+                                    $newURL  = "?page=mf_entries&view=entries&id=" .$form_id.                                    
                                             "&sort=" .$sort_field. 
                                             "&dir=" .$sort_direction. 
                                             "&star=" .$star.
@@ -965,7 +982,8 @@ class GFEntryList {
                             }
                             ?>
                             </table>
-                        </div
+                        </div>
+        <?php } ?>
 		</div>
 		<div class="tablenav">
 

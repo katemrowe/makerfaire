@@ -27,16 +27,16 @@ if ( $jdb_success == '' ) {
 }
 
 $entry_id = $lead['id'];
-$photo = $lead['22'];
+$photo = (isset($lead['22'])?$lead['22']:'');
 $short_description = $lead['16'];
-$long_description = $lead['21'];
-$project_name = $lead['151'];
-$size_request = $lead['60'];
-$size_request_other = $lead['61'];
+$long_description = (isset($lead['21'])?$lead['21']:'');
+$project_name = (isset($lead['151'])?$lead['151']:'');
+$size_request = (isset($lead['60'])?$lead['60']:'');
+$size_request_other = (isset($lead['61'])?$lead['61']:'');
 $entry_form_type = $form['title'];
-$entry_form_status = $lead['303'];
-$wkey = $lead['27'];
-$vkey = $lead['32'];
+$entry_form_status = (isset($lead['303'])?$lead['303']:'');
+$wkey = (isset($lead['27'])?$lead['27']:'');
+$vkey = (isset($lead['32'])?$lead['32']:'');
 
 $makerfirstname1=$lead['160.3'];$makerlastname1=$lead['160.6'];
 $makerPhoto1    =$lead['217'];

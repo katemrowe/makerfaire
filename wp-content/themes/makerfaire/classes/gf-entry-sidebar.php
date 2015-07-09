@@ -342,7 +342,7 @@ function add_sidebar_text_before($form, $lead){
         $ratingNum++;
     }
 
-    $ratingAvg =round($ratingTotal/$ratingNum);
+    $ratingAvg = ($ratingNum!=0?round($ratingTotal/$ratingNum):0);
     ?>
     <div class="postbox" style="float:none;padding: 10px">
         <h3> <label for="name"><?php _e( 'Entry Rating: '.$ratingAvg .' stars', 'gravityforms'); ?></label></h3>
@@ -573,10 +573,12 @@ if (!empty($mfAction))
                     break;
 	}
 	
-}
+        // Return the original form which is required for the filter we're including for our custom processing.
+        return $form;
+        
+    }
 
-// Return the original form which is required for the filter we're including for our custom processing.
-return $form;
+
 }
 
 /* Modify Set Entry Status */

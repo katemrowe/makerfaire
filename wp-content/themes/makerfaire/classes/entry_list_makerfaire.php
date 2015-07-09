@@ -892,9 +892,46 @@ class GFEntryList {
 
 		<div class="wrap <?php echo GFCommon::get_browser_class() ?>">
 		<h2 class="gf_admin_page_title">
-			<span><?php _e( 'Entries', 'gravityforms' ) ?></span><span class="gf_admin_page_subtitle"><span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span><span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span></span>
-		</h2>
+                    <span><?php _e( 'Entries', 'gravityforms' ) ?></span>
+                    <span class="gf_admin_page_subtitle">
+                        <span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span>
+                        <span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span>
 
+                <?php if(isset($_GET['filterField'])){ ?>                          
+                            <?php
+                            foreach($_GET['filterField'] as $key=>$value){
+                                $strpos_row_key = strpos( $value, '|' );
+                                if ( $strpos_row_key !== false ) { //multi-field filter    
+                                    $filterValues = explode("|",$value);                                    
+                                    $field = GFFormsModel::get_field( $form, $filterValues[0] );
+                                   //print_r($field);
+                                    if ( $field ) {
+                                       $fieldName= (isset($field['adminLabel'])&&$field['adminLabel']!=''?$field['adminLabel']:$field['label']);
+                                    }else{
+                                        $fieldName = $filterValues[0];
+                                    }                                    
+ 
+                                    $newArray = $_GET['filterField'];
+                                    $newOutput = '';
+                                    unset($newArray[$key]);
+                                    foreach($newArray as $newValue){
+                                        $newOutput .= '&filterField[]='.$newValue;
+                                    }
+                                    //get admin title for the field.
+                                    $newURL  = "?page=mf_entries&view=entries&id=" .$form_id.                                    
+                                            "&sort=" .$sort_field. 
+                                            "&dir=" .$sort_direction. 
+                                            "&star=" .$star.
+                                            "&read=" .$read.
+                                            "&filter=" .$filter.$newOutput;
+                                    echo '<span class="gf_admin_page_formname">'.$fieldName.($filterValues[1]!='is'?' ('.$filterValues[1].') ':'').': '.$filterValues[2];
+                                    echo ' <a style="color:white" href="javascript:document.location = \''.$newURL.'\';">X</a></span>';                
+                                }
+                            }
+                            ?>                            
+        <?php } ?>    
+                                            </span>
+		</h2>
 		<?php RGForms::top_toolbar() ?>
                 
 		<form id="lead_form" method="post">
@@ -941,49 +978,7 @@ class GFEntryList {
                         <div style="float:right">
                             <a style="float:right;" class="button" id="lead_search_button" href="javascript:Search('<?php echo $sort_field ?>', '<?php echo $sort_direction ?>', <?php echo $form_id ?>, jQuery('.gform-filter-value').val(), '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', jQuery('.gform-filter-field').val(), jQuery('.gform-filter-operator').val());"><?php _e( 'Add Filter', 'gravityforms' ) ?></a>
                             <div id="entry_filters"></div>
-                        </div>
-                        <div class="clear"></div>
-                        <?php if(isset($_GET['filterField'])){ ?>
-                        <div style="float:right">                            
-                            <div class="title">Applied Filters:</div>
-                            <table style="width:485px" class="appliedFilters">
-                            <?php foreach($_GET['filterField'] as $key=>$value){
-                                $strpos_row_key = strpos( $value, '|' );
-                                if ( $strpos_row_key !== false ) { //multi-field filter    
-                                    $filterValues = explode("|",$value);
-                                    echo '<tr>';
-                                    $field = GFFormsModel::get_field( $form, $filterValues[0] );
-                                   
-                                    if ( $field ) {
-                                       $fieldName= $field['label'];
-                                    }else{
-                                        $fieldName = $filterValues[0];
-                                    }
-                                    echo '<td>'.$fieldName.'</td>';
-                                    echo '<td>'.$filterValues[1].'</td>';
-                                    echo '<td>'.$filterValues[2].'</td>';
-                                    $newArray = $_GET['filterField'];
-                                    $newOutput = '';
-                                    unset($newArray[$key]);
-                                    foreach($newArray as $newValue){
-                                        $newOutput .= '&filterField[]='.$newValue;
-                                    }
-                                    
-                                    $newURL  = "?page=mf_entries&view=entries&id=" .$form_id.                                    
-                                            "&sort=" .$sort_field. 
-                                            "&dir=" .$sort_direction. 
-                                            "&star=" .$star.
-                                            "&read=" .$read.
-                                            "&filter=" .$filter.$newOutput;
-                       
-                                    echo '<td><a style="float:right;" href="javascript:document.location = \''.$newURL.'\';" class="button">Remove</a></td>';
-                                    echo '</tr>';  
-                                }
-                            }
-                            ?>
-                            </table>
-                        </div>
-        <?php } ?>
+                        </div>                        
 		</div>
 		<div class="tablenav">
 

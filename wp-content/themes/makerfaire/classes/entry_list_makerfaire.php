@@ -1640,7 +1640,7 @@ class GFEntryList {
                     $nav .= '<ul>';                        
                     foreach($wpdb->get_results($formSQL) as $formRow){  
                         $adminURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$formRow->form_id;
-                        $nav .= '<li><a href="'.$adminURL.'">'.$formRow->title.'</a>';
+                        $nav .= '<li><a href="'.$adminURL.'">'.$formRow->title.' ('.$formRow->count.')</a>';
      
                         $statusSql = "SELECT value,count(*)as count FROM `wp_rg_lead_detail` WHERE `form_id` = ".$formRow->form_id." AND `field_number` = 303 group by value";
 

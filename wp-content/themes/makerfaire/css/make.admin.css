@@ -86,16 +86,17 @@ ul#input_321 li{width:50%;float:left;}
 	#faire_nav li {
 		float: left;
 		position: relative;
-		width: 150px;
+		width: 130px;
 		list-style: none;
 		-webkit-transition: .5s;
 		transition: .5s;
                 margin: 0;
+                font-size:12px;
 	}
 	#faire_nav ul li ul li {width:250px}
         #faire_nav ul li ul li ul li{width:150px}
 	#faire_nav > ul > li > a, h1 {
-		text-transform: uppercase;
+		
 	}
 	
 	#faire_nav a {

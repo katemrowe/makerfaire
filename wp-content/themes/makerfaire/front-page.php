@@ -14,7 +14,7 @@ get_header();
                 <ul class="social-list">
                     <li class="facebook"><a href="http://www.facebook.com/makerfaire" target="_blank"><i class="icon-facebook"></i></a></li>
                     <li class="twitter"><a href="http://twitter.com/makerfaire"><i class="icon-twitter" target="_blank"></i></a></li>
-                    <li class="pinterest"><a href="https://www.pinterest.com/makemagazine/maker-faire/" target="_blank"><i class="icon-pinterest"></i></a></li>
+                    <li class="instagram"><a href="//instagram.com/makerfaire" target="_blank"><i class="icon-instagram"></i></a></li>
                     <li class="googleplus"><a href="http://plus.google.com/communities/105823492396218903971" target="_blank"><i class="icon-googleplus"></i></a></li>
                 </ul>
             </div>

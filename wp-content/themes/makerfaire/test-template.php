@@ -226,7 +226,7 @@
 					<ul class="social-list">
 						<li class="facebook"><a href="#"><i class="icon-facebook"></i></a></li>
 						<li class="twitter"><a href="#"><i class="icon-twitter"></i></a></li>
-						<li class="pinterest"><a href="#"><i class="icon-pinterest"></i></a></li>
+						<li class="instagram"><a href="#"><i class="icon-instagram"></i></a></li>
 						<li class="googleplus"><a href="#"><i class="icon-googleplus"></i></a></li>
 					</ul>
 				</div>

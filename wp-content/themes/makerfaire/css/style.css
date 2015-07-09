@@ -1896,8 +1896,8 @@ li.hidelink a:visited {
 .quora .icon-facebook:before {
   content: "\e604";
 }
-.quora .icon-pinterest:before {
-  content: "\e606";
+.quora .icon-instagram:before {
+  content: "\e610";
 }
 .quora .icon-arrow-left:before {
   content: "\e601";
@@ -2495,8 +2495,8 @@ li.hidelink a:visited {
   background: #42a6e0;
   font-size: 12px;
 }
-.quora .social-list li.pinterest a {
-  background: #c80828;
+.quora .social-list li.instagram a {
+  background: #125688;
   font-size: 14px;
 }
 .quora .social-list li.googleplus a {

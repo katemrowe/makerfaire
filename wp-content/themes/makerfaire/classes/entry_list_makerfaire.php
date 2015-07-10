@@ -932,7 +932,8 @@ class GFEntryList {
         <?php } ?>    
                                             </span>
 		</h2>
-		<?php RGForms::top_toolbar() ?>
+		<?php echo self::return_navigation();?>
+                    <?php RGForms::top_toolbar() ?>
                 
 		<form id="lead_form" method="post">
 		
@@ -971,8 +972,7 @@ class GFEntryList {
 				<a class="<?php echo $filter == 'trash' ? 'current' : '' ?>" href="?page=mf_entries&view=entries&id=<?php echo $form_id ?>&filter=trash"><?php _e( 'Trash', 'gravityforms' ); ?>
 					<span class="count">(<span id="trash_count"><?php echo $trash_count ?></span>)</span></a></li>
 		</ul>
-                -->
-                <?php echo self::return_navigation();?>
+                -->                
                 
 		<div style="margin-top:12px;float:right;">			
                         <div style="float:right">
@@ -1628,7 +1628,7 @@ class GFEntryList {
         public static function return_navigation(){
             global $wpdb;
             $sql = "select * from wp_mf_faire";                
-            $nav ='<nav style="margin-top:12px;float:left" id="faire_nav"><ul>';
+            $nav ='<nav id="faire_nav"><ul>';
                 foreach($wpdb->get_results($sql) as $row){  
                     $nav .= '<li><a href="#">'.$row->faire_name.'</a>';                
                     

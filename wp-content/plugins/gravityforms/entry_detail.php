@@ -438,9 +438,25 @@ class GFEntryDetail {
 					<li class="gf_entry_prev gf_entry_pagination"><?php echo GFEntryDetail::entry_detail_pagination_link( $prev_pos, 'Previous Entry', 'gf_entry_prev_link', 'fa fa-arrow-circle-o-left' ); ?></li>
 					<li class="gf_entry_next gf_entry_pagination"><?php echo GFEntryDetail::entry_detail_pagination_link( $next_pos, 'Next Entry', 'gf_entry_next_link', 'fa fa-arrow-circle-o-right' ); ?></li>
 				</ul>
-			</div>
+                            <?php                            
+                            $outputVar = '';
+                            if(isset($_GET['filterField'])){
+                                foreach($_GET['filterField'] as $newValue){
+                                    $outputVar .= '&filterField[]='.$newValue;
+                                }
+                            }
+                            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=$form_id&%_%" . $outputVar;
+                            if(isset($_GET['sort']))    $outputURL .= '&sort='.rgget('sort');
+                            if(isset($_GET['filter']))  $outputURL .= '&filter='.rgget( 'filter' );
+                            if(isset($_GET['dir']))     $outputURL .= '&dir='.rgget( 'dir' );
+                            if(isset($_GET['star']))    $outputURL .= '&star='.rgget( 'star' );
+                            if(isset($_GET['read']))    $outputURL .= '&read='.rgget( 'read' );
+                            if(isset($_GET['paged']))   $outputURL .= '&paged='.rgget( 'paged' );
+                                    ?>
+			<a href="<?php echo $outputURL;?>">Return to entries list</a>
+                        </div>
 		<?php } ?>
-
+                    
 		<?php RGForms::top_toolbar() ?>
 
 		<div id="poststuff" class="metabox-holder has-right-sidebar">

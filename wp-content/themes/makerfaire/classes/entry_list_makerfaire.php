@@ -1627,7 +1627,7 @@ class GFEntryList {
         
         public static function return_navigation(){
             global $wpdb;
-            $sql = "select * from wp_mf_faire";                
+            $sql = "select * from wp_mf_faire ORDER BY `wp_mf_faire`.`start_dt` DESC";                
             $nav ='<nav id="faire_nav"><ul>';
                 foreach($wpdb->get_results($sql) as $row){  
                     $nav .= '<li><a href="#">'.$row->faire_name.'</a>';                

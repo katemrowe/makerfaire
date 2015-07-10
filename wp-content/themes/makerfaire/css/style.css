@@ -388,7 +388,7 @@ a:focus {
 }
 .advertisement-container {
   border-bottom: 3px solid #67bde1;
-  margin: 15px 0 20px 0;
+  margin: 0;
   padding: 15px 0 7px;
   position: relative;
 }
@@ -402,22 +402,12 @@ a:focus {
   bottom: 1px;
   z-index: -1;
 }
-.advertisement-container div {
-  margin-bottom: 5px;
-  margin-left: 90px;
-}
 .advertisement-container img {
-  position: absolute;
-  left: 0;
-  bottom: -30px;
+  padding-right: 15px;
 }
 .advertisement-container h2 {
-  display: inline;
-}
-.advertisement-container .btn {
-  position: absolute;
-  right: 0;
-  bottom: 16px;
+  margin-top: 0px;
+  font-size: 28px;
 }
 .post-holder {
   margin: 0 -15px 97px;
@@ -1954,6 +1944,7 @@ li.hidelink a:visited {
   border: 0;
   border-bottom: 2px solid #87111f;
   text-transform: uppercase;
+  margin-bottom: 15px;
 }
 .quora .btn-danger:hover {
   background: #c51a28;

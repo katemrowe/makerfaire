@@ -253,8 +253,8 @@ class GFEntryList {
 		$total_count = 0;
 
 		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		/* filter results based on star rating */
-                
+		
+                /* filter results based on star rating */                
                 $summary           = RGFormsModel::get_form_counts( $form_id );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];
@@ -298,21 +298,21 @@ class GFEntryList {
 		wp_print_styles( array( 'thickbox' ) );
 
 		$field_filters = GFCommon::get_field_filter_settings( $form );
-
-                /*$field_filters[] =  array(                
-                                    "key"=> "Entry Rating",
-                                    "preventMultiple"=> false,
-                                    "text" => "Entry Rating",
-                                    "operators"=>array("is","isnot",">","<"),    
-                                    "values"=> array(
-                                                array("text" => "Not Rated", "value"=> "Not Rated", "isSelected"=> false, "price" => ""),
-                                                array("text" =>    "1 Star", "value"=> "1 Star"   , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "2 Stars", "value"=> "2 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "3 Stars", "value"=> "3 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "4 Stars", "value"=> "4 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "5 Stars", "value"=> "5 Stars"  , "isSelected"=> false, "price" => ""),
-                                    ),   
-                                  ); //array end*/
+                //MF-295 - Request from Kate to move these filters to the top 
+                /* Entry ID(entry_id), Status(303), Flags(304), and Location(302) to the top */                
+                $topFields = array('entry_id',302,304,303);
+                $newFilter = $field_filters;
+                //find the array key for the top filter fields
+                foreach($field_filters as $fieldKey=>$field){
+                    if(in_array($field['key'],$topFields)){
+                        $topFieldsData[]=$field;
+                        //unset these keys
+                        unset($newFilter[$fieldkey]);
+                    }
+                }
+                //recreate the array with the top filter fields at the top
+                $field_filters = array_merge($topFieldsData,$newFilter);
+                                                
 		$init_field_id       = empty( $search_field_id ) ? 0 : $search_field_id;
 		$init_field_operator = empty( $search_operator ) ? 'contains' : $search_operator;
 		$init_filter_vars = array(
@@ -849,6 +849,9 @@ class GFEntryList {
 			initSelectAllEntries();
 
 			jQuery('#entry_filters').gfFilterUI(gformFieldFilters, gformInitFilter, false);
+                        
+                        
+                        jQuery('#entry_filters option[value="entry_id"]').prop('selected', true);
 			jQuery("#entry_filters").on("keypress", ".gform-filter-value", (function (event) {
 				if (event.keyCode == 13) {
 					Search('<?php echo $sort_field ?>', '<?php echo $sort_direction ?>', <?php echo $form_id ?>, jQuery('.gform-filter-value').val(), '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', jQuery('.gform-filter-field').val(), jQuery('.gform-filter-operator').val());
@@ -925,7 +928,7 @@ class GFEntryList {
                                             "&read=" .$read.
                                             "&filter=" .$filter.$newOutput;
                                     echo '<span class="gf_admin_page_formname">'.$fieldName.($filterValues[1]!='is'?' ('.$filterValues[1].') ':'').': '.$filterValues[2];
-                                    echo ' <a style="color:white" href="javascript:document.location = \''.$newURL.'\';">X</a></span>';                
+                                    echo ' <a style="color:red" href="javascript:document.location = \''.$newURL.'\';">X</a></span>';                
                                 }
                             }
                             ?>                            

@@ -445,7 +445,7 @@ class GFEntryDetail {
                                     $outputVar .= '&filterField[]='.$newValue;
                                 }
                             }
-                            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=$form_id&%_%" . $outputVar;
+                            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$form_id . $outputVar;
                             if(isset($_GET['sort']))    $outputURL .= '&sort='.rgget('sort');
                             if(isset($_GET['filter']))  $outputURL .= '&filter='.rgget( 'filter' );
                             if(isset($_GET['dir']))     $outputURL .= '&dir='.rgget( 'dir' );

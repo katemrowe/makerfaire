@@ -304,10 +304,10 @@ class GFEntryList {
                 $newFilter = $field_filters;
                 //find the array key for the top filter fields
                 foreach($field_filters as $fieldKey=>$field){
-                    if(in_array($field['key'],$topFields)){
+                    if(in_array($field['key'],$topFields)){                        
                         $topFieldsData[]=$field;
                         //unset these keys
-                        unset($newFilter[$fieldkey]);
+                        unset($newFilter[$fieldKey]);
                     }
                 }
                 //recreate the array with the top filter fields at the top
@@ -848,10 +848,7 @@ class GFEntryList {
 
 			initSelectAllEntries();
 
-			jQuery('#entry_filters').gfFilterUI(gformFieldFilters, gformInitFilter, false);
-                        
-                        
-                        jQuery('#entry_filters option[value="entry_id"]').prop('selected', true);
+			jQuery('#entry_filters').gfFilterUI(gformFieldFilters, gformInitFilter, false);                        
 			jQuery("#entry_filters").on("keypress", ".gform-filter-value", (function (event) {
 				if (event.keyCode == 13) {
 					Search('<?php echo $sort_field ?>', '<?php echo $sort_direction ?>', <?php echo $form_id ?>, jQuery('.gform-filter-value').val(), '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', jQuery('.gform-filter-field').val(), jQuery('.gform-filter-operator').val());

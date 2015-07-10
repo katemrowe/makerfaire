@@ -1319,6 +1319,7 @@ function entry_field_standout( $value, $field, $lead, $form ) {
 
 //ajax functionality to update the entry rating
 function myajax_update_entry_rating() {
+    global $wpdb;
     $entry_id = $_POST['rating_entry_id'];
     $rating   = $_POST['rating'];
     $user     = $_POST['rating_user'];
@@ -1330,13 +1331,67 @@ function myajax_update_entry_rating() {
     $sql = "Insert into wp_rg_lead_rating (entry_id, user_id, rating) "
          . " values (".$entry_id.','.$user.','.$rating.")"
          . " on duplicate key update rating=".$rating.", ratingDate=now()";
-    global $wpdb;
+    
     $wpdb->get_results($sql);
     
-    echo ''
-    . 'Your Rating Has Been Saved';
+    //update the meta with the average rating
+    $sql = "SELECT avg(rating) as rating FROM `wp_rg_lead_rating` where entry_id = ".$entry_id;
+    $results = $wpdb->get_results($sql);
+    $rating = round($results[0]->rating);
+        
+    gform_update_meta( $entry_id, 'entryRating', $rating );
+    echo 'Your Rating Has Been Saved';
     // IMPORTANT: don't forget to "exit"
     exit;
 }
 
 add_action( 'wp_ajax_update-entry-rating', 'myajax_update_entry_rating' );
+
+//adding new meta field to store the average rating
+add_filter( 'gform_entry_meta', 'custom_entry_meta', 10, 2);
+function custom_entry_meta($entry_meta, $form_id){
+    //data will be stored with the meta key named score
+    //label - entry list will use Score as the column header
+    //is_numeric - used when sorting the entry list, indicates whether the data should be treated as numeric when sorting
+    //is_default_column - when set to true automatically adds the column to the entry list, without having to edit and add the column for display
+    //update_entry_meta_callback - indicates what function to call to update the entry meta upon form submission or editing an entry
+    $entry_meta['entryRating'] = array(
+        'label' => 'Rating',        
+        'is_numeric' => true,
+        'update_entry_meta_callback' => 'update_entry_meta', 
+        'is_default_column' => true,
+        'filter'    => array(
+  			'operators' => array( 'is', 'isnot','<','>' ),
+  			'choices'   => array(
+  				array( 'value' => '0', 'text' => 'Unrated' ),
+  				array( 'value' => '1', 'text' => '1 Stars' ),
+  				array( 'value' => '2', 'text' => '2 Stars' ),
+  				array( 'value' => '3', 'text' => '3 Stars' ),
+                            array( 'value' => '4', 'text' => '4 Stars' ),
+                            array( 'value' => '5', 'text' => '5 Stars' ),
+  			)
+  		)
+    );
+    
+    return $entry_meta;
+}
+
+//set the default value for entry rating 
+function update_entry_meta( $key, $lead, $form ){
+    //default rating
+    $value = '0';
+    return $value;
+}
+
+//formats the ratings field that are displayed in the entries list
+add_filter( 'gform_entries_field_value', 'format_ratings', 10, 3 );
+function format_ratings( $value, $form_id, $field_id ) {    
+    if($field_id=='entryRating'){
+        if($value==0){
+            return 'No Rating';            
+        }else{
+            return $value .' stars';
+        }
+    }
+    return $value;
+}

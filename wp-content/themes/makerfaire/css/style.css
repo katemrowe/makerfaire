@@ -393,14 +393,7 @@ a:focus {
   position: relative;
 }
 .advertisement-container:before {
-  position: absolute;
-  content: "";
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: url(../images/bg-dotted.jpg);
-  bottom: 1px;
-  z-index: -1;
+  border-bottom: thick dotted #ff9933;
 }
 .advertisement-container img {
   padding-right: 15px;

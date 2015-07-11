@@ -387,8 +387,8 @@ a:focus {
   height: 33px;
 }
 .advertisement-container {
-  border-bottom: 2px dotted #ffcc66
-    margin: 0;
+  border-bottom: 2px dotted #ffcc66;
+  margin: 0;
   padding: 15px 0 7px;
   position: relative;
 }

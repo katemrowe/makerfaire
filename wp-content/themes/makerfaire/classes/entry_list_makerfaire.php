@@ -102,9 +102,14 @@ class GFEntryList {
                         $key             = $filterValues[0];
                         $search_operator = $filterValues[1];
                         $val             = $filterValues[2];     
-                        if ( 'entry_id' == $key ) {
-				//$key = 'id';
-			}
+                        //let's check if an entry ID was entered in the 'All form fields' filter
+                        if($key==0 && is_numeric($val)){
+                            $entry = GFAPI::get_entry( $val );
+                            if(is_array($entry)){
+                                $key = 'entry_id';
+                                $search_operator = 'is';
+                            }
+                        }
 			$filter_operator = empty( $search_operator ) ? 'is' : $search_operator;
 
 			$field = GFFormsModel::get_field( $form, $key );
@@ -904,13 +909,17 @@ class GFEntryList {
                                 $strpos_row_key = strpos( $value, '|' );
                                 if ( $strpos_row_key !== false ) { //multi-field filter    
                                     $filterValues = explode("|",$value);                                    
-                                    $field = GFFormsModel::get_field( $form, $filterValues[0] );
-                                   //print_r($field);
-                                    if ( $field ) {
-                                       $fieldName= (isset($field['adminLabel'])&&$field['adminLabel']!=''?$field['adminLabel']:$field['label']);
+                                    if($filterValues[0]!=0){
+                                        $field = GFFormsModel::get_field( $form, $filterValues[0] );
+
+                                        if ( $field ) {
+                                           $fieldName= (isset($field['adminLabel'])&&$field['adminLabel']!=''?$field['adminLabel']:$field['label']);
+                                        }else{
+                                            $fieldName = $filterValues[0];
+                                        }                                    
                                     }else{
-                                        $fieldName = $filterValues[0];
-                                    }                                    
+                                        $fieldName = 'Any Form Field';
+                                    }                               
  
                                     $newArray = $_GET['filterField'];
                                     $newOutput = '';

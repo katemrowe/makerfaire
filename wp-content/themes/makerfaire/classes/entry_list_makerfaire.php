@@ -909,7 +909,11 @@ class GFEntryList {
                                 $strpos_row_key = strpos( $value, '|' );
                                 if ( $strpos_row_key !== false ) { //multi-field filter    
                                     $filterValues = explode("|",$value);                                    
-                                    if($filterValues[0]!=0){
+                                    if($filterValues[0]=='entry_id'){
+                                        $fieldName = 'Entry ID';
+                                    }elseif(is_numeric($filterValues[0]) && $filterValues[0]==0){
+                                        $fieldName = 'Any Form Field';
+                                    }else{                                             
                                         $field = GFFormsModel::get_field( $form, $filterValues[0] );
 
                                         if ( $field ) {
@@ -917,8 +921,6 @@ class GFEntryList {
                                         }else{
                                             $fieldName = $filterValues[0];
                                         }                                    
-                                    }else{
-                                        $fieldName = 'Any Form Field';
                                     }                               
  
                                     $newArray = $_GET['filterField'];

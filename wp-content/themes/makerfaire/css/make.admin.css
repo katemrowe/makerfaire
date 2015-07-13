@@ -195,3 +195,6 @@ ul li.gf_form_switcher{top:-47px}
         ul#gf_form_toolbar_links .gf_form_toolbar_preview,
         ul#gf_form_toolbar_links .gf_form_toolbar_entries{display:none}
         div ul#gf_form_toolbar_links{border:0}
+        
+    /*hide the form switcher for the new makerfaire custom detail view page*/
+    div.gf_entry_wrap ul#gf_form_toolbar_links li.gf_form_switcher{display:none}

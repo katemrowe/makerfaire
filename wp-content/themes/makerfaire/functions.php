@@ -1403,9 +1403,22 @@ function add_menu_item( $menu_items ) {
     return $menu_items;
 }
 
-function entries_list(){
-    include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
-    GFEntryList::all_leads_page();   
+function entries_list(){    
+    $view    = rgget( 'view' );
+    $lead_id = rgget( 'lid' );
+
+    if ( $view == 'mfentry' && ( rgget( 'lid' ) || ! rgblank( rgget( 'pos' ) ) ) ) {
+            //require_once( GFCommon::get_base_path() . '/entry_detail.php' );
+            include_once TEMPLATEPATH. '/classes/entry_detail_makerfaire.php';
+            GFEntryDetail::lead_detail_page();
+    } else if ( $view == 'entries' || empty( $view ) ) {
+            include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
+            if( !class_exists('GFEntryList')) { require_once(GFCommon::get_base_path() . "/entry_list.php"); }
+            GFEntryList::all_leads_page();
+    } else {
+            $form_id = rgget( 'id' );
+            do_action( 'gform_entries_view', $view, $form_id, $lead_id );
+    }  
 }
 
 //remove old entries navigation
@@ -1415,6 +1428,10 @@ function remove_menu_links() {
         if(in_array('gf_entries',$item)){            
             unset($submenu['gf_edit_forms'][$key]);
         }
-    }         
+    }     
 }
 add_action( 'admin_menu', 'remove_menu_links', 9999 );
+
+function all_mf_leads_page(){    
+
+}

@@ -7,6 +7,7 @@ if ( ! class_exists( 'GFForms' ) ) {
 GFForms::register_scripts();
 GFEntryList::enqueue_gravity_forms_scripts();
 
+
 class GFEntryList {
     static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();
@@ -1266,11 +1267,11 @@ class GFEntryList {
 
 					/* ^ maybe move to function */                                        
 
-					$query_string = "gf_entries&view=entry&id={$form_id}&lid={$lead['id']}{$outputVar}{$sort_qs}{$dir_qs}{$filter_qs}&paged=" . ( $page_index + 1 );
+					$query_string = "mf_entries&view=mfentry&id={$form_id}&lid={$lead['id']}{$outputVar}{$sort_qs}{$dir_qs}{$filter_qs}{$outputVar}&paged=" . ( $page_index + 1 );
 					if ( $is_first_column ) {
 						?>
 						<td class="column-title">
-							<a href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php echo $value ?></a>
+							<a href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php echo $value ?></a>
 
 							<?php $gf_entry_locking->lock_info( $lead['id'] ); ?>
 
@@ -1280,7 +1281,7 @@ class GFEntryList {
 									case 'trash' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 
@@ -1305,7 +1306,7 @@ class GFEntryList {
 									case 'spam' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 
@@ -1331,7 +1332,7 @@ class GFEntryList {
 									default:
 										?>
 											<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 											<span class="edit">
@@ -1358,7 +1359,12 @@ class GFEntryList {
 										break;
 								}
 
-								do_action( 'gform_entries_first_column_actions', $form_id, $field_id, $value, $lead, $query_string );
+                                                                ?>
+                                                                <span class="edit">
+                                                                    | <a title="<?php _e( 'Edit this entry', 'gravityview' ); ?>" href="admin.php?page=mf_entries&view=mfentry&screen_mode=edit&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'Edit', 'gravityforms' ); ?></a>                                                                    
+                                                                </span>
+                                                                <?php
+                                                                //do_action( 'gform_entries_first_column_actions', $form_id, $field_id, $value, $lead, $query_string );
 								?>
 
 							</div>
@@ -1660,4 +1666,8 @@ class GFEntryList {
                                  
                 return $nav;
         }
+}
+
+class MFiew_GF_Entries_List extends GravityView_GF_Entries_List{
+    
 }

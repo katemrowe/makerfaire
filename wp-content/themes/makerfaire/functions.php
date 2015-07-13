@@ -1395,3 +1395,26 @@ function format_ratings( $value, $form_id, $field_id ) {
     }
     return $value;
 }
+
+//add new submenu for our custom built list page
+add_filter( 'gform_addon_navigation', 'add_menu_item' );
+function add_menu_item( $menu_items ) {
+    $menu_items[] = array( "name" => "mf_entries", "label" => "Entries", "callback" => "entries_list", "permission" => "edit_posts" );
+    return $menu_items;
+}
+
+function entries_list(){
+    include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
+    GFEntryList::all_leads_page();   
+}
+
+//remove old entries navigation
+function remove_menu_links() {
+    global $submenu;    
+    foreach($submenu['gf_edit_forms'] as $key=>$item){
+        if(in_array('gf_entries',$item)){            
+            unset($submenu['gf_edit_forms'][$key]);
+        }
+    }         
+}
+add_action( 'admin_menu', 'remove_menu_links', 9999 );

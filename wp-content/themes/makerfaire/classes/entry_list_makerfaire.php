@@ -1654,13 +1654,14 @@ class GFEntryList {
                             FROM `wp_rg_lead` join wp_rg_form form
                             WHERE form.id = form_id and `form_id` IN (".$row->form_ids.") and status = 'active'
                             group by form_id";
+                    
                     $nav .= '<ul>';                        
                     foreach($wpdb->get_results($formSQL) as $formRow){  
                         $adminURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$formRow->form_id;
                         $nav .= '<li><a href="'.$adminURL.'">'.$formRow->title.' ('.$formRow->count.')</a>';
      
-                        $statusSql = "SELECT value,count(*)as count FROM `wp_rg_lead_detail` WHERE `form_id` = ".$formRow->form_id." AND `field_number` = 303 group by value";
-
+                        $statusSql = "SELECT value,count(*)as count FROM `wp_rg_lead_detail` join wp_rg_lead on wp_rg_lead.id = lead_id WHERE wp_rg_lead.form_id = ".$formRow->form_id."    AND wp_rg_lead_detail.field_number = 303 and status = 'active' group by value";
+                        
                         $nav .= '<ul>';
                         foreach($wpdb->get_results($statusSql) as $statusRow){
                             $nav .= '<li>';                            

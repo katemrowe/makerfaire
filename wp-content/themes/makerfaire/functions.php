@@ -1187,7 +1187,7 @@ function gform_addScript($form) {
     return $form;
 }
 
-add_filter('gform_pre_render_35','update_entry_data');
+add_filter('gform_pre_render_33','update_entry_data');
 function update_entry_data( $form ) {    
         if(!isset($_GET['entry-id']) || trim($_GET['entry-id']) == ''){
             echo "I'm sorry.  You must have a valid project ID to submit this form.  Please double check you are using the full URL from your email.";          

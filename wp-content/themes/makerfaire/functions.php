@@ -1197,37 +1197,8 @@ function update_entry_data( $form ) {
         }         
 }
 
-/**
- * Pre-populate fields based on GET variable
- */
-add_filter('gform_field_value_GSP-project-name', 'GSP_project_name_population');
-function GSP_project_name_population(){
-  // if we have a valid entry id set in a GET variable - set the project name
-	if ( $_GET['entry-id'] ){
-            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
-            
-            return (isset($lead[151])?$lead[151]:'');
-	}
- 
-}
-
-add_filter('gform_field_value_GSP-project-desc', 'GSP_project_desc_population');
-function GSP_project_desc_population(){
-  // if we have a valid entry id set in a GET variable - set the project desc
-	if ( $_GET['entry-id'] ){
-            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
-            $desc = (isset($lead[16])?$lead[16]:'');
-            if(trim($desc)==''){
-                //try field 11
-                $desc = (isset($lead[11])?$lead[11]:'');
-            }
-            return $desc;
-	}
- 
-}
-
-//when form 35 is submitted, find the initial formid based on entry id and add the fields to that entry
-add_action( 'gform_after_submission_35', 'GSP_after_submission', 10, 2 );
+//when form 33 is submitted, find the initial formid based on entry id and add the fields to that entry
+add_action( 'gform_after_submission_33', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){
     global $wpdb;
     
@@ -1242,7 +1213,7 @@ function GSP_after_submission($entry, $form ){
 //if set, display form 35 fields at the bottom of the page
 add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
 function add_main_text_after( $form, $entry) {    
-    $formPullID = 35;
+    $formPullID = 33;
     $formPull = GFAPI::get_form( $formPullID );
     $results = get_extra_field_value($entry['id'], $formPullID);
     if(is_array($results) && !empty($results)){        

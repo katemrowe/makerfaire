@@ -139,10 +139,19 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	
 	
 	echo ('<h4><label class="detail-label">Location:</label></h4>');
+        $locArray=array();
+        
+        foreach($lead as $key=>$field){
+            if(strpos($key,'302')!== false){
+                $locArray[]=$field;
+            }
+        }
+        
 	foreach(   $field302['inputs'] as $choice)
 	{
 		$selected = '';
-		if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
+                if(in_array(stripslashes($choice['label']),$locArray)) $selected=' checked ';
+		//if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
 		echo('<input type="checkbox" '.$selected.' name="entry_info_location_change[]" style="margin: 3px;" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
 	}
 	

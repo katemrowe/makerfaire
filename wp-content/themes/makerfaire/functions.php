@@ -1396,13 +1396,36 @@ function entries_list(){
 function remove_menu_links() {
     global $submenu;    
     foreach($submenu['gf_edit_forms'] as $key=>$item){
-        if(in_array('gf_entries',$item)){            
+        if(in_array('gf_entries',$item)){              
             unset($submenu['gf_edit_forms'][$key]);
         }
     }     
 }
 add_action( 'admin_menu', 'remove_menu_links', 9999 );
 
-function all_mf_leads_page(){    
+/**
+ * Redirect gravity form admin pages to the new makerfaire specific admin pages
 
+ */
+function redirect_gf_admin_pages(){
+    global $pagenow;    
+    
+    /* Check current admin page. */
+    if($pagenow == 'admin.php'){
+        if(isset($_GET['page'])&&$_GET['page']=='gf_entries'){
+            //include any parameters in the return URL
+            $returnURL = '';
+            foreach($_GET as $key=>$param){
+                if($key!='page'){
+                    if($key=='view' && $param == 'entry')  $param = 'mfentry';
+                    $returnURL .= '&'.$key.'='.$param;
+                }
+            }
+            wp_redirect(admin_url( 'admin.php' ) . "?page=mf_entries".$returnURL);
+            exit;
+        }
+        
+    }
 }
+
+add_action('admin_menu', 'redirect_gf_admin_pages');

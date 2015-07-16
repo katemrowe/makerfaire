@@ -1196,6 +1196,7 @@ function gform_addScript($form) {
     return $form;
 }
 
+/*
 add_filter('gform_pre_render_33','update_entry_data');
 function update_entry_data( $form ) {    
         if(!isset($_GET['entry-id']) || trim($_GET['entry-id']) == ''){
@@ -1204,7 +1205,7 @@ function update_entry_data( $form ) {
         } else{
             return $form;
         }         
-}
+}*/
 
 //when form 33 is submitted, find the initial formid based on entry id and add the fields to that entry
 add_action( 'gform_after_submission_33', 'GSP_after_submission', 10, 2 );
@@ -1219,7 +1220,7 @@ function GSP_after_submission($entry, $form ){
     $wpdb->get_results($sql);
 }
 
-//if set, display form 35 fields at the bottom of the page
+//if set, display form 33 fields at the bottom of the page
 add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
 function add_main_text_after( $form, $entry) {    
     $formPullID = 33;

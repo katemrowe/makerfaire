@@ -181,7 +181,7 @@ function makeStyle(){
 * The New York menu item (menu's 3nd child) */
 
     jQuery(".nav li:nth-child(3) > div").addClass('area');
-    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
+    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/new-york-2015/maker-faire-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
     
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col1').wrapAll("<li class='left box meet-the-makers'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");

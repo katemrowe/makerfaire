@@ -1,5 +1,6 @@
 <?php
 
+
 // Set our global Faire Variable. Use the slug of the taxonomy as the value.
 define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 
@@ -76,6 +77,14 @@ if ( defined( 'WP_CLI' ) && WP_CLI )
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'schedule-thumb', 140, 140, true );
 
+// Define our current Version number using the stylesheet version
+function my_wp_default_styles($styles)
+{
+	$my_theme = wp_get_theme();
+	$my_version=  $my_theme->get( 'Version' );
+	$styles->default_version=$my_version;
+}
+add_action("wp_default_styles","my_wp_default_styles");
 
 /* Rewrite rules */
 function custom_rewrite_rule() {

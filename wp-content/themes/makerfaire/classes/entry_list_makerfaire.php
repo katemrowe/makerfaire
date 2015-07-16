@@ -7,6 +7,7 @@ if ( ! class_exists( 'GFForms' ) ) {
 GFForms::register_scripts();
 GFEntryList::enqueue_gravity_forms_scripts();
 
+
 class GFEntryList {
     static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();
@@ -24,8 +25,8 @@ class GFEntryList {
 			return;
 		}
 
-		$forms = RGFormsModel::get_forms( null, 'title' );
-		$id    = RGForms::get( 'id' );
+		$forms = RGFormsModel::get_forms( null, 'title' );		
+                $id    = RGForms::get( 'id' );
 
 		if ( sizeof( $forms ) == 0 ) {
 			?>
@@ -44,14 +45,16 @@ class GFEntryList {
 
 	public static function leads_page( $form_id ) {
 		global $wpdb;
-
+                
 		//quit if version of wp is not supported
 		if ( ! GFCommon::ensure_wp_version() ) {
 			return;
 		}
 
 		echo GFCommon::get_remote_message();
-		$action     = RGForms::post( 'action' );
+		
+                $faire = (isset($_GET['faire']) ? $_GET['faire']:'');
+                $action     = RGForms::post( 'action' );
 		$filter     = rgget( 'filter' );
 		$search     = stripslashes( rgget( 's' ) );
 		$page_index = empty( $_GET['paged'] ) ? 0 : intval( $_GET['paged'] ) - 1;
@@ -75,10 +78,6 @@ class GFEntryList {
                                             //$inputs[] = array("label" => $category->name, "id" => "3.".$x); // replace the 3 in "3." with your field ID.
                                     }
                                     $form['fields'][$key]['choices']=$choices;
-                        
-                        //echo 'all categories=true<br/>';
-                        //var_dump($entry);
-                        //echo '<br/><br/>';
                     }
                 }
 		$search_criteria['status'] = $status;
@@ -101,9 +100,14 @@ class GFEntryList {
                         $key             = $filterValues[0];
                         $search_operator = $filterValues[1];
                         $val             = $filterValues[2];     
-                        if ( 'entry_id' == $key ) {
-				//$key = 'id';
-			}
+                        //let's check if an entry ID was entered in the 'All form fields' filter
+                        if($key==0 && is_numeric($val)){
+                            $entry = GFAPI::get_entry( $val );
+                            if(is_array($entry)){
+                                $key = 'entry_id';
+                                $search_operator = 'is';
+                            }
+                        }
 			$filter_operator = empty( $search_operator ) ? 'is' : $search_operator;
 
 			$field = GFFormsModel::get_field( $form, $key );
@@ -250,12 +254,27 @@ class GFEntryList {
 		}
 
 		$paging      = array( 'offset' => $first_item_index, 'page_size' => $page_size );
-		$total_count = 0;
-
-		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		/* filter results based on star rating */
-                
-                $summary           = RGFormsModel::get_form_counts( $form_id );
+		$total_count = 0;                                
+                $form_ids = $form_id; 
+                global $wpdb;
+                if($faire != ''){
+                    $form_id = 9;
+                    //let's get the form id's for this faire
+                    $sql = "select * from wp_mf_faire where faire='".$faire."'";                                    
+                    $Fresults = $wpdb->get_results($sql); 
+                    
+                    if(!empty($Fresults)){
+                        $form_ids = explode(',', $Fresults[0]->form_ids);
+                        
+                    }else{                        
+                        $form_ids = 99999999;
+                    }                    
+                }
+                  
+		$leads = GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total_count );
+		
+                /* filter results based on star rating */                
+                $summary           = RGFormsModel::get_form_counts( $form_ids );
 		$active_lead_count = $summary['total'];
 		$unread_count      = $summary['unread'];
 		$starred_count     = $summary['starred'];
@@ -271,13 +290,13 @@ class GFEntryList {
                         $outputVar .= '&filterField[]='.$newValue;
                     }
                 }
-                
+                if(isset($faire) && $faire !='') $outputVar .= '&faire='.$faire;
 		//$search_qs                  = empty( $search ) ? '' : '&s=' . urlencode( $search );
 		$sort_qs                    = empty( $sort_field ) ? '' : "&sort=$sort_field";
 		$dir_qs                     = empty( $sort_field ) ? '' : "&dir=$sort_direction";
 		$star_qs                    = $star !== null ? "&star=$star" : '';
 		$read_qs                    = $read !== null ? "&read=$read" : '';
-		$filter_qs                  = '&filter=' . $filter;
+		$filter_qs                  = ($filter!=''?'&filter=' . $filter:'');
 		//$search_field_id_qs         = ! isset( $_GET['field_id'] ) ? '' : "&field_id=$search_field_id";
 		//$search_operator_urlencoded = urlencode( $search_operator );
 		//$search_operator_qs         = empty( $search_operator_urlencoded ) ? '' : "&operator=$search_operator_urlencoded";
@@ -298,21 +317,21 @@ class GFEntryList {
 		wp_print_styles( array( 'thickbox' ) );
 
 		$field_filters = GFCommon::get_field_filter_settings( $form );
-
-                /*$field_filters[] =  array(                
-                                    "key"=> "Entry Rating",
-                                    "preventMultiple"=> false,
-                                    "text" => "Entry Rating",
-                                    "operators"=>array("is","isnot",">","<"),    
-                                    "values"=> array(
-                                                array("text" => "Not Rated", "value"=> "Not Rated", "isSelected"=> false, "price" => ""),
-                                                array("text" =>    "1 Star", "value"=> "1 Star"   , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "2 Stars", "value"=> "2 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "3 Stars", "value"=> "3 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "4 Stars", "value"=> "4 Stars"  , "isSelected"=> false, "price" => ""),
-                                                array("text" =>   "5 Stars", "value"=> "5 Stars"  , "isSelected"=> false, "price" => ""),
-                                    ),   
-                                  ); //array end*/
+                //MF-295 - Request from Kate to move these filters to the top 
+                /* Entry ID(entry_id), Status(303), Flags(304), and Location(302) to the top */                
+                $topFields = array('entry_id',302,304,303);
+                $newFilter = $field_filters;
+                //find the array key for the top filter fields
+                foreach($field_filters as $fieldKey=>$field){
+                    if(in_array($field['key'],$topFields)){                        
+                        $topFieldsData[]=$field;
+                        //unset these keys
+                        unset($newFilter[$fieldKey]);
+                    }
+                }
+                //recreate the array with the top filter fields at the top
+                $field_filters = array_merge($topFieldsData,$newFilter);
+                                                
 		$init_field_id       = empty( $search_field_id ) ? 0 : $search_field_id;
 		$init_field_operator = empty( $search_operator ) ? 'contains' : $search_operator;
 		$init_filter_vars = array(
@@ -372,7 +391,7 @@ class GFEntryList {
 				}
 
 		function Search(sort_field_id, sort_direction, form_id, search, star, read, filter, field_id, operator) {
-			
+			var faire = "&faire="+jQuery('#faire').val();
 			var star_qs = star == "" ? "" : "&star=" + star;
 			var read_qs = read == "" ? "" : "&read=" + read;
 			var filter_qs = filter == "" ? "" : "&filter=" + filter;
@@ -406,7 +425,7 @@ class GFEntryList {
 			var field_id_qs = field_id == "" ? "" : "&field_id=" + field_id;
 			var operator_qs = operator == "" ? "" : "&operator=" + operator;
                            */
-			var location = "?page=mf_entries&view=entries&id=" + form_id + "&sort=" + sort_field_id + "&dir=" + sort_direction + filterField + star_qs + read_qs + filter_qs;
+			var location = "?page=mf_entries&view=entries&id=" + form_id + "&sort=" + sort_field_id + "&dir=" + sort_direction + filterField + star_qs + read_qs + filter_qs + faire;
 			document.location = location;
 		}
                                 
@@ -848,7 +867,7 @@ class GFEntryList {
 
 			initSelectAllEntries();
 
-			jQuery('#entry_filters').gfFilterUI(gformFieldFilters, gformInitFilter, false);
+			jQuery('#entry_filters').gfFilterUI(gformFieldFilters, gformInitFilter, false);                        
 			jQuery("#entry_filters").on("keypress", ".gform-filter-value", (function (event) {
 				if (event.keyCode == 13) {
 					Search('<?php echo $sort_field ?>', '<?php echo $sort_direction ?>', <?php echo $form_id ?>, jQuery('.gform-filter-value').val(), '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', jQuery('.gform-filter-field').val(), jQuery('.gform-filter-operator').val());
@@ -894,22 +913,31 @@ class GFEntryList {
 		<h2 class="gf_admin_page_title">
                     <span><?php _e( 'Entries', 'gravityforms' ) ?></span>
                     <span class="gf_admin_page_subtitle">
+                        <?php if($faire==''){?>
                         <span class="gf_admin_page_formid">ID: <?php echo $form['id']; ?></span>
                         <span class="gf_admin_page_formname"><?php _e( 'Form Name', 'gravityforms' ) ?>: <?php echo $form['title']; ?></span>
-
+                        <?php } else{ ?>
+                            <span class="gf_admin_page_formid">Faire: <?php echo $faire; ?></span>
+                        <?php } ?>    
                 <?php if(isset($_GET['filterField'])){ ?>                          
                             <?php
                             foreach($_GET['filterField'] as $key=>$value){
                                 $strpos_row_key = strpos( $value, '|' );
                                 if ( $strpos_row_key !== false ) { //multi-field filter    
                                     $filterValues = explode("|",$value);                                    
-                                    $field = GFFormsModel::get_field( $form, $filterValues[0] );
-                                   //print_r($field);
-                                    if ( $field ) {
-                                       $fieldName= (isset($field['adminLabel'])&&$field['adminLabel']!=''?$field['adminLabel']:$field['label']);
-                                    }else{
-                                        $fieldName = $filterValues[0];
-                                    }                                    
+                                    if($filterValues[0]=='entry_id'){
+                                        $fieldName = 'Entry ID';
+                                    }elseif(is_numeric($filterValues[0]) && $filterValues[0]==0){
+                                        $fieldName = 'Any Form Field';
+                                    }else{                                             
+                                        $field = GFFormsModel::get_field( $form, $filterValues[0] );
+
+                                        if ( $field ) {
+                                           $fieldName= (isset($field['adminLabel'])&&$field['adminLabel']!=''?$field['adminLabel']:$field['label']);
+                                        }else{
+                                            $fieldName = $filterValues[0];
+                                        }                                    
+                                    }                               
  
                                     $newArray = $_GET['filterField'];
                                     $newOutput = '';
@@ -918,21 +946,24 @@ class GFEntryList {
                                         $newOutput .= '&filterField[]='.$newValue;
                                     }
                                     //get admin title for the field.
-                                    $newURL  = "?page=mf_entries&view=entries&id=" .$form_id.                                    
-                                            "&sort=" .$sort_field. 
-                                            "&dir=" .$sort_direction. 
-                                            "&star=" .$star.
-                                            "&read=" .$read.
-                                            "&filter=" .$filter.$newOutput;
+                                    $newURL  = "?page=mf_entries&view=entries&id=" . $form_id;                                    
+                                    $newURL .= ($sort_field     != '' ? "&sort=" . $sort_field : '');
+                                    $newURL .= ($sort_direction !=' ' ? "&dir=" . $sort_direction : '');
+                                    $newURL .= ($star           != '' ? "&star=" . $star:'');
+                                    $newURL .= ($read           != '' ? "&read=" . $read:'');
+                                    $newURL .= ($filter         != '' ? "&filter=" . $filter : '');
+                                    $newURL .= ($faire          != '' ? "&faire=" . $faire : '');
+                                    $newURL .= $newOutput;
                                     echo '<span class="gf_admin_page_formname">'.$fieldName.($filterValues[1]!='is'?' ('.$filterValues[1].') ':'').': '.$filterValues[2];
-                                    echo ' <a style="color:white" href="javascript:document.location = \''.$newURL.'\';">X</a></span>';                
+                                    echo ' <a style="color:red" href="javascript:document.location = \''.$newURL.'\';">X</a></span>';                
                                 }
                             }
                             ?>                            
         <?php } ?>    
                                             </span>
 		</h2>
-		<?php RGForms::top_toolbar() ?>
+		<?php echo self::return_navigation();?>
+                    <?php RGForms::top_toolbar() ?>
                 
 		<form id="lead_form" method="post">
 		
@@ -942,7 +973,8 @@ class GFEntryList {
 		<input type="hidden" value="" name="action" id="action" />
 		<input type="hidden" value="" name="action_argument" id="action_argument" />
 		<input type="hidden" value="" name="all_entries" id="all_entries" />
-
+                <input type="hidden" value="<?php echo $faire;?>" name="faire" id="faire" />
+                
 		<!--
                 <ul class="subsubsub">
 			<li>
@@ -971,8 +1003,7 @@ class GFEntryList {
 				<a class="<?php echo $filter == 'trash' ? 'current' : '' ?>" href="?page=mf_entries&view=entries&id=<?php echo $form_id ?>&filter=trash"><?php _e( 'Trash', 'gravityforms' ); ?>
 					<span class="count">(<span id="trash_count"><?php echo $trash_count ?></span>)</span></a></li>
 		</ul>
-                -->
-                <?php echo self::return_navigation();?>
+                -->                
                 
 		<div style="margin-top:12px;float:right;">			
                         <div style="float:right">
@@ -1154,6 +1185,7 @@ class GFEntryList {
 					//reverting direction if clicking on the currently sorted field
 					$dir = $sort_direction == 'ASC' ? 'DESC' : 'ASC';
 				}
+                                if($field_id=='source_url') $field_info['label'] ='Form Type';
 				?>
 				<th scope="col" class="manage-column entry_nowrap" onclick="Search('<?php echo $field_id ?>', '<?php echo $dir ?>', <?php echo $form_id ?>, '<?php echo $search ?>', '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', '<?php echo $search_field_id ?>', '<?php echo $search_operator ?>');" style="cursor:pointer;"><?php echo esc_html( $field_info['label'] ) ?></th>
 			<?php
@@ -1266,11 +1298,11 @@ class GFEntryList {
 
 					/* ^ maybe move to function */                                        
 
-					$query_string = "gf_entries&view=entry&id={$form_id}&lid={$lead['id']}{$outputVar}{$sort_qs}{$dir_qs}{$filter_qs}&paged=" . ( $page_index + 1 );
+					$query_string = "mf_entries&view=mfentry&id={$form_id}&lid={$lead['id']}{$outputVar}{$sort_qs}{$dir_qs}{$filter_qs}{$outputVar}&paged=" . ( $page_index + 1 );
 					if ( $is_first_column ) {
 						?>
 						<td class="column-title">
-							<a href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php echo $value ?></a>
+							<a href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>&field_id=<?php echo $search_field_id; ?>&operator=<?php echo $search_operator; ?>"><?php echo $value ?></a>
 
 							<?php $gf_entry_locking->lock_info( $lead['id'] ); ?>
 
@@ -1280,7 +1312,7 @@ class GFEntryList {
 									case 'trash' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 
@@ -1305,7 +1337,7 @@ class GFEntryList {
 									case 'spam' :
 										?>
 										<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 
@@ -1331,7 +1363,7 @@ class GFEntryList {
 									default:
 										?>
 											<span class="edit">
-                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=gf_entries&view=entry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
+                                                            <a title="<?php _e( 'View this entry', 'gravityforms' ); ?>" href="admin.php?page=mf_entries&view=mfentry&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'View', 'gravityforms' ); ?></a>
                                                             |
                                                         </span>
 											<span class="edit">
@@ -1358,7 +1390,12 @@ class GFEntryList {
 										break;
 								}
 
-								do_action( 'gform_entries_first_column_actions', $form_id, $field_id, $value, $lead, $query_string );
+                                                                ?>
+                                                                <span class="edit">
+                                                                    | <a title="<?php _e( 'Edit this entry', 'gravityview' ); ?>" href="admin.php?page=mf_entries&view=mfentry&screen_mode=edit&id=<?php echo $form_id ?>&lid=<?php echo $lead['id'] . $outputVar . $sort_qs . $dir_qs . $filter_qs ?>&paged=<?php echo( $page_index + 1 ) ?>&pos=<?php echo $position; ?>"><?php _e( 'Edit', 'gravityforms' ); ?></a>                                                                    
+                                                                </span>
+                                                                <?php
+                                                                //do_action( 'gform_entries_first_column_actions', $form_id, $field_id, $value, $lead, $query_string );
 								?>
 
 							</div>
@@ -1370,7 +1407,7 @@ class GFEntryList {
 
 					} else {
 						?>
-						<td class="<?php echo $nowrap_class ?>">
+						<td class="<?php echo ($field_id!='source_url'?$nowrap_class:''); ?>">
 							<?php echo apply_filters( 'gform_entries_column_filter', $value, $form_id, $field_id, $lead, $query_string ); ?>&nbsp;
 							<?php do_action( 'gform_entries_column', $form_id, $field_id, $value, $lead, $query_string ); ?>
 						</td>
@@ -1627,23 +1664,24 @@ class GFEntryList {
         
         public static function return_navigation(){
             global $wpdb;
-            $sql = "select * from wp_mf_faire";                
-            $nav ='<nav style="margin-top:12px;float:left" id="faire_nav"><ul>';
+            $sql = "select * from wp_mf_faire ORDER BY `wp_mf_faire`.`start_dt` DESC";                
+            $nav ='<nav id="faire_nav"><ul>';
                 foreach($wpdb->get_results($sql) as $row){  
-                    $nav .= '<li><a href="#">'.$row->faire_name.'</a>';                
+                    $nav .= '<li><a href="'.admin_url( 'admin.php' ) . '?page=mf_entries&faire='.$row->faire.'">'.$row->faire_name.'</a>';                
                     
                     $formSQL = "
                     SELECT form_id,form.title,count(*) as count
                             FROM `wp_rg_lead` join wp_rg_form form
                             WHERE form.id = form_id and `form_id` IN (".$row->form_ids.") and status = 'active'
                             group by form_id";
+                    
                     $nav .= '<ul>';                        
                     foreach($wpdb->get_results($formSQL) as $formRow){  
                         $adminURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$formRow->form_id;
                         $nav .= '<li><a href="'.$adminURL.'">'.$formRow->title.' ('.$formRow->count.')</a>';
      
-                        $statusSql = "SELECT value,count(*)as count FROM `wp_rg_lead_detail` WHERE `form_id` = ".$formRow->form_id." AND `field_number` = 303 group by value";
-
+                        $statusSql = "SELECT value,count(*)as count FROM `wp_rg_lead_detail` join wp_rg_lead on wp_rg_lead.id = lead_id WHERE wp_rg_lead.form_id = ".$formRow->form_id."    AND wp_rg_lead_detail.field_number = 303 and status = 'active' group by value";
+                        
                         $nav .= '<ul>';
                         foreach($wpdb->get_results($statusSql) as $statusRow){
                             $nav .= '<li>';                            

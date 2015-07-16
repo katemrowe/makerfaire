@@ -1196,7 +1196,7 @@ function gform_addScript($form) {
     return $form;
 }
 
-add_filter('gform_pre_render_35','update_entry_data');
+add_filter('gform_pre_render_33','update_entry_data');
 function update_entry_data( $form ) {    
         if(!isset($_GET['entry-id']) || trim($_GET['entry-id']) == ''){
             echo "I'm sorry.  You must have a valid project ID to submit this form.  Please double check you are using the full URL from your email.";          
@@ -1206,37 +1206,8 @@ function update_entry_data( $form ) {
         }         
 }
 
-/**
- * Pre-populate fields based on GET variable
- */
-add_filter('gform_field_value_GSP-project-name', 'GSP_project_name_population');
-function GSP_project_name_population(){
-  // if we have a valid entry id set in a GET variable - set the project name
-	if ( $_GET['entry-id'] ){
-            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
-            
-            return (isset($lead[151])?$lead[151]:'');
-	}
- 
-}
-
-add_filter('gform_field_value_GSP-project-desc', 'GSP_project_desc_population');
-function GSP_project_desc_population(){
-  // if we have a valid entry id set in a GET variable - set the project desc
-	if ( $_GET['entry-id'] ){
-            $lead = RGFormsModel::get_lead( $_GET['entry-id'] ); 
-            $desc = (isset($lead[16])?$lead[16]:'');
-            if(trim($desc)==''){
-                //try field 11
-                $desc = (isset($lead[11])?$lead[11]:'');
-            }
-            return $desc;
-	}
- 
-}
-
-//when form 35 is submitted, find the initial formid based on entry id and add the fields to that entry
-add_action( 'gform_after_submission_35', 'GSP_after_submission', 10, 2 );
+//when form 33 is submitted, find the initial formid based on entry id and add the fields to that entry
+add_action( 'gform_after_submission_33', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){
     global $wpdb;
     
@@ -1251,7 +1222,7 @@ function GSP_after_submission($entry, $form ){
 //if set, display form 35 fields at the bottom of the page
 add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
 function add_main_text_after( $form, $entry) {    
-    $formPullID = 35;
+    $formPullID = 33;
     $formPull = GFAPI::get_form( $formPullID );
     $results = get_extra_field_value($entry['id'], $formPullID);
     if(is_array($results) && !empty($results)){        
@@ -1328,6 +1299,7 @@ function entry_field_standout( $value, $field, $lead, $form ) {
 
 //ajax functionality to update the entry rating
 function myajax_update_entry_rating() {
+    global $wpdb;
     $entry_id = $_POST['rating_entry_id'];
     $rating   = $_POST['rating'];
     $user     = $_POST['rating_user'];
@@ -1339,13 +1311,144 @@ function myajax_update_entry_rating() {
     $sql = "Insert into wp_rg_lead_rating (entry_id, user_id, rating) "
          . " values (".$entry_id.','.$user.','.$rating.")"
          . " on duplicate key update rating=".$rating.", ratingDate=now()";
-    global $wpdb;
+    
     $wpdb->get_results($sql);
     
-    echo ''
-    . 'Your Rating Has Been Saved';
+    //update the meta with the average rating
+    $sql = "SELECT avg(rating) as rating FROM `wp_rg_lead_rating` where entry_id = ".$entry_id;
+    $results = $wpdb->get_results($sql);
+    $rating = round($results[0]->rating);
+        
+    gform_update_meta( $entry_id, 'entryRating', $rating );
+    echo 'Your Rating Has Been Saved';
     // IMPORTANT: don't forget to "exit"
     exit;
 }
 
 add_action( 'wp_ajax_update-entry-rating', 'myajax_update_entry_rating' );
+
+//adding new meta field to store the average rating
+add_filter( 'gform_entry_meta', 'custom_entry_meta', 10, 2);
+function custom_entry_meta($entry_meta, $form_id){
+    //data will be stored with the meta key named score
+    //label - entry list will use Score as the column header
+    //is_numeric - used when sorting the entry list, indicates whether the data should be treated as numeric when sorting
+    //is_default_column - when set to true automatically adds the column to the entry list, without having to edit and add the column for display
+    //update_entry_meta_callback - indicates what function to call to update the entry meta upon form submission or editing an entry
+    $entry_meta['entryRating'] = array(
+        'label' => 'Rating',        
+        'is_numeric' => true,
+        'update_entry_meta_callback' => 'update_entry_meta', 
+        'is_default_column' => true,
+        'filter'    => array(
+  			'operators' => array( 'is', 'isnot','<','>' ),
+  			'choices'   => array(
+  				array( 'value' => '0', 'text' => 'Unrated' ),
+  				array( 'value' => '1', 'text' => '1 Stars' ),
+  				array( 'value' => '2', 'text' => '2 Stars' ),
+  				array( 'value' => '3', 'text' => '3 Stars' ),
+                            array( 'value' => '4', 'text' => '4 Stars' ),
+                            array( 'value' => '5', 'text' => '5 Stars' ),
+  			)
+  		)
+    );
+    
+    return $entry_meta;
+}
+
+//set the default value for entry rating 
+function update_entry_meta( $key, $lead, $form ){
+    //default rating
+    $value = '0';
+    return $value;
+}
+
+//formats the ratings field that are displayed in the entries list
+add_filter( 'gform_entries_field_value', 'format_ratings', 10, 3 );
+function format_ratings( $value, $form_id, $field_id ) {   
+    
+    if($field_id=='entryRating'){
+        if($value==0){
+            return 'No Rating';            
+        }else{
+            return $value .' stars';
+        }
+    }
+    return $value;
+}
+
+add_filter( 'gform_entries_column_filter', 'change_column_data', 10, 5 );
+function change_column_data( $value, $form_id, $field_id, $entry, $query_string ) {
+    //only change the data when form id is 1 and field id is 2
+    if ( $form_id != 9) {
+        return $value;
+    }
+    if($field_id == 'source_url'){
+        $form = GFAPI::get_form( $entry['form_id'] );        
+        return $form['title'];
+    }
+    return $value;
+}
+
+//add new submenu for our custom built list page
+add_filter( 'gform_addon_navigation', 'add_menu_item' );
+function add_menu_item( $menu_items ) {
+    $menu_items[] = array( "name" => "mf_entries", "label" => "Entries", "callback" => "entries_list", "permission" => "edit_posts" );
+    return $menu_items;
+}
+
+function entries_list(){    
+    $view    = rgget( 'view' );
+    $lead_id = rgget( 'lid' );
+
+    if ( $view == 'mfentry' && ( rgget( 'lid' ) || ! rgblank( rgget( 'pos' ) ) ) ) {
+            //require_once( GFCommon::get_base_path() . '/entry_detail.php' );
+            include_once TEMPLATEPATH. '/classes/entry_detail_makerfaire.php';
+            GFEntryDetail::lead_detail_page();
+    } else if ( $view == 'entries' || empty( $view ) ) {
+            include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
+            if( !class_exists('GFEntryList')) { require_once(GFCommon::get_base_path() . "/entry_list.php"); }
+            GFEntryList::all_leads_page();
+    } else {
+            $form_id = rgget( 'id' );
+            do_action( 'gform_entries_view', $view, $form_id, $lead_id );
+    }  
+}
+
+//remove old entries navigation
+function remove_menu_links() {
+    global $submenu;    
+    foreach($submenu['gf_edit_forms'] as $key=>$item){
+        if(in_array('gf_entries',$item)){              
+            unset($submenu['gf_edit_forms'][$key]);
+        }
+    }     
+}
+add_action( 'admin_menu', 'remove_menu_links', 9999 );
+
+/**
+ * Redirect gravity form admin pages to the new makerfaire specific admin pages
+
+ */
+function redirect_gf_admin_pages(){
+    global $pagenow;    
+    
+    /* Check current admin page. */
+    if($pagenow == 'admin.php'){
+        if(isset($_GET['page'])&&$_GET['page']=='gf_entries'){
+            //include any parameters in the return URL
+            $returnURL = '';
+            foreach($_GET as $key=>$param){
+                if($key!='page'){
+                    if($key=='view' && $param == 'entry')  $param = 'mfentry';
+                    $returnURL .= '&'.$key.'='.$param;
+                }
+            }
+            wp_redirect(admin_url( 'admin.php' ) . "?page=mf_entries".$returnURL);
+            exit;
+        }
+        
+    }
+}
+
+add_action('admin_menu', 'redirect_gf_admin_pages');

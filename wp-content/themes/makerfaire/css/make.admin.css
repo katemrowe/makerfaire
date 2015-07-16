@@ -75,25 +75,37 @@ ul#input_321 li{width:50%;float:left;}
 
 
 /* Navigation */
+#faire_nav{ 
+  background-color: white;
+  width: 100%;
+  display: inline-block;
+  margin: 10px 0 0 0;
+  font-size:13px;
+}
+div#gf_form_toolbar {margin: 0;}
+ul li.gf_form_switcher{top:-47px}
 	#faire_nav ul {
-                border: thin solid lightgrey;
+                /*border: thin solid lightgrey;
 		background: #ddd;
 		float: left;
 		-webkit-transition: .5s;
-		transition: .5s;
+		transition: .5s;*/
 	}
 	
-	#faire_nav li {
+	#faire_nav ul li {
+                padding: 10px 6px;
+        }
+        
+        #faire_nav li{
 		float: left;
 		position: relative;
-		width: 130px;
+		width: 110px;
 		list-style: none;
-		-webkit-transition: .5s;
-		transition: .5s;
-                margin: 0;
-                font-size:12px;
+		/*-webkit-transition: .5s;
+		transition: .5s;*/
+                margin: 0;                
 	}
-	#faire_nav ul li ul li {width:250px}
+	#faire_nav ul li ul li {width:260px}
         #faire_nav ul li ul li ul li{width:150px}
 	#faire_nav > ul > li > a, h1 {
 		
@@ -102,7 +114,7 @@ ul#input_321 li{width:50%;float:left;}
 	#faire_nav a {
 		display: block;
 		text-decoration: none;
-		padding: 5px 15px;
+		
 		color: #000;
 	}
 
@@ -137,11 +149,11 @@ ul#input_321 li{width:50%;float:left;}
 	}
         
         #faire_nav li a:after {
-          width: 0; 
+            width: 0; 
             height: 0; 
             content: "";
             position: absolute;
-            top: 12px;
+            top: 42%;
             right: 8px;
             border-top: 4px solid rgba(0, 0, 0, 1);     
             border-left: 4px solid transparent;
@@ -179,3 +191,10 @@ ul#input_321 li{width:50%;float:left;}
         .appliedFilters tr{        
             border: 1px solid #ddd;
         }
+        
+        ul#gf_form_toolbar_links .gf_form_toolbar_preview,
+        ul#gf_form_toolbar_links .gf_form_toolbar_entries{display:none}
+        div ul#gf_form_toolbar_links{border:0}
+        
+    /*hide the form switcher for the new makerfaire custom detail view page*/
+    div.gf_entry_wrap ul#gf_form_toolbar_links li.gf_form_switcher{display:none}

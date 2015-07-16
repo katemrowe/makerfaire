@@ -88,15 +88,7 @@ if (isset($menu_locations[ $location_id ])) {
 		);
 
 		$wp_admin_bar->add_node( $args );
-
-		$args = array(
-		'id'    => 'mf_admin_parent_bayarea',
-		'title' => 'Bay Area',
-			'meta'  => array( 'class' => 'my-toolbar-page' ),
-		'parent' => 'mf_admin_parent'
-		);
-                
-		$wp_admin_bar->add_node( $args );
+                buildFaireDrop($wp_admin_bar);
 
 		foreach ( (array) $menu_items as $key => $menu_item ) {
 			$args = array(
@@ -124,20 +116,7 @@ if (isset($menu_locations[ $location_id ])) {
                     // This is the correct menu
                     $menu_items = wp_get_nav_menu_items($menu);
 
-                    $args = array(
-                                    'id'    => 'mf_admin_parent',
-                                    'title' => 'MF Admin',
-                                    'meta'  => array( 'class' => 'my-toolbar-page' ),
-                    );
-
-                    $wp_admin_bar->add_node( $args );
-
-                    $args = array(
-                    'id'    => 'mf_admin_parent_newyork',
-                    'title' => 'New York',
-                    'meta'  => array( 'class' => 'my-toolbar-page' ),
-                    'parent' => 'mf_admin_parent'
-                    );
+                    
 
                     $wp_admin_bar->add_node( $args );
 
@@ -166,14 +145,7 @@ if (isset($menu_locations[ $location_id ])) {
 			// This is the correct menu
 			$menu_items = wp_get_nav_menu_items($menu);
 
-			$args = array(
-					'id'    => 'mf_admin_parent_fairesetup',
-					'title' => 'Faire Setup',
-					'meta'  => array( 'class' => 'my-toolbar-page' ),
-					'parent' => 'mf_admin_parent'
-			);
-
-			$wp_admin_bar->add_node( $args );
+			
 
 			foreach ( (array) $menu_items as $key => $menu_item ) {
 				$args = array(
@@ -189,6 +161,65 @@ if (isset($menu_locations[ $location_id ])) {
 		}
 	}
 }
+}
+
+function buildFaireDrop($wp_admin_bar){
+    //build faire drop downs
+    global $wpdb;
+    $sql = "select * from wp_mf_faire ORDER BY `wp_mf_faire`.`start_dt` DESC";                            
+    foreach($wpdb->get_results($sql) as $row){                                 
+        //parent menu            
+        $args = array(
+        'id'    => 'mf_admin_parent_'.$row->faire,
+        'title' => $row->faire_location,
+        'meta'  => array( 'class' => 'my-toolbar-page' ),
+        'href'  => admin_url( 'admin.php' ) . '?page=mf_entries&faire='.$row->faire,    
+        'parent' => 'mf_admin_parent'
+        );
+        $wp_admin_bar->add_node( $args );  
+        
+        //build submenu, with form names
+        $formSQL = "
+            SELECT form_id,form.title,count(*) as count
+                    FROM `wp_rg_lead` join wp_rg_form form
+                    WHERE form.id = form_id and `form_id` IN (".$row->form_ids.") and status = 'active'
+                    group by form_id ASC";
+
+            foreach($wpdb->get_results($formSQL) as $formRow){  
+                $adminURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$formRow->form_id;
+                
+                $args = array(
+                        'id'    => 'mf_admin_child_'.$formRow->form_id,
+                        'title' => $formRow->title.' ('.$formRow->count.')',
+                        'href'  => $adminURL,
+                        'meta'  => array( 'class' => 'my-toolbar-page' ),
+                        'parent' => 'mf_admin_parent_'.$row->faire);
+                $wp_admin_bar->add_node( $args ); 
+                
+                //build submenu of entry status
+                $statusSql = "SELECT wp_rg_lead_detail.id,value,count(*)as count FROM `wp_rg_lead_detail` join wp_rg_lead on wp_rg_lead.id = lead_id WHERE wp_rg_lead.form_id = ".$formRow->form_id."    AND wp_rg_lead_detail.field_number = 303 and status = 'active' group by value";
+                                        
+                foreach($wpdb->get_results($statusSql) as $statusRow){                    
+                    $args = array(
+                        'id'    => 'mf_admin_subchild_'.$statusRow->id,
+                        'title' => $statusRow->value.' ('.$statusRow->count.')',
+                        'href'  => $adminURL.'&sort=0&dir=DESC&'.urlencode('filterField[]').'=303|is|'.$statusRow->value,
+                        'meta'  => array( 'class' => 'my-toolbar-page' ),
+                        'parent' => 'mf_admin_child_'.$formRow->form_id);
+                    $wp_admin_bar->add_node( $args ); 
+                }
+            }
+    }
+      
+    $args = array(
+                            'id'    => 'mf_admin_parent_fairesetup',
+                            'title' => 'Faire Setup',
+                            'meta'  => array( 'class' => 'my-toolbar-page' ),
+                            'parent' => 'mf_admin_parent'
+            );
+
+    $wp_admin_bar->add_node( $args );
+    return $wp_admin_bar;
 }
 
 /*

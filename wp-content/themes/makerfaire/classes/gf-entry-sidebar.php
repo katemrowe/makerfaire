@@ -139,10 +139,19 @@ function mf_sidebar_entry_info($form_id, $lead) {
 	
 	
 	echo ('<h4><label class="detail-label">Location:</label></h4>');
+        $locArray=array();
+        
+        foreach($lead as $key=>$field){
+            if(strpos($key,'302')!== false){
+                $locArray[]=$field;
+            }
+        }
+        
 	foreach(   $field302['inputs'] as $choice)
 	{
 		$selected = '';
-		if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
+                if(in_array(stripslashes($choice['label']),$locArray)) $selected=' checked ';
+		//if (stripslashes($lead[$choice['id']]) == stripslashes($choice['label'])) $selected=' checked ';
 		echo('<input type="checkbox" '.$selected.' name="entry_info_location_change[]" style="margin: 3px;" value="'.$choice['id'].'_'.$choice['label'].'" />'.$choice['label'].' <br />');
 	}
 	
@@ -931,7 +940,7 @@ function add_note_sidebar($lead, $form)
 		$email_to      = $_POST['gentry_email_notes_to_sidebar'];
 		$email_from    = $current_user->user_email;
 		$email_subject = stripslashes( 'Response Required Maker Application: '.$lead['id'].' '.$project_name);
-		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
+		$entry_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=mf_entries&view=mfentry&id=' . $form['id'] . '&lid=' . rgar( $lead, 'id' );
 		$body = stripslashes( $_POST['new_note_sidebar'] ). '<br /><br />Please reply in entry:<a href="'.$entry_url.'">'.$entry_url.'</a>';
 		$headers = "From: \"$email_from\" <$email_from> \r\n";
 		//Enable HTML Email Formatting in the body
@@ -961,17 +970,4 @@ function mf_add_note($leadid,$notetext)
 	global $current_user;	
 	$user_data = get_userdata( $current_user->ID );
 	RGFormsModel::add_note( $leadid, $current_user->ID, $user_data->display_name, $notetext );
-}
-
-
-//add new submenu for our custom built list page
-add_filter( 'gform_addon_navigation', 'add_menu_item' );
-function add_menu_item( $menu_items ) {
-    $menu_items[] = array( "name" => "mf_entries", "label" => "MakerFaire Entries", "callback" => "entries_list", "permission" => "edit_posts" );
-    return $menu_items;
-}
-
-function entries_list(){
-    include_once TEMPLATEPATH. '/classes/entry_list_makerfaire.php';
-    GFEntryList::all_leads_page();   
 }

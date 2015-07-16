@@ -3,7 +3,7 @@
 if ( ! class_exists( 'GFForms' ) ) {
 	die();
 }
-
+if( !class_exists('GFEntryList')) { require_once(GFCommon::get_base_path() . "/entry_list.php"); }
 class GFEntryDetail {
 
 	function get_makerfaire_status_counts( $form_id ) {
@@ -143,14 +143,22 @@ class GFEntryDetail {
 			$sorting = array();
 		}
 		$total_count = 0;
-	/*if ($all_forms=="0")
-		{
-		$leads = GFAPI::get_entries( 0, $search_criteria, $sorting, $paging, $total_count );
-		}
-		else
-		{*/
-		$leads = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-		//}	
+                global $wpdb;
+                $form_ids = $form_id; 
+                $faire = (isset($_GET['faire'])?$_GET['faire']:'');
+                if($faire != ''){
+                    $form_id = 9;
+                    //let's get the form id's for this faire
+                    $sql = "select * from wp_mf_faire where faire='".$faire."'";                                    
+                    $Fresults = $wpdb->get_results($sql); 
+                    if(!empty($Fresults)){
+                        $form_ids = explode(',', $Fresults[0]->form_ids);                        
+                    }else{                        
+                        $form_ids = 99999999;
+                    }                    
+                }
+		$leads = GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total_count );
+			
 		$prev_pos = ! rgblank( $position ) && $position > 0 ? $position - 1 : false;
 		$next_pos = ! rgblank( $position ) && $position < $total_count - 1 ? $position + 1 : false;
 
@@ -452,6 +460,7 @@ class GFEntryDetail {
                             if(isset($_GET['star']))    $outputURL .= '&star='.rgget( 'star' );
                             if(isset($_GET['read']))    $outputURL .= '&read='.rgget( 'read' );
                             if(isset($_GET['paged']))   $outputURL .= '&paged='.rgget( 'paged' );
+                            if(isset($_GET['faire']))   $outputURL .= '&faire='.rgget( 'faire' );
                                     ?>
 			<a href="<?php echo $outputURL;?>">Return to entries list</a>
                         </div>

@@ -387,37 +387,17 @@ a:focus {
   height: 33px;
 }
 .advertisement-container {
-  border-bottom: 3px solid #67bde1;
-  margin: 15px 0 20px 0;
+  border-bottom: 2px dotted #ffcc66;
+  margin: 0;
   padding: 15px 0 7px;
   position: relative;
 }
-.advertisement-container:before {
-  position: absolute;
-  content: "";
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: url(../images/bg-dotted.jpg);
-  bottom: 1px;
-  z-index: -1;
-}
-.advertisement-container div {
-  margin-bottom: 5px;
-  margin-left: 90px;
-}
 .advertisement-container img {
-  position: absolute;
-  left: 0;
-  bottom: -30px;
+  padding-right: 15px;
 }
 .advertisement-container h2 {
-  display: inline;
-}
-.advertisement-container .btn {
-  position: absolute;
-  right: 0;
-  bottom: 16px;
+  margin-top: 0px;
+  font-size: 28px;
 }
 .post-holder {
   margin: 0 -15px 97px;
@@ -1083,6 +1063,51 @@ li.hidelink a:visited {
   /* end of section News from MakeZine*/
   /* Meet the Makers section*/
   /* 2015-04-04 */
+  /* Original New York Menu
+    .navbar-nav > li:nth-child(3) .drop-holder .column {
+        padding: 28px 0 0;
+    }
+
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col {
+        border: 0 none;
+        padding: 0;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item {
+        float: left;
+        padding: 0 20px 0 16px;
+        width: 33.3%;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item > a{
+        color: #333;
+        font: 16px/18px "latobold";
+        pointer-events: none;
+        margin: 0;
+        cursor: default;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box{
+        float: left;
+        padding: 0;
+        width: 101%;
+        clear: both;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box .date{
+        padding: 5px 0 13px 0;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box time{
+        padding: 0 0 25px;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box strong{
+        clear: both;
+    }
+    .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box strong a{
+        font-size: inherit;
+        line-height: inherit;
+        font-weight: 400;
+        color: #666;
+    }
+    
+    */
+  /*Updated New York Menu*/
   /*
     .navbar-nav > li:nth-child(4) .drop-holder .drop {
         margin: 0;
@@ -1954,6 +1979,7 @@ li.hidelink a:visited {
   border: 0;
   border-bottom: 2px solid #87111f;
   text-transform: uppercase;
+  margin-bottom: 15px;
 }
 .quora .btn-danger:hover {
   background: #c51a28;
@@ -2100,13 +2126,15 @@ li.hidelink a:visited {
   position: relative;
   vertical-align: top;
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-app {
   padding: 0 0 8px 26px;
   font-size: 0.8571428571428571px "latobold";
   position: relative;
   font-weight: bold;
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app:after {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app:after,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-app:after {
   position: absolute;
   top: -1px;
   left: 0;
@@ -2115,13 +2143,15 @@ li.hidelink a:visited {
   height: 16px;
   content: "";
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-program {
   padding: 0 0 8px 26px;
   font-size: 0.8571428571428571px "latobold";
   position: relative;
   font-weight: bold;
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program:after {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program:after,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-program:after {
   position: absolute;
   top: -1px;
   left: -4px;
@@ -2130,13 +2160,15 @@ li.hidelink a:visited {
   height: 16px;
   content: "";
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-map {
   padding: 0 0 8px 26px;
   font-size: 0.8571428571428571px "latobold";
   position: relative;
   font-weight: bold;
 }
-.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map:after {
+.quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map:after,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-map:after {
   position: absolute;
   top: -1px;
   left: -4px;
@@ -3463,45 +3495,39 @@ li.hidelink a:visited {
   font-size: 12px !important;
   line-height: 14px !important;
 }
-.quora .navbar-nav > li:nth-child(3) .drop-holder .column {
-  padding: 28px 0 0;
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .meet-the-makers,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .attend,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .get-involved {
+  font-size: 12px;
+  width: 33.33%;
+  padding: 0 10px 8px;
 }
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col {
-  border: 0 none;
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu h2,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .dinamic-content.box h2 {
+  color: #999;
+  font-size: 12px;
+  line-height: 14px;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .meet-the-makers li,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .attend li,
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .sub-menu .get-involved li {
   padding: 0;
+  line-height: 21px;
 }
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item {
+.quora .navbar-nav > li:nth-child(3) .drop-holder .dinamic-content.box ul {
+  width: 100%;
+}
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .dinamic-content.box .sponsor {
+  font-size: 10px;
+  margin-top: 26px;
+}
+.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .dinamic-content.box .sponsor span {
   float: left;
-  padding: 0 20px 0 16px;
-  width: 33.3%;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item > a {
-  color: #333;
-  font: 16px/18px "latobold";
-  pointer-events: none;
-  margin: 0;
-  cursor: default;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box {
-  float: left;
-  padding: 0;
-  width: 101%;
-  clear: both;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box .date {
-  padding: 5px 0 13px 0;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box time {
-  padding: 0 0 25px;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box strong {
-  clear: both;
-}
-.quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col .item .box strong a {
-  font-size: inherit;
-  line-height: inherit;
-  font-weight: 400;
-  color: #666;
+  font: 10px/12px "latobold";
+  color: #999;
+  padding: 6px 14px 0 0;
 }
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col .sub-menu .meet-the-makers,
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col .sub-menu .attend,
@@ -3835,13 +3861,8 @@ li.hidelink a:visited {
   .advertisement-container h2 {
     font-size: 16px;
   }
-  .quora .advertisement-container div {
-    margin-left: 70px;
-    padding-right: 0;
-  }
   .quora .advertisement-container img {
-    bottom: -15px;
-    width: 80px;
+    width: auto;
     height: 80px;
   }
   .filter-container a {

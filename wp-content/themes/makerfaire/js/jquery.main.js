@@ -103,7 +103,7 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
     jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MF_ThankYou.png" alt="Maker Faire Bay Area"><p>Maker Faire 10th Anniversary was incredible, thank you for being part of the celebration!</p><p><span><strong>SAVE THE DATE.</strong> Maker Faire Bay Area 2016 May 21-22</span></p></div>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo">');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire New York – 6th Annual</span> <br />New York Hall of Science, Queens <br />September 26 & 27 <br />Saturday and Sunday 10AM – 6PM</p></div>');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**
@@ -145,11 +145,13 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(2) > div").addClass('area');
 
-    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
+    jQuery(".nav li:nth-child(2) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a></div></div>');
 
     /**
      * This splits into 3 blocks the menu links
      */
+     
+     /*Bay Area Menu*/
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col1').wrapAll("<li class='left box meet-the-makers'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
@@ -158,20 +160,6 @@ function makeStyle(){
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.meet-the-makers ul.show li:nth-child(3)').prepend('<h2>FOR MAKERS</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
     jQuery('.navbar-nav > li:nth-child(2) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');
-    // For the Around World submenu
-    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .right').prepend('<h2>GET STARTED</h2>');
-    /*
-    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
-    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
-    */
-    /* col2 separator blankLink - for separator in wp-menu */
-/* navbar-collapse */
-    /*Shop link*/
-    //jQuery('.navbar-nav > li:nth-child(5)').removeClass('drop-holder, drop, dropdown, open');
-    //jQuery('.navbar-nav > li:nth-child(5) > a').removeClass('dropdown-toggle');
-    //jQuery('.navbar-nav > li:nth-child(5) > a').removeAttr('data-toggle');
-    //jQuery('.navbar-nav > li:nth-child(5) > a').attr("target","_blank");
-    /*end of shop link*/
 
     jQuery(".nav li:nth-child(2) .dinamic-content").addClass('box').prepend('<h2>Download</h2>');
     //jQuery(".nav li:nth-child(2) .dinamic-content").prepend('<div class="box"><div class="title"><h2>Download</h2></div><ul><li class="app"><a href="#">Maker App</a></li><li class="program"><a href="#">Program Guide</a></li><li class="map"><a href="#">Map</a></li></ul></div>');
@@ -189,6 +177,52 @@ function makeStyle(){
     jQuery(".nav li:nth-child(2) .dinamic-content").append('<div class="sponsor pull-left"><span>Brought to<br> you by</span><img src="'+templateUrl+'/images/intel-logo.png" height="35" width="54" alt="intel"></div>');
 
 
+/**
+* The New York menu item (menu's 3nd child) */
+
+    jQuery(".nav li:nth-child(3) > div").addClass('area');
+    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/bay-area-2015/maker-week/" class="btn btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a><a href="//wmfny15.eventbrite.com/" target="_blank" class="btn btn-info">Buy Tickets</a></div></div>');
+    
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col1').wrapAll("<li class='left box meet-the-makers'><ul class='show' />");
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
+
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.meet-the-makers').prepend('<h2>WORLD MAKER FAIRE</h2>');
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.attend').prepend('<h2>Attend</h2>');
+    jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.get-involved').prepend('<h2>RESOURCES</h2>');
+    
+    
+    jQuery(".nav li:nth-child(3) .dinamic-content").addClass('box').prepend('<h2>Download</h2>');
+    //jQuery(".nav li:nth-child(2) .dinamic-content").prepend('<div class="box"><div class="title"><h2>Download</h2></div><ul><li class="app"><a href="#">Maker App</a></li><li class="program"><a href="#">Program Guide</a></li><li class="map"><a href="#">Map</a></li></ul></div>');
+
+    var side_elem2 = jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.side'); // select the elements of the menu that has class: side
+
+    if (side_elem2.length > 0) {
+        jQuery(".nav li:nth-child(3) .dinamic-content").append('<ul></ul>');
+
+        side_elem2.each(function (index, val) {
+            jQuery(".nav li:nth-child(3) .dinamic-content ul").append(val);
+        });
+    }
+
+    // jQuery(".nav li:nth-child(3) .dinamic-content").append('<div class="sponsor pull-left"><span>Brought to<br> you by</span><img src="'+templateUrl+'/images/intel-logo.png" height="35" width="54" alt="intel"></div>');
+
+
+    
+    // For the Around World submenu
+    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .right').prepend('<h2>GET STARTED</h2>');
+    /*
+    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
+    jQuery('.navbar-nav > li:nth-child(4) .drop-holder .drop .column ul.sub-menu li.col3').wrapAll("<li class='right box get-involved'><ul class='show' />");
+    */
+    /* col2 separator blankLink - for separator in wp-menu */
+/* navbar-collapse */
+    /*Shop link*/
+    //jQuery('.navbar-nav > li:nth-child(5)').removeClass('drop-holder, drop, dropdown, open');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').removeClass('dropdown-toggle');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').removeAttr('data-toggle');
+    //jQuery('.navbar-nav > li:nth-child(5) > a').attr("target","_blank");
+    /*end of shop link*/
 
     /**
      * The New York menu item (menu's 3rd child)

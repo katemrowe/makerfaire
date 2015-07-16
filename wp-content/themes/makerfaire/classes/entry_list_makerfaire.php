@@ -1185,6 +1185,7 @@ class GFEntryList {
 					//reverting direction if clicking on the currently sorted field
 					$dir = $sort_direction == 'ASC' ? 'DESC' : 'ASC';
 				}
+                                if($field_id=='source_url') $field_info['label'] ='Form Type';
 				?>
 				<th scope="col" class="manage-column entry_nowrap" onclick="Search('<?php echo $field_id ?>', '<?php echo $dir ?>', <?php echo $form_id ?>, '<?php echo $search ?>', '<?php echo $star ?>', '<?php echo $read ?>', '<?php echo $filter ?>', '<?php echo $search_field_id ?>', '<?php echo $search_operator ?>');" style="cursor:pointer;"><?php echo esc_html( $field_info['label'] ) ?></th>
 			<?php
@@ -1406,7 +1407,7 @@ class GFEntryList {
 
 					} else {
 						?>
-						<td class="<?php echo $nowrap_class ?>">
+						<td class="<?php echo ($field_id!='source_url'?$nowrap_class:''); ?>">
 							<?php echo apply_filters( 'gform_entries_column_filter', $value, $form_id, $field_id, $lead, $query_string ); ?>&nbsp;
 							<?php do_action( 'gform_entries_column', $form_id, $field_id, $value, $lead, $query_string ); ?>
 						</td>

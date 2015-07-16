@@ -1356,13 +1356,27 @@ function update_entry_meta( $key, $lead, $form ){
 
 //formats the ratings field that are displayed in the entries list
 add_filter( 'gform_entries_field_value', 'format_ratings', 10, 3 );
-function format_ratings( $value, $form_id, $field_id ) {    
+function format_ratings( $value, $form_id, $field_id ) {   
+    
     if($field_id=='entryRating'){
         if($value==0){
             return 'No Rating';            
         }else{
             return $value .' stars';
         }
+    }
+    return $value;
+}
+
+add_filter( 'gform_entries_column_filter', 'change_column_data', 10, 5 );
+function change_column_data( $value, $form_id, $field_id, $entry, $query_string ) {
+    //only change the data when form id is 1 and field id is 2
+    if ( $form_id != 9) {
+        return $value;
+    }
+    if($field_id == 'source_url'){
+        $form = GFAPI::get_form( $entry['form_id'] );        
+        return $form['title'];
     }
     return $value;
 }

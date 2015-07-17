@@ -7,12 +7,12 @@ class GFJDBHELPER {
 	/*
 	 * Function to send notes directly to JDB.
 	*/
-	public static function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' ) {
+	public static function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' , $note_username='', $note_datecreated='') {
 		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
 		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
-		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteid ), 'note' => esc_attr( $note )));
+		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteid ), 'note' => esc_attr( $note ), 'user' => esc_attr($note_username), 'datecreated' => esc_attr($note_datecreated)));
 	
 		$post_body = array(
 				'method' => 'POST',
@@ -154,7 +154,7 @@ class GFJDBHELPER {
 			//}
 
 		$jdb_entry_data = array(
-				'form_type' => $form_id, //(Form ID)
+				'form_type' => self::gravityforms_form_type_jdb($form_id), //(Form ID)
 				'noise' => isset($lead['72']) ? $lead['72'] : '',
 				'radio' => isset($lead['78']) ? $lead['78'] : '',
 				'hands_on' => isset($lead['66']) ? $lead['66'] : '',
@@ -227,18 +227,19 @@ class GFJDBHELPER {
 				'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 				'CS_ID' => $lead_id,
 				'status' => isset($lead['303']) ? $lead['303']  : '',
+				'waste' => (isset($lead['317']) && $lead['317'] == "Yes") ? 'NO'  : 'YES',
+				'waste_detail' => isset($lead['318']) ? $lead['318']  : '',
+				'learn_to' => isset($lead['319']) ? $lead['319']  : '',
 				//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',
-		//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
-		//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
-		//'performance' => isset($lead['No']) ? $lead['999']  : '', // (No match)
-		//'maker_photo_thumb' => '', //$lead['http://mf.insourcecode.com/wp-content/uploads/2013/02/IMG_1823_crop1-362x500.jpg (No Match)']
-		//'ignore' => isset($lead['']) ? $lead['999']  : '',
-		//'tags' => isset($lead['3d-imaging, alternative-energy, art, art-cars, bicycles, biology, chemistry, circuit-bending, computers']) ? $lead['999']  : '',// (No Match)
-		//'group_photo_thumb' => isset($lead['']) ? $lead['999']  : '',// (No Match)
-		//'large_non_profit' => isset($lead['I am a large non-profit.']) ? $lead['999']  : '',// (No Match)
-		//'m_maker_bio' => $lead[' (Depends on Contact vs. Maker issue?)'],
-
-
+				//'maker_email' => isset($lead['161']) ? $lead['161']  : '',
+				//'presentation' => isset($lead['No']) ? $lead['999']  : '', //(No match)
+				//'performance' => isset($lead['No']) ? $lead['999']  : '', // (No match)
+				//'maker_photo_thumb' => '', //$lead['http://mf.insourcecode.com/wp-content/uploads/2013/02/IMG_1823_crop1-362x500.jpg (No Match)']
+				//'ignore' => isset($lead['']) ? $lead['999']  : '',
+				//'tags' => isset($lead['3d-imaging, alternative-energy, art, art-cars, bicycles, biology, chemistry, circuit-bending, computers']) ? $lead['999']  : '',// (No Match)
+				//'group_photo_thumb' => isset($lead['']) ? $lead['999']  : '',// (No Match)
+				//'large_non_profit' => isset($lead['I am a large non-profit.']) ? $lead['999']  : '',// (No Match)
+				//'m_maker_bio' => $lead[' (Depends on Contact vs. Maker issue?)'],
 		);
 
 		return $jdb_entry_data;
@@ -280,10 +281,10 @@ class GFJDBHELPER {
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 	
-		$result = $mysqli->query ( 'SELECT value,id FROM wp_rg_lead_notes where lead_id=' . $entry_id . '' );
+		$result = $mysqli->query ( 'SELECT value,id,user_name,date_created FROM wp_rg_lead_notes where lead_id=' . $entry_id . '' );
 	
 		while ( $row = $result->fetch_row () ) {
-			$results_on_send = self::gravityforms_send_note_to_jdb ( $entry_id, $row[1], $row [0] );
+			$results_on_send = self::gravityforms_send_note_to_jdb ( $entry_id, $row[1], $row [0], $row [2], $row[3] );
 		}
 	}
 	
@@ -322,4 +323,32 @@ class GFJDBHELPER {
 	
 		return $er;
 	}
+	
+	public static function gravityforms_form_type_jdb($formid = 0)
+	{
+		$return_formtype = 'Other';
+		
+		switch ($formid) {
+			case 0:
+				$return_formtype = 'Exhibit';
+				break;
+			case 0:
+				$return_formtype = 'Presentation';
+				break;
+			case 0:
+				$return_formtype = 'Performance';
+				break;
+			case 0:
+				$return_formtype = 'Sponsor';
+				break;
+			case 0:
+				$return_formtype = 'Show Management';
+				break;
+			default:
+				$return_formtype = 'Other';
+				break;
+		}
+		
+	}
+	
 }

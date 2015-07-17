@@ -1207,6 +1207,16 @@ function update_entry_data( $form ) {
         }         
 }*/
 
+add_filter('gform_field_value_entry-id', 'entry_id_population');
+function entry_id_population(){
+  // if we have a valid entry id set in a GET variable - set the entry-id field
+	if ( $_GET['entry-id'] ){            
+            return $_GET['entry-id'];
+	}
+ 
+}
+
+
 //when form 33 is submitted, find the initial formid based on entry id and add the fields to that entry
 add_action( 'gform_after_submission_33', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){

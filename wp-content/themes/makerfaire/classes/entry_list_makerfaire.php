@@ -1673,7 +1673,8 @@ class GFEntryList {
                     SELECT form_id,form.title,count(*) as count
                             FROM `wp_rg_lead` join wp_rg_form form
                             WHERE form.id = form_id and `form_id` IN (".$row->form_ids.") and status = 'active'
-                            group by form_id";
+                            group by form_id
+                            ORDER BY FIELD(form_id, ".$row->form_ids.")";
                     
                     $nav .= '<ul>';                        
                     foreach($wpdb->get_results($formSQL) as $formRow){  

@@ -975,7 +975,9 @@ class GFEntryList {
 		<input type="hidden" value="" name="all_entries" id="all_entries" />
                 <input type="hidden" value="<?php echo $faire;?>" name="faire" id="faire" />
                 
-		<!--
+		<?php 
+                //only display these links if we are looking at the homepage slider form
+                if($form_id==24){?>
                 <ul class="subsubsub">
 			<li>
 				<a class="<?php echo empty( $filter ) ? 'current' : '' ?>" href="?page=mf_entries&view=entries&id=<?php echo $form_id ?>"><?php _ex( 'All', 'Entry List', 'gravityforms' ); ?>
@@ -1003,7 +1005,7 @@ class GFEntryList {
 				<a class="<?php echo $filter == 'trash' ? 'current' : '' ?>" href="?page=mf_entries&view=entries&id=<?php echo $form_id ?>&filter=trash"><?php _e( 'Trash', 'gravityforms' ); ?>
 					<span class="count">(<span id="trash_count"><?php echo $trash_count ?></span>)</span></a></li>
 		</ul>
-                -->                
+                <?php } ?>                
                 
 		<div style="margin-top:12px;float:right;">			
                         <div style="float:right">

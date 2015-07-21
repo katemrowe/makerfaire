@@ -190,7 +190,8 @@ function buildFaireDrop($wp_admin_bar){
             SELECT form_id,form.title,count(*) as count
                     FROM `wp_rg_lead` join wp_rg_form form
                     WHERE form.id = form_id and `form_id` IN (".$row->form_ids.") and status = 'active'
-                    group by form_id ASC";
+                    group by form_id 
+                    ORDER BY FIELD(form_id, ".$row->form_ids.")";
 
             foreach($wpdb->get_results($formSQL) as $formRow){  
                 $adminURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=entries&id=".$formRow->form_id;
@@ -219,10 +220,10 @@ function buildFaireDrop($wp_admin_bar){
     }
       
     $args = array(
-                            'id'    => 'mf_admin_parent_fairesetup',
-                            'title' => 'Faire Setup',
-                            'meta'  => array( 'class' => 'my-toolbar-page' ),
-                            'parent' => 'mf_admin_parent'
+            'id'    => 'mf_admin_parent_fairesetup',
+            'title' => 'Faire Setup',
+            'meta'  => array( 'class' => 'my-toolbar-page' ),
+            'parent' => 'mf_admin_parent'
             );
 
     $wp_admin_bar->add_node( $args );

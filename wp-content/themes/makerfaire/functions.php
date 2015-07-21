@@ -1269,7 +1269,39 @@ function custom_validation( $validation_result ) {
     $validation_result['form'] = $form;
     return $validation_result;
 };
+add_filter( 'gform_pre_render_35', 'populate_html' );
+add_filter( 'gform_pre_render_36', 'populate_html' );
+add_filter( 'gform_pre_render_37', 'populate_html' );
+add_filter( 'gform_pre_render_38', 'populate_html' );
+add_filter( 'gform_pre_render_39', 'populate_html' );
 
+function populate_html( $form ) {
+    //this is a 2-page form with the data from page one being displayed in an html field on page 2
+    $current_page = GFFormDisplay::get_current_page( $form['id'] );
+    $html_content = "The information you have submitted is as follows:<br/><ul>";
+    if ( $current_page == 2 ) {       
+       foreach ( $form['fields'] as &$field ) {
+           if($field->inputName=='entry-id'){               
+               $entry_id = rgpost( 'input_' . $field->id );
+           }
+       }
+       
+       $fieldIDarr['project-name']          = 151;
+       $fieldIDarr['short-project-desc']    = 16;
+       $fieldIDarr['exhibit-contain-fire']  = 83;
+       $fieldIDarr['interactive-exhibit']   = 84;
+       $fieldIDarr['fire-safety-issues']    = 85;
+       //find the project name for submitted entry-id
+       $entry = GFAPI::get_entry( $entry_id );
+       foreach ( $form['fields'] as &$field ) {
+           if(isset($fieldIDarr[$field->inputName])){
+               $field->defaultValue = $entry[$fieldIDarr[$field->inputName]];  
+           }           
+       }
+    }
+    
+    return($form);
+}   
 //when form is submitted, find the initial formid based on entry id and add the fields to that entry
 add_action( 'gform_after_submission', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){

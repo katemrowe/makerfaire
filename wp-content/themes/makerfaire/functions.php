@@ -14,7 +14,7 @@ require_once( TEMPLATEPATH. '/plugins/public-pages/makers.php' );
 require_once( TEMPLATEPATH. '/post-types/maker.php' );
 
 // Markdown
-//require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
+require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
 
 // Status Board
 require_once( TEMPLATEPATH. '/plugins/status-board/status-board.php' );

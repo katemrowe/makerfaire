@@ -646,8 +646,8 @@ function set_entry_status_content($lead,$form){
 
 /* Modify Set Entry Status */
 function set_entry_status($lead,$form){
-	$location_change=$_POST['entry_info_location_change'];
-	$flags_change=$_POST['entry_info_flags_change'];
+	//$location_change=$_POST['entry_info_location_change'];
+	//$flags_change=$_POST['entry_info_flags_change'];
 	$location_comment_change=$_POST['entry_location_comment'];
 	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
@@ -991,12 +991,12 @@ function mf_add_note($leadid,$notetext)
  function mf_update_entry_field( $entry_id, $input_id, $value ) {
 	global $wpdb;
 
-	$entry = self::get_entry( $entry_id );
+	$entry = GFAPI::get_entry( $entry_id );
 	if ( is_wp_error( $entry ) ) {
 		return $entry;
 	}
 
-	$form = self::get_form( $entry['form_id'] );
+	$form = GFAPI::get_form( $entry['form_id'] );
 	if ( ! $form ) {
 		return false;
 	}

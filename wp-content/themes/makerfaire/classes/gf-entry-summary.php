@@ -91,17 +91,17 @@ if ( isset( $long_description ) ) {
 					</tr>
 					<tr>
 
-						<td style="width: 80px;" valign="top"><strong>Type:</strong></td>
+						<td style="  width: 150px; display: block;" valign="top"><strong>Type:</strong></td>
 						<td valign="top"><?php echo esc_attr( ucfirst( $entry_form_type ) ); ?></td>
 					</tr>
 					<tr>
-						<td style="width: 80px;" valign="top"><strong>Status:</strong></td>
+						<td valign="top"><strong>Status:</strong></td>
 						<td valign="top"><?php echo esc_attr( $entry_form_status ); ?></td>
 					</tr>
 					<?php
 							?>
 					<tr>
-						<td style="width: 80px;" valign="top"><strong>Website:</strong></td>
+						<td valign="top"><strong>Website:</strong></td>
 						<td valign="top"><a
 							href="<?php echo esc_url(  $wkey ); ?>" target="_blank"><?php echo esc_url( $wkey ); ?></a></td>
 					</tr>
@@ -113,7 +113,7 @@ if ( isset( $long_description ) ) {
 						</td>
 					</tr>
 					<tr>
-						<td style="width: 80px;" valign="top"><strong>Maker Names:</strong></td>
+						<td valign="top"><strong>Maker Names:</strong></td>
 						<td valign="top"><?php echo !empty($makergroupname) ? $makergroupname.'(Group)</br>' : ''; ?>
                                                 <?php if(!empty($makerPhoto1)){?>  
                                                     <a href="<?php echo $makerPhoto1;?>" class='thickbox'>
@@ -161,7 +161,7 @@ if ( isset( $long_description ) ) {
 </td>
 					</tr>
 					<tr>
-						<td style="width: 80px;" valign="top"><strong>What are your plans:</strong></td>
+						<td valign="top"><strong>What are your plans:</strong></td>
 						
 						
 						<td valign="top">
@@ -180,14 +180,13 @@ if ( isset( $long_description ) ) {
 						<?php echo ( isset( $size_request ) ) ? $size_request : 'Not Filled out' ; ?>
 						<?php echo ( isset( $size_request_other ) ) ? 'Other: '.$size_request_other : '' ; ?>
 						</td>
-					</tr>
-					
+					</tr>                                         
 				</table>
 			</td>
-		</tr>
+		</tr>                
 		<tr>
 			<td>
-				<label >Email Note To:</label><br />
+                            <label ><h2>Email Note To:</h2></label><br />
 				<?php 
 				$emailto1 = array("Alasdair Allan"          => "alasdair@makezine.com",
                                                   "Brian Jepson"            => "bjepson@makermedia.com",
@@ -249,6 +248,7 @@ $emailtoaliases = array(
 		</tr>
 	</tbody>
 </table>
+
 <?php				
 } //end function
 
@@ -265,8 +265,28 @@ Include field IDs:
 62 [Tables and Chairs]
 288 [How many tables and chairs?]
      */
+    global $wpdb; 
+    $entry_id = $lead['id'];
+    
+    $makerfirstname1=$lead['160.3'];$makerlastname1=$lead['160.6'];    
+    $makerfirstname2=$lead['158.3'];$makerlastname2=$lead['158.6'];    
+    $makerfirstname3=$lead['155.3'];$makerlastname3=$lead['155.6'];    
+    $makerfirstname4=$lead['156.3'];$makerlastname4=$lead['156.6'];    
+    $makerfirstname5=$lead['157.3'];$makerlastname5=$lead['157.6'];    
+    $makerfirstname6=$lead['159.3'];$makerlastname6=$lead['159.6'];    
+    $makerfirstname7=$lead['154.3'];$makerlastname7=$lead['154.6'];
+    
+    //email fields
+    $emailArray = array();
+    if(isset($lead['98'])  && $lead['98']  != '')  $emailArray[]  = array('email'=>$lead['98'],  'type'=>'Contact', 'name'=>$lead['96.3'].' '.$lead[ '96.6']);
+    if(isset($lead['161']) && $lead['161'] != '')  $emailArray[]  = array('email'=>$lead['161'], 'type'=>'Maker 1','name'=>$makerfirstname1.' '.$makerlastname1);
+    if(isset($lead['162']) && $lead['162'] != '')  $emailArray[]  = array('email'=>$lead['162'], 'type'=>'Maker 2','name'=>$makerfirstname2.' '.$makerlastname2);
+    if(isset($lead['167']) && $lead['167'] != '')  $emailArray[]  = array('email'=>$lead['167'], 'type'=>'Maker 3','name'=>$makerfirstname3.' '.$makerlastname3);
+    if(isset($lead['166']) && $lead['166'] != '')  $emailArray[]  = array('email'=>$lead['166'], 'type'=>'Maker 4','name'=>$makerfirstname4.' '.$makerlastname4);
+    if(isset($lead['165']) && $lead['165'] != '')  $emailArray[]  = array('email'=>$lead['165'], 'type'=>'Maker 5','name'=>$makerfirstname5.' '.$makerlastname5);
+    if(isset($lead['164']) && $lead['164'] != '')  $emailArray[]  = array('email'=>$lead['164'], 'type'=>'Maker 6','name'=>$makerfirstname6.' '.$makerlastname6);
+    if(isset($lead['163']) && $lead['163'] != '')  $emailArray[]  = array('email'=>$lead['163'], 'type'=>'Maker 7','name'=>$makerfirstname7.' '.$makerlastname7);
    
-    $fieldLabel = array();
     foreach($form['fields'] as $field){
         $fieldData[$field['id']] = $field;
     }
@@ -275,32 +295,69 @@ Include field IDs:
                   'logistics'=>array(60,61,62,288),
         );
     ?>
-    <table class="widefat fixed entry-detail-view" cellspacing="0">
-        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryContent').toggle();">Content</span></td></tr>
-        <tr id="entryContent" style="display:none"><td>
-                <table class="widefat fixed entry-detail-view" cellspacing="0">
-                    <?php echo displayContent($data['content'],$lead,$fieldData);?>                
-                </table>    
-         </td></tr>
-
-        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryLogistics').toggle();">Logistics/Production</span></td></tr>
-        <tr id="entryLogistics" style="display:none">
-            <td><table class="widefat fixed entry-detail-view" cellspacing="0">
-                <?php echo displayContent($data['logistics'],$lead,$fieldData);?>                      
-                </table>   
-            </td>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Content</a></li>
+    <li><a href="#tabs-2">Logistics</a></li>
+    <li><a href="#tabs-3">Other Entries</a></li>
+  </ul>
+  <div id="tabs-1">
+     <?php echo displayContent($data['content'],$lead,$fieldData);?>  
+  </div>
+  <div id="tabs-2">
+    <?php echo displayContent($data['logistics'],$lead,$fieldData);?>  
+  </div>
+  <div id="tabs-3">
+    <!-- Additional Entries -->               
+    <table width="100%"> 
+        <tr>
+            <th>Maker Name  </th>
+            <th>Maker Type  </th>
+            <th>Record ID   </th>
+            <th>Project Name</th>
+            <th>Form Name   </th> 
+            <th>Status      </th>
         </tr>
-        <!--
-        <tr><td class="entry-view-collapse"><span onclick="jQuery('#makerInfo').toggle();">Maker Information</span></td></tr>
-        <tr id="makerInfo" style="display:none"><td>Maker Information goes here</td></tr>
-        <tr><td class="entry-view-collapse"><span onclick="jQuery('#entryMisc').toggle();">Misc</span></td></tr>
-        <tr id="entryMisc" style="display:none"><td>Misc goes here</td></tr>-->
+    <?php     
+    foreach($emailArray as $key=>$email){                    
+        $results = $wpdb->get_results( 'SELECT *, '
+                . ' (select value from wp_rg_lead_detail detail2 '
+                . '  where detail2.lead_id = wp_rg_lead_detail.lead_id and '
+                . '        field_number    = 151 '  
+                . ' ) as projectName, '
+                . ' (select value from wp_rg_lead_detail detail2 '
+                . '  where detail2.lead_id = wp_rg_lead_detail.lead_id and '
+                . '        field_number    = 303 '  
+                . ' ) as status ' 
+                . ' FROM wp_rg_lead_detail '
+                . ' join wp_rg_form on wp_rg_form.id = wp_rg_lead_detail.form_id '
+
+                . '                     WHERE value = "'.$email['email'].'"'
+                . '                     and lead_id != '.$entry_id);                    
+
+        $return = array();
+        foreach($results as $data){
+            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=mfentry&id=".$data->form_id . '&lid='.$data->lead_id;
+            echo '<tr><td>'.$email['name'] .'</td>'
+                   . '<td>'.$email['type'] .'</td>' 
+                   . '<td><a target="_blank" href="'.$outputURL.'">'.$data->lead_id.'</a></td>'
+                   . '<td>'.$data->projectName.'</td>'                              
+                   . '<td>'.$data->title.'</td>'
+                   . '<td>'.$data->status.'</td>' 
+                . '</tr>';
+        }
+    }
+    ?>
     </table>
+  </div>
+</div>
+
     <?php
 }
 
 function displayContent($content,$lead,$fieldData){
    $return = '';
+   $return .= '<table>';
     foreach($content as $fieldID){
         $field = $fieldData[$fieldID];
         $label = $fieldData[$fieldID]['label'];
@@ -309,6 +366,7 @@ function displayContent($content,$lead,$fieldData){
         $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>'.
                     '<tr><td>'.$value.'</td></tr>';
    }
+   $return .= '</table>';
    return $return;
 }
 

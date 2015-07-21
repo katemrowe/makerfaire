@@ -608,11 +608,11 @@ function set_entry_status_content($lead,$form){
 		/* Clear out old choices */
 		foreach(   $field304['inputs'] as $choice)
 		{
-			GFAPI::update_entry_field($entry_info_entry_id,$choice['id'],'');
+			mf_update_entry_field($entry_info_entry_id,$choice['id'],'');
 		}
 		foreach(   $field302['inputs'] as $choice)
 		{
-			GFAPI::update_entry_field($entry_info_entry_id,$choice['id'],'');
+			mf_update_entry_field($entry_info_entry_id,$choice['id'],'');
 		}
 		/* Save entries */	
 		if (!empty($location_change))
@@ -621,7 +621,7 @@ function set_entry_status_content($lead,$form){
 			{
 				$exploded_location_entry=explode("_",$location_entry);
 				$entry_info_entry[$exploded_location_entry[0]] = $exploded_location_entry[1];
-				GFAPI::update_entry_field($entry_info_entry_id,$exploded_location_entry[0],$exploded_location_entry[1]);
+				mf_update_entry_field($entry_info_entry_id,$exploded_location_entry[0],$exploded_location_entry[1]);
 			}
 		}
 		if (!empty($flags_change))
@@ -630,14 +630,14 @@ function set_entry_status_content($lead,$form){
 			{
 				$exploded_flags_entry=explode("_",$flags_entry);
 				$entry_info_entry[$exploded_flags_entry[0]] = $exploded_flags_entry[1];
-				GFAPI::update_entry_field($entry_info_entry_id,$exploded_flags_entry[0],$exploded_flags_entry[1]);
+				mf_update_entry_field($entry_info_entry_id,$exploded_flags_entry[0],$exploded_flags_entry[1]);
 			}
 		}
 		if (!empty($location_comment_change))
 		{
 			$entry_info_entry['307'] = $location_comment_change;
 				
-			GFAPI::update_entry_field($entry_info_entry_id,'307',$location_comment_change);
+			mf_update_entry_field($entry_info_entry_id,'307',$location_comment_change);
 
 		}
 			
@@ -646,8 +646,8 @@ function set_entry_status_content($lead,$form){
 
 /* Modify Set Entry Status */
 function set_entry_status($lead,$form){
-	$location_change=$_POST['entry_info_location_change'];
-	$flags_change=$_POST['entry_info_flags_change'];
+	//$location_change=$_POST['entry_info_location_change'];
+	//$flags_change=$_POST['entry_info_flags_change'];
 	$location_comment_change=$_POST['entry_location_comment'];
 	$acceptance_status_change=$_POST['entry_info_status_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
@@ -661,7 +661,7 @@ function set_entry_status($lead,$form){
 		{
 			//Update Field for Acceptance Status
 			$entry_info_entry['303'] = $acceptance_status_change;
-			GFAPI::update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
+			mf_update_entry_field($entry_info_entry_id,'303',$acceptance_status_change);
 			//Reload entry to get any changes in status
 			$lead['303'] = $acceptance_status_change;
 				
@@ -970,4 +970,45 @@ function mf_add_note($leadid,$notetext)
 	global $current_user;	
 	$user_data = get_userdata( $current_user->ID );
 	RGFormsModel::add_note( $leadid, $current_user->ID, $user_data->display_name, $notetext );
+}
+
+/**
+ * Updates a single field of an entry.
+ *
+ * @since  1.9
+ * @access public
+ * @static
+ *
+ * @param int    $entry_id The ID of the Entry object
+ * @param string $input_id The id of the input to be updated. For single input fields such as text, paragraph, website, drop down etc... this will be the same as the field ID.
+ *                         For multi input fields such as name, address, checkboxes, etc... the input id will be in the format {FIELD_ID}.{INPUT NUMBER}. ( i.e. "1.3" )
+ *                         The $input_id can be obtained by inspecting the key for the specified field in the $entry object.
+ *
+ * @param mixed  $value    The value to which the field should be set
+ *
+ * @return bool Whether the entry property was updated successfully
+ */
+ function mf_update_entry_field( $entry_id, $input_id, $value ) {
+	global $wpdb;
+
+	$entry = GFAPI::get_entry( $entry_id );
+	if ( is_wp_error( $entry ) ) {
+		return $entry;
+	}
+
+	$form = GFAPI::get_form( $entry['form_id'] );
+	if ( ! $form ) {
+		return false;
+	}
+
+	$field = GFFormsModel::get_field( $form, $input_id );
+
+	$lead_detail_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}rg_lead_detail WHERE lead_id=%d AND CAST(field_number as DECIMAL(4))=%s", $entry_id, $input_id ) );
+
+	$result = true;
+	if ( ! isset( $entry[ $input_id ] ) || $entry[ $input_id ] != $value ){
+		$result = GFFormsModel::update_lead_field_value( $form, $entry, $field, $lead_detail_id, $input_id, $value );
+	}
+
+	return $result;
 }

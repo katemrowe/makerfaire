@@ -4,7 +4,6 @@
 // Set our global Faire Variable. Use the slug of the taxonomy as the value.
 define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 
-
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
 
@@ -86,11 +85,6 @@ function my_wp_default_styles($styles)
 }
 add_action("wp_default_styles","my_wp_default_styles");
 
-/* Rewrite rules */
-function custom_rewrite_rule() {
-	add_rewrite_rule('^mf/([^/]*)/([^/]*)/?','index.php?pagename=maker-faire-gravity-forms-display-page&makerfaire=$matches[1]&entryid=$matches[2]','top');
-}
-add_action('init', 'custom_rewrite_rule', 10, 0);
 
 /* Favicon in Header */
 add_action('wp_head','my_custom_fav_ico');
@@ -135,10 +129,11 @@ function make_enqueue_jquery() {
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
 
 function load_admin_scripts() {
-	wp_enqueue_script('make-gravityforms-admin',  get_stylesheet_directory_uri() . '/js/gravityformsadmin.js');
+
+	wp_enqueue_script('make-gravityforms-admin',  get_stylesheet_directory_uri() . '/js/gravityformsadmin.js', array('jquery', 'jquery-ui-tabs'));
 	wp_enqueue_script( 'jquery-datetimepicker',  get_stylesheet_directory_uri() . '/js/jquery.datetimepicker.js', array( 'jquery' ), null );
 	wp_enqueue_style('jquery-datetimepicker-css',  get_stylesheet_directory_uri() . '/css/jquery.datetimepicker.css');
-        wp_enqueue_style('made-admin-style',  get_stylesheet_directory_uri() . '/css/make.admin.css');
+        wp_enqueue_style('made-admin-style',  get_stylesheet_directory_uri() . '/css/make.admin.css');        
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
 
@@ -1527,8 +1522,8 @@ function redirect_gf_admin_pages(){
             wp_redirect(admin_url( 'admin.php' ) . "?page=mf_entries".$returnURL);
             exit;
         }
-        
     }
 }
 
 add_action('admin_menu', 'redirect_gf_admin_pages');
+

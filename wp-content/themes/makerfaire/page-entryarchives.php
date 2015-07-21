@@ -1,36 +1,77 @@
 <?php
 /**
- * Template Name: Entry
+ * Template Name: EntryArchives
+ * 
  *
  * @version 2.0
  */
 
   global $wp_query;
-  $entryId = $wp_query->query_vars['e_id'];
-  $entry = GFAPI::get_entry($entryId);
+  $the_slug = $wp_query->query_vars['entryslug'];
+   $args = array(
+  		'name'        => $the_slug,
+  		'post_type'   => 'mf_form',
+  		'post_status' => 'accepted',
+  		'numberposts' => 1
+  );
+  $my_posts = get_posts($args);
+  
+  $entrySlug =$the_slug;
+  $json =  stripslashes(urldecode( $my_posts[0]->post_content )) ;
+  $json = json_decode($json);
+print_r($json);
+  switch ($json->form_type) {
+  	case 'exhibit':
+  		$project_faire = $json->maker_faire;
+  		$project_name = $json->project_name;
+  		$project_photo = $json->project_photo;
+  		$project_short = $json->public_description;
+  		$project_website = $json->project_website;
+  		$project_video = $json->project_video;
+  		$project_title = $json->project_name;
+  		$makers = array();
+  		if (strlen($json->m_maker_name[0]) > 0)
+  			$makers[] = array('firstname' => $json->m_maker_name[0],
+  					'bio'=>$json->m_maker_bio[0],
+  					'photo'=>$json->m_maker_photo[0]);
+  	break;
+  	case 'performer':
+  		$project_faire = $json->maker_faire;
+  		$project_name = $json->performer_name;
+  		$project_photo = $json->performer_photo;
+  		$project_short = $json->public_description;
+  		$project_website = $json->performer_website;
+  		$project_video = $json->performer_video;
+  		$project_title = $json->performer_name;
+  		$makers = array();
+  		
+  		break;
+  	default:
+  		$project_faire = $json->maker_faire; 
+  $project_name = $json->presentation_name; 
+  $project_photo = $json->presentation_photo;
+  $project_short = $json->short_description;
+  $project_website = $json->presentation_website;
+  $project_video = $json->video;
+  $project_title = $json->presentation_name;
   $makers = array();
-  if (strlen($entry['160.3']) > 0) $makers[] = array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
-  if (strlen($entry['158.3']) > 0) $makers[] = array('firstname' => $entry['158.3'], 'lastname' => $entry['158.6'], 'bio'=>$entry['258'], 'photo'=>$entry['224']);
-  if (strlen($entry['155.3']) > 0) $makers[] = array('firstname' => $entry['155.3'], 'lastname' => $entry['155.6'], 'bio'=>$entry['259'], 'photo'=>$entry['223']);
-  if (strlen($entry['156.3']) > 0) $makers[] = array('firstname' => $entry['156.3'], 'lastname' => $entry['156.6'], 'bio'=>$entry['260'], 'photo'=>$entry['222']);
-  if (strlen($entry['157.3']) > 0) $makers[] = array('firstname' => $entry['157.3'], 'lastname' => $entry['157.6'], 'bio'=>$entry['261'], 'photo'=>$entry['220']);
-  if (strlen($entry['159.3']) > 0) $makers[] = array('firstname' => $entry['159.3'], 'lastname' => $entry['159.6'], 'bio'=>$entry['262'], 'photo'=>$entry['221']);
-  if (strlen($entry['154.3']) > 0) $makers[] = array('firstname' => $entry['154.3'], 'lastname' => $entry['154.6'], 'bio'=>$entry['263'], 'photo'=>$entry['219']);
+  if (strlen($json->presenter_name[0]) > 0)
+  	$makers[] = array('firstname' => $json->presenter_name[0],
+  			'bio'=>$json->presenter_bio[0],
+  			'photo'=>$json->presenter_photo[0]);
+  	break;
+  }
+ 
   
-  $groupname=$entry['109'];
-  $groupphoto=$entry['111'];
-  $groupbio=$entry['110'];
+
   
-  $project_name = $entry['151']; 
-  $project_photo = $entry['22'];
-  $project_short = $entry['16'];
-  $project_website = $entry['27'];
-  $project_video = $entry['32'];
-  $project_title = (string)$entry['151'];
+  
   
   $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
   
+  
   get_header();
+  
 ?>
 
 <div class="clear"></div>
@@ -41,13 +82,14 @@
 
     <div class="content col-md-8">
 
-      <a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
-
       <div class="page-header">
 
         <h1><?php echo $project_title; ?></h1>
+        <?php echo ( !empty( $json->maker_faire ) ) ? '<h5><small>' . archives_better_name( $json->maker_faire ) . '</small></h5>' : ''; ?>
+        
 
       </div>
+      <?php ?>
 
       <img class="img-responsive padbottom" src="<?php echo $project_photo; ?>" />
 
@@ -67,7 +109,7 @@
       <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3 id="myModalLabel"><?php echo $entry['151']; ?></h3>
+          <h3 id="myModalLabel"><?php echo $project_title; ?></h3>
         </div>
         <div class="modal-body">
           
@@ -96,10 +138,10 @@
 -->
       <div class="clearfix">&nbsp;</div>
       <div class="clearfix">&nbsp;</div>
-      <h2>Makers/Group</h2>
-      <hr />
       <?php
       if (!empty($groupbio)) {
+		echo '<h2>Group</h2><hr />';
+		
         echo '<div class="row padbottom">
                 ',(!empty($groupphoto) ? '<img class="col-md-3 pull-left img-responsive" src="' . $groupphoto . '" alt="Group Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
         echo    '<div class="col-md-5">
@@ -109,6 +151,8 @@
               </div>';
       } 
       else {
+		  if (!empty($makers)) echo '<h2>Group</h2><hr />';
+
     		foreach($makers as $maker) {
       		echo '<div class="row padbottom">
                   ',(!empty($maker['photo']) ? '<img class="col-md-3 pull-left img-responsive" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
@@ -141,8 +185,21 @@ Duplicate to $entry['151']
 <li>Short Desription<?php echo $entry['16']; ?></li>
 -->
 
- <?php get_footer();
+ <?php
  
+  get_footer();
+  
+  function archives_better_name( $str ) {
+  	if ( $str == '2013_bayarea' ) {
+  		return 'Maker Faire Bay Area 2013';
+  	} elseif ( $str == '2013_newyork' ) {
+  		return 'World Maker Faire New York 2013';
+  	} elseif ( $str == '2014_bayarea' ) {
+  		return 'Maker Faire Bay Area 2014';
+  	} elseif ( $str == '2014_newyork' ) {
+  		return 'World Maker Faire New York 2014';
+  	}
+  }
 function display_entry_schedule($entry_id) {
   echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
       <h4><label class="detail-label">Schedule:</label></h4>');
@@ -176,4 +233,5 @@ function display_entry_schedule($entry_id) {
     }
   }
 }
+
 ?>

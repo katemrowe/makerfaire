@@ -15,7 +15,7 @@ class MAKER_FAIRE_FORM {
 	 * 
 	 * @var string
 	 */
-	// public $faire_friendly_name = 'World Maker Faire New York 2014';
+	 public $faire_friendly_name = 'World Maker Faire New York 2014';
 	
 	/**
 	 * The deadline of the commercial maker payment
@@ -23,7 +23,7 @@ class MAKER_FAIRE_FORM {
 	 * 
 	 * @var string
 	 */
-	// public $commercial_maker_deadline = 'September 5th';
+	 public $commercial_maker_deadline = 'September 5th';
 	
 	/*
 	 * All Form Keys with 1/0 for Required Field =====================================================================
@@ -344,13 +344,14 @@ class MAKER_FAIRE_FORM {
 						'post_tag' 
 				),
 				'rewrite' => array (
-						'slug' => 'makers',
+						'slug' => 'mfarchives',
 						'with_front' => false 
 				) 
 		);
 		
 		// REGISTER MF FORM CUSTOM POST TYPE
 		register_post_type ( 'mf_form', $args );
+		//flush_rewrite_rules();
 	}
 	
 	/*

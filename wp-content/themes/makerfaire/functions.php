@@ -4,7 +4,6 @@
 // Set our global Faire Variable. Use the slug of the taxonomy as the value.
 define( 'MF_CURRENT_FAIRE', 'world-maker-faire-new-york-2014' );
 
-
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/plugins/maker-faire-forms/maker-faire-forms.php' );
 
@@ -15,7 +14,7 @@ require_once( TEMPLATEPATH. '/plugins/public-pages/makers.php' );
 require_once( TEMPLATEPATH. '/post-types/maker.php' );
 
 // Markdown
-require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
+//require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
 
 // Status Board
 require_once( TEMPLATEPATH. '/plugins/status-board/status-board.php' );
@@ -86,11 +85,6 @@ function my_wp_default_styles($styles)
 }
 add_action("wp_default_styles","my_wp_default_styles");
 
-/* Rewrite rules */
-function custom_rewrite_rule() {
-	add_rewrite_rule('^mf/([^/]*)/([^/]*)/?','index.php?pagename=maker-faire-gravity-forms-display-page&makerfaire=$matches[1]&entryid=$matches[2]','top');
-}
-add_action('init', 'custom_rewrite_rule', 10, 0);
 
 /* Favicon in Header */
 add_action('wp_head','my_custom_fav_ico');
@@ -1458,8 +1452,8 @@ function redirect_gf_admin_pages(){
             wp_redirect(admin_url( 'admin.php' ) . "?page=mf_entries".$returnURL);
             exit;
         }
-        
     }
 }
 
 add_action('admin_menu', 'redirect_gf_admin_pages');
+

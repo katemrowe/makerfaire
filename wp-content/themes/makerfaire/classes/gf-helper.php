@@ -1,8 +1,15 @@
 <?php
+/* Rewrite rules */
+function custom_rewrite_rule() {
+	add_rewrite_rule('^mf/([^/]*)/([^/]*)/?','index.php?pagename=maker-faire-gravity-forms-display-page&makerfaire=$matches[1]&entryid=$matches[2]','top');
+	add_rewrite_rule('^mfarchives/([^/]*)/?','index.php?pagename=entry-archives&entryslug=$matches[1]','top');
+}
+add_action('init', 'custom_rewrite_rule', 10, 0);
 
 
 function custom_rewrite_tag() {
 	add_rewrite_tag('%entryid%', '([^&]+)');
+	add_rewrite_tag('%entryslug%', '([^&]+)');
 	add_rewrite_tag('%makerfaire%', '([^&]+)');
 }
 add_action('init', 'custom_rewrite_tag', 10, 0);

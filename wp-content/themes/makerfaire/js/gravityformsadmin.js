@@ -59,5 +59,6 @@ jQuery( document ).ready(function() {
                     jQuery('#updateMSG').text(response);
 		});
             } 
-          )	
+          );
+    jQuery( "#tabs" ).tabs(); 
 });

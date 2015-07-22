@@ -278,15 +278,15 @@ Include field IDs:
     
     //email fields
     $emailArray = array();
-    if(isset($lead['98'])  && $lead['98']  != '')  $emailArray[]  = array('email'=>$lead['98'],  'type'=>'Contact', 'name'=>$lead['96.3'].' '.$lead[ '96.6']);
-    if(isset($lead['161']) && $lead['161'] != '')  $emailArray[]  = array('email'=>$lead['161'], 'type'=>'Maker 1','name'=>$makerfirstname1.' '.$makerlastname1);
-    if(isset($lead['162']) && $lead['162'] != '')  $emailArray[]  = array('email'=>$lead['162'], 'type'=>'Maker 2','name'=>$makerfirstname2.' '.$makerlastname2);
-    if(isset($lead['167']) && $lead['167'] != '')  $emailArray[]  = array('email'=>$lead['167'], 'type'=>'Maker 3','name'=>$makerfirstname3.' '.$makerlastname3);
-    if(isset($lead['166']) && $lead['166'] != '')  $emailArray[]  = array('email'=>$lead['166'], 'type'=>'Maker 4','name'=>$makerfirstname4.' '.$makerlastname4);
-    if(isset($lead['165']) && $lead['165'] != '')  $emailArray[]  = array('email'=>$lead['165'], 'type'=>'Maker 5','name'=>$makerfirstname5.' '.$makerlastname5);
-    if(isset($lead['164']) && $lead['164'] != '')  $emailArray[]  = array('email'=>$lead['164'], 'type'=>'Maker 6','name'=>$makerfirstname6.' '.$makerlastname6);
-    if(isset($lead['163']) && $lead['163'] != '')  $emailArray[]  = array('email'=>$lead['163'], 'type'=>'Maker 7','name'=>$makerfirstname7.' '.$makerlastname7);
-   
+    if(isset($lead['98'])  && $lead['98']  != '')  $emailArray[$lead['98']]['Contact']   = $lead['96.3'].' '.$lead[ '96.6'];
+    if(isset($lead['161']) && $lead['161'] != '')  $emailArray[$lead['161']]['Maker 1']  = $makerfirstname1.' '.$makerlastname1;
+    if(isset($lead['162']) && $lead['162'] != '')  $emailArray[$lead['162']]['Maker 2']  = $makerfirstname2.' '.$makerlastname2;
+    if(isset($lead['167']) && $lead['167'] != '')  $emailArray[$lead['167']]['Maker 3']  = $makerfirstname3.' '.$makerlastname3;
+    if(isset($lead['166']) && $lead['166'] != '')  $emailArray[$lead['166']]['Maker 4']  = $makerfirstname4.' '.$makerlastname4;
+    if(isset($lead['165']) && $lead['165'] != '')  $emailArray[$lead['165']]['Maker 5']  = $makerfirstname5.' '.$makerlastname5;
+    if(isset($lead['164']) && $lead['164'] != '')  $emailArray[$lead['164']]['Maker 6']  = $makerfirstname6.' '.$makerlastname6;
+    if(isset($lead['163']) && $lead['163'] != '')  $emailArray[$lead['163']]['Maker 7']  = $makerfirstname7.' '.$makerlastname7;
+    
     foreach($form['fields'] as $field){
         $fieldData[$field['id']] = $field;
     }
@@ -323,7 +323,7 @@ Include field IDs:
             <th>Form Name   </th> 
             <th>Status      </th>
         </tr>
-    <?php     
+    <?php         
     foreach($emailArray as $key=>$email){                    
         $results = $wpdb->get_results( 'SELECT *, '
                 . ' (select value from wp_rg_lead_detail detail2 '
@@ -337,15 +337,23 @@ Include field IDs:
                 . ' FROM wp_rg_lead_detail '
                 . ' join wp_rg_form on wp_rg_form.id = wp_rg_lead_detail.form_id '
 
-                . '                     WHERE value = "'.$email['email'].'"'
-                . '                     and lead_id != '.$entry_id);                    
+                . '                     WHERE value = "'.$key.'"'
+                . '                     and lead_id != '.$entry_id.' group by lead_id order by lead_id');                    
 
         $return = array();
         foreach($results as $data){
             $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=mfentry&id=".$data->form_id . '&lid='.$data->lead_id;
-            echo '<tr><td>'.$email['name'] .'</td>'
-                   . '<td>'.$email['type'] .'</td>' 
-                   . '<td><a target="_blank" href="'.$outputURL.'">'.$data->lead_id.'</a></td>'
+            echo '<tr>';
+            
+            //only display the first instance of the email
+            foreach($email as $typeKey=>$typeData){
+                $name = $typeKey;
+                $type = $typeData;
+                if($name!='') break;
+            }
+                echo '<td>'.$type .'</td>';
+                echo '<td>'.$name .'</td>'; 
+            echo '<td><a target="_blank" href="'.$outputURL.'">'.$data->lead_id.'</a></td>'
                    . '<td>'.$data->projectName.'</td>'                              
                    . '<td>'.$data->title.'</td>'
                    . '<td>'.$data->status.'</td>' 

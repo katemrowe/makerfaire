@@ -291,14 +291,16 @@ Include field IDs:
         $fieldData[$field['id']] = $field;
     }
     
-    $data = array('content'=> array(11,16,320,321),
-                  'logistics'=>array(60,61,62,288),
+    $data = array('content'=> array(11,16,320,321,66,67,293),
+                  'logistics'=>array(60,61,62,288,64,65,68,69,70,71,72,73,74,75,76),
+                  'additional'=>array(123,130,287,134)
         );
     ?>
 <div id="tabs">
   <ul>
     <li><a href="#tabs-1">Content</a></li>
-    <li><a href="#tabs-2">Logistics</a></li>
+    <li><a href="#tabs-2">Logistics/Production</a></li>
+    <li><a href="#additional">Additional Information</a></li>
     <li><a href="#tabs-3">Other Entries</a></li>
   </ul>
   <div id="tabs-1">
@@ -306,6 +308,9 @@ Include field IDs:
   </div>
   <div id="tabs-2">
     <?php echo displayContent($data['logistics'],$lead,$fieldData);?>  
+  </div>
+  <div id="additional">
+    <?php echo displayContent($data['additional'],$lead,$fieldData);?>  
   </div>
   <div id="tabs-3">
     <!-- Additional Entries -->               

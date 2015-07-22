@@ -143,7 +143,7 @@ function mf_sidebar_entry_info($form_id, $lead) {
         
         foreach($lead as $key=>$field){
             if(strpos($key,'302')!== false){
-                $locArray[]=$field;
+                $locArray[]=stripslashes($field);
             }
         }
         
@@ -633,13 +633,13 @@ function set_entry_status_content($lead,$form){
 				mf_update_entry_field($entry_info_entry_id,$exploded_flags_entry[0],$exploded_flags_entry[1]);
 			}
 		}
-		if (!empty($location_comment_change))
-		{
+		/*if (!empty($location_comment_change))
+		{*/
 			$entry_info_entry['307'] = $location_comment_change;
 				
 			mf_update_entry_field($entry_info_entry_id,'307',$location_comment_change);
 
-		}
+		//}
 			
 	}
 }

@@ -887,6 +887,9 @@ li.hidelink a:visited {
 .quora .drop-holder.area .drop-logo .nav-thanks span strong {
   color: red;
 }
+.nav li:nth-child(3) .drop-logo .nav-thanks span {
+  color: red;
+}
 .tab-content h3 {
   line-height: 100%;
 }
@@ -3712,6 +3715,9 @@ li.hidelink a:visited {
   #wpadminbar {
     position: fixed;
   }
+  .quora {
+    /*temp fix for fixed height issue with subnav items on mobile*/
+  }
   .quora#header {
     padding: 0;
     margin-bottom: 66px;
@@ -3726,7 +3732,7 @@ li.hidelink a:visited {
   }
   .quora .navbar-fixed-bottom .navbar-collapse,
   .quora .navbar-fixed-top .navbar-collapse {
-    max-height: none;
+    max-height: 20em;
   }
   .quora .navbar-default .navbar-toggle .icon-bar {
     background-color: #00adef;

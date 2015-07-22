@@ -1192,69 +1192,171 @@ function gform_addScript($form) {
 }
 
 /*
-add_filter('gform_pre_render_33','update_entry_data');
-function update_entry_data( $form ) {    
-        if(!isset($_GET['entry-id']) || trim($_GET['entry-id']) == ''){
-            echo "I'm sorry.  You must have a valid project ID to submit this form.  Please double check you are using the full URL from your email.";          
-            //need to find a way to remove submit button
-        } else{
-            return $form;
-        }         
+ * This function checks if entry-id is passed in the URL
+ * if it is, then we check if it is valid.  If it is, then the field changes to disabled
+ */
+
+/*
+add_filter( 'gform_field_input', 'disable_entry_id', 10, 5 );
+function disable_entry_id(  $input, $field, $value, $lead_id, $form_id ) {
+    if ( $field->inputName == 'entry-id' ) {
+        
+        if($value!=''){
+            //check if entry-id is valid
+            $entry = GFAPI::get_entry( $value );
+            //if entry id is valid, disable the output field
+            if(is_array($entry)){         
+                $input = '<input style="display:block" disabled name="input_2" id="input_33_2" type="text" value="'.$value.'" class="medium " tabindex="1">';
+            }
+        }
+    }
+    return $input;
 }*/
 
-add_filter('gform_field_value_entry-id', 'entry_id_population');
-function entry_id_population(){
-  // if we have a valid entry id set in a GET variable - set the entry-id field
-	if ( $_GET['entry-id'] ){            
-            return $_GET['entry-id'];
-	}
- 
-}
+/* This function checks if the entry-id set on the form is valid 
+ * If it is, then it compares the entered email to see if it matches the previous 
+ * one used on the entry. if it all passes, then they can move to the next step
+ * otherwise it returns errors
+ */
+add_filter( 'gform_validation', 'custom_validation' );
+function custom_validation( $validation_result ) {    
+    $form = $validation_result['form'];
+    
+    // determine if entry-id and contact-email id's are in the submitted form 
+    // and what their field id's are
+    $entryID = get_value_by_label('entry-id', $form);
+    $contact_email   = get_value_by_label('contact-email', $form);
+    
+    //make sure we are in the right form
+    if(!empty($entryID) && !empty($contact_email)){
+        $entryid        = rgpost( 'input_'. $entryID['id']) ;
+        $sub_email      = rgpost( 'input_'. $contact_email['id'] ) ;
+        
+        //check if entry-id is valid
+        $entry = GFAPI::get_entry( $entryid );
+        if(is_array($entry)){                        
+            //finding Field with ID of 1 and marking it as failed validation
+            foreach( $form['fields'] as &$field ) {
+               if ( $field->id == $contact_email['id']) {     //contact_email           
+                    $entryForm = GFAPI::get_form( $entry['form_id']);
+                    $ef_email = get_value_by_label('contact-email', $entryForm,$entry);                                        
+                    $contactEmail = $ef_email['value'];
+                            
+                    if(strtolower($sub_email) != strtolower($contactEmail)){ 
+                        // set the form validation to false
+                        $validation_result['is_valid'] = false;
+                        $field->failed_validation = true;
+                        $field->validation_message = 'Email does not match contact email on the project';
+                    }
+                }
+            }     
+        }else{        
+            // set the form validation to false
+            $validation_result['is_valid'] = false;
+            //finding Field with ID of 1 and marking it as failed validation
+            foreach( $form['fields'] as &$field ) {
+                if ( $field->id == $entryID['id']) {
+                    // set the form validation to false
+                    $validation_result['is_valid'] = false;
+                    $field->failed_validation = true;
+                    $field->validation_message = 'Invalid Project ID';  
+                    break;
+                }
+            }     
+        }
+    }
+     //Assign modified $form object back to the validation result
+    $validation_result['form'] = $form;
+    return $validation_result;
+};
+add_filter( 'gform_pre_render_35', 'populate_html' );
+add_filter( 'gform_pre_render_36', 'populate_html' );
+add_filter( 'gform_pre_render_37', 'populate_html' );
+add_filter( 'gform_pre_render_38', 'populate_html' );
+add_filter( 'gform_pre_render_39', 'populate_html' );
 
-
-//when form 33 is submitted, find the initial formid based on entry id and add the fields to that entry
-add_action( 'gform_after_submission_33', 'GSP_after_submission', 10, 2 );
+function populate_html( $form ) {
+    //this is a 2-page form with the data from page one being displayed in an html field on page 2
+    $current_page = GFFormDisplay::get_current_page( $form['id'] );
+    $html_content = "The information you have submitted is as follows:<br/><ul>";
+    if ( $current_page == 2 ) {       
+       foreach ( $form['fields'] as &$field ) {
+           if($field->inputName=='entry-id'){               
+               $entry_id = rgpost( 'input_' . $field->id );
+           }
+       }
+       
+       $fieldIDarr['project-name']          = 151;
+       $fieldIDarr['short-project-desc']    = 16;
+       $fieldIDarr['exhibit-contain-fire']  = 83;
+       $fieldIDarr['interactive-exhibit']   = 84;
+       $fieldIDarr['fire-safety-issues']    = 85;
+       //find the project name for submitted entry-id
+       $entry = GFAPI::get_entry( $entry_id );
+       foreach ( $form['fields'] as &$field ) {
+           if(isset($fieldIDarr[$field->inputName])){
+               $field->defaultValue = $entry[$fieldIDarr[$field->inputName]];  
+           }           
+       }
+    }
+    
+    return($form);
+}   
+//when form is submitted, find the initial formid based on entry id and add the fields to that entry
+add_action( 'gform_after_submission', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){
     global $wpdb;
-    
-    //what if they submit the form more than once?    
-    $updateEntryID = get_value_by_label('entry-id', $form, $entry);    
-    $newEntryID = $entry['id'];
-    $sql = 'update wp_rg_lead_detail  set lead_id = '.$updateEntryID .
-            ' where lead_id ='. $newEntryID;
-    $wpdb->get_results($sql);
+     
+    $updateEntryID = get_value_by_label('entry-id', $form, $entry);  
+    if($updateEntryID!=''){
+        $newEntryID = $entry['id'];
+        $sql = 'update wp_rg_lead_detail  set lead_id = '.$updateEntryID['value'] .
+                ' where lead_id ='. $newEntryID;
+        $wpdb->get_results($sql);
+    }
 }
 
-//if set, display form 33 fields at the bottom of the page
+/*
+ * This function will display other form fields at the bottom of the entry page
+ * if they are linked to the original entry
+ */
 add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
 function add_main_text_after( $form, $entry) {    
-    $formPullID = 33;
-    $formPull = GFAPI::get_form( $formPullID );
-    $results = get_extra_field_value($entry['id'], $formPullID);
-    if(is_array($results) && !empty($results)){        
-        echo '<table class="widefat fixed entry-detail-view" cellspacing="0">';
-        echo '<td colspan="2" class="entry-view-section-break">'.$formPull['title'].'</td>';
-        
-        foreach($formPull['fields'] as $field){
-            if($field['type']!='html' && $field['type']!='hidden'){
-               echo '<tr><td colspan="2" class="entry-view-field-name">'.$field['label'].'</td></tr>';
-               echo '<tr><td colspan="2" class="entry-view-field-value">'.$results[$field['id']].'</td></tr>';
-            }
-        }        
-        echo '</table>';          
+    $formPullArr = array(34,35,36,37,38,39); //anyway to not hardcode the form id? ALICIA
+    foreach($formPullArr as $formPullID){
+        $formPull = GFAPI::get_form( $formPullID );
+        $results = get_extra_field_value($entry['id'], $formPullID);
+        if(is_array($results) && !empty($results)){        
+            echo '<table class="widefat fixed entry-detail-view" cellspacing="0">';
+            echo '<td colspan="2" class="entry-view-section-break">'.$formPull['title'].'</td>';
+
+            foreach($formPull['fields'] as $field){
+                if($field['type']!='html' && $field['type']!='hidden'){
+                   echo '<tr><td colspan="2" class="entry-view-field-name">'.$field['label'].'</td></tr>';
+                   echo '<tr><td colspan="2" class="entry-view-field-value">'.$results[$field['id']].'</td></tr>';
+                }
+            }        
+            echo '</table>';          
+        }
     }
 }
 
 //=============================================
-// Get a specefic value for an entry using
-// the Parameter Name instead of the id of the form input
+// Return field ID number based on the 
+// the Parameter Name for a specific form
 //=============================================
-function get_value_by_label($key, $form, $entry) {
-   
+function get_value_by_label($key, $form, $entry=array()) {
+    $return = array();
     foreach ($form['fields'] as &$field) {    
-         $lead_key = $field['inputName'];
+        $lead_key = $field['inputName'];
         if ($lead_key == $key) {
-            return $entry[$field['id']];
+            $return['id']    = $field['id'];
+            if(!empty($entry)){
+                $return['value'] = $entry[$field['id']];
+            }else{
+                $return['value']='';
+            }
+            return $return;
         }
     }
     return false;
@@ -1434,7 +1536,6 @@ add_action( 'admin_menu', 'remove_menu_links', 9999 );
 
 /**
  * Redirect gravity form admin pages to the new makerfaire specific admin pages
-
  */
 function redirect_gf_admin_pages(){
     global $pagenow;    

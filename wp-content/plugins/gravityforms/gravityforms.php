@@ -66,7 +66,7 @@ if ( ! defined( 'IS_ADMIN' ) ) {
 	define( 'IS_ADMIN', is_admin() );
 }
 
-define( 'RG_CURRENT_VIEW', RGForms::get( 'view' ) );
+define( 'RG_CURRENT_VIEW', (RGForms::get( 'view' )=='mfentry'?'entry':RGForms::get( 'view' )) );
 define( 'GF_MIN_WP_VERSION', '3.7' );
 define( 'GF_SUPPORTED_WP_VERSION', version_compare( get_bloginfo( 'version' ), GF_MIN_WP_VERSION, '>=' ) );
 

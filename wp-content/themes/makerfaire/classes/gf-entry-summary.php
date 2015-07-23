@@ -76,11 +76,11 @@ if ( isset( $long_description ) ) {
 	</thead>
 	<tbody>
 		<tr>
-			<td style="width:440px; padding:5px;display:block;" valign="top">
+			<td style="width:440px; padding:5px;" valign="top">
 				<a href="<?php echo $photo;?>" class='thickbox'>
 				<img width="400px" src="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" alt="" /></a>
 			</td>
-			<td style="width:340px;display:block;" valign="top">
+			<td style="width:340px;" valign="top">
 				<table>
 					<tr>
 						<td colspan="2">

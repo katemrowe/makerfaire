@@ -1191,28 +1191,6 @@ function gform_addScript($form) {
     return $form;
 }
 
-/*
- * This function checks if entry-id is passed in the URL
- * if it is, then we check if it is valid.  If it is, then the field changes to disabled
- */
-
-/*
-add_filter( 'gform_field_input', 'disable_entry_id', 10, 5 );
-function disable_entry_id(  $input, $field, $value, $lead_id, $form_id ) {
-    if ( $field->inputName == 'entry-id' ) {
-        
-        if($value!=''){
-            //check if entry-id is valid
-            $entry = GFAPI::get_entry( $value );
-            //if entry id is valid, disable the output field
-            if(is_array($entry)){         
-                $input = '<input style="display:block" disabled name="input_2" id="input_33_2" type="text" value="'.$value.'" class="medium " tabindex="1">';
-            }
-        }
-    }
-    return $input;
-}*/
-
 /* This function checks if the entry-id set on the form is valid 
  * If it is, then it compares the entered email to see if it matches the previous 
  * one used on the entry. if it all passes, then they can move to the next step
@@ -1308,41 +1286,6 @@ function GSP_after_submission($entry, $form ){
     // update meta 
     $updateEntryID = get_value_by_label('entry-id', $form, $entry);  
     gform_update_meta( $entry['id'], 'entry-id', $updateEntryID['value'] );
-    
-    /*
-    global $wpdb;
-    if($updateEntryID!=''){
-     
-        $newEntryID = $entry['id'];
-        $sql = 'update wp_rg_lead_detail  set lead_id = '.$updateEntryID['value'] .
-                ' where lead_id ='. $newEntryID;
-        $wpdb->get_results($sql);
-    }*/
-}
-
-/*
- * This function will display other form fields at the bottom of the entry page
- * if they are linked to the original entry
- */
-add_action( 'gform_entry_detail_content_after', 'add_main_text_after', 10, 2 );
-function add_main_text_after( $form, $entry) {    
-    $formPullArr = array(34,35,36,37,38,39); //anyway to not hardcode the form id? ALICIA
-    foreach($formPullArr as $formPullID){
-        $formPull = GFAPI::get_form( $formPullID );
-        $results = get_extra_field_value($entry['id'], $formPullID);
-        if(is_array($results) && !empty($results)){        
-            echo '<table class="widefat fixed entry-detail-view" cellspacing="0">';
-            echo '<td colspan="2" class="entry-view-section-break">'.$formPull['title'].'</td>';
-
-            foreach($formPull['fields'] as $field){
-                if($field['type']!='html' && $field['type']!='hidden'){
-                   echo '<tr><td colspan="2" class="entry-view-field-name">'.$field['label'].'</td></tr>';
-                   echo '<tr><td colspan="2" class="entry-view-field-value">'.$results[$field['id']].'</td></tr>';
-                }
-            }        
-            echo '</table>';          
-        }
-    }
 }
 
 //=============================================
@@ -1364,22 +1307,6 @@ function get_value_by_label($key, $form, $entry=array()) {
         }
     }
     return false;
-}
-
-/* New function to pull data specifically using entry_id, $field_id and $form_id
- * This is needed as we add data to the entry using other forms and the form id does
- * not match the original form id thus the forms could have the same field id's 
- * for different fields
- */
-function get_extra_field_value($entry_id, $form_id){
-    global $wpdb;
-    $results = $wpdb->get_results( 'SELECT * FROM wp_rg_lead_detail '
-            . '                     WHERE lead_id = '.$entry_id.' and form_id='.$form_id, OBJECT );
-    $return = array();
-    foreach($results as $data){
-        $return[$data->field_number] = $data->value;
-    }
-    return $return;
 }
 
 /*

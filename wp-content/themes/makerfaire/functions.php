@@ -1304,16 +1304,20 @@ function populate_html( $form ) {
 }   
 //when form is submitted, find the initial formid based on entry id and add the fields to that entry
 add_action( 'gform_after_submission', 'GSP_after_submission', 10, 2 );
-function GSP_after_submission($entry, $form ){
-    global $wpdb;
-     
+function GSP_after_submission($entry, $form ){    
+    // update meta 
     $updateEntryID = get_value_by_label('entry-id', $form, $entry);  
+    gform_update_meta( $entry['id'], 'entry-id', $updateEntryID['value'] );
+    
+    /*
+    global $wpdb;
     if($updateEntryID!=''){
+     
         $newEntryID = $entry['id'];
         $sql = 'update wp_rg_lead_detail  set lead_id = '.$updateEntryID['value'] .
                 ' where lead_id ='. $newEntryID;
         $wpdb->get_results($sql);
-    }
+    }*/
 }
 
 /*
@@ -1461,7 +1465,21 @@ function custom_entry_meta($entry_meta, $form_id){
   		)
     );
     
+    //create new meta field to hold original entry id
+    $entry_meta['entry-id'] = array(
+        'label' => 'Original Entry ID',        
+        'is_numeric' => true,
+        
+        'is_default_column' => false
+    );
     return $entry_meta;
+}
+
+//set the default value for entry rating 
+function update_entry_ID_meta( $key, $lead, $form ){
+    //default entry-id
+    //$value = '';
+    return $value;
 }
 
 //set the default value for entry rating 

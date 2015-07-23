@@ -212,6 +212,7 @@ $emailto2 = array(
 		"Travis Good" => "travisgood@gmail.com");
 
 $emailtoaliases = array(
+		"3D Printing" => "3dprinting@makermedia.com",
 		"Editors" => "editor@makezine.com",
 		"Maker Relations" => "makers@makerfaire.com",
 		"Marketing" => "marketing@makermedia.com",

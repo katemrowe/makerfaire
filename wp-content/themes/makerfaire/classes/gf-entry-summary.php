@@ -76,11 +76,11 @@ if ( isset( $long_description ) ) {
 	</thead>
 	<tbody>
 		<tr>
-			<td style="width:440px; padding:5px;" valign="top">
+			<td style="width:440px; padding:5px;display:block;" valign="top">
 				<a href="<?php echo $photo;?>" class='thickbox'>
 				<img width="400px" src="<?php echo legacy_get_resized_remote_image_url($photo, 400,400);?>" alt="" /></a>
 			</td>
-			<td style="width:340px" valign="top">
+			<td style="width:340px;display:block;" valign="top">
 				<table>
 					<tr>
 						<td colspan="2">
@@ -302,6 +302,7 @@ Include field IDs:
     <li><a href="#tabs-1">Content</a></li>
     <li><a href="#tabs-2">Logistics/Production</a></li>
     <li><a href="#additional">Additional Information</a></li>
+    <li><a href="#addForms">Additional Forms</a></li>
     <li><a href="#tabs-3">Other Entries</a></li>
   </ul>
   <div id="tabs-1">
@@ -313,6 +314,9 @@ Include field IDs:
   <div id="additional">
     <?php echo displayContent($data['additional'],$lead,$fieldData);?>  
   </div>
+  <div id="addForms">
+      <?php echo getmetaData($entry_id);?>
+  </div>    
   <div id="tabs-3">
     <!-- Additional Entries -->               
     <table width="100%"> 
@@ -384,7 +388,64 @@ function displayContent($content,$lead,$fieldData){
    return $return;
 }
 
+function getmetaData($entry_id){
+    $return = '';
+    
+    $metaData = mf_get_form_meta( 'entry_id',$entry_id );    
+    foreach($metaData as $data){        
+        $entry = GFAPI::get_entry( $data->lead_id );
+        //check if entry-id is valid
+        if(is_array($entry)){         //display entry data  
+            $formPull = GFAPI::get_form( $data->form_id );
+            $return .=  '<h2>'.$formPull['title'].'</h2>';
+            $return .= '<table>';
+            foreach($formPull['fields'] as $formFields){
+                $gwreadonly_enable = (isset($formFields['gwreadonly_enable'])?$formFields['gwreadonly_enable']:0);
+                //exclude page breaks and the entry fields used to verify the entry
+                // and the display only fields from the additional forms
+                if($formFields['type']!='page' &&
+                    $formFields['inputName']!='entry-id' &&     
+                    $formFields['inputName']!='contact-email' &&
+                    $gwreadonly_enable !=1){
+                    
+                    $label = (isset($formFields['adminLabel']) && $formFields['adminLabel']!=''?$formFields['adminLabel']:$formFields['label']);
+                    //field label
+                    $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>';
+                    //fields data
+                    $return .= '<tr><td>';
+                    if(is_array($formFields['inputs'])){
+                      foreach($formFields['inputs'] as $input){
+                          $return .=  (isset($entry[$input['id']])?$entry[$input['id']].' ':'');
+                      }  
+                    }else{                    
+                        $return .=  $entry[$formFields['id']];
+                    }
+                    $return .= '</td></tr>';
+                }
+            }
+            $return .= '</table>';
+        }
+    }        
+   
+   return $return;
+}
 
+// this function returns all entries with a 
+// meta key set to a certain meta value
+function mf_get_form_meta( $meta_key,$meta_value ) {
+	global $wpdb;	
+	$table_name = RGFormsModel::get_lead_meta_table_name();
+        $entry = GFAPI::get_entry( $value );
+                
+        //retrieve the most current records for each additional form/entry id/form_id combination
+        $results  = $wpdb->get_results( $sql = $wpdb->prepare("select * from "
+                . "(SELECT * FROM {$table_name}
+                    WHERE meta_value=%d AND meta_key=%s
+                    order by id desc) custom 
+                group by meta_value, form_id, lead_id", $meta_value, $meta_key));
+        
+	return $results;
+}
 
 
 

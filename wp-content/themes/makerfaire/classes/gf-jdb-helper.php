@@ -329,20 +329,25 @@ class GFJDBHELPER {
 		$return_formtype = 'Other';
 		
 		switch ($formid) {
-			case 0:
+			case 20:
+			case 22:
+			case 25:
 				$return_formtype = 'Exhibit';
 				break;
-			case 0:
+			case 12:
+			case 15:
+			case 31:
+			case 26:
 				$return_formtype = 'Presentation';
 				break;
-			case 0:
+			case 13:
+			case 27:
 				$return_formtype = 'Performance';
 				break;
-			case 0:
+			case 16:
+			case 28:
+			case 29:
 				$return_formtype = 'Sponsor';
-				break;
-			case 0:
-				$return_formtype = 'Show Management';
 				break;
 			default:
 				$return_formtype = 'Other';

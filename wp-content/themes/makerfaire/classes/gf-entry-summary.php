@@ -91,17 +91,17 @@ if ( isset( $long_description ) ) {
 					</tr>
 					<tr>
 
-						<td style="  width: 150px; display: block;" valign="top"><strong>Type:</strong></td>
+						<td style="width: 80px;" valign="top"><strong>Type:</strong></td>
 						<td valign="top"><?php echo esc_attr( ucfirst( $entry_form_type ) ); ?></td>
 					</tr>
 					<tr>
-						<td valign="top"><strong>Status:</strong></td>
+						<td style="width: 80px;" valign="top"><strong>Status:</strong></td>
 						<td valign="top"><?php echo esc_attr( $entry_form_status ); ?></td>
 					</tr>
 					<?php
 							?>
 					<tr>
-						<td valign="top"><strong>Website:</strong></td>
+						<td style="width: 80px;" valign="top"><strong>Website:</strong></td>
 						<td valign="top"><a
 							href="<?php echo esc_url(  $wkey ); ?>" target="_blank"><?php echo esc_url( $wkey ); ?></a></td>
 					</tr>
@@ -113,7 +113,7 @@ if ( isset( $long_description ) ) {
 						</td>
 					</tr>
 					<tr>
-						<td valign="top"><strong>Maker Names:</strong></td>
+						<td style="width: 80px;" valign="top"><strong>Maker Names:</strong></td>
 						<td valign="top"><?php echo !empty($makergroupname) ? $makergroupname.'(Group)</br>' : ''; ?>
                                                 <?php if(!empty($makerPhoto1)){?>  
                                                     <a href="<?php echo $makerPhoto1;?>" class='thickbox'>
@@ -161,7 +161,7 @@ if ( isset( $long_description ) ) {
 </td>
 					</tr>
 					<tr>
-						<td valign="top"><strong>What are your plans:</strong></td>
+						<td style="width: 80px;" valign="top"><strong>What are your plans:</strong></td>
 						
 						
 						<td valign="top">
@@ -186,7 +186,7 @@ if ( isset( $long_description ) ) {
 		</tr>                
 		<tr>
 			<td>
-                            <label ><h2>Email Note To:</h2></label><br />
+                            <label >Email Note To:</label><br />
 				<?php 
 				$emailto1 = array("Alasdair Allan"          => "alasdair@makezine.com",
                                                   "Brian Jepson"            => "bjepson@makermedia.com",

@@ -390,7 +390,7 @@ function displayContent($content,$lead,$fieldData){
 function getmetaData($entry_id){
     $return = '';
     
-    $metaData = mf_get_form_meta( 'entry-id',$entry_id );    
+    $metaData = mf_get_form_meta( 'entry_id',$entry_id );    
     foreach($metaData as $data){        
         $entry = GFAPI::get_entry( $data->lead_id );
         //check if entry-id is valid

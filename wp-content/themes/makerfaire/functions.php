@@ -1285,7 +1285,7 @@ add_action( 'gform_after_submission', 'GSP_after_submission', 10, 2 );
 function GSP_after_submission($entry, $form ){    
     // update meta 
     $updateEntryID = get_value_by_label('entry-id', $form, $entry);  
-    gform_update_meta( $entry['id'], 'entry-id', $updateEntryID['value'] );
+    gform_update_meta( $entry['id'], 'entry_id', $updateEntryID['value'] );
 }
 
 //=============================================
@@ -1393,7 +1393,7 @@ function custom_entry_meta($entry_meta, $form_id){
     );
     
     //create new meta field to hold original entry id
-    $entry_meta['entry-id'] = array(
+    $entry_meta['entry_id'] = array(
         'label' => 'Original Entry ID',        
         'is_numeric' => true,
         
@@ -1404,7 +1404,7 @@ function custom_entry_meta($entry_meta, $form_id){
 
 //set the default value for entry rating 
 function update_entry_ID_meta( $key, $lead, $form ){
-    //default entry-id
+    //default entry_-_id
     //$value = '';
     return $value;
 }

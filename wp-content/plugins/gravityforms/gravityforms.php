@@ -1877,15 +1877,15 @@ class GFForms {
 			return 'notification_list';
 		}
 
-		if ( rgget( 'page' ) == 'gf_entries' && ( ! rgget( 'view' ) || rgget( 'view' ) == 'entries' ) ) {
+		if ( rgget( 'page' ) == 'mf_entries' && ( ! rgget( 'view' ) || rgget( 'view' ) == 'entries' ) ) {
 			return 'entry_list';
 		}
 
-		if ( rgget( 'page' ) == 'gf_entries' && rgget( 'view' ) == 'entry' && isset( $_POST['screen_mode'] ) && $_POST['screen_mode'] == 'edit' ) {
+		if ( rgget( 'page' ) == 'mf_entries' && rgget( 'view' ) == 'mfentry' && isset( $_POST['screen_mode'] ) && $_POST['screen_mode'] == 'edit' ) {
 			return 'entry_detail_edit';
 		}
 
-		if ( rgget( 'page' ) == 'gf_entries' && rgget( 'view' ) == 'entry' ){
+		if ( rgget( 'page' ) == 'mf_entries' && rgget( 'view' ) == 'mfentry' ){
 			return 'entry_detail';
 		}
 

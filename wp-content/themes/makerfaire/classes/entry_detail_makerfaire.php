@@ -433,8 +433,10 @@ class GFEntryDetail {
 				</span>
 				<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
 				 foreach($statuscount as $statuscount)
-                                     if($statuscount['label']=='Proposed' && $statuscount['entries']==100) $goforit=true;
-				 	{?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
+                                     
+				 	{
+                                        if($statuscount['label']=='Proposed' && $statuscount['entries']==100){ $goforit=true;}
+                                     ?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
 					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
 				</span></h2>
 		<?php

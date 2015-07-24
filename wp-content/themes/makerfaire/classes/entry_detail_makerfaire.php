@@ -438,7 +438,7 @@ class GFEntryDetail {
 					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
 				</span></h2>
 		<?php
-                $goforit =true;
+               
                 if($goforit){
                     echo '<h1><span style=" border-image: image-url(\'/ants.gif\') 8 repeat repeat;
     -moz-border-image: image-url(\'\ants.gif\') 1 repeat repeat;

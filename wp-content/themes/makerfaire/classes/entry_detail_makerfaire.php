@@ -432,23 +432,10 @@ class GFEntryDetail {
 				$gf_entry_locking->lock_info( $lead_id ); ?>
 				</span>
 				<?php $statuscount=get_makerfaire_status_counts( $form['id'] );
-				 foreach($statuscount as $statuscount)
-                                     
-				 	{
-                                        if($statuscount['label']=='Proposed' && $statuscount['entries']==100){ $goforit=true;}
+				 foreach($statuscount as $statuscount){                                        
                                      ?><span class="gf_admin_page_formname"><?php echo  $statuscount['label'];?>
 					(<?php echo  $statuscount['entries'];?>)</span><?php }?>
 				</span></h2>
-		<?php
-               
-                if($goforit){
-                    echo '<h1><span style=" border-image: image-url(\'/ants.gif\') 8 repeat repeat;
-    -moz-border-image: image-url(\'\ants.gif\') 1 repeat repeat;
-    -webkit-border-image: image-url(\'\ants.gif\') 1 repeat repeat;    border-style: dashed;
-    padding: 5px;">You only have 100 left!! Congrats from Rich and Alicia!!</span></h1>';                
-                    
-                }
-                ?>
 		<?php if ( isset( $_GET['pos'] ) ) { ?>
 			<div class="gf_entry_detail_pagination">
 				<ul>

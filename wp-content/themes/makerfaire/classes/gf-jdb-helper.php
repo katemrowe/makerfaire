@@ -354,6 +354,7 @@ class GFJDBHELPER {
 				break;
 		}
 		
+		return $return_formtype;
 	}
 	
 }

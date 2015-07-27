@@ -228,7 +228,7 @@ class GFJDBHELPER {
 				'under_18' => (isset($lead['295']) && $lead['295'] == "Yes") ? 'NO'  : 'YES',
 				'CS_ID' => $lead_id,
 				'status' => isset($lead['303']) ? $lead['303']  : '',
-				'waste' => (isset($lead['317']) && $lead['317'] == "Yes") ? 'NO'  : 'YES',
+				'waste' => (isset($lead['317']) && $lead['317'] == "Yes") ?  'YES' : 'NO',
 				'waste_detail' => isset($lead['318']) ? $lead['318']  : '',
 				'learn_to' => isset($lead['319']) ? $lead['319']  : '',
 				//'m_maker_name' => isset($lead['96']) ? $lead['96']  : '',

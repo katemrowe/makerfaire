@@ -567,7 +567,6 @@ if (!empty($mfAction))
                 case 'update_ticket_code' :
 			$ticket_code = $_POST['entry_ticket_code'];
                         $entry_info_entry_id=$_POST['entry_info_entry_id'];
-                        echo $entry_info_entry_id. ' '.$ticket_code;
                         mf_update_entry_field($entry_info_entry_id,'308',$ticket_code);
 			break;    
 		case 'update_entry_schedule' :

@@ -154,7 +154,8 @@ class GFJDBHELPER {
 			//}
 
 		$jdb_entry_data = array(
-				'form_type' => self::gravityforms_form_type_jdb($form_id), //(Form ID)
+				'form_type' => $form_id, //(Form ID)
+				'return_form_type' => self::gravityforms_form_type_jdb($form_id), //(Form ID)
 				'noise' => isset($lead['72']) ? $lead['72'] : '',
 				'radio' => isset($lead['78']) ? $lead['78'] : '',
 				'hands_on' => isset($lead['66']) ? $lead['66'] : '',

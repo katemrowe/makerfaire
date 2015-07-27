@@ -176,13 +176,13 @@ function mf_sidebar_entry_info($form_id, $lead) {
 }
 
 function mf_sidebar_entry_status($form_id, $lead) {
+    echo ('<input type="hidden" name="entry_info_entry_id" value="'.$lead['id'].'">');
     if ( current_user_can( 'update_entry_status') ) {                                             
 	// Load Fields to show on entry info
 	$form = GFAPI::get_form($form_id);
 
 	$field303=RGFormsModel::get_field($form,'303');
-	
-	echo ('<input type="hidden" name="entry_info_entry_id" value="'.$lead['id'].'">');
+		
 	echo ('<label class="detail-label" for="entry_info_status_change">Status:</label>');
 	echo ('<select name="entry_info_status_change">');
 	foreach( $field303['choices'] as $choice )

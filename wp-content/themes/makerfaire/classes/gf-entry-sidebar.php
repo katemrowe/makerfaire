@@ -70,6 +70,18 @@ function mf_sidebar_entry_locations($form_id, $lead) {
 
 }
 
+//creates box to updat the ticket code field 308
+function mf_sidebar_entry_ticket($form_id, $lead) {
+    $field308=RGFormsModel::get_field($form,'308');
+    echo ('<h4><label class="detail-label">Ticket Code:</label></h4>');
+    echo ('<input name="entry_ticket_code" id="entry_ticket_code type="text" style="margin-bottom: 4px;" value="'.$lead['308'].'" />');
+    
+    // Create Update button for ticket code
+    $entry_sidebar_button = '<input type="submit" name="update_ticket_code" value="Update Ticket Code" class="button"
+		 style="width:auto;padding-bottom:2px;" 
+		onclick="jQuery(\'#action\').val(\'update_ticket_code\');"/>';
+	echo $entry_sidebar_button;    
+}
 function mf_sidebar_entry_schedule($form_id, $lead) {
 	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Schedule:</label></h4>');
@@ -426,26 +438,33 @@ if ($mode == 'view') {
 		?>
 		<div class='postbox' style="float:none;padding: 10px;">
 		<?php
-		// Load Entry Sidebar details
+		// Load Entry Sidebar details: schedule
 		mf_sidebar_entry_schedule( $form['id'], $lead );
 		?>
-			</div>
-			
+		</div>
 		<div class='postbox' style="float:none;padding: 10px;">
 		<?php
-		// Load Entry Sidebar details
-		mf_sidebar_entry_locations( $form['id'], $lead );
+		// Load Entry Sidebar details: Ticket Code (Field 308)		
+                mf_sidebar_entry_ticket( $form['id'], $lead );
 		?>
-			</div>
+		</div>	
+		<div class='postbox' style="float:none;padding: 10px;">
+                    <?php
+                    // Load Entry Sidebar details: Faire locations
+                    mf_sidebar_entry_locations( $form['id'], $lead );
+                    ?>
+		</div>
 			
 		<div class='postbox' style="float:none;padding: 10px;">				
                 <?php
+                    //load 'Change Form' form
                     mf_sidebar_forms($form['id'], $lead );
                 ?>
                 </div>
 
 		<div class='postbox' style="float:none;padding: 10px;">				
                 <?php
+                    //load Duplicate/Copy Entry form
                     mf_sidebar_dup($form['id'], $lead );
                 ?>
                 </div>
@@ -545,6 +564,12 @@ if (!empty($mfAction))
 		case 'update_entry_status' :
 			set_entry_status($lead,$form);
 			break;
+                case 'update_ticket_code' :
+			$ticket_code = $_POST['entry_ticket_code'];
+                        $entry_info_entry_id=$_POST['entry_info_entry_id'];
+                        echo $entry_info_entry_id. ' '.$ticket_code;
+                        mf_update_entry_field($entry_info_entry_id,'308',$ticket_code);
+			break;    
 		case 'update_entry_schedule' :
 			set_entry_schedule($lead,$form);
 			break;

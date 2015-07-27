@@ -235,9 +235,13 @@ function buildFaireDrop($wp_admin_bar){
  */
 add_action( 'gform_after_submission', 'post_to_jdb', 10, 2 );
 function post_to_jdb( $entry, $form ) {
-	error_log('$gravityforms_send_entry_to_jdb:'.$entry['id']);
-	$result = GFJDBHELPER::gravityforms_send_entry_to_jdb($entry['id']);
-	error_log('GFJDBHELPER:result:'.$result);
+	// Allowed forms array
+	$jdb_sync_forms = array(25, 26, 27, 28, 29);
+	if (in_array($form['id'], $jdb_sync_forms)) {
+		error_log('$gravityforms_send_entry_to_jdb:'.$entry['id']);
+		$result = GFJDBHELPER::gravityforms_send_entry_to_jdb($entry['id']);
+		error_log('GFJDBHELPER:result:'.$result);
+	}
 }
 
 /*

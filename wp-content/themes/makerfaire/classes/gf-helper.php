@@ -103,7 +103,7 @@ if (isset($menu_locations[ $location_id ])) {
 				'title' => $menu_item->title,
 				'href'  => $menu_item->url,
 				'meta'  => array( 'class' => 'my-toolbar-page' ),
-				'parent' => 'mf_admin_parent_bayarea'
+				'parent' => 'mf_admin_parent_BA15'
 			);
 		
 			$wp_admin_bar->add_node( $args );
@@ -133,7 +133,7 @@ if (isset($menu_locations[ $location_id ])) {
                                     'title' => $menu_item->title,
                                     'href'  => $menu_item->url,
                                     'meta'  => array( 'class' => 'my-toolbar-page' ),
-                                    'parent' => 'mf_admin_parent_newyork'
+                                    'parent' => 'mf_admin_parent_NY15'
                             );
 
                             $wp_admin_bar->add_node( $args );
@@ -150,10 +150,7 @@ if (isset($menu_locations[ $location_id ])) {
 		// If the ID of this menu is the ID associated with the location we're searching for
 		if ($menu->term_id == $menu_locations[ $location_id ]) {
 			// This is the correct menu
-			$menu_items = wp_get_nav_menu_items($menu);
-
-			
-
+			$menu_items = wp_get_nav_menu_items($menu);			
 			foreach ( (array) $menu_items as $key => $menu_item ) {
 				$args = array(
 						'id'    => $menu_item->object_id,

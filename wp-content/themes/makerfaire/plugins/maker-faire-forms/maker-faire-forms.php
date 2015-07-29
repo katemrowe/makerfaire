@@ -5381,7 +5381,7 @@ wp_dropdown_categories ( array (
 			$results_on_send = self::gravityforms_send_record_to_jdb ( $entry_id, $jdb_encoded_entry );
 			echo 'ResultsOnSend:'.print_r($results_on_send);
 			$results_on_send_prepared = '"' . $mysqli->real_escape_string ( $results_on_send ) . '"';
-			// self::gravityforms_sync_all_entry_notes($entry_id);
+		    GFJDBHELPER::gravityforms_sync_all_entry_notes($entry_id);
 			// MySqli Insert Query
 			$insert_row = $mysqli->query ( "INSERT INTO `wp_rg_lead_jdb_sync`(`lead_id`, `synccontents`, `jdb_response`) VALUES ($entry_id,$synccontents, $results_on_send_prepared)" );
 			if ($insert_row) {
@@ -5393,7 +5393,7 @@ wp_dropdown_categories ( array (
 			;
 		}
 	}
-	public static function gravityforms_sync_all_entry_notes($entry_id) {
+	/*public static function gravityforms_sync_all_entry_notes($entry_id) {
 		$mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
 		if ($mysqli->connect_errno) {
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
@@ -5406,7 +5406,8 @@ wp_dropdown_categories ( array (
 	
 			$results_on_send = self::gravityforms_send_note_to_jdb ( $entry_id, $row[1], $row [0] );
 		}
-	}
+	}*/
+
 	public static function gravityforms_to_jdb_record($lead, $lead_id, $form_id) {
 		// load form
 		$form = GFAPI::get_form ( $form_id );

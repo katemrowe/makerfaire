@@ -9,15 +9,18 @@ jQuery( document ).ready(function() {
 				var disablesizes = (checked1 == 'checked' || checked2=='checked');
 				if (disablesizes)
 					{
-				jQuery('input[value="10\' x 20\'"]').prop("checked",false)
+				jQuery('input[value="10\' x 10\'"]').prop("checked",false);
+                                jQuery('input[value="10\' x 20\'"]').prop("checked",false);                                
 				jQuery('input[value="Other"]').prop("checked",false);
 				
-				jQuery('input[value="10\' x 20\'"]').prop("disabled",true);
+				jQuery('input[value="10\' x 10\'"]').prop("disabled",true);
+                                jQuery('input[value="10\' x 20\'"]').prop("disabled",true);
 				jQuery('input[value="Other"]').prop("disabled",true);
 					} 
 				else 
 				{
-					jQuery('input[value="10\' x 20\'"]').prop("disabled",false);
+					jQuery('input[value="10\' x 10\'"]').prop("disabled",false);
+                                        jQuery('input[value="10\' x 20\'"]').prop("disabled",false);
 					jQuery('input[value="Other"]').prop("disabled",false);
 				}
 				
@@ -31,7 +34,7 @@ jQuery( document ).ready(function() {
 					var disablesizes = (checked1 == 'checked');
 					if (disablesizes)
 						{
-							jQuery('input[value="45 minutes"]').prop("checked",false)
+							jQuery('input[value="45 minutes"]').prop("checked",false);
 							jQuery('input[value="45 minutes"]').prop("disabled",true);
 						} 
 					else 

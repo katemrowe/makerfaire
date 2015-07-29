@@ -407,20 +407,57 @@ function getmetaData($entry_id){
                     $formFields['inputName']!='entry-id' &&     
                     $formFields['inputName']!='contact-email' &&
                     $gwreadonly_enable !=1){
-                    
-                    $label = (isset($formFields['adminLabel']) && $formFields['adminLabel']!=''?$formFields['adminLabel']:$formFields['label']);
-                    //field label
-                    $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>';
-                    //fields data
-                    $return .= '<tr><td>';
-                    if(is_array($formFields['inputs'])){
-                      foreach($formFields['inputs'] as $input){
-                          $return .=  (isset($entry[$input['id']])?$entry[$input['id']].' ':'');
-                      }  
-                    }else{                    
-                        $return .=  $entry[$formFields['id']];
-                    }
-                    $return .= '</td></tr>';
+
+                    $display_empty_fields = false;
+                    switch ( RGFormsModel::get_input_type( $formFields ) ) {
+                        case 'section' :
+                                if ( ! GFCommon::is_section_empty( $formFields, $formPull, $entry ) || $display_empty_fields ) {
+                                        $count ++;
+                                        $is_last = $count >= $field_count ? true : false;
+                                        ?>
+                                        <tr>
+                                                <td colspan="2" class="entry-view-section-break<?php echo $is_last ? ' lastrow' : '' ?>"><?php echo esc_html( GFCommon::get_label( $formFields ) ) ?></td>
+                                        </tr>
+                                <?php
+                                }
+                                break;
+
+                        case 'captcha':
+                        case 'html':
+                        case 'password':
+                        case 'page':
+                                //ignore captcha, html, password, page field
+                                break;
+
+                        default :
+                                //ignore product fields as they will be grouped together at the end of the grid
+                                if ( GFCommon::is_product_field( $formFields->type ) ) {
+                                        $has_product_fields = true;
+                                        continue;
+                                }
+
+                                $value         = RGFormsModel::get_lead_field_value( $entry, $formFields );
+                                $display_value = GFCommon::get_lead_field_display( $formFields, $value, $entry['currency'] );
+                                $display_value = apply_filters( 'gform_entry_field_value', $display_value, $formFields, $entry, $formPull );
+
+                                if ( $display_empty_fields || ! empty( $display_value ) || $display_value === '0' ) {       
+                                        $display_value = empty( $display_value ) && $display_value !== '0' ? '&nbsp;' : $display_value;
+
+                                        $content = '
+                                            <tr>
+                                                <td colspan="2" class="entry-view-field-name">' . esc_html( GFCommon::get_label( $formFields ) ) . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="entry-view-field-value">' . $display_value . '</td>
+                                            </tr>';
+
+                                        $content = apply_filters( 'gform_field_content', $content, $formFields, $value, $entry['id'], $formPull['id'] );
+
+                                        $return .= $content;
+
+                                }
+                                break;
+				}
                 }
             }
             $return .= '</table>';
@@ -435,7 +472,7 @@ function getmetaData($entry_id){
 function mf_get_form_meta( $meta_key,$meta_value ) {
 	global $wpdb;	
 	$table_name = RGFormsModel::get_lead_meta_table_name();
-        $entry = GFAPI::get_entry( $value );
+        $entry = GFAPI::get_entry( $meta_value );
                 
         //retrieve the most current records for each additional form/entry id/form_id combination
         $results  = $wpdb->get_results( $sql = $wpdb->prepare("select * from "

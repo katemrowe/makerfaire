@@ -5365,16 +5365,18 @@ wp_dropdown_categories ( array (
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		
-		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (25, 26, 27, 28, 29) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') and id in (select lead_id from wp_rg_lead_detail where field_number = 303)  LIMIT 50" );
+		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (25, 26, 27, 28, 29) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') and id in (select lead_id from wp_rg_lead_detail where field_number = 303)  LIMIT 1" );
 		
 		while ( $row = $result->fetch_row () ) {
 			$entry_id = $row [0];
 			echo 'Processing:'.print_r($row);
 			$entry = GFAPI::get_entry ( $row [0] );
+			$form_id= $row [1];
 			//echo '$$$entry:'.print_r($entry);
-				
-			// $jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
-			$jdb_encoded_entry = http_build_query ( GFJDBHELPER::gravityforms_to_jdb_record ( $entry, $row [0], $row [1] ) );
+			$form = GFAPI::get_form ( $form_id );
+			
+		   // $jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
+			$jdb_encoded_entry = http_build_query ( GFJDBHELPER::gravityforms_to_jdb_record ( $entry, $entry_id, $form ) );
 			//echo '$$jdb_encoded_entry:'.print_r($jdb_encoded_entry);
 			$synccontents = '"' . $mysqli->real_escape_string ( $jdb_encoded_entry ) . '"';
 			//echo '$synccontents:'.print_r($synccontents);

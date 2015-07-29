@@ -5374,7 +5374,7 @@ wp_dropdown_categories ( array (
 			//echo '$$$entry:'.print_r($entry);
 				
 			// $jdb_encoded_entry = gravityforms_to_jdb_record($entry,$row[0],$row[1]);
-			$jdb_encoded_entry = http_build_query ( self::gravityforms_to_jdb_record ( $entry, $row [0], $row [1] ) );
+			$jdb_encoded_entry = http_build_query ( GFJDBHELPER::gravityforms_to_jdb_record ( $entry, $row [0], $row [1] ) );
 			//echo '$$jdb_encoded_entry:'.print_r($jdb_encoded_entry);
 			$synccontents = '"' . $mysqli->real_escape_string ( $jdb_encoded_entry ) . '"';
 			//echo '$synccontents:'.print_r($synccontents);

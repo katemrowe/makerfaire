@@ -4720,7 +4720,7 @@ wp_dropdown_categories ( array (
 		}
 		
 		$result = $mysqli->query ( "Select  a.id,b.value from wp_rg_lead a join wp_rg_lead_detail b on a.id=b.lead_id and b.field_number='303'
-				where  a.status <> 'trash' and a.form_id in (20,13,12,16,17) 
+				where  a.status <> 'trash' and a.form_id in (25,26,27,29,28,30,31) 
 				 and a.id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_status_sync')
 				 and  a.id in (select lead_id from wp_rg_lead_detail where field_number = 303)  limit 100
 		" );

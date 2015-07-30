@@ -4724,6 +4724,7 @@ wp_dropdown_categories ( array (
 				 and a.id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_status_sync')
 				 and  a.id in (select lead_id from wp_rg_lead_detail where field_number = 303)  limit 100
 		" );
+                $success = 0;
 		while ( $row = $result->fetch_row () ) {
 			echo ('Synching Status:EntryID:'. $row [0].':Status:'.$row[1]);
 			

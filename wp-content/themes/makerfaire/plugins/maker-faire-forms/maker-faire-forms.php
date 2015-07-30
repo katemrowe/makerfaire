@@ -4735,7 +4735,7 @@ wp_dropdown_categories ( array (
 				$success ++;
 			echo ('Synching Notes:EntryID:'. $row [0].':Status:'.$row[1]);
 				
-			$this->gravityforms_sync_all_entry_notes ( $row [0] );
+			GFJDBHELPER::gravityforms_sync_all_entry_notes ( $row [0] );
 			
 		}
 		return $success;

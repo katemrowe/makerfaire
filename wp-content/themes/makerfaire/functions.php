@@ -1504,3 +1504,101 @@ function redirect_gf_admin_pages(){
 
 add_action('admin_menu', 'redirect_gf_admin_pages');
 
+//add new merge tag: user-schedule
+add_filter('gform_custom_merge_tags', 'entry_schedule_custom_merge_tags', 10, 4);
+add_filter('gform_replace_merge_tags', 'entry_schedule_replace_merge_tags', 10, 7);
+add_filter('gform_field_content', 'entry_schedule_field_content', 10, 5);
+
+/**
+* add custom merge tags
+* @param array $merge_tags
+* @param int $form_id
+* @param array $fields
+* @param int $element_id
+* @return array
+*/
+function entry_schedule_custom_merge_tags($merge_tags, $form_id, $fields, $element_id) {
+    $merge_tags[] = array('label' => 'Entry Schedule', 'tag' => '{entry_schedule}');
+
+    return $merge_tags;
+}
+
+/**
+* replace custom merge tags in notifications
+* @param string $text
+* @param array $form
+* @param array $lead
+* @param bool $url_encode
+* @param bool $esc_html
+* @param bool $nl2br
+* @param string $format
+* @return string
+*/
+function entry_schedule_replace_merge_tags($text, $form, $lead, $url_encode, $esc_html, $nl2br, $format) {    
+    $schedule = get_schedule($lead);   
+    $text = str_replace('{entry_schedule}', $schedule, $text);
+
+    return $text;
+}
+
+/**
+* replace custom merge tags in field content
+* @param string $field_content
+* @param array $field
+* @param string $value
+* @param int $lead_id
+* @param int $form_id
+* @return string
+*/
+function entry_schedule_field_content($field_content, $field, $value, $lead_id, $form_id) {
+    if (strpos($field_content, '{entry_schedule}') !== false) {
+        $lead = GFAPI::get_entry( $lead_id ); 
+        $schedule = get_schedule($lead);
+
+        $field_content = str_replace('{entry_schedule}', $schedule, $field_content);
+    }
+
+    return $field_content;
+}
+
+/* Return schedule for lead */
+function get_schedule($lead){
+    
+     global $wpdb;
+    $entry_id = $lead['id'];
+    //get scheduling information for this lead
+    $sql = "SELECT  area.area,subarea.subarea,subarea.nicename,
+                    schedule.start_dt, schedule.end_dt,
+                    (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
+                        from    wp_mf_maker maker, 
+                                wp_mf_maker_to_entity maker_to_entity
+                        where   schedule.entry_id           = maker_to_entity.entity_id  AND
+                                maker_to_entity.maker_id    = maker.maker_id AND
+                                maker_to_entity.maker_type != 'Contact' 
+                        group by maker.lead_id
+                    )  as makers_list        
+
+            FROM    wp_mf_schedule schedule, 
+                    wp_mf_entity entity, 
+                    wp_mf_location location, 
+                    wp_mf_faire_subarea subarea, 
+                    wp_mf_faire_area area
+
+            where   entity.lead_id          = $entry_id 
+                    AND schedule.entry_id   = entity.lead_id 
+                    and location.entry_id   = schedule.entry_id
+                    and subarea.id          = location.subarea_id
+                    and area.id             = subarea.area_id";   
+    $schedule = '';
+    foreach($wpdb->get_results($sql) as $row){    
+        $subarea = ($row->nicename!=''&&$row->nicename!=''?$row->nicename:$row->subarea);
+        $start_dt = strtotime($row->start_dt);
+        $end_dt = strtotime($row->end_dt);
+        $schedule .= $row->area.' '.$subarea;
+        $schedule .= '<br/>';
+        $schedule .= '<span>'.date("l, n/j/y, g:i A",$start_dt).' to '.date("l, n/j/y, g:i A",$end_dt).'</span><br/>';
+        $schedule .= 'Makers:'.$row->makers_list.'<br/><br/>';
+    }
+    
+    return $schedule;
+}

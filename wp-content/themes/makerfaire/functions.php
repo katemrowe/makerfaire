@@ -1597,7 +1597,7 @@ function get_schedule($lead){
         $schedule .= $row->area.' '.$subarea;
         $schedule .= '<br/>';
         $schedule .= '<span>'.date("l, n/j/y, g:i A",$start_dt).' to '.date("l, n/j/y, g:i A",$end_dt).'</span><br/>';
-        $schedule .= 'Makers:'.$row->makers_list.'<br/><br/>';
+        $schedule .= '<br/><br/>';
     }
     
     return $schedule;

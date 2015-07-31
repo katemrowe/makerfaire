@@ -105,9 +105,10 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 		$start_dt = strtotime( $row[4]);
 		$end_dt = strtotime($row[5]);
 		$schedule_entry_id = $row[0];
-		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;" name="delete_entry_id[]"></input>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'<br />');
+		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input><span>'.date("l, n/j/y, g:i A",$start_dt).'(PT) to '.date("l, n/j/y, g:i A",$end_dt).'(PT)</span><br />');
 		
 	}
+        echo '<br/>';
 	$entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"
 			 style="width:auto;padding-bottom:2px;"
 			onclick="jQuery(\'#action\').val(\'delete_entry_schedule\');"/><br />';

@@ -97,8 +97,11 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
                                     `wp_mf_schedule`.`faire`,
                                     `wp_mf_schedule`.`start_dt`,
                                     `wp_mf_schedule`.`end_dt`,
-                                    `wp_mf_schedule`.`day`
-                                FROM `wp_mf_schedule` where entry_id=$entry_id")  or trigger_error($mysqli->error);
+                                    `wp_mf_schedule`.`day`,
+                                    wp_mf_faire.time_zone
+                                FROM `wp_mf_schedule` 
+                                join wp_mf_faire on wp_mf_schedule.faire = wp_mf_faire.faire
+                                where entry_id=$entry_id")  or trigger_error($mysqli->error);
 	if ($result)
 	{
 	while($row = $result->fetch_row())
@@ -106,8 +109,12 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 		$start_dt = strtotime( $row[4]);
 		$end_dt = strtotime($row[5]);
 		$schedule_entry_id = $row[0];
+                //set time zone for faire
+                $dateTime = new DateTime(); 
+                $dateTime->setTimeZone(new DateTimeZone($row[7])); 
+                $timeZone = $dateTime->format('T'); 
 		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input>'
-                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'(PT) to '.date("l, n/j/y, g:i A",$end_dt).'</span><br />');
+                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'('.$timeZone.') to '.date("l, n/j/y, g:i A",$end_dt).'('.$timeZone.')</span><br />');
 		
 	}
         echo '<br/>';

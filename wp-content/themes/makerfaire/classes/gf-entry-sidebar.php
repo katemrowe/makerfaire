@@ -132,7 +132,7 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
         $entry_sidebar_button = '<input type="submit" name="send_conf_letter" value="Send Confirmation Letter" class="button"
 			 style="width:auto;padding-bottom:2px;"
 			onclick="jQuery(\'#action\').val(\'send_conf_letter\');"/><br />';
-	echo $entry_sidebar_button;	         				
+	echo $entry_sidebar_button;	         			
 }
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
 function mf_sidebar_entry_info($form_id, $lead) {

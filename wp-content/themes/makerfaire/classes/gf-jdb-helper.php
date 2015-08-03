@@ -5,21 +5,34 @@ if ( ! class_exists( 'GFJDBHELPER' ) ) {
 
 class GFJDBHELPER {
 	/*
-	 * Function to send notes directly to JDB.
+	 	Function to send notes directly to JDB.
+	  	note             	(the text)
+		app_id          	(not sure what this is.  ignore it)
+		CS_ID          		(obviously)
+		note_id         	(a unique identifier so we only add a note once)
+		date_posted  		(original date of creation on the WP side format: yyyy-mm-dd hh:mm:ss )
+		author           	(name of the poster)
+		email           	(email of the poster)
 	*/
 	public static function gravityforms_send_note_to_jdb( $id = 0, $noteid=0, $note = '' , $note_username='', $note_datecreated='') {
 		$local_server = array( 'localhost', 'make.com', 'makerfaire.local', 'staging.makerfaire.com' );
 		$remote_post_url = 'http://db.makerfaire.com/addExhibitNote';
 		if ( isset( $_SERVER['HTTP_HOST'] ) && in_array( $_SERVER['HTTP_HOST'], $local_server ) )
 			$remote_post_url= 'http://makerfaire.local/wp-content/allpostdata.php';
-		$encoded_array = http_build_query(  array( 'CS_ID' => intval( $id ), 'note_id' => intval( $noteid ), 'note' => esc_attr( $note ), 'user' => esc_attr($note_username), 'datecreated' => esc_attr($note_datecreated)));
+		$encoded_array = http_build_query(  
+				array( 'CS_ID' => intval( $id ), 
+						'note_id' => intval( $noteid ), 
+						'note' => esc_attr( $note ), 
+						'author' => esc_attr($note_username), 
+						'date_posted' => esc_attr(date("Y-m-d H:i:s", strtotime($note_datecreated)))
+				)
+		);
 	
 		$post_body = array(
 				'method' => 'POST',
 				'timeout' => 45,
 				'headers' => array(),
 				'body' => $encoded_array);
-	
 		$res  = wp_remote_post( $remote_post_url, $post_body  );
 		$er  = 0;
 	
@@ -309,7 +322,7 @@ class GFJDBHELPER {
 				'timeout' => 45,
 				'headers' => array(),
 				'body' => $encoded_array);
-	
+		print_r($encoded_array);
 		$res  = wp_remote_post( $remote_post_url, $post_body  );
 		$er  = 0;
 	

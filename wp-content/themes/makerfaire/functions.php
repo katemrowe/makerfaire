@@ -1568,24 +1568,13 @@ function get_schedule($lead){
     $entry_id = $lead['id'];
     //get scheduling information for this lead
     $sql = "SELECT  area.area,subarea.subarea,subarea.nicename,
-                    schedule.start_dt, schedule.end_dt,
-                    (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
-                        from    wp_mf_maker maker, 
-                                wp_mf_maker_to_entity maker_to_entity
-                        where   schedule.entry_id           = maker_to_entity.entity_id  AND
-                                maker_to_entity.maker_id    = maker.maker_id AND
-                                maker_to_entity.maker_type != 'Contact' 
-                        group by maker.lead_id
-                    )  as makers_list        
-
-            FROM    wp_mf_schedule schedule, 
-                    wp_mf_entity entity, 
+                    schedule.start_dt, schedule.end_dt                    
+            FROM    wp_mf_schedule schedule,                     
                     wp_mf_location location, 
                     wp_mf_faire_subarea subarea, 
                     wp_mf_faire_area area
 
-            where   entity.lead_id          = $entry_id 
-                    AND schedule.entry_id   = entity.lead_id 
+            where       schedule.entry_id   = $entry_id 
                     and location.entry_id   = schedule.entry_id
                     and subarea.id          = location.subarea_id
                     and area.id             = subarea.area_id";   

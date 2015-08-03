@@ -125,10 +125,13 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 	$entry_sidebar_button = '<input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
 			 style="width:auto;padding-bottom:2px;"
 			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/><br />';
-			echo $entry_sidebar_button;	
-	
-				
-
+	echo $entry_sidebar_button;	
+        
+        //button to trigger send confirmation letter event
+        $entry_sidebar_button = '<input type="submit" name="send_conf_letter" value="Send Confirmation Letter" class="button"
+			 style="width:auto;padding-bottom:2px;"
+			onclick="jQuery(\'#action\').val(\'send_conf_letter\');"/><br />';
+	echo $entry_sidebar_button;	         				
 }
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
 function mf_sidebar_entry_info($form_id, $lead) {
@@ -594,7 +597,13 @@ if (!empty($mfAction))
 		case 'sync_status_jdb' :
 			GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$entry_status);
 			break;
-			
+                case 'send_conf_letter' :                                                            
+                        $notifications_to_send = GFCommon::get_notifications_to_send( 'confirmation_letter', $form, $lead );
+                        foreach ( $notifications_to_send as $notification ) {
+                                GFCommon::send_notification( $notification, $form, $lead );
+                        }
+                        mf_add_note( $entry_info_entry_id, 'Confirmation Letter sent'); 
+                        break;
 		//Sidebar Note Add
 		case 'add_note_sidebar' :
 			add_note_sidebar($lead, $form);

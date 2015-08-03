@@ -1602,3 +1602,10 @@ function get_schedule($lead){
     
     return $schedule;
 }
+
+//add new Notification event of - send confirmation letter
+add_filter( 'gform_notification_events', 'add_event' );
+function add_event( $notification_events ) {
+    $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
+    return $notification_events;
+}

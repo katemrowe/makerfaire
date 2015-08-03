@@ -377,12 +377,14 @@ function displayContent($content,$lead,$fieldData){
    $return = '';
    $return .= '<table>';
     foreach($content as $fieldID){
-        $field = $fieldData[$fieldID];
-        $label = $fieldData[$fieldID]['label'];
-        $value = (isset($lead[$fieldID])?$lead[$fieldID]:'');
-        $value =  setTaxName($value, $field, $lead, array());
-        $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>'.
-                    '<tr><td>'.$value.'</td></tr>';
+        if(isset($fieldData[$fieldID])){
+            $field = $fieldData[$fieldID];
+            $label = $fieldData[$fieldID]['label'];
+            $value = (isset($lead[$fieldID])?$lead[$fieldID]:'');
+            $value =  setTaxName($value, $field, $lead, array());
+            $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>'.
+                        '<tr><td>'.$value.'</td></tr>';
+        }
    }
    $return .= '</table>';
    return $return;

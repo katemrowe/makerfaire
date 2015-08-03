@@ -1504,7 +1504,7 @@ function redirect_gf_admin_pages(){
 
 add_action('admin_menu', 'redirect_gf_admin_pages');
 
-//add new merge tag: user-schedule
+//add new merge tag: user-schedule 
 add_filter('gform_custom_merge_tags', 'entry_schedule_custom_merge_tags', 10, 4);
 add_filter('gform_replace_merge_tags', 'entry_schedule_replace_merge_tags', 10, 7);
 add_filter('gform_field_content', 'entry_schedule_field_content', 10, 5);

@@ -70,8 +70,9 @@ function mf_sidebar_entry_locations($form_id, $lead) {
 
 }
 
-//creates box to updat the ticket code field 308
+//creates box to update the ticket code field 308
 function mf_sidebar_entry_ticket($form_id, $lead) {
+    $form = GFAPI::get_form($form_id);
     $field308=RGFormsModel::get_field($form,'308');
     echo ('<h4><label class="detail-label">Ticket Code:</label></h4>');
     echo ('<input name="entry_ticket_code" id="entry_ticket_code type="text" style="margin-bottom: 4px;" value="'.$lead['308'].'" />');

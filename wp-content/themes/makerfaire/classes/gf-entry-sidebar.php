@@ -106,7 +106,8 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 		$start_dt = strtotime( $row[4]);
 		$end_dt = strtotime($row[5]);
 		$schedule_entry_id = $row[0];
-		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input><span>'.date("l, n/j/y, g:i A",$start_dt).'(PT) to '.date("l, n/j/y, g:i A",$end_dt).'(PT)</span><br />');
+		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input>'
+                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'(PT) to '.date("l, n/j/y, g:i A",$end_dt).'</span><br />');
 		
 	}
         echo '<br/>';
@@ -118,13 +119,13 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 	// Load Fields to show on entry info
 		echo ('<h5>Add to Schedule:</h5>
 			start: <input type="text" value="" name="datetimepickerstart" id="datetimepickerstart"><br />
-			end: <input type="text" value="" name="datetimepickerend" id="datetimepickerend"><br />
+			end:   <input type="text" value="" name="datetimepickerend" id="datetimepickerend"><br />
 		
 			');
 	
 	// Create Update button for sidebar entry management
 	$entry_sidebar_button = '<input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
-			 style="width:auto;padding-bottom:2px;"
+			 style="width:auto;padding-bottom:2px;    margin: 10px 0;"
 			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/><br />';
 	echo $entry_sidebar_button;	
         
@@ -598,7 +599,10 @@ if (!empty($mfAction))
 		case 'sync_status_jdb' :
 			GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$entry_status);
 			break;
-                case 'send_conf_letter' :                                                            
+                case 'send_conf_letter' :    
+                    //first update the schedule if one is set
+                        set_entry_schedule($lead,$form);
+                    //then send confirmation letter
                         $notifications_to_send = GFCommon::get_notifications_to_send( 'confirmation_letter', $form, $lead );
                         foreach ( $notifications_to_send as $notification ) {
                                 GFCommon::send_notification( $notification, $form, $lead );
@@ -837,32 +841,33 @@ function set_form_id($lead,$form){
 
 /* Modify Set Entry Status */
 function set_entry_schedule($lead,$form){
-	$entry_schedule_change=$_POST['entry_schedule_change'];
-	$entry_schedule_start=($_POST['datetimepickerstart']);
-	$entry_schedule_end=($_POST['datetimepickerend']);
-	$entry_info_entry_id=$_POST['entry_info_entry_id'];
+	$entry_schedule_change = (isset($_POST['entry_schedule_change']) ? $_POST['entry_schedule_change'] : '');
+	$entry_schedule_start  = (isset($_POST['datetimepickerstart'])   ? $_POST['datetimepickerstart']   : '');
+	$entry_schedule_end    = (isset($_POST['datetimepickerend'])     ? $_POST['datetimepickerend']     : '');
+	$entry_info_entry_id   = (isset($_POST['entry_info_entry_id'])   ? $_POST['entry_info_entry_id']   : '');
 	$form_id=$lead['form_id'];
-	
-	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
-	if ($mysqli->connect_errno) {
-		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-	}
-	$insert_query = sprintf("INSERT INTO `wp_mf_schedule`
-		(`entry_id`,
-		`faire`,
-		`start_dt`,
-		`end_dt`)
-	SELECT $entry_info_entry_id,wp_mf_faire.faire,'$entry_schedule_start', '$entry_schedule_end'
-		from wp_mf_faire where find_in_set($form_id,form_ids) > 0
-		");
-	//MySqli Insert Query
-	$insert_row = $mysqli->query($insert_query);
-	if($insert_row){
-		echo 'Success! <br />';
-	}else{
-		echo ('Error :'.$insert_query.':('. $mysqli->errno .') '. $mysqli->error);
-	};
-	
+        
+	if($entry_schedule_start!='' && $entry_schedule_end!=''){
+            $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
+            if ($mysqli->connect_errno) {
+                    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            }
+            $insert_query = sprintf("INSERT INTO `wp_mf_schedule`
+                    (`entry_id`,
+                    `faire`,
+                    `start_dt`,
+                    `end_dt`)
+            SELECT $entry_info_entry_id,wp_mf_faire.faire,'$entry_schedule_start', '$entry_schedule_end'
+                    from wp_mf_faire where find_in_set($form_id,form_ids) > 0
+                    ");
+            //MySqli Insert Query
+            $insert_row = $mysqli->query($insert_query);
+            if($insert_row){
+                    echo 'Success! <br />';
+            }else{
+                    echo ('Error :'.$insert_query.':('. $mysqli->errno .') '. $mysqli->error);
+            };
+        }    
 }
 
 /* Modify Set Entry Status */

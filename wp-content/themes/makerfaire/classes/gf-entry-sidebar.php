@@ -116,7 +116,7 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
                 $dateTime->setTimeZone(new DateTimeZone($row[7])); 
                 $timeZone = $dateTime->format('T'); 
 		echo ('<div style="padding:5px 0;    border-bottom: thin solid lightgray;">'
-                        . ' <input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left;8px 5px;" name="delete_entry_id[]"></input>'
+                        . ' <input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 8px 5px;float:left;" name="delete_entry_id[]"></input>'
                         . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'('.$timeZone.') to '.date("l, n/j/y, g:i A",$end_dt).'('.$timeZone.')</span><br /></div>');		
 	}
         echo '<br/>';

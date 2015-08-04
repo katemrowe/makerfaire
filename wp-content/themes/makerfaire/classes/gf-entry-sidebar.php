@@ -105,25 +105,42 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
        
 	if ($result)
 	{
-	while($row = $result->fetch_row())
-	{
-		$start_dt = strtotime( $row[4]);
-		$end_dt = strtotime($row[5]);
-		$schedule_entry_id = $row[0];
-		
-                //set time zone for faire
-                $dateTime = new DateTime(); 
-                $dateTime->setTimeZone(new DateTimeZone($row[7])); 
-                $timeZone = $dateTime->format('T'); 
-		echo ('<div style="padding:5px 0;    border-bottom: thin solid lightgray;">'
-                        . ' <input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 8px 5px;float:left;" name="delete_entry_id[]"></input>'
-                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'('.$timeZone.') to '.date("l, n/j/y, g:i A",$end_dt).'('.$timeZone.')</span><br /></div>');		
-	}
-        echo '<br/>';
-	$entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"
-			 style="width:auto;padding-bottom:2px;"
-			onclick="jQuery(\'#action\').val(\'delete_entry_schedule\');"/><br />';
-	echo $entry_delete_button;
+            $scheduleArr = array();
+            while($row = $result->fetch_row())
+            {           	    
+                $start_dt = strtotime( $row[4]);
+                $end_dt = strtotime($row[5]);
+                $schedule_entry_id = $row[0];
+                $date = date("n/j/y",$start_dt);
+                $timeZone = $row[7];
+                 //build array 
+                $scheduleArr[$date][$schedule_entry_id] = array($start_dt,$end_dt,$timeZone);   
+            }
+            
+            //let's loop thru the schedule array now
+            foreach($scheduleArr as $date=>$schedule){                
+                echo date('l n/j/y',strtotime($date)).'<br/>';
+                echo '<div style="padding:0 15px;">';
+                foreach($schedule as $schedule_entry_id=>$schedData){
+                    $start_dt   = $schedData[0];
+                    $end_dt     = $schedData[1];
+                    $db_tz      = $schedData[2];
+                    
+                    //set time zone for faire
+                    $dateTime = new DateTime(); 
+                   $dateTime->setTimeZone(new DateTimeZone($db_tz)); 
+                   $timeZone = $dateTime->format('T'); 
+                   echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left;" name="delete_entry_id[]"></input>'
+                           . '<span style="line-height: 1.3em;padding: 3px;float: left;">'.date("g:i A",$start_dt).' - '.date("g:i A",$end_dt).' ('.$timeZone.')</span><div class="clear"></div>');		                                              
+                }
+                echo '</div>';
+                echo '<br/>';
+            }
+            echo '<br/>';
+            $entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"
+                             style="width:auto;padding-bottom:2px;"
+                            onclick="jQuery(\'#action\').val(\'delete_entry_schedule\');"/><br />';
+            echo $entry_delete_button;
 	}
 	// Load Fields to show on entry info
 		echo ('<h5>Add to Schedule:</h5>

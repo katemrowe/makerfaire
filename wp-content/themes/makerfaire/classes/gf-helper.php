@@ -170,12 +170,16 @@ if (isset($menu_locations[ $location_id ])) {
 function buildFaireDrop($wp_admin_bar){
     //build faire drop downs
     global $wpdb;
-    $sql = "select * from wp_mf_faire ORDER BY `wp_mf_faire`.`start_dt` DESC";                            
+    $sql = "select *, count(*) as count from wp_mf_faire, wp_rg_lead 
+                where FIND_IN_SET (wp_rg_lead.form_id,wp_mf_faire.form_ids)> 0 and
+                        wp_rg_lead.status = 'active'
+                group by wp_mf_faire.faire
+                ORDER BY `wp_mf_faire`.`start_dt` DESC";                            
     foreach($wpdb->get_results($sql) as $row){                                 
         //parent menu            
         $args = array(
         'id'    => 'mf_admin_parent_'.$row->faire,
-        'title' => $row->faire_location,
+        'title' => $row->faire_location.' ('.$row->count.')',
         'meta'  => array( 'class' => 'my-toolbar-page' ),
         'href'  => admin_url( 'admin.php' ) . '?page=mf_entries&faire='.$row->faire,    
         'parent' => 'mf_admin_parent'

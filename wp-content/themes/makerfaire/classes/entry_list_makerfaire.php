@@ -1666,10 +1666,14 @@ class GFEntryList {
         
         public static function return_navigation(){
             global $wpdb;
-            $sql = "select * from wp_mf_faire ORDER BY `wp_mf_faire`.`start_dt` DESC";                
+            $sql = "select *, count(*) as count from wp_mf_faire, wp_rg_lead 
+                where FIND_IN_SET (wp_rg_lead.form_id,wp_mf_faire.form_ids)> 0 and
+                        wp_rg_lead.status = 'active'
+                group by wp_mf_faire.faire
+                ORDER BY `wp_mf_faire`.`start_dt` DESC";                
             $nav ='<nav id="faire_nav"><ul>';
                 foreach($wpdb->get_results($sql) as $row){  
-                    $nav .= '<li><a href="'.admin_url( 'admin.php' ) . '?page=mf_entries&faire='.$row->faire.'">'.$row->faire_name.'</a>';                
+                    $nav .= '<li><a href="'.admin_url( 'admin.php' ) . '?page=mf_entries&faire='.$row->faire.'">'.$row->faire_name.' ('.$row->count.')</a>';                
                     
                     $formSQL = "
                     SELECT form_id,form.title,count(*) as count

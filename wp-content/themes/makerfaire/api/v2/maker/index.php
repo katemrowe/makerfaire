@@ -37,7 +37,7 @@ if ( $type == 'maker' ) {
                                       wp_mf_maker_to_entity.entity_id = wp_mf_entity.lead_id AND
                                       wp_mf_entity.status = 'Accepted' AND
                                       LOWER(wp_mf_faire.faire) = '$faire' AND
-                                      INSTR (wp_mf_faire.form_ids,form_id)> 0 AND                                      
+                                      FIND_IN_SET (form_id,wp_mf_faire.form_ids)> 0 and
                                       wp_mf_maker_to_entity.maker_type !='contact'");
 	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );

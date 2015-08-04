@@ -19,14 +19,14 @@ jQuery( document ).ready(function() {
 
 		    
 		    jQuery('#datetimepickerstart').datetimepicker({
-		    	formatTime:'H:i',
+		    	formatTime:'g:i a',
 		    	formatDate:'d.m.Y',
-		    	defaultTime:'10:00'
+		    	defaultTime:'10:00 am'
 		    });
 		    jQuery('#datetimepickerend').datetimepicker({
-		    	formatTime:'H:i',
+		    	formatTime:'g:i a',
 		    	formatDate:'d.m.Y',
-		    	defaultTime:'10:00'
+		    	defaultTime:'10:00 am'
 		    });
 		    
  	

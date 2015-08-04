@@ -109,17 +109,15 @@ function mf_sidebar_entry_schedule($form_id, $lead) {
 		$start_dt = strtotime( $row[4]);
 		$end_dt = strtotime($row[5]);
 		$schedule_entry_id = $row[0];
-<<<<<<< HEAD
+
 		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input><span>'.date("l, n/j/y, g:i A",$start_dt).'(PT) to '.date("l, n/j/y, g:i A",$end_dt).'(PT)</span><br />');
-=======
+
                 //set time zone for faire
                 $dateTime = new DateTime(); 
                 $dateTime->setTimeZone(new DateTimeZone($row[7])); 
                 $timeZone = $dateTime->format('T'); 
 		echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left" name="delete_entry_id[]"></input>'
-                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'('.$timeZone.') to '.date("l, n/j/y, g:i A",$end_dt).'('.$timeZone.')</span><br />');
->>>>>>> schedule
-		
+                        . '<span style="line-height: 1.3em;">'.date("l, n/j/y, g:i A",$start_dt).'('.$timeZone.') to '.date("l, n/j/y, g:i A",$end_dt).'('.$timeZone.')</span><br />');		
 	}
         echo '<br/>';
 	$entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"

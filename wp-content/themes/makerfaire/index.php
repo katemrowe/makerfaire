@@ -56,8 +56,10 @@
 
 			<?php else: ?>
 
-				<p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
-
+				<p><?php _e('Sorry, no posts matched your criteria .'); ?></p>
+                                <script>
+                                ga('send', 'event', '404', document.location.href + document.location.search, document.referrer);
+                                </script>
 			<?php endif; ?>
 
 		</div><!--Content-->

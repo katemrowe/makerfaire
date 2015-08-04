@@ -60,9 +60,9 @@ function mf_display_schedule_by_area( $atts ) {
     //build array with the return data
     foreach($scheduleArray as $data){
         $subarea = ($data['nicename']!='' || $data['nicename']!=NULL?$data['nicename']:$data['subarea']);
-        $schedule[$subarea ]['days'][$data['day']]['entries'][$data['id']] = $data;
+        $schedule[$subarea ]['days'][$data['day']]['entries'][] = $data;
     }
-    //var_dump($schedule);
+   
     $dropdownLi = '';
     $scheduleData = '';
     foreach($schedule as $subarea=>$scheduleArea){
@@ -335,6 +335,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 
 	// Put the application into our list of schedules
 	array_push( $schedules, $schedule );
+
 }
 return $schedules;
 }

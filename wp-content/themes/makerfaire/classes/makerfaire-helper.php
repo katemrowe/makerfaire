@@ -50,7 +50,103 @@ function my_query_vars( $query_vars ){
  * @param  array $atts The attributes being passed through the shortcode
  * @return string
  */
-function mf_display_schedule_by_area( $atts ) {
+function mf_display_schedule_by_area( $atts ) {    
+    global $wpdb;
+    
+    // Build list of locations. Only display those locations that have exhibits scheduled
+    $faire = $atts['faire'];        
+    $scheduleArray = get_mf_schedule_by_faire ($faire);
+     
+    //build array with the return data
+    foreach($scheduleArray as $data){
+        $subarea = ($data['nicename']!='' || $data['nicename']!=NULL?$data['nicename']:$data['subarea']);
+        $schedule[$subarea ]['days'][$data['day']]['entries'][$data['id']] = $data;
+    }
+    //var_dump($schedule);
+    $dropdownLi = '';
+    $scheduleData = '';
+    foreach($schedule as $subarea=>$scheduleArea){
+        //add to the li drop down        
+        $href = strtolower(preg_replace("/[^A-Za-z0-9]/", "", $subarea));       
+        $active=($href=='centerstage'?'active':'');
+        $dropdownLi .= '<li class="'.$active.'"><a href="#'.$href.'" data-toggle="tab">'.$subarea.'</a></li>';
+        //begin building the schedule Data for this area 
+        $scheduleData .= '<div class="tab-pane '.$active.'" id="'.$href.'">';
+
+        //each area contains a row with tabs for each date, print icon and a tabable div for each day
+        $scheduleData .= '<div class="row padtop" style="height:58px;overflow:hidden;margin:0;">'
+            . '<ul id="tabs" class="nav nav-tabs">||navtabs||</ul>'
+            . '<div class="pull-right" style="position:relative; top:-31px;">'
+            . '    <a href="#" onclick="window.print();return false;"><img src="' . get_stylesheet_directory_uri() . '/images/print-ico.png" alt="Print this schedule" /></a>'
+            . '</div></div>';  
+        $scheduleData .= ' <div class="tab-content">';
+        $navTabs = '';
+        foreach($scheduleArea['days'] as $dayKey =>$dayData){
+            $day = strtolower($dayKey);    
+            
+            $dayhref = strtolower(preg_replace("/[^A-Za-z0-9]/", "", $subarea.$day));        
+            $navTabs .= '<li class="'.($day=='saturday'?'active':'').'"><a class="text-capitalize" href="#'.$dayhref.'" data-toggle="tab">'.esc_attr( $day ).'</a></li>';                                               
+            // Start the day's schedule
+            $scheduleData .= '<div id="' . $dayhref. '" class="tab-pane fade in '.($day=='saturday'?'active':'').'">';
+            $scheduleData .= '<table id="' . esc_attr( $day ) . '" class="table table-bordered table-schedule">';                
+            if(isset($dayData['entries'])){                
+                foreach($dayData['entries'] as $entry){                         
+                    $scheduleData .= buildScheduleData($entry);  
+                }
+            }
+            $scheduleData .= '</table></div>';                                    
+        }        
+        $scheduleData = str_replace('||navtabs||', $navTabs, $scheduleData);    
+        $scheduleData .= '</div>'; //close .tab-content
+        $scheduleData .= '</div>'; //close .tab-pane
+    }
+    
+    
+    $scheduleTab ='<div class="tabbable tabs-left" id="scheduleTab">
+	<div class="tab-content">' . $scheduleData .'</div></div>';
+    $dropdown_menu = '<ul class="dropdown-menu" style="border: thin solid #00bef3; width: 100%;  text-align: left;font-size:20px;"> '.
+            $dropdownLi.'</ul>';
+    $output = '<div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle" style="border: thin solid #00bef3; width: 100%; background: none; color: #00bef3; text-align: left;font-size:20px;" type="button" data-toggle="dropdown">
+	<span class="pickText pull-left" >Center Stage</span>
+	<span class="glyphicon glyphicon-chevron-down pull-right" ></span></button>'.$dropdown_menu.'</div>'.$scheduleTab;
+    
+    return $output;
+}
+function buildScheduleData($scheduleditem){                              	            
+    $event_id = $scheduleditem['id'];
+    $output ='';
+    $output .= '<tr>';
+    $output .= '<td class="dateTime col-xs-2 col-sm-3 col-md-3 col-lg-3">';
+    $output .= '<h4>' . esc_html($scheduleditem['day'] ) . '</h4>';
+    $output .= '<p><span class="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; </span>' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
+
+    if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
+        $output .= '<div class="pull-left">';
+        // We may want to over ride the photo of an application on the schedule page by checking if there is a featured image on the event item
+        if (  $scheduleditem['thumb_img_url'] ) {
+                $output .= '<a class="thumbnail" href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['thumb_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '"></a>';
+        }else {
+                $output .= '<a class="thumbnail" href="/maker/entry/' .  $scheduleditem['id'] . '"><img src="' . legacy_get_resized_remote_image_url( $scheduleditem['large_img_url'], 140, 140 ) . '" alt="' . esc_attr(  $scheduleditem['thumb_img_url'] ) . '"></a>';
+        }
+        $output .= '</div>';
+    }
+    $output .= '</td><td>';
+    $output .= '<h4><a href="/maker/entry/' .  $scheduleditem['id'] . '">' . $scheduleditem['name']  . '</a></h4>';
+
+    // Presenter Name(s)
+    $output .= '<h4 class="maker-name">' . $scheduleditem['maker_list'] . '</h4>';
+    // Application Descriptions
+    $description =  $scheduleditem['project_description'];
+    if ( ! empty( $description ) )
+            $output .=   $description ;
+
+    $output .= '</td>';
+    $output .= '</tr>';
+
+    return $output;
+}
+function mf_display_schedule_by_area_old( $atts ) {
 	global $mfform;
 
 	// Get the faire date array. If the
@@ -151,14 +247,15 @@ function mf_display_schedule_by_area( $atts ) {
 }
 add_shortcode('mf_schedule_by_area', 'mf_display_schedule_by_area');
 
-function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
-{
+function get_mf_schedule_by_faire ($faire, $day='', $area='', $subarea=''){
+    $faire = strtoupper($faire);
 	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
 
-        $select_query ="SELECT  entity.lead_id as entry_id, DAYNAME(schedule.start_dt) as day,
+        $select_query ="SELECT  area.area,subarea.subarea,subarea.nicename,
+                                entity.lead_id as entry_id, DAYNAME(schedule.start_dt) as day,
                                 entity.project_photo as photo, schedule.start_dt, schedule.end_dt, 
                                 entity.presentation_title, entity.desc_short as description,  
                                 (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
@@ -182,11 +279,10 @@ function get_mf_schedule_by_faire ($faire, $day, $area, $subarea)
                                 and location.entry_id   = schedule.entry_id
                                 and subarea.id          = location.subarea_id
                                 and area.id             = subarea.area_id
-                                and schedule.faire      = '".$faire."' 
-                                and DAYNAME(schedule.start_dt) = '".$day."'
-                                and area.area           = '".$area."'
-                                and subarea.subarea     = '".$subarea."'
-                        ORDER BY    schedule.location_id  DESC, 
+                                and schedule.faire      = '".$faire."' ".                                
+                                //and area.area           = '".$area."'
+                                //and (subarea.subarea     = '".$subarea."' or subarea.nicename     = '".$subarea."')
+                       " ORDER BY    schedule.location_id  DESC, 
                                     schedule.start_dt ASC";
 
 $mysqli->query("SET NAMES 'utf8'");
@@ -204,6 +300,8 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	$start    = strtotime($row['start_dt']);
 	$stop     = strtotime($row['end_dt']);
 
+        $schedule['nicename'] = $row['nicename'];
+        $schedule['subarea'] = $row['subarea'];
 	// REQUIRED: Schedule ID
 	$schedule['id'] = $entry_id;
 	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';

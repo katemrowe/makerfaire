@@ -5367,7 +5367,7 @@ wp_dropdown_categories ( array (
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		
-		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (25, 26, 27, 28, 29) and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') and id in (select lead_id from wp_rg_lead_detail where field_number = 303)  LIMIT 50" );
+		$result = $mysqli->query ( "Select  id,form_id from wp_rg_lead where  status <> 'trash'  and form_id in (25,26,27,29,28,30,31)     and id not in (select lead_id from wp_rg_lead_meta where meta_key='mf_jdb_sync') and id in (select lead_id from wp_rg_lead_detail where field_number = 303)  LIMIT 50" );
 		
 		while ( $row = $result->fetch_row () ) {
 			$entry_id = $row [0];

@@ -98,17 +98,17 @@ class GFEntryList {
                     foreach($_GET['filterField'] as $key=>$value){
                         $filterValues = explode("|",$value);
                         $key             = $filterValues[0];
-                        $search_operator = $filterValues[1];
+                        $search_operFF   = $filterValues[1];
                         $val             = $filterValues[2];     
                         //let's check if an entry ID was entered in the 'All form fields' filter
                         if($key==0 && is_numeric($val)){
                             $entry = GFAPI::get_entry( $val );
                             if(is_array($entry)){
                                 $key = 'entry_id';
-                                $search_operator = 'is';
+                                $search_operFF = 'is';
                             }
                         }
-			$filter_operator = empty( $search_operator ) ? 'is' : $search_operator;
+			$filter_operator = empty( $search_operFF ) ? 'is' : $search_operFF;
 
 			$field = GFFormsModel::get_field( $form, $key );
 			if ( $field ) {
@@ -343,7 +343,8 @@ class GFEntryList {
 					'value'    => $search,
 				),
 			)
-		)
+		);
+            
 		?>
 
 		<script type="text/javascript">

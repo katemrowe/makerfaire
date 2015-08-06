@@ -84,82 +84,119 @@ function mf_sidebar_entry_ticket($form_id, $lead) {
 	echo $entry_sidebar_button;    
 }
 function mf_sidebar_entry_schedule($form_id, $lead) {
+    global $wpdb;
 	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Schedule:</label></h4>');
-	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
-	if ($mysqli->connect_errno) {
-		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-	}
+    //first, let's display any schedules already entered for this entry
 	$entry_id=$lead['id'];
-	$result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
-                                    `wp_mf_schedule`.`entry_id`,
-                                    `wp_mf_schedule`.`location_id`,
-                                    `wp_mf_schedule`.`faire`,
-                                    `wp_mf_schedule`.`start_dt`,
-                                    `wp_mf_schedule`.`end_dt`,
-                                    `wp_mf_schedule`.`day`,
-                                    wp_mf_faire.time_zone
-                                FROM `wp_mf_schedule` 
-                                join wp_mf_faire on wp_mf_schedule.faire = wp_mf_faire.faire
-                                where entry_id=$entry_id")  or trigger_error($mysqli->error);
+        
+	$sql="SELECT `wp_mf_schedule`.`ID`, `wp_mf_schedule`.`entry_id`, "
+               . "     (select location.location "
+                . "         from wp_mf_location location, wp_mf_faire_subarea subarea, wp_mf_faire_area area "
+                . "         where location.entry_id = `wp_mf_schedule`.`entry_id` "
+                . "         and wp_mf_schedule.location_id = location.ID "
+                . "         and location.subarea_id = subarea.ID"
+                . "         and subarea.area_id = area.ID) as location, "
+                . "     (select area.area "
+                . "         from wp_mf_location location, wp_mf_faire_subarea subarea, wp_mf_faire_area area "
+                . "         where location.entry_id = `wp_mf_schedule`.`entry_id` "
+                . "         and wp_mf_schedule.location_id = location.ID "
+                . "         and location.subarea_id = subarea.ID"
+                . "         and subarea.area_id = area.ID) as area, "
+                . "     (select subarea.subarea "
+                . "         from wp_mf_location location, wp_mf_faire_subarea subarea "
+                . "         where location.entry_id = `wp_mf_schedule`.`entry_id` "
+                . "         and wp_mf_schedule.location_id = location.ID and location.subarea_id = subarea.ID) as subarea, "
+                . "   `wp_mf_schedule`.`faire`, `wp_mf_schedule`.`start_dt`, `wp_mf_schedule`.`end_dt`, `wp_mf_schedule`.`day`, wp_mf_faire.time_zone "
+                . " FROM `wp_mf_schedule` "
+                . " join wp_mf_faire on wp_mf_schedule.faire = wp_mf_faire.faire "
+                . " where wp_mf_schedule.entry_id=".$entry_id." order by subarea ASC, start_dt ASC";
        
-	if ($result)
-	{
-            $scheduleArr = array();
-            while($row = $result->fetch_row())
-            {           	    
-                $start_dt = strtotime( $row[4]);
-                $end_dt = strtotime($row[5]);
-                $schedule_entry_id = $row[0];
-                $date = date("n/j/y",$start_dt);
-                $timeZone = $row[7];
-                 //build array 
-                $scheduleArr[$date][$schedule_entry_id] = array($start_dt,$end_dt,$timeZone);   
-            }
+	
+        $scheduleArr = array();
+        foreach($wpdb->get_results($sql,ARRAY_A) as $row){    
+            //order entries by subarea(stage), then date
+            $stage = ($row['subarea'] != NULL ? $row['area'].' - '.$row['subarea']: '');                        
+            if($row['location']!='')    $stage .= ' ('.$row['location'].')';
+            $start_dt = strtotime( $row['start_dt']);
+            $end_dt = strtotime($row['end_dt']);
+            $schedule_entry_id = $row['ID'];
+            $date = date("n/j/y",$start_dt);            
+            $timeZone = $row['time_zone'];
             
+             //build array 
+            $schedules[$stage][$date][$schedule_entry_id] = array($start_dt,$end_dt,$timeZone);   
+        }
+
+        //make sure there is data to display
+        if($wpdb->num_rows !=0){
             //let's loop thru the schedule array now
-            foreach($scheduleArr as $date=>$schedule){                
-                echo date('l n/j/y',strtotime($date)).'<br/>';
-                echo '<div style="padding:0 15px;">';
-                foreach($schedule as $schedule_entry_id=>$schedData){
-                    $start_dt   = $schedData[0];
-                    $end_dt     = $schedData[1];
-                    $db_tz      = $schedData[2];
-                    
-                    //set time zone for faire
-                    $dateTime = new DateTime(); 
-                   $dateTime->setTimeZone(new DateTimeZone($db_tz)); 
-                   $timeZone = $dateTime->format('T'); 
-                   echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left;" name="delete_entry_id[]"></input>'
-                           . '<span style="line-height: 1.3em;padding: 3px;float: left;">'.date("g:i A",$start_dt).' - '.date("g:i A",$end_dt).' ('.$timeZone.')</span><div class="clear"></div>');		                                              
+            foreach($schedules as $stage=>$scheduleArr){
+                echo ($stage!=''&&$stage!=NULL?'<u>'.$stage.'</u><br/>':'');                
+                foreach($scheduleArr as $date=>$schedule){                
+                    echo '<div>'.date('l n/j/y',strtotime($date)).'<br/>';
+                    echo '<div class="tab">';
+                    foreach($schedule as $schedule_entry_id=>$schedData){
+                        $start_dt   = $schedData[0];
+                        $end_dt     = $schedData[1];
+                        $db_tz      = $schedData[2];
+
+                        //set time zone for faire
+                       $dateTime = new DateTime(); 
+                       $dateTime->setTimeZone(new DateTimeZone($db_tz)); 
+                       $timeZone = $dateTime->format('T'); 
+                       echo ('<input type="checkbox" value="'.$schedule_entry_id.'" style="margin: 3px;float:left;" name="delete_entry_id[]"></input>'
+                               . '<span style="line-height: 1.3em;padding: 3px;float: left;">'.date("g:i A",$start_dt).' - '.date("g:i A",$end_dt).' ('.$timeZone.')</span><div class="clear"></div>');		                                              
+                    }
+                    echo '</div></div>';
+                    echo '<br/>';
                 }
-                echo '</div>';
-                echo '<br/>';
             }
             echo '<br/>';
+            
             $entry_delete_button = '<input type="submit" name="delete_entry_schedule[]" value="Delete Selected" class="button"
                              style="width:auto;padding-bottom:2px;"
                             onclick="jQuery(\'#action\').val(\'delete_entry_schedule\');"/><br />';
             echo $entry_delete_button;
-	}
-	// Load Fields to show on entry info
-		echo ('<h5>Add to Schedule:</h5>
-			start: <input type="text" value="" name="datetimepickerstart" id="datetimepickerstart"><br />
-			end:   <input type="text" value="" name="datetimepickerend" id="datetimepickerend"><br />
-		
-			');
-	
-	// Create Update button for sidebar entry management
-	$entry_sidebar_button = '<input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
-			 style="width:auto;padding-bottom:2px;    margin: 10px 0;"
-			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/><br />';
-	echo $entry_sidebar_button;	
+        }
         
+	// Set up the Add to Schedule Section
+        echo ('<h4 class="topBorder">Add to Schedule:</h4>');
+        
+        $locSql = "SELECT area.area, subarea.subarea, subarea.nicename
+                    FROM wp_mf_faire faire, wp_mf_faire_area area, wp_mf_faire_subarea subarea 
+                    where FIND_IN_SET($form_id,faire.form_ids) and faire.ID = area.faire_id and subarea.area_id = area.ID
+                    order by area,subarea";
+
+	echo ('Subarea <select style="max-width:100%" name="entry_location_subarea_change">');
+        echo '<option value="none">None</option>';
+	foreach($wpdb->get_results($locSql,ARRAY_A) as $row){ 
+		$area_option = (strlen($row['area']) > 0) ? ' ('.$row['area'].')' : '' ;
+		$subarea_option = ($row['nicename']!=''?$row['nicename']:$row['subarea']);
+		echo '<option value="'.$subarea_option.'">'.$row['area'].' - '.$subarea_option.'</option>';
+	}
+        echo("</select><br />");
+        
+	echo 'Location Code: (optional) <input type="text" name="update_entry_location_code" id="update_entry_location_code" /><br/>';
+        
+        // Load Fields to show on entry info
+        echo '<div style="padding:15px 0;width:40px;float:left">Start: </div><div style="float:left"><input type="text" value="" name="datetimepickerstart" id="datetimepickerstart"></div>';
+        echo '<div class="clear" style="padding:15px 0;width:40px;float:left">End:</div>
+              <div style="float:left"><input type="text" value="" name="datetimepickerend" id="datetimepickerend"></div>
+              <div class="clear"></div>';
+
+	// Create Update button for sidebar entry management
+	echo '<div style="padding:15px 0;width:40px;float:left">&nbsp;</div>
+                <input type="submit" name="update_entry_schedule" value="Update Schedule" class="button"
+			 style="width:auto;padding-bottom:2px;    margin: 10px 0;"
+			onclick="jQuery(\'#action\').val(\'update_entry_schedule\');"/><br />';	
+        echo '  <div class="clear"></div>';
         //button to trigger send confirmation letter event
-        $entry_sidebar_button = '<input type="submit" name="send_conf_letter" value="Send Confirmation Letter" class="button"
+        echo '<div style="padding:15px 0;width:40px;float:left">&nbsp;</div>
+                <input type="submit" name="send_conf_letter" value="Send Confirmation Letter" class="button"
 			 style="width:auto;padding-bottom:2px;"
-			onclick="jQuery(\'#action\').val(\'send_conf_letter\');"/><br />';
-	echo $entry_sidebar_button;	         			
+			onclick="jQuery(\'#action\').val(\'send_conf_letter\');"/>';
+	echo '  <div class="clear"></div>';         			
 }
 /* This is where we run code on the entry info screen.  Logic for action handling goes here */
 function mf_sidebar_entry_info($form_id, $lead) {
@@ -483,7 +520,7 @@ if ($mode == 'view') {
 		<div class='postbox' style="float:none;padding: 10px;">
                     <?php
                     // Load Entry Sidebar details: Faire locations
-                    mf_sidebar_entry_locations( $form['id'], $lead );
+                    //mf_sidebar_entry_locations( $form['id'], $lead );
                     ?>
 		</div>
 			
@@ -779,7 +816,7 @@ function duplicate_entry_id($lead,$form){
         $current_lead   = $wpdb->get_results($wpdb->prepare("SELECT * FROM $lead_table          WHERE      id=%d", $current_entry_id));
         $current_fields = $wpdb->get_results($wpdb->prepare("SELECT wp_rg_lead_detail.field_number, wp_rg_lead_detail.value, wp_rg_lead_detail_long.value as long_detail FROM $lead_detail_table left outer join wp_rg_lead_detail_long on  wp_rg_lead_detail_long.lead_detail_id = wp_rg_lead_detail.id WHERE lead_id=%d", $current_entry_id));                
 
-        //insert new lead
+        // new lead
         $user_id = $current_user && $current_user->ID ? $current_user->ID : 'NULL';
         $user_agent = GFCommon::truncate_url($_SERVER["HTTP_USER_AGENT"], 250);
         $currency = GFCommon::get_currency();
@@ -871,8 +908,18 @@ function set_entry_schedule($lead,$form){
 	$entry_schedule_start  = (isset($_POST['datetimepickerstart'])   ? $_POST['datetimepickerstart']   : '');
 	$entry_schedule_end    = (isset($_POST['datetimepickerend'])     ? $_POST['datetimepickerend']     : '');
 	$entry_info_entry_id   = (isset($_POST['entry_info_entry_id'])   ? $_POST['entry_info_entry_id']   : '');
+        
+        //location fields
+        $entry_location_subarea_change = (isset($_POST['entry_location_subarea_change']) ? $_POST['entry_location_subarea_change'] : '');
+                
 	$form_id=$lead['form_id'];
         
+        //set the location
+        $location_id = 'NULL';
+        if($entry_location_subarea_change!='none'){
+           set_entry_location($lead,$form,$location_id);     
+        }
+       
 	if($entry_schedule_start!='' && $entry_schedule_end!=''){
             $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
             if ($mysqli->connect_errno) {
@@ -880,12 +927,14 @@ function set_entry_schedule($lead,$form){
             }
             $insert_query = sprintf("INSERT INTO `wp_mf_schedule`
                     (`entry_id`,
+                    location_id,
                     `faire`,
                     `start_dt`,
                     `end_dt`)
-            SELECT $entry_info_entry_id,wp_mf_faire.faire,'$entry_schedule_start', '$entry_schedule_end'
+            SELECT $entry_info_entry_id,$location_id,wp_mf_faire.faire,'$entry_schedule_start', '$entry_schedule_end'
                     from wp_mf_faire where find_in_set($form_id,form_ids) > 0
                     ");
+            
             //MySqli Insert Query
             $insert_row = $mysqli->query($insert_query);
             if($insert_row){
@@ -921,7 +970,7 @@ function delete_entry_schedule($lead,$form){
 }
 
 /* Modify Set Entry Status */
-function set_entry_location($lead,$form){
+function set_entry_location($lead,$form,&$location_id=''){
 	$entry_schedule_change=$_POST['entry_location_subarea_change'];
 	$entry_info_entry_id=$_POST['entry_info_entry_id'];
 	$update_entry_location_code=$_POST['update_entry_location_code'];
@@ -932,13 +981,14 @@ function set_entry_location($lead,$form){
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-	$delete_query = sprintf("
+	/*
+         * $delete_query = sprintf("
 			DELETE FROM wp_mf_location where `entry_id` = $entry_info_entry_id");
 	//MySqli Insert Query
 	$delete_row = $mysqli->query($delete_query);
 	if(!$delete_row){
 		echo ('Error :'.$delete_query.':('. $mysqli->errno .') '. $mysqli->error);
-	};
+	};*/
 	
 	$insert_query = sprintf("
 				INSERT INTO `wp_mf_location`
@@ -961,7 +1011,7 @@ function set_entry_location($lead,$form){
 	}else{
 		echo ('Error :'.$insert_query.':('. $mysqli->errno .') '. $mysqli->error);
 	};
-
+        $location_id = $mysqli->insert_id;
 }
 
 /* Modify Set Entry Status */

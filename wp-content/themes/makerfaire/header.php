@@ -252,7 +252,7 @@ Topbar
 				 
 				        <?php endif; ?>
 				 	
-				    <?php if ( $menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
+				    <?php if ( (isset($menuitems[ $count + 1 ]->menu_item_parent))&&$menuitems[ $count + 1 ]->menu_item_parent != $parent_id ): ?>
 				    </li>                           
 				    <?php $submenu = false; endif; ?>
 				 	

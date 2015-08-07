@@ -918,7 +918,7 @@ function create_post_type() {
  */
     class Description_Walker extends Walker_Nav_Menu {
 
-        function start_el(&$output, $item, $depth, $args)
+        function start_el(&$output, $item, $depth=0,$args = Array(), $id = 0)
         {
             $classes     = empty ( $item->classes ) ? array () : (array) $item->classes;
 
@@ -1033,7 +1033,10 @@ function create_post_type() {
     	 * @return null
     	 */
     	static public function log_message( $slug, $message, $debug_level ) {
-    		error_log( "GF LOG: $slug, $message, $debug_level" );
+            //don't log debug messages
+            if($debug_level==KLogger::ERROR){
+                error_log( "GF LOG: $slug, $message, $debug_level" );
+            }
     	}
     }
 

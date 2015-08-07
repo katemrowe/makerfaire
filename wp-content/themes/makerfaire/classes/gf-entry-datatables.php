@@ -7,7 +7,7 @@
 * Author URI: https://gravityview.co
 */
 class Replace_GV_DataTables_Scripts {
-function init() {
+public static function init() {
 new Replace_GV_DataTables_Scripts;
 }
 function __construct() {
@@ -42,6 +42,7 @@ function add_config( $dt_config, $view_id, $post  ) {
 }
 }
 
+Replace_GV_DataTables_Scripts::init();
 add_action( 'init', array('Replace_GV_DataTables_Scripts', 'init' ) );
 
 

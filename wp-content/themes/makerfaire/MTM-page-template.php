@@ -115,6 +115,7 @@
 				<div class="form-group visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
         	       	<form role="search" method="get" class="form-search" id="searchform" action="search/">
 						<input type="text"  name="s_term" id="s_term" class="form-control evilquora" />
+                                                <input type="hidden"  name="faire" value="<?php echo $faire;?>" />
 						<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
 					</form>
 				</div>

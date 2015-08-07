@@ -3,7 +3,12 @@
  * Template Name: Makers By Keyword Search
  */
 global $wp_query;
-$current_form_ids = '20, 13, 12, 17, 16';
+//get faire ID (default to BA15
+$faire = (isset($_GET['faire'])?sanitize_text_field($_GET['faire']):'BA15');
+$results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
+$faire_name = $results[0]->faire_name;
+$current_form_ids   = $results[0]->form_ids;
+
 //$search_term = urldecode($wp_query->query_vars['s_keyword']);
 $search_term=$_GET["s_term"];
 $currentpage = $wp_query->query_vars['offset'];
@@ -11,11 +16,17 @@ $page_size = 30;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
-$search_criteria = array( 'key' => '147', 'value' =>  $search_term);
-$search_value['field_filters'][] = array('key' => '147', 'value' => $search_term);
+//$search_criteria = array( 'key' => '147', 'value' =>  $search_term);
+
+$search_criteria['field_filters'][] = array( '151' => '1', 'operator' => 'contains','value' => $search_term);
+$search_criteria['field_filters'][] = array( '15' => '1', 'operator' => 'contains','value' => $search_term);
+$search_criteria['field_filters'][] = array( '303' => '1', 'value' => 'Accepted');
+
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
-$entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
+//$entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
+$entries =  GFAPI::get_entries( $current_form_ids, $search_criteria, $sorting_criteria, $paging_criteria, $total_count);
+
 $current_url = '/'.$f.'/meet-the-makers/search/';
 // Load Categories
 $cats_tags = get_categories(array('hide_empty' => 0));
@@ -37,7 +48,7 @@ get_header(); ?>
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<h1>Bay Area 2015 Makers</h1>
+					<h1><?php echo $faire_name;?> Makers</h1>
 				</div>
 			</div>
 			<div class="row">
@@ -216,7 +227,7 @@ function sort_by_field_count( $form_id, $searching ) {
 }
 
 function pagination_display ($current_url,$search_term,$current_page,$pagesize,$total_count) {
-
+ global $faire;
 $pages = ceil($total_count / $pagesize);
 
 ?>
@@ -256,7 +267,7 @@ $pages = ceil($total_count / $pagesize);
 			<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>/?s_term=<?php echo $search_term;?>">&laquo;</a></li>
 			<?php endif; ?>
 			<?php for($i = 1;$i <= $pages;$i++): ?>
-			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>/?s_term=<?php echo $search_term;?>"><?php echo $i?></a></li>
+			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>/?s_term=<?php echo $search_term.'&faire='.$faire;?>"><?php echo $i?></a></li>
 			<?php endfor;?>
 			<?php if ($current_page < $pages) : ?>
 			<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>/?s_term=<?php echo $search_term;?>">&raquo;</a></li>

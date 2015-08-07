@@ -10,6 +10,7 @@ class GFExport {
 
 	public static function maybe_export() {
 		if ( isset( $_POST['export_lead'] ) ) {
+                        set_time_limit (0);
 			check_admin_referer( 'rg_start_export', 'rg_start_export_nonce' );
 			//see if any fields chosen
 			if ( empty( $_POST['export_field'] ) ) {

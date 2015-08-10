@@ -1565,33 +1565,38 @@ function entry_schedule_field_content($field_content, $field, $value, $lead_id, 
 }
 
 /* Return schedule for lead */
-function get_schedule($lead){
-    
-     global $wpdb;
-    $entry_id = $lead['id'];
-    //get scheduling information for this lead
-    $sql = "SELECT  area.area,subarea.subarea,subarea.nicename,
-                    schedule.start_dt, schedule.end_dt                    
-            FROM    wp_mf_schedule schedule,                     
-                    wp_mf_location location, 
-                    wp_mf_faire_subarea subarea, 
-                    wp_mf_faire_area area
-
-            where       schedule.entry_id   = $entry_id 
-                    and location.entry_id   = schedule.entry_id
-                    and subarea.id          = location.subarea_id
-                    and area.id             = subarea.area_id";   
+function get_schedule($lead){    
+    global $wpdb;
     $schedule = '';
-    foreach($wpdb->get_results($sql) as $row){    
-        $subarea = ($row->nicename!=''&&$row->nicename!=''?$row->nicename:$row->subarea);
-        $start_dt = strtotime($row->start_dt);
-        $end_dt = strtotime($row->end_dt);
-        $schedule .= $row->area.' '.$subarea;
-        $schedule .= '<br/>';
-        $schedule .= '<span>'.date("l, n/j/y, g:i A",$start_dt).' to '.date("l, n/j/y, g:i A",$end_dt).'</span><br/>';
-        $schedule .= '<br/><br/>';
-    }
+    $entry_id = $lead['id'];
     
+    if($entry_id!=''){
+        //get scheduling information for this lead
+        $sql = "SELECT  area.area,subarea.subarea,subarea.nicename,
+                        schedule.start_dt, schedule.end_dt                    
+                FROM    wp_mf_schedule schedule,                     
+                        wp_mf_location location, 
+                        wp_mf_faire_subarea subarea, 
+                        wp_mf_faire_area area
+
+                where       schedule.entry_id   = $entry_id 
+                        and location.entry_id   = schedule.entry_id
+                        and subarea.id          = location.subarea_id
+                        and area.id             = subarea.area_id";   
+        
+        $results = $wpdb->get_results($sql);
+        if($wpdb->num_rows > 0){
+            foreach($results as $row){    
+                $subarea = ($row->nicename!=''&&$row->nicename!=''?$row->nicename:$row->subarea);
+                $start_dt = strtotime($row->start_dt);
+                $end_dt = strtotime($row->end_dt);
+                $schedule .= $row->area.' '.$subarea;
+                $schedule .= '<br/>';
+                $schedule .= '<span>'.date("l, n/j/y, g:i A",$start_dt).' to '.date("l, n/j/y, g:i A",$end_dt).'</span><br/>';
+                $schedule .= '<br/><br/>';
+            }
+        }
+    }
     return $schedule;
 }
 

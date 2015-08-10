@@ -1,8 +1,8 @@
 <div class="col-md-4">
-<!--	<div class="sidebar-bordered">
+    <!--    <div class="sidebar-bordered">
         <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
         <h3 class="counter-title">Maker Faire Bay Area<br />May 16 &amp; 17, 2015</h3>
-
+        
         <div class="countdown">
             <script type="text/javascript">
                     jQuery(document).ready(function() {
@@ -16,69 +16,62 @@
                             });
                     });
             </script>
-    	</div>
-	</div>
-
-	<div class="center">
-		<a href="https://mfba2015.eventbrite.com/" target="_blank">
-			<img class="img-responsive" width="100%" src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
-		</a>
-	</div>
--->
-
+        </div>
+        </div>
+        
+        <div class="center">
+        <a href="https://mfba2015.eventbrite.com/" target="_blank">
+        <img class="img-responsive" width="100%" src="<?php echo get_stylesheet_directory_uri(); ?>/images/MF15_BA_300x250.gif" />
+        </a>
+        </div>
+        -->
     <div class="sidebar-bordered sponsored">
-
-       <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Goldsmith Sponsors</a></h3>
-
-       <div id="myCarousel" class="carousel slide">
+        <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Goldsmith Sponsors</a></h3>
+        <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
                 <?php echo mf_sponsor_carousel( 'Goldsmith Sponsor' ); ?>
             </div>
-       </div>
-
-       <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Silversmith Sponsors</a></h3>
-
-       <div id="myCarousel" class="carousel slide">
+        </div>
+        <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Silversmith Sponsors</a></h3>
+        <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
                 <?php echo mf_sponsor_carousel( 'Silversmith Sponsor' ); ?>
             </div>
-       </div>
-
+        </div>
         <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Coppersmith Sponsors</a></h3>
-
         <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
                 <?php echo mf_sponsor_carousel( 'Coppersmith Sponsor' ); ?>
             </div>
         </div>
     </div>
-
     <div class="center twitter">
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         <a class="twitter-timeline" href="https://twitter.com/search?q=%23makerfaire" data-widget-id="322225978648698880">Tweets about "#makerfaire"</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         <a href="https://twitter.com/makerfaire" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @makerfaire</a>
     </div>
-
-	<!-- Beginning Sync AdSlot 2 for Ad unit header ### size: [[300,250]]  -->
+    <!-- Beginning Sync AdSlot 2 for Ad unit header ### size: [[300,250]]  -->
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-12">
-        	<div id='div-gpt-ad-664089004995786621-2' class="adblock">
-        		<script type='text/javascript'>
-        			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-2')});
-        		</script>
-        	</div>
-        </div>
-    	<!-- End AdSlot 2 -->
-
-    	<!-- Beginning Sync AdSlot 3 for Ad unit header ### size: [[300,250]]  -->
-        <div class="col-xs-12 col-sm-6 col-md-12">
-        	<div id='div-gpt-ad-664089004995786621-3' class="adblock">
-        		<script type='text/javascript'>
-        			googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-3')});
-        		</script>
-        	</div>
+            <div id='div-gpt-ad-664089004995786621-2' class="adblock">
+                <script type='text/javascript'>
+                    googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-2')});
+                </script>
+            </div>
         </div>
     </div>
-	<!-- End AdSlot 2 -->
+        <!-- End AdSlot 2 -->
+        <!-- Beginning Sync AdSlot 3 for Ad unit header ### size: [[300,250]]  -->
+            <div class="row">
+
+        <div class="col-xs-12 col-sm-6 col-md-12">
+            <div id='div-gpt-ad-664089004995786621-3' class="adblock">
+                <script type='text/javascript'>
+                    googletag.cmd.push(function(){googletag.display('div-gpt-ad-664089004995786621-3')});
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- End AdSlot 2 -->
 </div>

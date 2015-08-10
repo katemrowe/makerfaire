@@ -8,6 +8,13 @@
   global $wp_query;
   $entryId = $wp_query->query_vars['e_id'];
   $entry = GFAPI::get_entry($entryId);
+  
+  //find outwhich faire this entry is for to set the 'look for more makers link'
+  $form_id = $entry['form_id'];
+  $formSQL = "select replace(lower(faire_name),' ','-') as faire_name from wp_mf_faire where FIND_IN_SET ($form_id, wp_mf_faire.form_ids)> 0";
+  $results =  $wpdb->get_row( $formSQL );
+  $faire =  $results->faire_name;
+  
   $makers = array();
   if (strlen($entry['160.3']) > 0) $makers[] = array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
   if (strlen($entry['158.3']) > 0) $makers[] = array('firstname' => $entry['158.3'], 'lastname' => $entry['158.6'], 'bio'=>$entry['258'], 'photo'=>$entry['224']);
@@ -41,7 +48,7 @@
 
     <div class="content col-md-8">
 
-      <a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
+      <a href="/<?php echo $faire;?>/meet-the-makers/">&#65513; Look for More Makers</a>
 
       <div class="page-header">
 

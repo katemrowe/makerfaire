@@ -4,23 +4,16 @@
  */
  get_header();
  
- function mf_get_topics( ) {
- 	$args = array(
- 			'hide_empty'	=> true, //unreliable: See mf_get_terms.
- 			'exclude'		=> array( '1' ),
- 			'show_tags' => '',
- 			'show_cats' => '',
- 	);
- 
- 	//See mf_get_terms
- 	//array_merge for atts here to avoid breaking code term display code
- 	$cats_tags = get_categories(array('hide_empty' => 0));
+ function mf_get_topics( ) { 	
+     global $faire;
+        //change to pull topics by taxonomy not category
+        $cats_tags = get_terms('makerfaire_category',array('hide_empty'=>false));        
  	$output = '<ul class="columns list-unstyled">';
  	foreach ($cats_tags as $cat) {
  		  if ($cat->slug != 'uncategorized') {
    			// $atts['faire'] has been deprecated and will be removed once the production server has been updated.
  		// Why? Include both if $atts['faire_url'] needed JE 8.27.14
- 			$output .= '<li><a href="topics/' .  $cat->slug . '">' . esc_html( $cat->name ) . '</a></li>';
+ 			$output .= '<li><a href="topics/' .  $cat->slug . '?faire='.$faire.'">' . esc_html( $cat->name ) . '</a></li>';
  		}
  	}
  	$output .= '</ul>';
@@ -39,8 +32,15 @@
        array('key' => '304.1', 'value' => 'Featured Maker')
      )
   );
-
-  $entries = GFAPI::get_entries(20, $criteria, null, array('offset' => 0, 'page_size' => 40));  
+  $faireArray  = $faireName = '';
+  $faire_forms = get_post_meta($post->ID, 'faire-forms', true);
+  $faireArray  = explode(',',$faire_forms);
+  
+  $faire     = get_post_meta($post->ID, 'faire', true);
+  $results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
+  $faireName = $results[0]->faire_name;
+  
+  $entries = GFAPI::get_entries($faireArray, $criteria, null, array('offset' => 0, 'page_size' => 40));  
   
   $randEntryKey = array_rand($entries); 
   $randEntry = $entries[$randEntryKey];
@@ -52,7 +52,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Featured 2015 Bay Area Makers: </h1>
+				<h1>Featured <?php echo $faireName;?> Makers: </h1>
 				<div class="gallery-holder">
 					<div class="cycle-gallery">
 						<div class="mask">
@@ -60,7 +60,7 @@
 			      				<div class="slide">
    		                			<a href="/maker/entry/<?php echo $randEntry['id']; ?>">
    		                				<span class="maker-slider-btn">Learn More About This Maker</span>
-   		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],1134,442); ?>" alt="Slide Show from Maker Faire Bay Area 2015"></a>
+   		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
 									<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 									<div class="text-holder">
 				   						<strong class="title">Featured Maker Story</strong>
@@ -71,7 +71,7 @@
 	                                <div class="slide">
 	   		                  			<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 	   		                  				<span class="maker-slider-btn">Learn More About This Maker</span>
-	   		                  				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],1134,442); ?>" alt="Slide Show from Maker Faire Bay Area 2015"></a>
+	   		                  				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
 					  					<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 					  					<div class="text-holder">
 					     					<strong class="title">Featured Maker Story</strong>
@@ -115,6 +115,7 @@
 				<div class="form-group visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
         	       	<form role="search" method="get" class="form-search" id="searchform" action="search/">
 						<input type="text"  name="s_term" id="s_term" class="form-control evilquora" />
+                                                <input type="hidden"  name="faire" value="<?php echo $faire;?>" />
 						<button type="submit" id="searchsubmit" value="Search"><i class="icon-search"></i></button>
 					</form>
 				</div>
@@ -144,7 +145,7 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-8">
 							<div class="title">
-								<h1>Bay Area Maker Faire Sponsors</h1>
+								<h1><?php echo $faireName;?> Maker Faire Sponsors</h1>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
@@ -187,7 +188,7 @@
 					</div>
 				</div>
 				<div class"col-xs-12 visible-xs-12">
-					<a class="pull-right" href="/bay-area-2015/sponsors/">Become a sponsor</a></mark>
+					<a class="pull-right" href="../sponsors/">Become a sponsor</a></mark>
 				</div>
 			</div>
 		</div>

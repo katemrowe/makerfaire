@@ -10,6 +10,7 @@ class GFExport {
 
 	public static function maybe_export() {
 		if ( isset( $_POST['export_lead'] ) ) {
+                        set_time_limit (0);
 			check_admin_referer( 'rg_start_export', 'rg_start_export_nonce' );
 			//see if any fields chosen
 			if ( empty( $_POST['export_field'] ) ) {
@@ -586,7 +587,7 @@ class GFExport {
 			$results = $wpdb->get_results( $sql, ARRAY_A );
 
 			foreach ( $results as $result ) {
-				$list              = unserialize( $result['value'] );
+				$list              = @unserialize( $result['value'] );
 				$current_row_count = isset( $row_counts[ $result['field_id'] ] ) ? intval( $row_counts[ $result['field_id'] ] ) : 0;
 
 				if ( is_array( $list ) && count( $list ) > $current_row_count ) {

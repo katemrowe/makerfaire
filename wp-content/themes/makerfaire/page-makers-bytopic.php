@@ -3,27 +3,42 @@
  * Template Name: Makers By Topic
  */
 global $wp_query;
-$current_form_ids = '20, 13, 12, 17, 16';
+
+//get faire ID (default to BA15
+$faire = (isset($_GET['faire'])?sanitize_text_field($_GET['faire']):'BA15');
+$results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
+$faire_name = $results[0]->faire_name;
+$current_form_ids   = $results[0]->form_ids;
+
+//$current_form_ids = '20, 13, 12, 17, 16';
 $topic_slug = $wp_query->query_vars['t_slug'];
-$category = get_term_by('slug',$topic_slug,'category');
-$search_category = $category->name.':'.$category->term_id;
+
+$category = get_term_by('slug',$topic_slug,'makerfaire_category');
+
+//change to search by taxonomy code
+$search_category = $category->term_id;
 $currentpage = $wp_query->query_vars['offset'];
 $page_size = 30;
 $offset=($currentpage-1)*$page_size;
 $total_count = 0;
 $f = $wp_query->query_vars['f'];
-$search_criteria = array( 'key' => '147', 'value' =>  $search_category);
-$search_value['field_filters'][] = array('key' => '147', 'value' => $search_category);
+
 $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
-$entries=search_entries_bytopic($current_form_ids,$search_criteria,$sorting_criteria,$paging_criteria,$total_count);
+
+//search by primary category
+
+    $search_criteria['field_filters'][] = array( '320' => '1', 'value' => $search_category);
+    $search_criteria['field_filters'][] = array( '321' => '1', 'value' => $search_category);
+
+$search_criteria['field_filters'][] = array( '303' => '1', 'value' => 'Accepted');
+
+$entries =  GFAPI::get_entries( $current_form_ids, $search_criteria, $sorting_criteria, $paging_criteria, $total_count);
+
 $current_url = '/'.$f.'/meet-the-makers/topics/'.$topic_slug;
 
 // Load Categories
 $cats_tags = get_categories(array('hide_empty' => 0));
-
-
-
 
 get_header(); ?>
 <div class="clear"></div>
@@ -34,12 +49,12 @@ get_header(); ?>
 
 			<div class="row padbottom">
 				<div class="col-md-8">
-					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
+					<a href="../../">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<h1>Bay Area 2015 Makers</h1>
+					<h1><?php echo $faire_name;?> Makers</h1>
 				</div>
 			</div>
 			<div class="row">
@@ -88,13 +103,11 @@ get_header(); ?>
 
 /* Support Functions */
 function search_entries_bytopic( $form_id, $search_criteria = array(), $sorting = null, $paging = null, &$total_count ) {
-
-	global $wpdb;
-	$sort_field = isset( $sorting['key'] ) ? $sorting['key'] : 'date_created'; // column, field or entry meta
-
+    global $wpdb;
+    $sort_field = isset( $sorting['key'] ) ? $sorting['key'] : 'date_created'; // column, field or entry meta
 
 	//initializing rownum
-	$sql = sort_by_field_query( $form_id, $search_criteria, $sorting, $paging);
+	$sql = sort_by_field_query( $form_id, $search_criteria, $sorting, $paging);        
 	$sqlcounting = sort_by_field_count( $form_id, $search_criteria);
 	
 	GFCommon::log_debug( $sql );
@@ -102,12 +115,11 @@ function search_entries_bytopic( $form_id, $search_criteria = array(), $sorting 
 	//getting results
 	
 	$results = $wpdb->get_results( $sql );
-	$leads = GFFormsModel::build_lead_array( $results );
-	
-	
-	$results_count = $wpdb->get_row( $sqlcounting );
-	$total_count=$results_count->total_count;
-	
+        $leads = GFFormsModel::build_lead_array( $results );
+		
+	$results_count  = $wpdb->get_row( $sqlcounting );
+	$total_count    = $results_count->total_count;
+
 	return $leads;
 }
 
@@ -198,7 +210,7 @@ function sort_by_field_count( $form_id, $searching ) {
 }
 
 function pagination_display ($current_url,$current_page,$pagesize,$total_count) {
-
+global $faire;
 $pages = ceil($total_count / $pagesize);
 
 ?>
@@ -237,7 +249,7 @@ $pages = ceil($total_count / $pagesize);
 			<li <?php if ($current_page == 1) echo 'class = "disabled"'; ?>><a <?php if ($current_page == 1) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == 1) ? $current_page.'#': $current_page-1; ?>">&laquo;</a></li>
 			<?php endif; ?>
 			<?php for($i = 1;$i <= $pages;$i++): ?>
-			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i?>"><?php echo $i?></a></li>
+			<li  <?php if ($current_page == $i) echo 'class = "active"'; ?> ><a href="<?php echo $current_url?>/<?php echo $i.'?faire='.$faire;?>"><?php echo $i?></a></li>
 			<?php endfor;?>
 			<?php if ($current_page < $pages) : ?>
 			<li <?php if ($current_page == $pages) echo 'class = "disabled"'; ?>><a <?php if ($current_page == $pages) echo 'class = "disabled"'; ?> href="<?php echo $current_url?>/<?php echo ($current_page == $pages) ? $current_page.'#': $current_page+1;?>">&raquo;</a></li>

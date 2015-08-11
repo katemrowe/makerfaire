@@ -3298,3 +3298,17 @@ jQuery( document ).ready(function() {
 });
 
 //mobile-level-3
+
+//sponsors page
+jQuery( document ).ready(function() {
+    jQuery("[rel='tooltip']").tooltip();    
+ 
+    jQuery('.thumbnail').hover(
+        function(){
+            jQuery(this).find('.caption').fadeIn(250); //
+        },
+        function(){
+            jQuery(this).find('.caption').fadeOut(205); //
+        }
+    ); 
+});

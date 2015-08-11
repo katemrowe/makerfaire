@@ -3729,7 +3729,7 @@ article .form_saved_message_sent span:first-child {
   text-align: left;
   color: #fff !important;
   z-index: 2;
-  font-size: .8em;
+  font-size: .9em;
 }
 #performers .thumbnail {
   padding: 0;
@@ -3740,12 +3740,12 @@ article .form_saved_message_sent span:first-child {
 #performers .sub-caption {
   position: absolute;
   bottom: 0;
-  padding: 5px 10px;
+  padding: 10px 15px;
   background-color: #323232;
   width: 100%;
   opacity: .8;
   color: white;
-  font-size: .6em;
+  font-size: .8em;
 }
 #performers h4 {
   margin: 5px 0;

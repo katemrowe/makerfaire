@@ -204,7 +204,7 @@ class GFUploadRules {
     return array_merge( $gf_uprules_tooltips, $gf_tooltips );
   }
 
-	public static function actions() {
+public static function init() {
     add_filter( 'gform_field_validation', array( __CLASS__, 'field_validation' ), 10, 4 );
 		add_action( 'gform_field_advanced_settings', array( __CLASS__, 'field_settings' ), 5 );
 		add_action( 'gform_editor_js', array( __CLASS__, 'editor_js' ), 20 );
@@ -215,4 +215,4 @@ class GFUploadRules {
 
 }
 
-GFUploadRules::actions();
+GFUploadRules::init();

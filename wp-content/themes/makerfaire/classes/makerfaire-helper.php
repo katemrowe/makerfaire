@@ -119,7 +119,7 @@ function buildScheduleData($scheduleditem){
     $output .= '<tr>';
     $output .= '<td class="dateTime col-xs-2 col-sm-3 col-md-3 col-lg-3">';
     $output .= '<h4>' . esc_html($scheduleditem['day'] ) . '</h4>';
-    $output .= '<p><span class="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">' . esc_html(  date('h:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; </span>' . esc_html(  date('h:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
+    $output .= '<p><span class="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">' . esc_html(  date('g:i A',strtotime($scheduleditem['time_start']))) . ' &mdash; </span>' . esc_html(  date('g:i A', strtotime($scheduleditem['time_end'])) ) . '</p>';
 
     if ( isset( $scheduleditem['large_img_url'] ) || isset( $scheduleditem['thumb_img_url'] )  ) {
         $output .= '<div class="pull-left">';
@@ -277,17 +277,16 @@ function get_mf_schedule_by_faire ($faire, $day='', $area='', $subarea=''){
                                 AND schedule.entry_id   = entity.lead_id 
                                 AND entity.status       = 'Accepted' 
                                 and location.entry_id   = schedule.entry_id
+                                and location.ID         = schedule.location_id
                                 and subarea.id          = location.subarea_id
                                 and area.id             = subarea.area_id
-                                and schedule.faire      = '".$faire."' ".                                
-                                //and area.area           = '".$area."'
-                                //and (subarea.subarea     = '".$subarea."' or subarea.nicename     = '".$subarea."')
-                       " ORDER BY    schedule.location_id  DESC, 
+                                and schedule.faire      = '".$faire."' ".                                                         
+                       " ORDER BY   area, subarea, 
                                     schedule.start_dt ASC";
 
 $mysqli->query("SET NAMES 'utf8'");
 $result = $mysqli->query($select_query) or trigger_error($mysqli->error."[$select_query]");
-//$result = $mysqli->query ( $select_query );
+
 // Initalize the schedule container
 $schedules = array();
 

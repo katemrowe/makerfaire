@@ -349,8 +349,8 @@ Include field IDs:
                 . '                     and lead_id != '.$entry_id.' group by lead_id order by lead_id');                    
 
         $return = array();
-        foreach($results as $data){
-            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=mfentry&id=".$data->form_id . '&lid='.$data->lead_id;
+        foreach($results as $addData){
+            $outputURL = admin_url( 'admin.php' ) . "?page=mf_entries&view=mfentry&id=".$addData->form_id . '&lid='.$addData->lead_id;
             echo '<tr>';
             
             //only display the first instance of the email
@@ -361,10 +361,10 @@ Include field IDs:
             }
                 echo '<td>'.$type .'</td>';
                 echo '<td>'.$name .'</td>'; 
-            echo '<td><a target="_blank" href="'.$outputURL.'">'.$data->lead_id.'</a></td>'
-                   . '<td>'.$data->projectName.'</td>'                              
-                   . '<td>'.$data->title.'</td>'
-                   . '<td>'.$data->status.'</td>' 
+            echo '<td><a target="_blank" href="'.$outputURL.'">'.$addData->lead_id.'</a></td>'
+                   . '<td>'.$addData->projectName.'</td>'                              
+                   . '<td>'.$addData->title.'</td>'
+                   . '<td>'.$addData->status.'</td>' 
                 . '</tr>';
         }
     }

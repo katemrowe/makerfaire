@@ -66,7 +66,7 @@
    		                			<a href="/maker/entry/<?php echo $randEntry['id']; ?>">
    		                				<span class="maker-slider-btn">Learn More About This Maker</span>
    		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randPhoto,1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
-									<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
+									<a href="/maker/entry/<?php echo $randEntry['id']; ?>">
 									<div class="text-holder">
 				   						<strong class="title">Featured Maker Story</strong>
 				   						<p><mark><?php echo $randEntry['151']; ?>: </mark><?php echo $randEntry['16']; ?></p>

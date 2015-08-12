@@ -146,6 +146,7 @@ function buildScheduleData($scheduleditem){
 
     return $output;
 }
+
 function mf_display_schedule_by_area_old( $atts ) {
 	global $mfform;
 
@@ -302,10 +303,13 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
         $schedule['nicename'] = $row['nicename'];
         $schedule['subarea'] = $row['subarea'];
 	// REQUIRED: Schedule ID
-	$schedule['id'] = $entry_id;
-	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';
-	$project_photo  = isset ( $row['photo'] ) ? $row['photo'] : '';
-	
+	$schedule['id'] = $entry_id;       
+	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
+        $project_photo  = isset ( $row['photo'] ) ? $row['photo'] : '';
+        //find out if there is an override image for this page
+        $overrideImg = findOverride($entry_id,'schedule');
+        
+        if($overrideImg!='') $project_photo = $overrideImg;
         //$maker_photo    = isset ( $row[27] ) ? $row[27] : '';
 	$maker_photo    = $project_photo;
         

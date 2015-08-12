@@ -294,7 +294,9 @@ Include field IDs:
     
     $data = array('content'=> array(11,16,320,321,66,67,293),
                   'logistics'=>array(60,61,62,288,64,65,68,69,70,71,72,73,74,75,76),
-                  'additional'=>array(123,130,287,134)
+                  'additional'=>array(123,130,287,134),
+                  'images'=>array(22,217,224,223,222,220,221,219,111),
+                  'imagesOver'=>array(324,334,326,338,333,337,332,336,331,335)
         );
     ?>
 <div id="tabs">
@@ -304,6 +306,7 @@ Include field IDs:
     <li><a href="#additional">Additional Information</a></li>
     <li><a href="#addForms">Additional Forms</a></li>
     <li><a href="#tabs-3">Other Entries</a></li>
+    <li><a href="#images">Images</a></li>
   </ul>
   <div id="tabs-1">
      <?php echo displayContent($data['content'],$lead,$fieldData);?>  
@@ -368,25 +371,58 @@ Include field IDs:
     ?>
     </table>
   </div>
+  <div id="images">
+    <?php echo displayContent($data['images'],$lead,$fieldData,'grid');?>  
+    <?php echo displayContent($data['imagesOver'],$lead,$fieldData,'grid');?>  
+  </div>
 </div>
 
     <?php
 }
 
-function displayContent($content,$lead,$fieldData){
+function displayContent($content,$lead,$fieldData,$display = 'table'){
+   global $display_empty_fields;
    $return = '';
-   $return .= '<table>';
+    if($display=='table')   $return .= '<table>';
+   $form = GFAPI::get_form( $lead['form_id'] );  
+
     foreach($content as $fieldID){
-        if(isset($fieldData[$fieldID])){
-            $field = $fieldData[$fieldID];
-            $label = $fieldData[$fieldID]['label'];
-            $value = (isset($lead[$fieldID])?$lead[$fieldID]:'');
-            $value =  setTaxName($value, $field, $lead, array());
-            $return .= '<tr><td  class="entry-view-field-name" colspan="2">'.$label.'</td></tr>'.
-                        '<tr><td>'.$value.'</td></tr>';
+        if(isset($fieldData[$fieldID])){       
+            $field = $fieldData[$fieldID];            
+            $value         = RGFormsModel::get_lead_field_value( $lead, $field );
+            if(RGFormsModel::get_input_type($field)!='fileupload'){
+                $display_value = GFCommon::get_lead_field_display( $field, $value, $lead['currency'] );
+                $display_value = apply_filters( 'gform_entry_field_value', $display_value, $field, $lead, $form );
+            }else{
+                //display images in a grid
+                if($value!=''){
+                    $display_value = '<img width="100px" src="'. legacy_get_resized_remote_image_url($value, 100,100).'" alt="" />';
+                }else{
+                    $display_value = '';
+                }
+            }
+            
+
+            if ( $display_empty_fields || ! empty( $display_value ) || $display_value === '0' ) {
+                    $display_value = empty( $display_value ) && $display_value !== '0' ? '&nbsp;' : $display_value;
+                    if($display=='table'){
+                    $content = '
+                            <tr>
+                            <td colspan="2" class="entry-view-field-name">' . esc_html( GFCommon::get_label( $field ) ) . '</td>
+                            </tr>
+                            <tr>
+                            <td colspan="2" class="entry-view-field-value">' . $display_value . '</td>
+                            </tr>';
+                    }else{
+                        $content = '<div style="'.($field['cssClass']==''?'float:left;':'').'padding:5px;margin:10px" class="'.$field['cssClass'].'">'.esc_html( GFCommon::get_label( $field ) ).'<br/>'.$display_value.'</div>';
+                    }
+                    $content = apply_filters( 'gform_field_content', $content, $field, $value, $lead['id'], $form['id'] );
+                    $return .=  $content;            
+            }
         }
-   }
-   $return .= '</table>';
+    }
+   if($display=='table')   $return .= '</table>';
+   if($display=='grid')   $return .= '<div class="clear"></div>';
    return $return;
 }
 

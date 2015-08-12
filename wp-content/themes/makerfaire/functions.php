@@ -1606,3 +1606,37 @@ function add_event( $notification_events ) {
     $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
     return $notification_events;
 }
+    
+    /* This function searches the database to see if any of the image overrides are set 
+     * If it is, it retrieves the value set for that override
+     * Field ID         Description
+     * 324              Image Override 1
+     * 334              Image Override 1 place
+     * 326              Image Override 2
+     * 338              Image Override 2 place
+     * 333              Image Override 2
+     * 337              Image Override 3 place
+     * 332              Image Override 4
+     * 336              Image Override 4 place
+     * 331              Image Override 5
+     * 335              Image Override 5 place
+     */
+function findOverride($entry_id, $type){    
+    global $wpdb;
+        $sql = "select * from wp_rg_lead_detail as detail join "
+                . "             (SELECT lead_id,field_number FROM `wp_rg_lead_detail` "
+                . "                 WHERE `lead_id` = $entry_id AND `field_number` BETWEEN 334.0 and 338.9 AND `value` = '$type' "
+                . "                 ORDER BY `wp_rg_lead_detail`.`field_number` ASC limit 1) "
+                . "             as override on detail.lead_id = override.lead_id "
+                . "         where   (detail.field_number = 331 and override.field_number between 335.0 and 335.9999) or "
+                . "                 (detail.field_number = 332 and override.field_number between 336.0 and 336.9999) or "
+                . "                 (detail.field_number = 333 and override.field_number between 337.0 and 337.9999) or "
+                . "                 (detail.field_number = 326 and override.field_number between 338.0 and 338.9999) or "
+                . "                 (detail.field_number = 324 and override.field_number between 334.0 and 334.9999)";
+        $results = $wpdb->get_results($sql);
+        if($wpdb->num_rows > 0){
+           
+            return $results[0]->value;
+        }
+        return '';
+}

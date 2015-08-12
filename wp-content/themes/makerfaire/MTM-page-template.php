@@ -45,6 +45,11 @@
   $randEntryKey = array_rand($entries); 
   $randEntry = $entries[$randEntryKey];
   $randEntryId = $randEntry['id'];
+  
+  $randPhoto = $randEntry['22'];
+  //find out if there is an override image for this page
+  $overrideImg = findOverride($randEntry['id'],'mtm');  
+  if($overrideImg!='') $randPhoto = $overrideImg;
 ?> 
       
 <!-- The slider -->
@@ -60,7 +65,7 @@
 			      				<div class="slide">
    		                			<a href="/maker/entry/<?php echo $randEntry['id']; ?>">
    		                				<span class="maker-slider-btn">Learn More About This Maker</span>
-   		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
+   		                				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($randPhoto,1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
 									<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 									<div class="text-holder">
 				   						<strong class="title">Featured Maker Story</strong>
@@ -71,7 +76,11 @@
 	                                <div class="slide">
 	   		                  			<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 	   		                  				<span class="maker-slider-btn">Learn More About This Maker</span>
-	   		                  				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
+                                                                        <?php
+                                                                        //find out if there is an override image for this page
+                                                                        $overrideImg = findOverride($entries[$i]['id'],'mtm');
+                                                                        $projPhoto = ($overrideImg==''?$entries[$i]['22']:$overrideImg);?>
+	   		                  				<img class="img-responsive cycle-gallery-slide" src="<?php echo legacy_get_resized_remote_image_url($projPhoto,1134,442); ?>" alt="Slide Show from Maker Faire <?php echo $faireName;?>"></a>
 					  					<a href="/maker/entry/<?php echo $entries[$i]['id']; ?>">
 					  					<div class="text-holder">
 					     					<strong class="title">Featured Maker Story</strong>
@@ -86,11 +95,15 @@
 						<div class="mask">
 							<div class="slideset">
                                 <div class="slide">
-				     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($randEntry['22'],95,95); ?>" alt="Slide gallery thumbnail"></a>
+				     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($randPhoto,95,95); ?>" alt="Slide gallery thumbnail"></a>
 				 				</div>
                               	<?php for ($i = 0; $i < count($entries); $i++) { if ($i == $randEntryKey) { continue; }  ?>
 					 				<div class="slide">
-					     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($entries[$i]['22'],95,95); ?>" alt="Slide gallery thumbnail"></a>
+                                                                            <?php
+                                                                                //find out if there is an override image for this page
+                                                                                $overrideImg = findOverride($entries[$i]['id'],'mtm');
+                                                                                $projPhoto = ($overrideImg==''?$entries[$i]['22']:$overrideImg);?>
+					     				<a href="#"><img class="cycle-gallery-thumb" src="<?php echo legacy_get_resized_remote_image_url($projPhoto,95,95); ?>" alt="Slide gallery thumbnail"></a>
 					 				</div>
                              	<?php } // end for ?>
 							</div>

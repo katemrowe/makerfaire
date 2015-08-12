@@ -1623,6 +1623,7 @@ function add_event( $notification_events ) {
      */
 function findOverride($entry_id, $type){    
     global $wpdb;
+    if($entry_id!=''){
         $sql = "select * from wp_rg_lead_detail as detail join "
                 . "             (SELECT lead_id,field_number FROM `wp_rg_lead_detail` "
                 . "                 WHERE `lead_id` = $entry_id AND `field_number` BETWEEN 334.0 and 338.9 AND `value` = '$type' "
@@ -1638,5 +1639,6 @@ function findOverride($entry_id, $type){
            
             return $results[0]->value;
         }
-        return '';
+    }
+    return '';
 }

@@ -46,7 +46,7 @@
   $randEntry = $entries[$randEntryKey];
   $randEntryId = $randEntry['id'];
   
-  $randPhoto = $randEntry['22'];
+  $randPhoto = $randEntry['22']; 
   //find out if there is an override image for this page
   $overrideImg = findOverride($randEntry['id'],'mtm');  
   if($overrideImg!='') $randPhoto = $overrideImg;

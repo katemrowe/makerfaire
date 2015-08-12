@@ -667,8 +667,10 @@ if (!empty($mfAction))
                         set_entry_schedule($lead,$form);
                     //then send confirmation letter
                         $notifications_to_send = GFCommon::get_notifications_to_send( 'confirmation_letter', $form, $lead );
-                        foreach ( $notifications_to_send as $notification ) {
+                        foreach ( $notifications_to_send as $notification ) {                                                        
+                            if($notification['isActive']){                                            
                                 GFCommon::send_notification( $notification, $form, $lead );
+                            }
                         }
                         mf_add_note( $entry_info_entry_id, 'Confirmation Letter sent'); 
                         break;
@@ -774,8 +776,11 @@ function set_entry_status($lead,$form){
 				$results=mf_add_note( $entry_info_entry_id, 'EntryID:'.$entry_info_entry_id.' status changed to '.$acceptance_status_change);
 				//Handle notifications for acceptance
 				$notifications_to_send = GFCommon::get_notifications_to_send( 'mf_acceptance_status_changed', $form, $lead );
-				foreach ( $notifications_to_send as $notification ) {
-					GFCommon::send_notification( $notification, $form, $lead );
+                                foreach ( $notifications_to_send as $notification ) {
+                                        if($notification['isActive']){                                            
+                                            GFCommon::send_notification( $notification, $form, $lead );
+                                        }
+                                        
 				}
 				GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 

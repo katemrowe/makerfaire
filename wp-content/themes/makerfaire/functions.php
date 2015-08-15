@@ -1632,8 +1632,8 @@ function findOverride($entry_id, $type){
                 . "         where   (detail.field_number = 331 and override.field_number between 335.0 and 335.9999) or "
                 . "                 (detail.field_number = 332 and override.field_number between 336.0 and 336.9999) or "
                 . "                 (detail.field_number = 333 and override.field_number between 337.0 and 337.9999) or "
-                . "                 (detail.field_number = 326 and override.field_number between 338.0 and 338.9999) or "
-                . "                 (detail.field_number = 324 and override.field_number between 334.0 and 334.9999)";
+                . "                 (detail.field_number = 330 and override.field_number between 338.0 and 338.9999) or "
+                . "                 (detail.field_number = 329 and override.field_number between 334.0 and 334.9999)";
         $results = $wpdb->get_results($sql);
         if($wpdb->num_rows > 0){
            

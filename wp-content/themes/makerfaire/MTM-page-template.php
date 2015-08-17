@@ -59,7 +59,8 @@
 			<div class="col-xs-12">
 				<h1>Featured <?php echo $faireName;?> Makers: </h1>
 				<div class="gallery-holder">
-					<div class="cycle-gallery">
+					<div class="cycle-gallery carousel-gallery">
+                                                                              
 						<div class="mask">
 							<div class="slideset">
 			      				<div class="slide">
@@ -90,6 +91,8 @@
                               	<?php } // end for ?>
 							</div>
 						</div>
+                                              <div class="top-buttons"><a class="btn-prev" href="#"><i class="icon-arrow-left"></i></a>
+						<a class="btn-next" href="#"><i class="icon-arrow-right"></i></a></div>
 					</div>
 					<div class="carousel">
 						<div class="mask">

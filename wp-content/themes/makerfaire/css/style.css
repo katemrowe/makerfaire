@@ -2409,6 +2409,19 @@ li.hidelink a:visited {
   color: #9fa0a0;
   pointer-events: auto;
 }
+.quora .carousel-gallery .top-buttons .btn-next,
+.quora .carousel-gallery .top-buttons .btn-prev {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.17);
+  color: #9fa0a0;
+}
+.quora .carousel-gallery .top-buttons .btn-next {
+  right: 50px;
+}
+.quora .carousel-gallery .top-buttons .btn-prev {
+  left: 50px;
+}
 .quora .carousel-holder .btn-next span,
 .quora .carousel-holder .btn-prev span {
   position: absolute;
@@ -2419,7 +2432,9 @@ li.hidelink a:visited {
   transform: translateX(-50%) translateY(-50%);
 }
 .quora .carousel-holder .btn-next:hover,
-.quora .carousel-holder .btn-prev:hover {
+.quora .carousel-holder .btn-prev:hover,
+.quora .carousel-gallery .top-buttons .btn-next:hover,
+.quora .carousel-gallery .top-buttons .btn-prev:hover {
   background: rgba(195, 195, 209, 0.17);
 }
 .quora .carousel-holder .btn-next {

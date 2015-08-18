@@ -453,7 +453,7 @@ function makerfaire_featured_makers_shortcode($atts, $content = null) {
 
   $criteria = array(
      'field_filters' => array(
-       array('key' => '304.1', 'value' => 'Featured Maker')
+       array('key' => '304', 'value' => 'Featured Maker')
      )
   );
 

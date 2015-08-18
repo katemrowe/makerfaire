@@ -29,9 +29,10 @@
 <?php
  $criteria = array(
      'field_filters' => array(
-       array('key' => '304.1', 'value' => 'Featured Maker')
+       array('key' => '304', 'value' => 'Featured Maker')
      )
   );
+ 
   $faireArray  = $faireName = '';
   $faire_forms = get_post_meta($post->ID, 'faire-forms', true);
   $faireArray  = explode(',',$faire_forms);

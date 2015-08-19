@@ -220,7 +220,9 @@ $emailtoaliases = array(
 		"Shed" => "shedmakers@makermedia.com",
 		"Education" => "education@makermedia.com",
 		"Sales" => "sales@makerfaire.com",
-		"MakerCon" => "makercon@makermedia.com");
+		"MakerCon" => "makercon@makermedia.com",
+                "Sustainability" => "sustainability@makerfaire.com",
+                "Speakers" => "speakers@makerfaire.com");
 				?>
 				<div style="float:left">
 				<?php foreach ( $emailtoaliases as $name => $email ) { 

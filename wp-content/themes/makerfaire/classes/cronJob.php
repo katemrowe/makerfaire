@@ -110,13 +110,28 @@ function build_wp_mf_maker(){
             if($status !=''){
                 //build array of categories
                 $leadCategory = array();
-                
+                $MAD = 0;
                 foreach($lead as $leadKey=>$leadValue){
+                    //4 additional categories
                     $pos = strpos($leadKey, '321');
                     if ($pos !== false) {
                         $leadCategory[]=$leadValue;
                     }
+                    //main catgory
+                    $pos = strpos($leadKey, '320');
+                    if ($pos !== false) {
+                        $leadCategory[]=$leadValue;
+                    }
+                    //check the flag field 304
+                    $pos = strpos($leadKey, '304');
+                    if ($pos !== false) {
+                        if($leadValue=='Mobile App Discover')  $MAD = 1;    
+                    }
+                    
+                   
                 }
+                //verify we only have unique categories
+                $leadCategory = array_unique($leadCategory);
                 $catList = implode(', ', $leadCategory);
                     
                 //build wp_mf_entity table
@@ -130,7 +145,7 @@ function build_wp_mf_maker(){
                 
                 $wp_mf_entitysql = "insert into wp_mf_entity "
                          . "    (lead_id, presentation_title, presentation_type, special_request, "
-                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category,faire) "
+                         . "     OnsitePhone, desc_short, desc_long, project_photo, status,category,faire,mobile_app_discover) "
                          . " VALUES ('".$key."',"
                             . ' "'.$presentationTitle .'", '
                             . ' "'.$presentationType  .'", '
@@ -141,7 +156,8 @@ function build_wp_mf_maker(){
                             . ' "'.$projectPhoto      .'", '
                             . ' "'.$status                                                      .'", '
                             . ' "'.$catList                                                     .'", '
-                            . ' "'.$faire                                                       .'") '; 
+                            . ' "'.$faire                                                       .'", '
+                            . '  '.$MAD               .') '; 
                 $x++;
 
                 $wpdb->get_results($wp_mf_entitysql);

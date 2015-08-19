@@ -47,27 +47,27 @@ if ( $type == 'entity' ) {
 	// NOTE: For next year address Sponsors.
 	//The sql here is hardcoded for specific id's because of an issue with sponsors not being correctly added.
 	$select_query = sprintf("
-                SELECT entity.lead_id,
-                    `entity`.`presentation_title`,
-                    `entity`.`desc_short` as Description,
-                    `entity`.`category` as `Categories`,
-                    `entity`.`project_photo`,
-                    
-                    (select group_concat( distinct maker_id separator ', ') as Makers 
-                     from wp_mf_maker_to_entity maker_to_entity 
-                     where entity.lead_id  = maker_to_entity.entity_id AND 
-                           maker_to_entity.maker_type != 'Contact' 
-                     group by maker_to_entity.entity_id
-                    ) as exhibit_makers,
-                    
-                    (select wp_mf_api_venue.ID 
-                     from   wp_mf_api_venue, wp_mf_location 
-                     where  wp_mf_location.entry_id = entity.lead_id AND 
-                            wp_mf_location.subarea_id = wp_mf_api_venue.subarea_id                            
-                    ) as venue_id
-                FROM `wp_mf_entity` entity                  
+                SELECT  entity.lead_id,
+                        `entity`.`presentation_title`,
+                        `entity`.`desc_short` as Description,
+                        `entity`.`category` as `Categories`,
+                        `entity`.`project_photo`,
+                        entity.mobile_app_discover,
+                        (select group_concat( distinct maker_id separator ', ') as Makers 
+                         from wp_mf_maker_to_entity maker_to_entity 
+                         where entity.lead_id               = maker_to_entity.entity_id AND 
+                               maker_to_entity.maker_type  != 'Contact' 
+                         group by maker_to_entity.entity_id
+                        ) as exhibit_makers,
 
-                        WHERE entity.status = 'Accepted' AND LOWER(entity.faire)='".strtolower($faire)."'"
+                        (select wp_mf_api_venue.ID 
+                         from   wp_mf_api_venue, wp_mf_location 
+                         where  wp_mf_location.entry_id = entity.lead_id AND 
+                                wp_mf_location.subarea_id = wp_mf_api_venue.subarea_id                            
+                        ) as venue_id
+                FROM    `wp_mf_entity` entity                  
+                WHERE   entity.status = 'Accepted' AND 
+                        LOWER(entity.faire)='".strtolower($faire)."'"
                 );
  	$mysqli->query("SET NAMES 'utf8'");
         
@@ -89,6 +89,11 @@ if ( $type == 'entity' ) {
 
 		// Application Thumbnail and Large Images
 		$app_image =$row['project_photo'];
+                
+                //find out if there is an override image for this page
+                $overrideImg = findOverride($row['lead_id'],'app');  
+                if($overrideImg!='') $app_image = $overrideImg;
+                
 		$app['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$app['large_image_url'] = esc_url( $app_image );
 		// Should actually be this... Adding it in for the future.
@@ -96,18 +101,21 @@ if ( $type == 'entity' ) {
 
 		// Application Locations
 		$app['venue_id_ref'] =  $row['venue_id'];
+                
+                // Mobile App Discover
+		$app['mobile_app_discover'] =  $row['mobile_app_discover'];
 
 		// Application Makers
 		$app_id = $app['id'];// get the entity id
 
 		$maker_ids = $row['exhibit_makers'];
 
-		$app['child_id_refs'] = ( ! empty( $maker_ids ) ) ? explode(',',$maker_ids) : null;
+		$app['exhibit_makers'] = ( ! empty( $maker_ids ) ) ? explode(',',$maker_ids) : null;
 
 		// Application Categories
 		$category_ids = $row['Categories'];
 		$app['category_id_refs'] = explode(',',$category_ids);
-
+               
 		// Application Description
 		$app['description'] = $row['Description'];
 

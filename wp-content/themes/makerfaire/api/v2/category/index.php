@@ -37,10 +37,11 @@ if ( $type == 'category') {
 $header = array(
 		'header' => array(
 				'version' => esc_html( MF_EVENTBASE_API_VERSION ),
-				'results' => count( $terms ),
+				'results' => 0//count( $terms ),
 		),
 );
-	$categories = get_categories();
+	$categories = get_categories(array( 'taxonomy' => 'makerfaire_category', 'hide_empty' => false ));
+  
 	// Initalize the app container
 	$venues = array();
 	$child_id_refs = array();

@@ -85,7 +85,10 @@ if ( $type == 'schedule' ) {
 
 		// Schedule thumbnails. Nothing more than images from the application it is tied to
 		$app_image = $project_photo;
-
+                //find out if there is an override image for this page
+                $overrideImg = findOverride($entry_id,'app');  
+                if($overrideImg!='') $app_image = $overrideImg;
+                
 		$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 		$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 

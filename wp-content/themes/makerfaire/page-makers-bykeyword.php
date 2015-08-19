@@ -43,7 +43,7 @@ get_header(); ?>
 
 			<div class="row padbottom">
 				<div class="col-md-8">
-					<a href="/bay-area-2015/meet-the-makers/">&#65513; Look for More Makers</a>
+					<a href="../../">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">

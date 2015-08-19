@@ -7,7 +7,7 @@ global $wp_query;
 $faire = (isset($_GET['faire'])?sanitize_text_field($_GET['faire']):'BA15');
 $results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
 $faire_name = $results[0]->faire_name;
-$current_form_ids   = $results[0]->form_ids;
+$current_form_ids   = explode(',',$results[0]->form_ids);
 
 //$search_term = urldecode($wp_query->query_vars['s_keyword']);
 $search_term=$_GET["s_term"];

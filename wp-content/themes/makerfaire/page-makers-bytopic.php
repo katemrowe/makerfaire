@@ -6,11 +6,10 @@ global $wp_query;
 
 //get faire ID (default to BA15
 $faire = (isset($_GET['faire'])?sanitize_text_field($_GET['faire']):'BA15');
-$results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
-$faire_name = $results[0]->faire_name;
-$current_form_ids   = $results[0]->form_ids;
+$results            = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
+$faire_name         = $results[0]->faire_name;
+$current_form_ids   = explode(',',$results[0]->form_ids);
 
-//$current_form_ids = '20, 13, 12, 17, 16';
 $topic_slug = $wp_query->query_vars['t_slug'];
 
 $category = get_term_by('slug',$topic_slug,'makerfaire_category');
@@ -27,14 +26,13 @@ $sorting_criteria = array('key' => '151', 'direction' => 'ASC' );
 $paging_criteria = array('offset' => $offset, 'page_size' => $page_size );
 
 //search by primary category
-
-    $search_criteria['field_filters'][] = array( '320' => '1', 'value' => $search_category);
+    //$search_criteria['field_filters'][] = array( '320' => '1', 'value' => $search_category);
     $search_criteria['field_filters'][] = array( '321' => '1', 'value' => $search_category);
 
 $search_criteria['field_filters'][] = array( '303' => '1', 'value' => 'Accepted');
 
 $entries =  GFAPI::get_entries( $current_form_ids, $search_criteria, $sorting_criteria, $paging_criteria, $total_count);
-
+//var_dump($entries);
 $current_url = '/'.$f.'/meet-the-makers/topics/'.$topic_slug;
 
 // Load Categories
@@ -59,7 +57,7 @@ get_header(); ?>
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<h3 class="nomargins">Topic: <?php echo $category->name;?>, <span class="text-muted"><?php echo $total_count; echo ($total_count == 1) ? ' result' : 'results'; ?></span></h3>
+					<h3 class="nomargins">Topic: <?php echo $category->name;?>, <span class="text-muted"><?php echo $total_count; echo ($total_count == 1) ? ' result' : ' results'; ?></span></h3>
 				</div>
 			</div>
 			<div class="clear"></div>

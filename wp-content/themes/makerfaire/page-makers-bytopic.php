@@ -47,7 +47,7 @@ get_header(); ?>
 
 			<div class="row padbottom">
 				<div class="col-md-8">
-					<a href="../../">&#65513; Look for More Makers</a>
+                                    <a href="/<?php echo str_replace(' ','-',  strtolower($faire_name));?>/meet-the-makers/">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">

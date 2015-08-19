@@ -32,8 +32,6 @@ $current_url = '/'.$f.'/meet-the-makers/search/';
 $cats_tags = get_categories(array('hide_empty' => 0));
 
 
-
-
 get_header(); ?>
 <div class="clear"></div>
 
@@ -43,7 +41,7 @@ get_header(); ?>
 
 			<div class="row padbottom">
 				<div class="col-md-8">
-					<a href="../../">&#65513; Look for More Makers</a>
+					<a href="/<?php echo str_replace(' ','-', strtolower($faire_name));?>/meet-the-makers/">&#65513; Look for More Makers</a>
 				</div>
 			</div>
 			<div class="row">

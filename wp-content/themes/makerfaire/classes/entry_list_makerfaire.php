@@ -1693,7 +1693,7 @@ class GFEntryList {
                         $nav .= '<ul>';
                         foreach($wpdb->get_results($statusSql) as $statusRow){
                             $nav .= '<li>';                            
-                            $nav .= '<a href="'.$adminURL.'&sort=0&dir=DESC&filterField[]=303|is|'.$statusRow->value.'">'.$statusRow->value.' ('.$statusRow->count.')</a>';                          
+                            $nav .= '<a href="'.$adminURL.'&sort=0&dir=DESC&filterField[]=303|is|'.str_replace(' ','+',$statusRow->value).'">'.$statusRow->value.' ('.$statusRow->count.')</a>';                          
                             $nav .= '</li>';
                         }
                         $nav .= '</ul>';                        

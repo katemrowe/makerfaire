@@ -212,7 +212,7 @@ function buildFaireDrop($wp_admin_bar){
                     $args = array(
                         'id'    => 'mf_admin_subchild_'.$statusRow->id,
                         'title' => $statusRow->value.' ('.$statusRow->count.')',
-                        'href'  => $adminURL.'&sort=0&dir=DESC&'.urlencode('filterField[]').'=303|is|'.$statusRow->value,
+                        'href'  => $adminURL.'&sort=0&dir=DESC&'.urlencode('filterField[]').'=303|is|'.str_replace(' ','+',$statusRow->value),
                         'meta'  => array( 'class' => 'my-toolbar-page' ),
                         'parent' => 'mf_admin_child_'.$formRow->form_id);
                     $wp_admin_bar->add_node( $args ); 

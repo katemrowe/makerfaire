@@ -317,22 +317,22 @@ function create_makerfaire_scheduler($faire_id) {
 	
 	$scheduler->eventTemplateId ( 'presentation-template' )
 		//->editable(array('update' => 'true','template'=>'customEditorTemplate'))
-		->timezone('America/New_York')
-		->date(new DateTime ( '2015/9/25  7:00', new DateTimeZone ( 'America/New_York' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
+		->timezone('UTC')
+		->date(new DateTime ( '2015/9/25  7:00', new DateTimeZone ( 'UTC' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
 			'resources' => array (
 					'Stages' 
 			) 
 	) )->addView ( array (
 			'type' => 'day',
 			'majorTick' => 30,
-			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'America/New_York' ) ) 
+			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'UTC' ) ) 
 	), array (
 			'type' => 'workWeek',
 			'majorTick' => 30,
 			'selected' => true,
 			'workWeekStart' => 5,
 			'workWeekEnd' => 7,
-			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'America/New_York' ) ) 
+			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'UTC' ) ) 
 	), 'agenda' )->dataSource ( $dataSource );
 	
 	return $scheduler;

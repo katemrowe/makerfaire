@@ -1642,3 +1642,19 @@ function findOverride($entry_id, $type){
     }
     return '';
 }
+
+add_filter( 'gform_pre_validation_43', 'update_bn_fields', 10, 2 );
+
+function update_bn_fields($form ) {    
+    //add the selected value to the form
+    foreach ( $form['fields'] as &$field ) {        
+        if ( $field->id != 341 && $field->id != 342 && $field->id != 343   ) {
+            continue;
+        }
+        
+        $choices = array();
+        $choices[] = array( 'text' => $_POST['input_'.$field->id], 'value' => $_POST['input_'.$field->id] );
+        $field->choices = $choices;        
+    }
+    return $form;
+}

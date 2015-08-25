@@ -1223,7 +1223,6 @@ class GFEntryList {
 			</th>
 		</tr>
 		</tfoot>
-
 		<tbody data-wp-lists="list:gf_entry" class="user-list" id="gf_entry_list">
 		<?php
 		if ( sizeof( $leads ) > 0 ) {
@@ -1266,7 +1265,14 @@ class GFEntryList {
 
 					$input_type = ! empty( $columns[ $field_id ]['inputType'] ) ? $columns[ $field_id ]['inputType'] : $columns[ $field_id ]['type'];
 					switch ( $input_type ) {
-
+                                                case 'website' :
+                                                    if ( $field !== null ) {
+								$value = $field->get_value_entry_list( $value, $lead, $field_id, $columns, $form );
+                                                                $value = "<a href='" . esc_attr( $value) . "' target='_blank' alt='" . esc_attr($value) . "' title='" . esc_attr( $value ) . "'>" . esc_attr( GFCommon::truncate_url( $value ) ) . '</a>';
+							} else {
+								$value = esc_html( $value );
+							}                                                        
+                                                        break;
 						case 'source_url' :
 							$value = "<a href='" . esc_attr( $lead['source_url'] ) . "' target='_blank' alt='" . esc_attr( $lead['source_url'] ) . "' title='" . esc_attr( $lead['source_url'] ) . "'>.../" . esc_attr( GFCommon::truncate_url( $lead['source_url'] ) ) . '</a>';
 							break;
@@ -1410,9 +1416,9 @@ class GFEntryList {
 
 					} else {
 						?>
-						<td class="<?php echo ($field_id!='source_url'&&$field_id!=16?$nowrap_class:''); ?>">
-							<?php echo apply_filters( 'gform_entries_column_filter', $value, $form_id, $field_id, $lead, $query_string ); ?>&nbsp;
-							<?php do_action( 'gform_entries_column', $form_id, $field_id, $value, $lead, $query_string ); ?>
+						<td class="<?php echo ($field_id!='source_url'&&$field_id!=16?$nowrap_class:''); ?>">                                                                                                      							
+                                                        <?php echo apply_filters( 'gform_entries_column_filter', $value, $form_id, $field_id, $lead, $query_string ); ?>&nbsp;							
+                                                        <?php do_action( 'gform_entries_column', $form_id, $field_id, $value, $lead, $query_string ); ?>
 						</td>
 					<?php
 					}

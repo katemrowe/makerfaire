@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Template Name: Meet the Makers page
@@ -27,12 +28,10 @@
 	    
 <!-- The header section with a fullwidth image--> 
 <?php
- $criteria = array(
-     'field_filters' => array(
-       array('key' => '304', 'value' => 'Featured Maker')
-     )
-  );
  
+  $search_criteria['field_filters'][] = array( 'key' => '304', 'value' => 'Featured Maker');
+  $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
+
   $faireArray  = $faireName = '';
   $faire_forms = get_post_meta($post->ID, 'faire-forms', true);
   $faireArray  = explode(',',$faire_forms);
@@ -41,7 +40,7 @@
   $results = $wpdb->get_results('SELECT * FROM wp_mf_faire where faire= "'.strtoupper($faire).'"');
   $faireName = $results[0]->faire_name;
   
-  $entries = GFAPI::get_entries($faireArray, $criteria, null, array('offset' => 0, 'page_size' => 40));  
+  $entries = GFAPI::get_entries($faireArray, $search_criteria, null, array('offset' => 0, 'page_size' => 60));  
   
   $randEntryKey = array_rand($entries); 
   $randEntry = $entries[$randEntryKey];

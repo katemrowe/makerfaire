@@ -6,37 +6,6 @@ ini_set ( 'display_errors', '1' );
 require_once ("../../../wp-load.php");
 require_once '../lib/Kendo/Autoload.php';
 $faire_id = isset($_GET['faire_id']) ? $_GET['faire_id']  : 'NY15';
-if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
-	header ( 'Content-Type: application/json' );
-	
-	$request = json_decode ( file_get_contents ( 'php://input' ) );
-	// $result = new SchedulerDataSourceResult('sqlite:..//sample.db');
-	$type = $_POST ['type'];
-	switch ($type) {
-		case 'create' :
-			
-			$subareaid = $request->SubareaID;
-			$start = date ( 'Y-m-d H:i:s', strtotime ( $request->Start ) );
-			$end = date ( 'Y-m-d H:i:s', strtotime ( $request->End ) );
-			$entries = $request->Entries [0];
-			$result = add_entry_schedule ( $faire_id, $subareaid, $start, $end, $entries );
-			// $result=1 ; // $result = $result->createWithAssociation('Meetings', 'MeetingAttendees', $columns, $request->models, 'MeetingID', array('Attendees' => 'AttendeeID'));
-			break;
-		case 'update' :
-			$result = 1; // $result = $result->updateWithAssociation('Meetings', 'MeetingAttendees', $columns, $request->models, 'MeetingID', array('Attendees' => 'AttendeeID'));
-			break;
-		case 'destroy' :
-			$result = 1; // $result = $result->destroyWithAssociation('Meetings', 'MeetingAttendees', $request->models, 'MeetingID');
-			break;
-		default :
-			$result = readWithAssociation ( $faire_id, '' );
-			break;
-	}
-	
-	echo json_encode ( $result ['data'], JSON_NUMERIC_CHECK );
-	
-	exit ();
-}
 
 ?>
 

@@ -18,30 +18,29 @@ if ($_SERVER ['REQUEST_METHOD'] == 'GET') {
 elseif ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 	header ( 'Content-Type: application/json' );
 
-	$request = json_decode ( file_get_contents ( 'php://input' ) );
+	$model = json_decode ( file_get_contents ( 'php://input' ) );
 	$type = $_GET['type'];
 	
 	switch ($type) {
 		case 'create' :
 				
-			$subareaid = $request->SubareaID;
-			$start = date ( 'Y-m-d H:i:s', strtotime ( $request->Start ) );
-			$end = date ( 'Y-m-d H:i:s', strtotime ( $request->End ) );
-			$entries = $request->Entries [0];
-			$result = add_entry_schedule ( 'NY15', $subareaid, $start, $end, $entries );
-			// $result=1 ; // $result = $result->createWithAssociation('Meetings', 'MeetingAttendees', $columns, $request->models, 'MeetingID', array('Attendees' => 'AttendeeID'));
+			$subareaid = $model->SubareaID;
+			$start = date ( 'Y-m-d H:i:s', strtotime ( $model->Start ) );
+			$end = date ( 'Y-m-d H:i:s', strtotime ( $model->End ) );
+			$entries = $model->Entries [0];
+			$model -> locationID = add_entry_schedule ( 'NY15', $subareaid, $start, $end, $entries );
+			$result= $model;// $result=1 ; // $result = $result->createWithAssociation('Meetings', 'MeetingAttendees', $columns, $request->models, 'MeetingID', array('Attendees' => 'AttendeeID'));
 			break;
 		case 'update' :
-			$locationID = $request->locationID;
-			remove_entry_schedule($locationID);
-			$subareaid = $request->SubareaID;
-			$start = date ( 'Y-m-d H:i:s', strtotime ( $request->Start ) );
-			$end = date ( 'Y-m-d H:i:s', strtotime ( $request->End ) );
-			$entries = $request->Entries [0];
-			$result = add_entry_schedule ( 'NY15', $subareaid, $start, $end, $entries );
+			$locationID = $model->locationID;
+			$subareaid = $model->SubareaID;
+			$start = date ( 'Y-m-d H:i:s', strtotime ( $model->Start ) );
+			$end = date ( 'Y-m-d H:i:s', strtotime ( $model->End ) );
+			$entries = $model->Entries [0];
+			$result = update_entry_schedule ($locationID, 'NY15', $subareaid, $start, $end, $entries );
 			break;
 		case 'destroy' :
-			$locationID = $request->locationID;
+			$locationID = $model->locationID;
 			remove_entry_schedule($locationID);
 			$result = $locationID;
 			break;
@@ -92,6 +91,41 @@ function add_entry_schedule($faire_id, $subarea_id, $entry_schedule_start, $entr
 	;
 	
 	return $result_id;
+}
+
+/* Modify Set Entry Status */
+function update_entry_schedule($locationID, $faire_id, $subarea_id, $entry_schedule_start, $entry_schedule_end, $entry_info_entry_id) {
+		// set the location
+		$result_message="";
+	$mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
+	if ($mysqli->connect_errno) {
+		$result_message= "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+	}
+	$insert_query = sprintf ( "UPDATE `wp_mf_schedule`
+				SET
+				`entry_id` = $entry_info_entry_id,
+				`start_dt` = '$entry_schedule_start',
+				`end_dt` = '$entry_schedule_end'
+				WHERE `ID` = $locationID " );
+	$insert_row = $mysqli->query ( $insert_query );
+	if ($insert_row) {
+		$insert_query = sprintf ( "UPDATE `wp_mf_location`,`wp_mf_schedule`
+					SET `wp_mf_location`.`entry_id` = $entry_info_entry_id,
+      				`wp_mf_location`.`subarea_id` = $subarea_id
+				WHERE `wp_mf_schedule`.location_id = `wp_mf_location`.ID AND `wp_mf_schedule`.ID = $locationID" );
+		$insert_row = $mysqli->query ( $insert_query );
+		if ($insert_row) {
+			$result_id = $mysqli->insert_id;
+		} else {
+			$result_message= ('Error :' . $insert_query . ':(' . $mysqli->errno . ') ' . $mysqli->error);
+		}
+	}else {
+			$result_message= ('Error :' . $insert_query . ':(' . $mysqli->errno . ') ' . $mysqli->error);
+		}
+	// MySqli Insert Query
+	
+
+	return $result_message;
 }
 
 /* Modify Set Entry Status */

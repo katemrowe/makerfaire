@@ -1410,7 +1410,7 @@ class GFEntryList {
 
 					} else {
 						?>
-						<td class="<?php echo ($field_id!='source_url'?$nowrap_class:''); ?>">
+						<td class="<?php echo ($field_id!='source_url'&&$field_id!=16?$nowrap_class:''); ?>">
 							<?php echo apply_filters( 'gform_entries_column_filter', $value, $form_id, $field_id, $lead, $query_string ); ?>&nbsp;
 							<?php do_action( 'gform_entries_column', $form_id, $field_id, $value, $lead, $query_string ); ?>
 						</td>

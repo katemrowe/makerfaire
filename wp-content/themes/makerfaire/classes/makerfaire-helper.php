@@ -314,9 +314,9 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
         $project_photo  = !empty ( $row['maker_photo'] ) ? $row['maker_photo'] : !empty ( $row['photo'] ) ? $row['photo'] :'';
         //find out if there is an override image for this page
-        $overrideImg = findOverride($entry_id,'schedule');
+        //$overrideImg = findOverride($entry_id,'schedule');
         
-        if($overrideImg!='') $project_photo = $overrideImg;
+        //if($overrideImg!='') $project_photo = $overrideImg;
         //$maker_photo    = isset ( $row[27] ) ? $row[27] : '';
 	$maker_photo    = $project_photo;
         
@@ -331,7 +331,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	$schedule['time_stop'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
 
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
-	$app_image = (isset($maker_photo)) ? $maker_photo : $project_photo;
+	$app_image = $project_photo;
 	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '80', '80' ) );
 	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_image, '600', '600' ) );
 

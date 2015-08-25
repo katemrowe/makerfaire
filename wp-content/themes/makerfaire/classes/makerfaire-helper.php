@@ -310,11 +310,16 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
     $schedule['subarea'] = $row['subarea'];
 	// REQUIRED: Schedule ID
 	$schedule['id'] = $entry_id;       
-	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
-    $project_photo  = !empty ( $row['maker_photo'] ) ? $row['maker_photo'] : !empty ( $row['photo'] ) ? $row['photo'] :'';
-        //find out if there is an override image for this page
-    $overrideImg = findOverride($entry_id,'schedule');
-    if($overrideImg!='') $project_photo = $overrideImg;
+	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';  
+	
+	// Get Maker and Project Photo images.  Use the maker if it is set.
+	$maker_photo = !empty ($row['maker_photo']) ? $row['maker_photo'] : '';                
+    $project_photo = !empty ($row['photo']) ? $row['photo'] : '';     
+    $app_photo = empty($maker_photo) ? $project_photo :        $maker_photo;
+     
+    //find out if there is an override image for this page
+	$overrideImg = findOverride($entry_id,'schedule');
+    if($overrideImg!='') $app_photo = $overrideImg;
     // REQUIED: Application title paired to scheduled item
 	$schedule['name']                = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 	$schedule['time_start']          = date( DATE_ATOM,   $start );
@@ -324,10 +329,10 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	
 	// Rename the field, keeping 'time_end' to ensure this works.
 	$schedule['time_stop'] = date( DATE_ATOM, strtotime( '-1 hour', $stop ) );
-
+	
 	// Schedule thumbnails. Nothing more than images from the application it is tied to
-	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $project_photo, '80', '80' ) );
-	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $project_photo, '600', '600' ) );
+	$schedule['thumb_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_photo, '80', '80' ) );
+	$schedule['large_img_url'] = esc_url( legacy_get_resized_remote_image_url( $app_photo, '600', '600' ) );
 
 	// A list of applications assigned to this event (should only be one really...)
 	$schedule['entity_id_refs'] = array( absint( $entry_id) );

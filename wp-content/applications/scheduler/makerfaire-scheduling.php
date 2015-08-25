@@ -1,4 +1,6 @@
 <?php
+require_once '../include/header.php';
+
 use Kendo\Template;
 error_reporting ( E_ALL );
 ini_set ( 'display_errors', '1' );
@@ -9,9 +11,7 @@ $faire_id = isset($_GET['faire_id']) ? $_GET['faire_id']  : 'NY15';
 
 ?>
 
-<?php
-require_once '../include/header.php';
-?>
+
 <form>
 <div class="k-floatwrap k-header k-scheduler-toolbar">
 <?php
@@ -268,7 +268,7 @@ function create_makerfaire_scheduler($faire_id) {
 	
 
 	
-	$dataSource->transport ( $transport )->schema ( $schema )->batch ( false )->data ( $schedule_entries );
+	$dataSource->transport ( $transport )->schema ( $schema )->batch ( false );
 	
 	$subareasResource = new \Kendo\UI\SchedulerResource ();
 	$locations_array = get_entry_locations ( $faire_id );

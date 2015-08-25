@@ -312,7 +312,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	// REQUIRED: Schedule ID
 	$schedule['id'] = $entry_id;       
 	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
-        $project_photo  = isset ( $row['maker_photo'] ) ? $row['maker_photo'] : isset ( $row['photo'] ) ? $row['photo'] :'';
+        $project_photo  = !empty ( $row['maker_photo'] ) ? $row['maker_photo'] : !empty ( $row['photo'] ) ? $row['photo'] :'';
         //find out if there is an override image for this page
         $overrideImg = findOverride($entry_id,'schedule');
         

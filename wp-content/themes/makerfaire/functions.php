@@ -1450,9 +1450,21 @@ function change_column_data( $value, $form_id, $field_id, $entry, $query_string 
 add_filter( 'gform_addon_navigation', 'add_menu_item' );
 function add_menu_item( $menu_items ) {
     $menu_items[] = array( "name" => "mf_entries", "label" => "Entries", "callback" => "entries_list", "permission" => "edit_posts" );
+    $menu_items[] = array( "name" => "mf_fsp", "label" => "Download FSP", "callback" => "build_pdf_fsp","permission" => "edit_posts" );
+    $menu_items[] = array( "name" => "mf_gsp", "label" => "Download GSP", "callback" => "build_pdf_gsp","permission" => "edit_posts" );
+
     return $menu_items;
 }
+function build_pdf_fsp(){
+     require_once( TEMPLATEPATH.'/fpdi/FSP.php' );    
+}
+ 
+function build_pdf_gsp(){    
+    require_once( TEMPLATEPATH.'/fpdi/GSP.php' );    
+ }
 
+
+ 
 function entries_list(){    
     $view    = rgget( 'view' );
     $lead_id = rgget( 'lid' );

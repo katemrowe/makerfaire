@@ -11,15 +11,15 @@
    $args = array(
   		'name'        => $the_slug,
   		'post_type'   => 'mf_form',
-  		'post_status' => 'accepted',
+  		'post_status'   => 'accepted',
   		'numberposts' => 1
   );
   $my_posts = get_posts($args);
-  
   $entrySlug =$the_slug;
   $json =  stripslashes(urldecode( $my_posts[0]->post_content )) ;
   $json = json_decode($json);
-  switch ($json->form_type) {
+  print_r($json);
+   switch ($json->form_type) {
   	case 'exhibit':
   		$project_faire = $json->maker_faire;
   		$project_name = $json->project_name;

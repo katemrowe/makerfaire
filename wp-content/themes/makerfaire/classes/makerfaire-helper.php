@@ -311,12 +311,10 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	// REQUIRED: Schedule ID
 	$schedule['id'] = $entry_id;       
 	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
-    //$project_photo  = !empty ( $row['maker_photo'] ) ? $row['maker_photo'] : !empty ( $row['photo'] ) ? $row['photo'] :'';
+    $project_photo  = !empty ( $row['maker_photo'] ) ? $row['maker_photo'] : !empty ( $row['photo'] ) ? $row['photo'] :'';
         //find out if there is an override image for this page
     $overrideImg = findOverride($entry_id,'schedule');
     if($overrideImg!='') $project_photo = $overrideImg;
-    $project_photo = $row['maker_photo'];
-    print_r($row);
     // REQUIED: Application title paired to scheduled item
 	$schedule['name']                = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
 	$schedule['time_start']          = date( DATE_ATOM,   $start );

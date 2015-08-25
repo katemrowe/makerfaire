@@ -193,7 +193,7 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 			$entry_ids = array (
 					$row ['entry_id'] 
 			);
-			$title= iconv("UTF-8", "UTF-8//IGNORE", $row['presentation_title']);
+			$title= preg_replace( "/[^a-z0-9 ]/i", "", $row['presentation_title']);
 			$type= $row['presentation_type'];
 			$desc_short= $row['desc_short'];
 			// build array
@@ -221,7 +221,6 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 		'Entries' => $entry_ids,
 		'Title' => $title);
 		}
-		
 	} else {
 		echo ('Error :' . $select_query . ':(' . $mysqli->errno . ') ' . $mysqli->error);
 	}

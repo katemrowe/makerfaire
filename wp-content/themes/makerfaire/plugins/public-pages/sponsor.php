@@ -4,7 +4,7 @@
  */
 function mf_sponsor_carousel( $category_name ) {
 	// Get all of the sponsor from the links
-	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name ) );
+	$sponsors = get_bookmarks( array( 'orderby' => 'name', 'category_name' => $category_name ) );
 
 	// Split them into chucks of two
 	$sponsors = array_chunk( $sponsors, 2, true );

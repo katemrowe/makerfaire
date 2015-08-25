@@ -22,8 +22,8 @@
     <body>
 <?php 
 use Kendo\Template;
-error_reporting ( E_ALL );
-ini_set ( 'display_errors', '1' );
+//error_reporting ( E_ALL );
+//ini_set ( 'display_errors', '1' );
 
 require_once ("../../../wp-load.php");
 require_once '../lib/Kendo/Autoload.php';

@@ -266,7 +266,14 @@ function get_mf_schedule_by_faire ($faire, $day='', $area='', $subarea=''){
                                             maker_to_entity.maker_id    = maker.maker_id AND
                                             maker_to_entity.maker_type != 'Contact' 
                                     group by maker.lead_id
-                                )  as makers_list        
+                                )  as makers_list    ,
+                                (select  Photo from    wp_mf_maker maker, 
+                                            wp_mf_maker_to_entity maker_to_entity
+                                    where   schedule.entry_id           = maker_to_entity.entity_id  AND
+                                            maker_to_entity.maker_id    = maker.maker_id AND
+                                            maker_to_entity.maker_type = 'presenter' 
+                                    group by maker.lead_id
+                                )  as maker_photo     
                         
                         FROM    wp_mf_schedule schedule, 
                                 wp_mf_entity entity, 
@@ -305,7 +312,7 @@ while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 	// REQUIRED: Schedule ID
 	$schedule['id'] = $entry_id;       
 	$schedule_name  = isset ( $row['presentation_title'] ) ? $row['presentation_title'] : '';                        
-        $project_photo  = isset ( $row['photo'] ) ? $row['photo'] : '';
+        $project_photo  = isset ( $row['maker_photo'] ) ? $row['maker_photo'] : isset ( $row['photo'] ) ? $row['photo'] :'';
         //find out if there is an override image for this page
         $overrideImg = findOverride($entry_id,'schedule');
         

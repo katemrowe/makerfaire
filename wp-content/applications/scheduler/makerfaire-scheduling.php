@@ -9,7 +9,7 @@
         <link href="../content/css/web/kendo.default.mobile.min.css" rel="stylesheet" />
         <link href="../content/css/dataviz/kendo.dataviz.min.css" rel="stylesheet" />
         <link href="../content/css/dataviz/kendo.dataviz.default.min.css" rel="stylesheet" />
-        <link href="../content/shared/styles/examples.css" rel="stylesheet">
+        <link href="styles/examples.css" rel="stylesheet">
  		<link href="../woahbar/woahbar.css" rel="stylesheet">
         
         <script src="../content/js/jquery.min.js"></script>
@@ -63,7 +63,8 @@ echo $scheduler->render ();
     });
 </script>
 <script id="presentation-template" type="text/x-kendo-template">
-    <p>#: JSON.stringify(entries) #</p>
+ <a target="_blank" title="#: title #" href="/wp-admin/admin.php?page=mf_entries&view=mfentry&lid=#: entries[0] #">#: entries[0] #</a>
+<p>#: title #</p>
 </script>
 <!-- begin#woahbar -->
 <div class="woahbar" style="display: none;">
@@ -83,6 +84,12 @@ echo $scheduler->render ();
         Use the DejaVu Sans font for display and embedding in the PDF file.
         The standard PDF fonts have no support for Unicode characters.
     */
+    
+.k-scheduler-table a
+{
+    color: #eb1b26;
+    font-weight: bold;
+}
 .k-scheduler {
 	font-family: "DejaVu Sans", "Arial", sans-serif;
 }
@@ -169,7 +176,7 @@ function get_entry_locations($faire_id) {
 			$locations [] = array (
 					'text' => $subarea,
 					'value' => $subarea_id,
-					'color' => '#6eb3fa' 
+					'color' => 'deepskyblue' 
 			);
 		}
 	}

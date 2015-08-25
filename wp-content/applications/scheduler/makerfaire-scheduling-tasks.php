@@ -162,7 +162,10 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 	    location.subarea_id,
 	    `wp_mf_schedule`.`faire`,
 	   `wp_mf_schedule`.`start_dt`,
-	    `wp_mf_schedule`.`end_dt`
+	    `wp_mf_schedule`.`end_dt`,
+        wp_mf_entity.presentation_title,
+        wp_mf_entity.presentation_type,
+        wp_mf_entity.desc_short
 	FROM
 	    `wp_mf_schedule`
 			JOIN 
@@ -170,6 +173,8 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 	           AND wp_mf_schedule.location_id = location.ID
 	        JOIN
 	    wp_mf_faire ON wp_mf_schedule.faire = wp_mf_faire.faire
+			JOIN 
+		wp_mf_entity ON wp_mf_entity.lead_id = wp_mf_schedule.entry_id
 	WHERE
 	    wp_mf_faire.faire = '$faire_id'
 	ORDER BY  start_dt ASC" );
@@ -188,6 +193,9 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 			$entry_ids = array (
 					$row ['entry_id'] 
 			);
+			$title= iconv("UTF-8", "UTF-8//IGNORE", $row['presentation_title']);
+			$type= $row['presentation_type'];
+			$desc_short= $row['desc_short'];
 			// build array
 			/*$schedule_entries [] = array (
 					'locationID' => $schedule_entry_id,
@@ -204,15 +212,16 @@ function read_schedule($faire_id, $subarea_id, &$total) {
 					'entries' => $entry_ids 
 			);
 			*/
-$schedule_entries [] = array (
+		$schedule_entries [] = array (
 		'locationID' => $schedule_entry_id,
 		'Start' => $start_dt->format(DateTime::ISO8601),
 		'End' => $end_dt->format(DateTime::ISO8601),
 		'IsAllDay' => false,
 		'SubareaID' => $stage,
 		'Entries' => $entry_ids,
-		'Title' => '');
+		'Title' => $title);
 		}
+		
 	} else {
 		echo ('Error :' . $select_query . ':(' . $mysqli->errno . ') ' . $mysqli->error);
 	}

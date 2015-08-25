@@ -1,6 +1,26 @@
-<?php
-require_once '../include/header.php';
-
+<?php header('Content-Type: text/html; charset=utf-8'); ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <link href="../content/css/web/kendo.common.min.css" rel="stylesheet" />
+        <link href="../content/css/web/kendo.rtl.min.css" rel="stylesheet" />
+        <link href="../content/css/web/kendo.default.min.css" rel="stylesheet" />
+        <link href="../content/css/web/kendo.default.mobile.min.css" rel="stylesheet" />
+        <link href="../content/css/dataviz/kendo.dataviz.min.css" rel="stylesheet" />
+        <link href="../content/css/dataviz/kendo.dataviz.default.min.css" rel="stylesheet" />
+        <link href="../content/shared/styles/examples.css" rel="stylesheet">
+ 		<link href="../woahbar/woahbar.css" rel="stylesheet">
+        
+        <script src="../content/js/jquery.min.js"></script>
+        <script src="../woahbar/woahbar.js"></script>
+        <script src="../content/js/kendo.all.min.js"></script>
+        <script src="../content/js/kendo.timezones.min.js"></script>
+        <script src="../content/shared/js/console.js"></script>
+        <script src="../content/shared/js/prettify.js"></script>
+    </head>
+    <body>
+<?php 
 use Kendo\Template;
 error_reporting ( E_ALL );
 ini_set ( 'display_errors', '1' );
@@ -16,10 +36,10 @@ $faire_id = isset($_GET['faire_id']) ? $_GET['faire_id']  : 'NY15';
 <div class="k-floatwrap k-header k-scheduler-toolbar">
 <?php
 $locations_array = get_entry_locations ( $faire_id );
-	
 $select = new \Kendo\UI\MultiSelect('locationfilters');
 $select->dataSource ( $locations_array )
 ->change('onChange')
+->value(array('166','188','167','174','194'))
 ->dataTextField ( 'text' )
 ->dataValueField ( 'value' )
 ->placeholder ( 'Filter location ...' );;
@@ -38,10 +58,8 @@ echo $scheduler->render ();
         // create ComboBox from select HTML element
         var input = $("#input").data("kendoComboBox");
         var select = $("#select").data("kendoComboBox");
-
-        $("#get").click(function() {
-            alert('Thank you! Your Choice is:\n\nFabric ID: '+input.value()+' and Size: '+select.value());
-        });
+        onChange(null);
+        
     });
 </script>
 <script id="presentation-template" type="text/x-kendo-template">
@@ -124,9 +142,11 @@ function onChange(e) {
 
 };
 </script>
+
 <!-- end#woahbar -->
+
+</body></html>
 <?php
-// require_once '../include/footer.php';
 function get_entry_locations($faire_id) {
 	$mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME );
 	if ($mysqli->connect_errno) {
@@ -262,18 +282,16 @@ function create_makerfaire_scheduler($faire_id) {
 	$schema->model ( $model );
 	
 	$dataSource = new \Kendo\Data\DataSource ();
-	/*
-	 * $schedule_entries = read_schedule($faire_id,''); echo print_r($schedule_entries);
-	 */
-	
-
-	
 	$dataSource->transport ( $transport )->schema ( $schema )->batch ( false );
+	
+	
+	
 	
 	$subareasResource = new \Kendo\UI\SchedulerResource ();
 	$locations_array = get_entry_locations ( $faire_id );
 	
 	$subareasResource->field ( 'subareaId' )->title ( 'Stage' )->name ( 'Stages' )->dataSource ( $locations_array );
+	
 	
 	$entries = get_entries ( $faire_id );
 	$entriesResource = new \Kendo\UI\SchedulerResource ();
@@ -287,21 +305,22 @@ function create_makerfaire_scheduler($faire_id) {
 	$scheduler->eventTemplateId ( 'presentation-template' )
 		//->editable(array('update' => 'true','template'=>'customEditorTemplate'))
 		->timezone('UTC')
-		->date(new DateTime ( '2015/9/25  7:00', new DateTimeZone ( 'UTC' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
+		
+		->date(new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
 			'resources' => array (
 					'Stages' 
 			) 
 	) )->addView ( array (
 			'type' => 'day',
 			'majorTick' => 30,
-			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'UTC' ) ) 
+			'startTime' => new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) 
 	), array (
 			'type' => 'workWeek',
 			'majorTick' => 30,
 			'selected' => true,
 			'workWeekStart' => 5,
 			'workWeekEnd' => 7,
-			'startTime' => new DateTime ( '2015/9/25 7:00', new DateTimeZone ( 'UTC' ) ) 
+			'startTime' => new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) 
 	), 'agenda' )->dataSource ( $dataSource );
 	
 	return $scheduler;

@@ -4,7 +4,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//set up database 
+$root = $_SERVER['DOCUMENT_ROOT'];
+require_once( $root.'/wp-config.php' );
+require_once( $root.'/wp-includes/wp-db.php' );
 
+//error_log('start of makersigns.php '.date('h:i:s'),0);
 // require tFPDF
 require_once('fpdf/fpdf.php');
 
@@ -28,21 +33,18 @@ $pdf->SetFillColor(255,255,255);
 
 if(isset($_GET['eid']) && $_GET['eid']!=''){
     $entryid = $_GET['eid'];
+    //error_log('before createOutput() '.date('h:i:s'),0);
     createOutput($entryid, $pdf);
+    //error_log('after createOutput() '.date('h:i:s'),0);
     ob_clean();
-    $pdf->Output('MFS.pdf', 'D');
+    $pdf->Output($entryid.'.pdf', 'D');
+    //error_log('after writing pdf '.date('h:i:s'),0);
 }else{
     echo 'No Entry ID submitted';
 }
 
 
 function createOutput($entry_id,$pdf){
-    //set up database 
-    $root = $_SERVER['DOCUMENT_ROOT'];
-    require_once( $root.'/wp-config.php' );
-    require_once( $root.'/wp-includes/wp-db.php' );
-
-
     $entry = GFAPI::get_entry( $entry_id );
     $makers = array();
     if (strlen($entry['160.3']) > 0) $makers[] = $entry['160.3'] . ' ' .$entry['160.6'];

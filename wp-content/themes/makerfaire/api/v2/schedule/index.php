@@ -17,12 +17,6 @@ $type = ( ! empty( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] 
 $faire = ( ! empty( $_REQUEST['faire'] ) ? sanitize_text_field( $_REQUEST['faire'] ) : null );
 // Double check again we have requested this file
 if ( $type == 'schedule' ) {
-	$header = array(
-			'header' => array(
-					'version' => esc_html( MF_EVENTBASE_API_VERSION ),
-					'results' => intval( $query->post_count ),
-			),
-	);
 	
 	$faire = sanitize_title( $faire );
 	
@@ -105,7 +99,13 @@ if ( $type == 'schedule' ) {
 		// Put the application into our list of schedules
 		array_push( $schedules, $schedule );
 	}
-
+	$header = array(
+			'header' => array(
+					'version' => esc_html( MF_EVENTBASE_API_VERSION ),
+					'results' => intval( $result->num_rows ),
+			),
+	);
+	
 	// Merge the header and the entities
 	$merged = array_merge( $header, array( 'schedule' => $schedules ) );
 

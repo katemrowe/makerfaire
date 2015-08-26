@@ -53,7 +53,7 @@ if ( $type == 'entity' ) {
                         `entity`.`category` as `Categories`,
                         `entity`.`project_photo`,
                         entity.mobile_app_discover,
-                        (select group_concat( distinct maker_id separator ', ') as Makers 
+                        (select group_concat( distinct maker_id separator ',') as Makers 
                          from wp_mf_maker_to_entity maker_to_entity 
                          where entity.lead_id               = maker_to_entity.entity_id AND 
                                maker_to_entity.maker_type  != 'Contact' 

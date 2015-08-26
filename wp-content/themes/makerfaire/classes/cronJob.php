@@ -132,7 +132,7 @@ function build_wp_mf_maker(){
                 }
                 //verify we only have unique categories
                 $leadCategory = array_unique($leadCategory);
-                $catList = implode(', ', $leadCategory);
+                $catList = implode(',', $leadCategory);
                     
                 //build wp_mf_entity table
                 $presentationType   = (isset($lead[$crossRef['wp_mf_entity_array']['presentation_type']])   ? esc_sql($lead[$crossRef['wp_mf_entity_array']['presentation_type']])  : '');

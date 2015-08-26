@@ -31,17 +31,24 @@ if ( $type == 'schedule' ) {
                                         `wp_mf_schedule`.`day`,
                                          wp_mf_entity.project_photo,
                                          wp_mf_entity.presentation_title,                                      
-                                        `wp_mf_api_venue`.ID,
-                                        `wp_mf_api_entity`.`child_id_ref`
-                                FROM `wp_mf_schedule`, wp_mf_entity,
-                                     `wp_mf_api_entity`,`wp_mf_api_venue`,                                                                              
-                                      wp_mf_faire_area, wp_mf_faire_subarea  
-                                WHERE  `wp_mf_schedule`.faire = '$faire' and "
-                                    . " wp_mf_entity.status = 'Accepted' and "
-                                    . " wp_mf_schedule.entry_id = wp_mf_entity.lead_id AND "
-                                    . " wp_mf_schedule.entry_id = wp_mf_api_entity.ID AND "
-                                    . " wp_mf_faire_area.ID     = wp_mf_api_venue.area_id AND 
-                                        wp_mf_faire_subarea.ID  = wp_mf_api_venue.subarea_id"
+                                        `wp_mf_location`.ID,
+                                       (select group_concat( distinct maker_id separator ',') as Makers 
+                         from wp_mf_maker_to_entity maker_to_entity 
+                         where wp_mf_entity.lead_id               = maker_to_entity.entity_id AND 
+                               maker_to_entity.maker_type  != 'Contact' 
+                         group by maker_to_entity.entity_id
+                        ) as exhibit_makers
+                                FROM `wp_mf_schedule`, 
+									  wp_mf_entity,
+                                     `wp_mf_location`,                                                                            
+                                      wp_mf_faire_area, 
+                                      wp_mf_faire_subarea  
+                                WHERE  `wp_mf_schedule`.faire = '$faire' and 
+                                     wp_mf_entity.status = 'Accepted' and 
+                                     wp_mf_schedule.entry_id = wp_mf_entity.lead_id AND 
+                                     wp_mf_schedule.location_id = wp_mf_location.ID AND 
+                                        wp_mf_faire_subarea.ID  = wp_mf_location.subarea_id AND
+                                         wp_mf_faire_area.ID     = wp_mf_faire_subarea.area_id  "
                                 );
  	$mysqli->query("SET NAMES 'utf8'");
  		
@@ -88,10 +95,12 @@ if ( $type == 'schedule' ) {
 
 		// REQUIRED: Venue ID reference
 		//$schedule['venue_id_ref'] = $row[11];                //??
-		$maker_ids                = explode(',',$row['child_id_ref']);   //??
+		$maker_ids = $row['exhibit_makers'];
+
+		$app['exhibit_makers'] = ( ! empty( $maker_ids ) ) ? explode(',',$maker_ids) : null;
 		
 		// A list of applications assigned to this event (should only be one really...)
-		$schedule['entity_id_refs'] = $maker_ids = array_merge(array( $entry_id),$maker_ids);
+		$schedule['entity_id_refs'] = array_merge(array( $entry_id));
 
 		// Application Makers
 		$schedule['maker_id_refs'] = $maker_ids;

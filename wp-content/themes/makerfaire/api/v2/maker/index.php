@@ -46,7 +46,7 @@ if ( $type == 'maker' ) {
 	$header = array(
 		'header' => array(
 			'version' => esc_html( MF_EVENTBASE_API_VERSION ),
-			'results' => intval( $query->post_count ),
+			'results' => intval( $result->num_rows ),
 		),
 	);
 	
@@ -71,7 +71,7 @@ if ( $type == 'maker' ) {
 		
 		$maker['name'] = $row['first_name'].' '.$row['last_name'];
 		$maker['child_id_refs'] = array(); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
-		$maker['category_id'] = array($row['category']); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
+		$maker['category_id_refs'] = explode(',', $row['category']); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
 		
 		// Application ID this maker is assigned to
 		

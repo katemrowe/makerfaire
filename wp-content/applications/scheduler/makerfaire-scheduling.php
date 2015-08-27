@@ -1,4 +1,12 @@
-<?php header('Content-Type: text/html; charset=utf-8'); ?>
+<?php
+
+include('../../../wp-blog-header.php');
+
+global $user_identity;
+if(!$user_identity)
+	die('Sorry, you must be <a href="'. get_bloginfo('home') . '/wp-login.php?redirect_to=' . $_SERVER['PHP_SELF'] . '">logged in</a> to view this page.');
+
+header('Content-Type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -63,8 +71,10 @@ echo $scheduler->render ();
     });
 </script>
 <script id="presentation-template" type="text/x-kendo-template">
- <a target="_blank" href="/wp-admin/admin.php?page=mf_entries&view=mfentry&lid=#: entries[0] #">#: entries[0] #</a>
-<p>#= title #</p>
+# if(entries){ #
+ <a target="_blank" title="#: title #" href="/wp-admin/admin.php?page=mf_entries&view=mfentry&lid=#:  #">#: entries[0] #</a>
+# } #
+<p>#: title #</p>
 </script>
 <!-- begin#woahbar -->
 <div class="woahbar" style="display: none;">

@@ -181,6 +181,11 @@ if ( isset( $long_description ) ) {
 						<?php echo ( isset( $size_request_other ) ) ? 'Other: '.$size_request_other : '' ; ?>
 						</td>
 					</tr>                                         
+                                        <tr>
+                                            <td colspan="2">						
+                                                <a href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><input class="button button-large button-primary" value="Download Maker Sign" /></a>
+                                            </td>
+					</tr>  
 				</table>
 			</td>
 		</tr>                

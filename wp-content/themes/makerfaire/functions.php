@@ -1455,9 +1455,82 @@ function add_menu_item( $menu_items ) {
     $menu_items[] = array( "name" => "mf_export", "label" => "MF Export", "callback" => "build_mf_export","permission" => "edit_posts" );
     return $menu_items;
 }
+add_action( 'admin_post_export_MFform', 'createCSVfile' );
 
 function build_mf_export(){
-     require_once( TEMPLATEPATH.'/exportData.php' );    
+    ?>
+<h2>Export MakerFaire Forms</h2>
+    <h3>Please select the form you want to export:</h3>     
+     <form method="post" action="admin-post.php">
+        <input type="hidden" name="action" value="export_MFform">
+         
+        <select id="exportForm" name="exportForm">
+                <option value=""><?php _e( 'Select a form', 'gravityforms' ); ?></option>
+                <?php
+                $forms = RGFormsModel::get_forms( null, 'title' );
+                foreach ( $forms as $form ) {
+                        ?>
+                        <option value="<?php echo absint( $form->id ) ?>"><?php echo esc_html( $form->title ) ?></option>
+                <?php
+                }
+                ?>
+        </select>
+        <input type="submit" value="Download Export File" class="button button-large button-primary" />
+    </form>
+    <?php
+}
+
+function createCSVfile() {    
+    if(!isset($_POST['exportForm']) ||$_POST['exportForm']==''){
+        die('please select a form');
+    }
+    //create CSV file
+    $form_id = $_POST['exportForm'];
+    $form = GFAPI::get_form( $form_id );
+    $fieldData = array();
+    //echo 'are you there?';
+    //die();
+    //put fieldData in a usable array
+    foreach($form['fields'] as $field){
+        if($field->type!='section' && $field->type!='html' && $field->type!='page')
+            $fieldData[$field['id']] = $field;
+    }
+    $search_criteria['status'] = 'active';
+    $entries = GFAPI::get_entries( $form_id, $search_criteria, null, array('offset' => 0, 'page_size' => 9999) );
+
+    $output = array('Entry ID','FormID');
+    $list = array();
+    foreach($fieldData as $field){
+        $output[] = $field['label'];
+    }
+    $list[] = $output;
+    //echo 'For Form '.$form_id.' '. count($entries).' records';
+    foreach($entries as $entry){
+        $fieldArray = array($entry['id'],$form_id);
+        foreach($fieldData as $field){
+            array_push($fieldArray, (isset($entry[$field->id])?$entry[$field->id]:""));
+        }
+        $list[] = $fieldArray;
+    }
+
+    //write CSV file
+    // output headers so that the file is downloaded rather than displayed
+    //ob_clean();
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=form-'.$form_id.'.csv');
+    //header("Pragma: no-cache");
+    //header("Expires: 0");
+    $file = fopen('php://output','w');
+
+    foreach ($list as $line){
+      fputcsv($file,$line);
+      //echo implode(',',$line) . "\n";  
+    }
+    
+    fclose($file); 
+    //wp_redirect(  admin_url( 'admin.php?page=mf_export'));
+    die();
+    exit();
 }
 
 function build_pdf_fsp(){

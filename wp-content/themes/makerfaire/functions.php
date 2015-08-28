@@ -1452,9 +1452,14 @@ function add_menu_item( $menu_items ) {
     $menu_items[] = array( "name" => "mf_entries", "label" => "Entries", "callback" => "entries_list", "permission" => "edit_posts" );
     $menu_items[] = array( "name" => "mf_fsp", "label" => "Download FSP", "callback" => "build_pdf_fsp","permission" => "edit_posts" );
     $menu_items[] = array( "name" => "mf_gsp", "label" => "Download GSP", "callback" => "build_pdf_gsp","permission" => "edit_posts" );
-
+    $menu_items[] = array( "name" => "mf_export", "label" => "MF Export", "callback" => "build_mf_export","permission" => "edit_posts" );
     return $menu_items;
 }
+
+function build_mf_export(){
+     require_once( TEMPLATEPATH.'/exportData.php' );    
+}
+
 function build_pdf_fsp(){
      require_once( TEMPLATEPATH.'/fpdi/FSP.php' );    
 }

@@ -59,7 +59,7 @@ function call_api($data){
     $string_to_sign = sprintf('%s:%s:%s:%s', $api_key, $method, $route, $expires);
     $sig = calculate_signature($string_to_sign, $private_key);
 
-    $api_call = urlencode($endpoint.$route.'?api_key='.$api_key.'&signature='.$sig.'&expires='.$expires);
+    $api_call = $endpoint.$route.'?api_key='.$api_key.'&signature='.$sig.'&expires='.$expires;
     //print_r(json_encode($data));
     
     $ch = curl_init($api_call);

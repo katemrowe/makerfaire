@@ -75,6 +75,7 @@ function call_api($data){
             return $returnedData->response;        
     }else{        
         print_r($result);
+        die();
     }
 }
 

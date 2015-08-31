@@ -49,9 +49,9 @@ function call_api($data){
     $domain = $_SERVER['HTTP_HOST'];
     if($domain=='localhost')    $domain .= '/makerfaire';
 
-    //$endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
+    $endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
     //$endpoint = 'http://makerfaire.com/gravityformsapi/';
-    $endpoint = $domain.'/gravityformsapi/';
+    //$endpoint = $domain.'/gravityformsapi/';
     echo 'sending to '.$endpoint.'<br/>';
     //$route = 'entries';
     $route = 'forms/25/entries';

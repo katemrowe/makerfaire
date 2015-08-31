@@ -74,6 +74,7 @@ function call_api($data){
     if($returnedData->status==201 || $returnedData->status==200){ 
             return $returnedData->response;        
     }else{        
+        echo 'There was an error in the call to '.$api_call.'<br/><br/>';
         var_dump($result);
         echo '<Br/><br/>';
         var_dump($returnedData);
@@ -100,6 +101,7 @@ if ( isset($_POST["submit"]) ) {
                                      
             $name = $_FILES['fileToUpload']['name'];
             $ext = strtolower(end(explode('.', $name)));
+            $name = $name.$ext;
             $type = $_FILES['fileToUpload']['type'];
             $tmpName = $_FILES['fileToUpload']['tmp_name'];
             

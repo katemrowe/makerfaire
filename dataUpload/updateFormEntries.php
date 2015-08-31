@@ -71,7 +71,7 @@ function call_api($data){
     $result = curl_exec($ch);    
     $returnedData = json_decode($result);//201 status indicates it inserted the entry. Should return id of the entry.
    
-    if($returnedData->status==201){ 
+    if($returnedData->status==201 || $returnedData->status==200){ 
             return $returnedData->response;        
     }else{        
         var_dump($result);

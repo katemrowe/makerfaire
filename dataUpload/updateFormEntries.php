@@ -20,7 +20,8 @@
     <input type="file" name="fileToUpload" id="fileToUpload">
     <input type="submit" value="Upload" name="submit">
 </form>
-    <br/>
+    <br/>Do not upload more than 15 records at a time.<br/>
+    It will time out!<br /><br/>
     <ul>
         <li>Note: File format should be CSV</li>
         <li>Row 1: Field ID's</li>
@@ -49,9 +50,9 @@ function call_api($data){
     $domain = $_SERVER['HTTP_HOST'];
     if($domain=='localhost')    $domain .= '/makerfaire';
 
-    $endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
+//    $endpoint = 'http://makerfaire.staging.wpengine.com/gravityformsapi/';
     //$endpoint = 'http://makerfaire.com/gravityformsapi/';
-    //$endpoint = $domain.'/gravityformsapi/';
+    $endpoint = $domain.'/gravityformsapi/';
     echo 'sending to '.$endpoint.'<br/>';
     //$route = 'entries';
     $route = 'forms/25/entries';
@@ -101,7 +102,7 @@ if ( isset($_POST["submit"]) ) {
                                      
             $name = $_FILES['fileToUpload']['name'];
             $ext = strtolower(end(explode('.', $name)));
-            $name = $name.$ext;
+
             $type = $_FILES['fileToUpload']['type'];
             $tmpName = $_FILES['fileToUpload']['tmp_name'];
             

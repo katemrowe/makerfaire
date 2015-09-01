@@ -7,27 +7,30 @@
 ob_clean();
 
 ?>
-<html style="width:1056px">
+<html style="">
     <head>
     <style>
         @font-face {
             font-family: 'Benton Sans';
-            src: url("<?php echo TEMPLATEPATH;?>/fonts/admin/bentonsans-regular-webfont.ttf");
+            src: url("/wp-content/themes/makerfaire/fonts/admin/bentonsans-regular-webfont.ttf");
         }
-        /*
+        
         @font-face {
             font-family: 'Benton Sans';
-            src: url("/bentonsans-bold-webfont.ttf");
+            src: url("/wp-content/themes/makerfaire/fonts/admin/bentonsans-bold-webfont.ttf");
             font-weight: bold;
-        }*/
+        }
+        
         @media print {
             @page {
                 size: A3 portrait;
-                margin: 0.5cm;
+                margin: 0;padding:0;
             }
         }
-
-        body{font-family: 'Benton Sans';}
+  
+        body{font-family: 'Benton Sans';margin:0;padding:0; width:100%; height:100%}
+        .signPage{background:url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png')  no-repeat right top;
+                 background-size: 100% 100%; width:279.4mm; height:431.8mm;padding-top:23mm;}
         .entry-id{padding-left:900px;color:#A8AAAC}
         .proj-title{padding-top: 120px;font-size: 64px;font-weight: bold;}
         .middle{padding:30px;}
@@ -41,13 +44,13 @@ ob_clean();
 <?php
 $search_criteria['status'] = 'active';
 $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
-$rec_limit = 300;
+$rec_limit = 100;
 $page= (isset($_GET['paged'])?$_GET['paged']:1);
 $offset = ($page-1) * $rec_limit;
 $entries = GFAPI::get_entries( 25, $search_criteria, null, array('offset' => $offset, 'page_size' =>$rec_limit) );
 foreach($entries as $entry){
     ?>
-    <div style="background:url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png')  no-repeat right top;background-size: 1056px 1632px;padding-top:50px;padding-top: 80px;height: 1632px;">
+    <div class="signPage">
     <?php   createOutput($entry);?>
     </div>
    <p style="page-break-after:always;"></p> 

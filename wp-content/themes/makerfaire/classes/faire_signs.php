@@ -30,8 +30,10 @@ ob_clean();
   
         body{font-family: 'Benton Sans';margin:0;padding:0; width:100%; height:100%}
         .signPage{background:url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png')  no-repeat right top;
-                 background-size: 100% 100%; width:279.4mm; height:431.8mm;padding-top:23mm;}
-        .entry-id{padding-left:900px;color:#A8AAAC}
+                 background-size: 1100px 1550px;
+    width: 1100px;   
+    height: 1550px;}
+        .entry-id{padding-left:900px;color:#A8AAAC;padding-top: 78px;}
         .proj-title{padding-top: 120px;font-size: 64px;font-weight: bold;}
         .middle{padding:30px;}
         .proj-img{float:left; width:47%;padding-top:30px;    max-height: 500px;overflow: hidden;}
@@ -44,7 +46,7 @@ ob_clean();
 <?php
 $search_criteria['status'] = 'active';
 $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
-$rec_limit = 100;
+$rec_limit = 300;
 $page= (isset($_GET['paged'])?$_GET['paged']:1);
 $offset = ($page-1) * $rec_limit;
 $entries = GFAPI::get_entries( 25, $search_criteria, null, array('offset' => $offset, 'page_size' =>$rec_limit) );

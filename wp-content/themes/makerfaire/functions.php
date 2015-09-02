@@ -48,7 +48,7 @@ include_once TEMPLATEPATH. '/classes/gf-limit-checkboxes.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-sidebar.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-summary.php';
 include_once TEMPLATEPATH. '/classes/gf-entry-notifications.php';
-include_once TEMPLATEPATH. '/classes/gf-entry-datatables.php';
+//include_once TEMPLATEPATH. '/classes/gf-entry-datatables.php';
 include_once TEMPLATEPATH. '/classes/gf-helper.php';
 include_once TEMPLATEPATH. '/classes/makerfaire-helper.php';
 include_once TEMPLATEPATH. '/classes/gf-jdb-helper.php';

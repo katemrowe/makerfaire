@@ -134,10 +134,10 @@ if ( isset($_POST["submit"]) ) {
                 // necessary if a large csv file
                 set_time_limit(0);
                 $row = 0;
-                while(($data = fgetcsv($handle, 0, ',')) !== FALSE) {
+                while(($data = fgetcsv($handle, 0, ',')) !== FALSE) {                    
                     // number of fields in the csv                    
-                    foreach($data as $value){                       
-                        $csv[$row][] = htmlentities(trim($value), ENT_COMPAT, "UTF-8");
+                    foreach($data as $value){                  
+                        $csv[$row][] = trim($value);
                     }                 
                     // inc the row
                     $row++;
@@ -192,7 +192,7 @@ if ( isset($_POST["submit"]) ) {
     //find the end of the $tableData
     $endkey = key( array_slice( $tableData, -1, 1, TRUE ) );
     $contchar = ',';
-    $insertRel = $insertLead= '';
+    $insertRel = '';$insertLead= '';
     //loop thru array to build SQL inserts
     foreach($tableData as $key => $value){        
         if($endkey == $key) $contchar = '';

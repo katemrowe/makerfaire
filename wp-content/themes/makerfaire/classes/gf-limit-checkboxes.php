@@ -210,7 +210,7 @@ class GFLimitCheckboxes {
  * 
  */
 $limitArray = array(
-                array(321,4,array(25, 26, 27, 28, 29, 30, 31)), //limit additional categories field to 4
+                array(321,4,array(9, 43, 25, 26, 27, 28, 29, 30, 31)), //limit additional categories field to 4
                 array(147,5,array( 9, 10, 20, 12, 13, 14, 15, 16, 17, 18))
               );
 

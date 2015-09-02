@@ -928,6 +928,46 @@ li.hidelink a:visited {
 #scheduleTab .thumbnail img {
   min-width: 90px;
 }
+.sessions {
+  margin-top: 15px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+.sessions .row {
+  margin-bottom: 20px;
+}
+.sessions .session-detail.breaktime {
+  padding-bottom: 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+.sessions .session-time p {
+  margin-bottom: 0;
+  padding-left: 0;
+  font-weight: bold;
+}
+.sessions .session-detail {
+  background-color: #f9f9f9;
+  padding-bottom: 15px;
+  font-weight: 300;
+  color: #023d4f;
+}
+.sessions .session-detail p {
+  margin-bottom: 3px;
+}
+.sessions .session-detail h2 {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #292f33;
+}
+.sessions .session-detail span {
+  font-weight: bold;
+}
+.sessions .session-detail .session-location {
+  margin-top: 15px;
+}
 .meetthemakers {
   background-color: #fff;
   background: rgba(255, 255, 255, 0.8);

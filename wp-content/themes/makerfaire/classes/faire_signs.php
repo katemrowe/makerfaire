@@ -10,6 +10,7 @@ ob_clean();
 <html style="">
     <head>
     <style>
+        @page {size: 11in 17in;margin: 0;padding:0;}
         @font-face {
             font-family: 'Benton Sans';
             src: url("/wp-content/themes/makerfaire/fonts/admin/bentonsans-regular-webfont.ttf");
@@ -28,11 +29,13 @@ ob_clean();
             }
         }
   
-        body{font-family: 'Benton Sans';margin:0;padding:0; width:100%; height:100%}
-        .signPage{background:url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png')  no-repeat right top;
-                 background-size: 1100px 1550px;
-    width: 1100px;   
-    height: 1550px;}
+        body{font-family: 'Benton Sans';margin:0;padding:0;}
+        .signPage{background: url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png') no-repeat left top;
+    background-size: 1230px 1740px;
+    width: 100%;
+    height: 1740px;}
+    
+    
         .entry-id{padding-left:900px;color:#A8AAAC;padding-top: 78px;}
         .proj-title{padding-top: 120px;font-size: 64px;font-weight: bold;}
         .middle{padding:30px;}

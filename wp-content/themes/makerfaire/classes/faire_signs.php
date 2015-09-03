@@ -27,25 +27,32 @@ ob_clean();
                 size: A3 portrait;
                 margin: 0;padding:0;
             }
+           
         }
   
         body{font-family: 'Benton Sans';margin:0;padding:0;}
         .signPage{background: url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png') no-repeat left top;
-    background-size: 1230px 1740px;
+    background-size: 100% 1780px;
     width: 100%;
-    height: 1740px;}
+    height: 1730px;
+    margin: 0;
+    padding: 0;}
     
     
         .entry-id{padding-left: 900px;
     color: #A8AAAC;
     padding-top: 20px;
     padding-bottom: 45px;}
-        .proj-title{padding-top: 120px;font-size: 64px;font-weight: bold;}
+        .proj-title{padding-top: 170px;font-size: 64px;font-weight: bold;}
         .middle{padding:30px;}
-        .proj-img{float:left; width:47%;padding-top:30px;    max-height: 500px;overflow: hidden;}
-        .proj-desc{font-size:30;float:right; width:47%;padding-top:30px;}
+        .proj-img{float:left; width:47%;padding-top:70px;    max-height: 500px;overflow: hidden;}
+        .proj-desc{font-size:32;float:right; width:47%;padding-top:70px;}
         .bio{font-size:24px;}
-        .name{padding-top: 40px;font-size:48px;color:#00AEEF;font-weight:bold}
+        .name{padding-top: 80px;font-size:48px;color:#00AEEF;font-weight:bold}
+        p{margin: 0;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    height: 0;}
     </style>
     </head>
     <body>
@@ -58,9 +65,10 @@ $offset = ($page-1) * $rec_limit;
 $entries = GFAPI::get_entries( 25, $search_criteria, null, array('offset' => $offset, 'page_size' =>$rec_limit) );
 foreach($entries as $entry){
     ?>
+        <div class="page">
     <div class="signPage">
     <?php   createOutput($entry);?>
-    </div>
+    </div></div>
    <p style="page-break-after:always;"></p> 
     <?php
 }        

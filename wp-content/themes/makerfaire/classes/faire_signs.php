@@ -36,7 +36,10 @@ ob_clean();
     height: 1740px;}
     
     
-        .entry-id{padding-left:900px;color:#A8AAAC;padding-top: 78px;}
+        .entry-id{padding-left: 900px;
+    color: #A8AAAC;
+    padding-top: 20px;
+    padding-bottom: 45px;}
         .proj-title{padding-top: 120px;font-size: 64px;font-weight: bold;}
         .middle{padding:30px;}
         .proj-img{float:left; width:47%;padding-top:30px;    max-height: 500px;overflow: hidden;}

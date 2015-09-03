@@ -37,7 +37,8 @@ if(isset($_GET['eid']) && $_GET['eid']!=''){
     createOutput($entryid, $pdf);
     //error_log('after createOutput() '.date('h:i:s'),0);
     ob_clean();
-    $pdf->Output($entryid.'.pdf', 'D');
+    //$pdf->Output($entryid.'.pdf', 'D');
+    $pdf->Output($entryid.'.pdf', 'I');
     //error_log('after writing pdf '.date('h:i:s'),0);
 }else{
     echo 'No Entry ID submitted';
@@ -80,19 +81,20 @@ function createOutput($entry_id,$pdf){
     // Project Title
     $pdf->SetFont('Arial','B',65);
     $pdf->setTextColor(0);
-    $pdf->SetXY(12, 65);      
-    $pdf->MultiCell(0, 22, $project_title,0,'L');  
+    $pdf->SetXY(12, 75);      
+    $pdf->MultiCell(0, 22, $project_title,0,'L');
+    
     //print white box to overlay any titles that are too long
-    $pdf->SetXY(10, 110); 
+    $pdf->SetXY(10, 135); 
     $pdf->Cell(300,20,'',0,2,'L',true);
     
     //field 16 - short description    
     $pdf->SetFont('Helvetica','',30);
-    $pdf->SetXY(145, 115);      
+    $pdf->SetXY(145, 135);      
     $pdf->MultiCell(125, 10, $project_short,0,'L');  
     
     //field 22 - project photo    
-    $pdf->Image($project_photo,12,115,125,0);
+    $pdf->Image($project_photo,12,135,125,0);
           
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 
@@ -112,7 +114,7 @@ function createOutput($entry_id,$pdf){
       $makerList = implode(', ',$makers);      
       $pdf->MultiCell(0, 20, $makerList,0,'L',true);  
       //if size of makers is 1, then display maker bio      
-      if(sizeof($makerList)==1){
+      if(sizeof($makers)==1){
         $pdf->setTextColor(0);
         $pdf->SetFont('Helvetica','',24);
         $pdf->MultiCell(0, 10, $bio,0,'L',true);          

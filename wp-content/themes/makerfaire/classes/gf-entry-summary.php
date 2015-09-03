@@ -2,7 +2,7 @@
 // Adding Entry Detail and checking for Processing Posts
 
 add_action("gform_entry_detail_content_before", "add_main_text_before", 10, 2);
-function add_main_text_before($form, $lead){
+function add_main_text_before($form, $lead){    
 	$mode = empty( $_POST['screen_mode'] ) ? 'view' : $_POST['screen_mode'];
 	if ($mode != "view") return;
 	echo gf_summary_metabox($form, $lead);
@@ -183,9 +183,18 @@ if ( isset( $long_description ) ) {
 					</tr>                                         
                                         <tr>
                                             <td colspan="2">						
-                                                <a href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><input class="button button-large button-primary" value="Download Maker Sign" /></a>
+                                                <a target="_blank" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><input class="button button-large button-primary" value="Download Maker Sign" /></a>
                                             </td>
-					</tr>  
+                                        </tr>
+                                        <!--
+                                        <tr>
+                                            <td colspan="2">                                                
+                                                <input type="hidden" name="exportForm" id="exportForm" value="<?php echo $form['id']?>">
+                                                <input type="hidden" name="exportID"   id="exportID"   value="<?php echo $entry_id;?>">
+                                                <input type="button" value="Export All Fields" class="button button-large button-primary" style="width:100%" onclick="export_fields()" />
+                                                
+                                            </td>
+					</tr>-->  
 				</table>
 			</td>
 		</tr>                

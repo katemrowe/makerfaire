@@ -2,10 +2,6 @@
 
 include('../../../wp-blog-header.php');
 
-global $user_identity;
-if(!$user_identity)
-	die('Sorry, you must be <a href="'. get_bloginfo('home') . '/wp-login.php?redirect_to=' . $_SERVER['PHP_SELF'] . '">logged in</a> to view this page.');
-
 header('Content-Type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html>
@@ -34,6 +30,7 @@ use Kendo\Template;
 //ini_set ( 'display_errors', '1' );
 
 require_once ("../../../wp-load.php");
+ $current_user = wp_get_current_user(); 
 require_once '../lib/Kendo/Autoload.php';
 $faire_id = isset($_GET['faire_id']) ? $_GET['faire_id']  : 'NY15';
 
@@ -78,7 +75,7 @@ echo $scheduler->render ();
 </script>
 <!-- begin#woahbar -->
 <div class="woahbar" style="display: none;">
-	<span> <a class="woahbar-link" href="/wp-admin/">Back to wp-admin</a>
+	<span> <a class="woahbar-link" href="/wp-admin/">Back to wp-admin</a> Howdy, <?php echo $current_user->user_login;?>
 	</span> <a class="close-notify" onclick="woahbar_hide();"> <img
 		class="woahbar-up-arrow"
 		src="/wp-content/applications/woahbar/woahbar-up-arrow.png" /></a>

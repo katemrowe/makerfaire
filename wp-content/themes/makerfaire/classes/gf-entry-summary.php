@@ -183,18 +183,15 @@ if ( isset( $long_description ) ) {
 					</tr>                                         
                                         <tr>
                                             <td colspan="2">						
-                                                <a target="_blank" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><input class="button button-large button-primary" value="Download Maker Sign" /></a>
+                                                <a target="_blank" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><input class="button button-large button-primary" style="text-align:center" value="Download Maker Sign" /></a>
                                             </td>
                                         </tr>
-                                        <!--
+                                        
                                         <tr>
                                             <td colspan="2">                                                
-                                                <input type="hidden" name="exportForm" id="exportForm" value="<?php echo $form['id']?>">
-                                                <input type="hidden" name="exportID"   id="exportID"   value="<?php echo $entry_id;?>">
-                                                <input type="button" value="Export All Fields" class="button button-large button-primary" style="width:100%" onclick="export_fields()" />
-                                                
+                                                <a href="<?php echo admin_url( 'admin-post.php?action=createCSVfile&exForm='.$form['id'].'&exEntry='. $entry_id );?>"><input class="button button-large button-primary"  style="text-align:center" value="Export All Fields" /></a>
                                             </td>
-					</tr>-->  
+					</tr>  
 				</table>
 			</td>
 		</tr>                

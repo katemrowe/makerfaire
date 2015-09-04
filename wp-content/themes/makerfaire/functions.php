@@ -1458,7 +1458,9 @@ function add_menu_item( $menu_items ) {
     $menu_items[] = array( "name" => "mf_printsign", "label" => "", "callback" => "build_faire_signs","permission" => "edit_posts" );
     return $menu_items;
 }
+add_action( 'wp_ajax_createCSVfile', 'createCSVfile' );
 add_action( 'admin_post_export_MFform', 'createCSVfile' );
+add_action( 'admin_post_createCSVfile', 'createCSVfile' );
 function build_faire_signs(){    
     require_once( TEMPLATEPATH.'/classes/faire_signs.php' );    
 }
@@ -1509,31 +1511,41 @@ function build_mf_export(){
     <?php
 }
 
-function createCSVfile() {    
-    if(!isset($_POST['exportForm']) ||$_POST['exportForm']==''){
+function createCSVfile() { 
+    //create CSV for individual entries come as a GET request, the mass entry list is a POST request
+    $form_id = (isset($_POST['exportForm']) && $_POST['exportForm']!=''?$_POST['exportForm']:'');
+    $form_id = (isset($_GET['exForm']) && $_GET['exForm']!=''?$_GET['exForm']:'');
+    if($form_id==''){
         die('please select a form');
     }
-    //create CSV file
-    $form_id = $_POST['exportForm'];
+    
+    $entry_id = (isset($_GET['exEntry']) && $_GET['exEntry']!='' ? $_GET['exEntry']:'');
+
+    //create CSV file   
     $form = GFAPI::get_form( $form_id );
     $fieldData = array();
-    //echo 'are you there?';
-    //die();
+
     //put fieldData in a usable array
     foreach($form['fields'] as $field){
         if($field->type!='section' && $field->type!='html' && $field->type!='page')
             $fieldData[$field['id']] = $field;
     }
     $search_criteria['status'] = 'active';
-    $entries = GFAPI::get_entries( $form_id, $search_criteria, null, array('offset' => 0, 'page_size' => 9999) );
-
+    $entries = array();
+    if($entry_id==''){
+        $entries = GFAPI::get_entries( $form_id, $search_criteria, null, array('offset' => 0, 'page_size' => 9999) );
+    }else{
+        //use the submitted entry
+        $entries[] = GFAPI::get_entry( $entry_id );        
+    }
+       
     $output = array('Entry ID','FormID');
     $list = array();
     foreach($fieldData as $field){
         $output[] = $field['label'];
     }
     $list[] = $output;
-    //echo 'For Form '.$form_id.' '. count($entries).' records';
+   
     foreach($entries as $entry){
         $fieldArray = array($entry['id'],$form_id);
         foreach($fieldData as $field){
@@ -1544,21 +1556,19 @@ function createCSVfile() {
 
     //write CSV file
     // output headers so that the file is downloaded rather than displayed
-    //ob_clean();
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=form-'.$form_id.'.csv');
-    //header("Pragma: no-cache");
-    //header("Expires: 0");
+    header('Content-Disposition: attachment; filename=form-'.$form_id.($entry_id!=''?'-'.$entry_id:'').'.csv');
+    
     $file = fopen('php://output','w');
 
     foreach ($list as $line){
       fputcsv($file,$line);
-      //echo implode(',',$line) . "\n";  
     }
     
     fclose($file); 
     //wp_redirect(  admin_url( 'admin.php?page=mf_export'));
     die();
+    
     exit();
 }
 

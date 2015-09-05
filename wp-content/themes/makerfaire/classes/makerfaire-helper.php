@@ -281,15 +281,14 @@ function get_mf_schedule_by_faire ($faire, $day='', $area='', $subarea=''){
                                 wp_mf_faire_subarea subarea, 
                                 wp_mf_faire_area area
                                                             
-                        where   schedule.faire          = '".$faire."' 
-                                AND schedule.entry_id   = entity.lead_id 
+                        where   schedule.entry_id   = entity.lead_id 
                                 AND entity.status       = 'Accepted' 
                                 and location.entry_id   = schedule.entry_id
                                 and location.ID         = schedule.location_id
                                 and subarea.id          = location.subarea_id
                                 and area.id             = subarea.area_id
                                 and schedule.faire      = '".$faire."' ".                                                         
-                       " ORDER BY   area, subarea, 
+                       " ORDER BY   subarea, 
                                     schedule.start_dt ASC";
 
 $mysqli->query("SET NAMES 'utf8'");

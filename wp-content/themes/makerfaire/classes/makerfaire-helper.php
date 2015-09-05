@@ -65,10 +65,14 @@ function mf_display_schedule_by_area( $atts ) {
    
     $dropdownLi = '';
     $scheduleData = '';
+    $count = 0;
+    $activetab = '';
     foreach($schedule as $subarea=>$scheduleArea){
         //add to the li drop down        
         $href = strtolower(preg_replace("/[^A-Za-z0-9]/", "", $subarea));       
-        $active=($href=='centerstage'?'active':'');
+        $active=($count==0?'active':'');
+        $activetab=($count==0)?$subarea: $activetab;
+        $count++;
         $dropdownLi .= '<li class="'.$active.'"><a href="#'.$href.'" data-toggle="tab">'.$subarea.'</a></li>';
         //begin building the schedule Data for this area 
         $scheduleData .= '<div class="tab-pane '.$active.'" id="'.$href.'">';
@@ -108,7 +112,7 @@ function mf_display_schedule_by_area( $atts ) {
             $dropdownLi.'</ul>';
     $output = '<div class="dropdown">
 	<button class="btn btn-primary dropdown-toggle" style="border: thin solid #00bef3; width: 100%; background: none; color: #00bef3; text-align: left;font-size:20px;" type="button" data-toggle="dropdown">
-	<span class="pickText pull-left" >Center Stage</span>
+	<span class="pickText pull-left" >'.$activetab.'</span>
 	<span class="glyphicon glyphicon-chevron-down pull-right" ></span></button>'.$dropdown_menu.'</div>'.$scheduleTab;
     
     return $output;

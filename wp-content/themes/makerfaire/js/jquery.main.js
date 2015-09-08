@@ -181,7 +181,7 @@ function makeStyle(){
 * The New York menu item (menu's 3nd child) */
 
     jQuery(".nav li:nth-child(3) > div").addClass('area');
-    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/new-york-2015/maker-faire-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a><a href="//wmfny15.eventbrite.com/" target="_blank" class="btn btn-danger">Buy Tickets</a></div></div>');
+    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/new-york-2015/maker-faire-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a><a href="/new-york-2015/education-forum/" target="_blank" class="btn btn-info">Education Forum</a><a href="//wmfny15.eventbrite.com/" target="_blank" class="btn btn-danger">Buy Tickets</a></div></div>');
     
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col1').wrapAll("<li class='left box meet-the-makers'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");
@@ -3293,7 +3293,7 @@ jQuery( document ).ready(function() {
     jQuery('#menu-main-navigation-version-2-mobile li.menu-item-has-children > a').append('<span class="caret"></span>');
     jQuery('#menu-main-navigation-version-2-mobile li.menu-item-has-children ul').addClass('dropdown-menu').attr({'role': 'menu'});
     jQuery('#menu-main-navigation-version-2-mobile .mobile-BA-parent ul').prepend('<li><a class="mobile-nav-tickets text-center" href="//www.eventbrite.com/e/maker-faire-bay-area-2015-tickets-5938495199" target="_blank">BUY TICKETS</a></li>');
-    jQuery('#menu-main-navigation-version-2-mobile .mobile-BA-parent ul').append( '<li><div class="mobile-li-buttons padtop paddingbottom"><div class="col-xs-6"><a class="btn-cyan">MakerCon</a></div><div class="col-xs-6"><a class="btn-cyan">MakerWeek</a></div></div></li>' );
+    jQuery('#menu-main-navigation-version-2-mobile .mobile-BA-parent ul').append( '<li><div class="mobile-li-buttons padtop paddingbottom"><div class="col-xs-4"><a class="btn-cyan">Education Forum</a></div><div class="col-xs-4"><a class="btn-cyan">MakerCon</a></div><div class="col-xs-4"><a class="btn-cyan">MakerWeek</a></div></div></li>' );
     jQuery('#menu-main-navigation-version-2-mobile .mobile-nav-app a').append('<i class="icon-mobile pull-left padright"></i>');
 });
 

@@ -1714,6 +1714,7 @@ function get_schedule($lead){
                         wp_mf_faire_area area
 
                 where       schedule.entry_id   = $entry_id 
+                        and schedule.location_id=location.ID
                         and location.entry_id   = schedule.entry_id
                         and subarea.id          = location.subarea_id
                         and area.id             = subarea.area_id";   

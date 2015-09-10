@@ -29,16 +29,30 @@ $pdf = new PDF();
 $pdf->AddPage('P',array(279.4,431.8));
 $pdf->SetFont('Helvetica','',12);
 $pdf->SetFillColor(255,255,255);  
-//get the entry-id, if one isn't set return an error
 
+//get the entry-id, if one isn't set return an error
 if(isset($_GET['eid']) && $_GET['eid']!=''){
-    $entryid = $_GET['eid'];
-    //error_log('before createOutput() '.date('h:i:s'),0);
+    $entryid = $_GET['eid'];    
     createOutput($entryid, $pdf);
-    //error_log('after createOutput() '.date('h:i:s'),0);
-    ob_clean();
-    //$pdf->Output($entryid.'.pdf', 'D');
-    $pdf->Output($entryid.'.pdf', 'I');
+    
+    
+    if(isset($_GET['type']) && $_GET['type']=='download'){
+        ob_clean();
+        $pdf->Output($entryid.'.pdf', 'D');        
+    }elseif(isset($_GET['type'])&&$_GET['type']=='save'){
+        $filename = TEMPLATEPATH.'/signs/NY15/'.$entryid.'.pdf';
+        $dirname = dirname($filename);
+        if (!is_dir($dirname))
+        {
+            mkdir($dirname, 0755, true);
+        }
+        $pdf->Output($filename, 'F');                 
+        echo $entryid;
+    }else{
+        ob_clean();
+        $pdf->Output($entryid.'.pdf', 'I');
+    }
+    
     //error_log('after writing pdf '.date('h:i:s'),0);
 }else{
     echo 'No Entry ID submitted';

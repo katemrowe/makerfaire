@@ -1,134 +1,64 @@
 <?php
-
-/* 
- * This page outputs the html for the faire signs and then calls a process to 
- * convert it to a PDF
+/* this provides a javascript button that allows the users to print out 
+ * all maker pdf's 
  */
-ob_clean();
-
-?>
-<html style="">
-    <head>
-    <style>
-        @page {size: 11in 17in;margin: 0;padding:0;}
-        @font-face {
-            font-family: 'Benton Sans';
-            src: url("/wp-content/themes/makerfaire/fonts/admin/bentonsans-regular-webfont.ttf");
-        }
-        
-        @font-face {
-            font-family: 'Benton Sans';
-            src: url("/wp-content/themes/makerfaire/fonts/admin/bentonsans-bold-webfont.ttf");
-            font-weight: bold;
-        }
-        
-        @media print {
-            @page {
-                size: A3 portrait;
-                margin: 0;padding:0;
-            }
-           
-        }
-  
-        body{font-family: 'Benton Sans';margin:0;padding:0;}
-        .signPage{background: url('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png') no-repeat left top;
-    background-size: 100% 1780px;
-    width: 100%;
-    height: 1730px;
-    margin: 0;
-    padding: 0;}
-    
-    
-        .entry-id{padding-left: 900px;
-    color: #A8AAAC;
-    padding-top: 20px;
-    padding-bottom: 45px;}
-        .proj-title{padding-top: 170px;font-size: 64px;font-weight: bold;}
-        .middle{padding:30px;}
-        .proj-img{float:left; width:47%;padding-top:70px;    max-height: 500px;overflow: hidden;}
-        .proj-desc{font-size:32;float:right; width:47%;padding-top:70px;}
-        .bio{font-size:24px;}
-        .name{padding-top: 80px;font-size:48px;color:#00AEEF;font-weight:bold}
-        p{margin: 0;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    height: 0;}
-    </style>
-    </head>
-    <body>
-<?php
+$form_id = 25;
 $search_criteria['status'] = 'active';
 $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
-$rec_limit = 300;
-$page= (isset($_GET['paged'])?$_GET['paged']:1);
-$offset = ($page-1) * $rec_limit;
-$entries = GFAPI::get_entries( 25, $search_criteria, null, array('offset' => $offset, 'page_size' =>$rec_limit) );
-foreach($entries as $entry){
-    ?>
-        <div class="page">
-    <div class="signPage">
-    <?php   createOutput($entry);?>
-    </div></div>
-   <p style="page-break-after:always;"></p> 
-    <?php
-}        
+$sorting         = array();
+$paging          = array( 'offset' => 0, 'page_size' => 10 );
+$total_count     = 0;
+$entries         = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
+
 ?>
-    </body>
-</html>
+<h2>Print All Signs for NY15</h2>
+<input class="button button-large button-primary" style="text-align:center" value="Create all <?php echo $total_count;?> signs" id="processButton"   onClick="printSigns()"/><br/>
 <?php
-function createOutput($entry){    
-    $makers = array();
-    if (strlen($entry['160.3']) > 0) $makers[] = $entry['160.3'] . ' ' .$entry['160.6'];
-    if (strlen($entry['158.3']) > 0) $makers[] = $entry['158.3'] . ' ' .$entry['158.6'];
-    if (strlen($entry['155.3']) > 0) $makers[] = $entry['155.3'] . ' ' .$entry['155.6'];
-    if (strlen($entry['156.3']) > 0) $makers[] = $entry['156.3'] . ' ' .$entry['156.6'];
-    if (strlen($entry['157.3']) > 0) $makers[] = $entry['157.3'] . ' ' .$entry['157.6'];
-    if (strlen($entry['159.3']) > 0) $makers[] = $entry['159.3'] . ' ' .$entry['159.6'];
-    if (strlen($entry['154.3']) > 0) $makers[] = $entry['154.3'] . ' ' .$entry['154.6'];
-
-    //maker 1 bio
-    $bio             = $entry['234'];
-  
-    $groupname       = $entry['109'];
-    $groupphoto      = $entry['111'];
-    $groupbio        = $entry['110'];
-
-    $project_name    = $entry['151']; 
-    $project_photo   = $entry['22'];
-    $project_short   = $entry['16'];
-    $project_website = $entry['27'];
-    $project_video   = $entry['32'];
-    $project_title   = (string)$entry['151'];
-
-    $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
-    // Project ID
+//var_dump($entries);
+foreach($entries as $entry){
+    $entry_id = $entry['id'];
     ?>
-        <div class="entry-id"><?php echo $entry['id'];?></div><br/>
-    
-    <?php // Project Title    ?>
-    <div class="middle">
-        <div class="proj-title"><?php echo $project_title;?></div>    
-        <div class="proj-img"><img style="width:500px;height:auto" src="<?php echo $project_photo;?>" /></div>
-        <div class="proj-desc"><?php echo $project_short;?></div>        
-        <div style="clear:both"></div>
-        <br/><br/>
-    
-    <?php
-    if (!empty($groupbio)) {                
-        echo '<div class="name">'.$groupname.'</div><br/>';
-        echo '<div class="bio">'.$groupbio.'</div>';
-    }else {            
-      $makerList = implode(', ',$makers);      
-      echo '<div class="name">'.$makerList.'</div><br/>';
-      //if size of makers is 1, then display maker bio      
-      if(sizeof($makerList)==1){
-        echo '<div class="bio">'.$bio.'</div>';
-      }
-    }
-    echo '</div>'; //for .middle
-    
+    <a class="fairsign" target="_blank" id="<?php echo $entry_id;?>" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><?php echo $entry_id;?></a><br/>  
+             <?php
 }
 ?>
 
+<script>
+    
+        jQuery(document).ready(function(){
 
+         });
+         
+         function printSigns(){
+             jQuery('#processButton').val("Creating PDF's. . . ");
+            jQuery("a.fairsign").each(function(){                
+            
+                jQuery(this).html('Creating');
+                jQuery(this).attr("disabled","disabled");
+               
+               jQuery.ajax({
+                    type: "GET",
+                    url: "/wp-content/themes/makerfaire/fpdi/makersigns.php",
+                    data: { eid: jQuery(this).attr('id'), type: 'save' },
+                  }).done(function(data) {
+                    jQuery('#'+data).html(data+ ' Created');
+                    jQuery('#'+data).attr("href", "/wp-content/themes/makerfaire/signs/NY15/"+data+'.pdf')
+                  });
+               
+            });    
+         }
+         function fireEvent(obj,evt){
 
+            var fireOnThis = obj;
+            if( document.createEvent ) {
+              var evObj = document.createEvent('MouseEvents');
+              evObj.initEvent( evt, true, false );
+              fireOnThis.dispatchEvent(evObj);
+            } else if( document.createEventObject ) {
+              fireOnThis.fireEvent('on'+evt);
+            }
+        }    
+</script> 
+
+  
+   

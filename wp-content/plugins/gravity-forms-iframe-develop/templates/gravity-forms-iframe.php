@@ -9,6 +9,8 @@ body {
 	font-family: sans-serif;
 	font-size: 13px;
 }
+img#wpstats{display:none}
+
 </style>
 </head>
 <body>

@@ -108,7 +108,28 @@ function createOutput($entry_id,$pdf){
     $pdf->MultiCell(125, 10, $project_short,0,'L');  
     
     //field 22 - project photo    
-    $pdf->Image($project_photo,12,135,125,0);
+    //set image type to JPG, JPEG, PNG and GIF
+    $ext = pathinfo($project_photo, PATHINFO_EXTENSION);
+    switch($ext){
+        case 'png':
+        case 'PNG':
+            $imageType = 'PNG';
+            break;
+        case 'jpg':
+        case 'JPG':
+            $imageType = 'JPG';
+            break;
+        case 'jpeg':
+        case 'JPEG':    
+            $imageType = 'JPEG';
+            break;
+        case 'GIF':
+        case 'gif':
+            $imageType = 'GIF';
+            break;
+    }
+    
+    $pdf->Image($project_photo,12,135,125,0,$imageType);
           
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 

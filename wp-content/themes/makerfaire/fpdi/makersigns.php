@@ -19,15 +19,17 @@ class PDF extends FPDF{
         // Logo    
         $this->Image('http://makerfaire.com/wp-content/themes/makerfaire/images/maker_sign.png', 0, 0, $this->w, $this->h);
         // Arial bold 15
-        $this->SetFont('Arial','B',15);
+        $this->SetFont('Benton Sans','B',15);
 
     }
 }
 
 // Instanciation of inherited class
 $pdf = new PDF();
+$pdf->AddFont('Benton Sans','B', 'bentonsans-bold-webfont.php');
+$pdf->AddFont('Benton Sans','', 'bentonsans-regular-webfont.php');
 $pdf->AddPage('P',array(279.4,431.8));
-$pdf->SetFont('Helvetica','',12);
+$pdf->SetFont('Benton Sans','',12);
 $pdf->SetFillColor(255,255,255);  
 
 //get the entry-id, if one isn't set return an error
@@ -87,49 +89,54 @@ function createOutput($entry_id,$pdf){
     $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
     
     // Project ID
-    $pdf->SetFont('Arial','',12);
+    $pdf->SetFont('Benton Sans','',12);
     $pdf->setTextColor(168,170,172);
     $pdf->SetXY(240, 20);      
     $pdf->MultiCell(115, 10, $entry_id,0,'L');  
     
     // Project Title
-    $pdf->SetFont('Arial','B',65);
+    $pdf->SetFont('Benton Sans','B',65);
     $pdf->setTextColor(0);
-    $pdf->SetXY(12, 75);      
-    $pdf->MultiCell(0, 22, $project_title,0,'L');
+    $pdf->SetXY(12, 75);    
+    //auto adjust the font so the text will fit
+    /* starting font size */
+    $x = 65;    // Will hold the font size
+    
+    /* Cycle thru decreasing the font size until it's width is lower than the max width */
+    while( $pdf->GetStringWidth( utf8_decode( $project_title) ) > 480 ){
+        $x--;   // Decrease the variable which holds the font size
+        $pdf->SetFont( 'Benton Sans', 'B', $x );  // Set the new font size
+        
+    }
+    
+    $lineHeight = $x*0.2645833333333*1.3;
+    /* Output the title at the required font size */
+    $pdf->MultiCell(0, $lineHeight, $project_title,0,'L');
     
     //print white box to overlay any titles that are too long
     $pdf->SetXY(10, 135); 
     $pdf->Cell(300,20,'',0,2,'L',true);
     
     //field 16 - short description    
-    $pdf->SetFont('Helvetica','',30);
-    $pdf->SetXY(145, 135);      
-    $pdf->MultiCell(125, 10, $project_short,0,'L');  
+    //auto adjust the font so the text will fit
+    /* starting font size */
+    $x = 30;    // Will hold the font size
     
-    //field 22 - project photo    
-    //set image type to JPG, JPEG, PNG and GIF
-    $ext = pathinfo($project_photo, PATHINFO_EXTENSION);
-    switch($ext){
-        case 'png':
-        case 'PNG':
-            $imageType = 'PNG';
-            break;
-        case 'jpg':
-        case 'JPG':
-            $imageType = 'JPG';
-            break;
-        case 'jpeg':
-        case 'JPEG':    
-            $imageType = 'JPEG';
-            break;
-        case 'GIF':
-        case 'gif':
-            $imageType = 'GIF';
-            break;
+    /* Cycle thru decreasing the font size until it's width is lower than the max width */
+    while( $pdf->GetStringWidth( utf8_decode( $project_short) ) > 1500 ){
+        $x--;   // Decrease the variable which holds the font size
+        $pdf->SetFont( 'Benton Sans', '', $x );  // Set the new font size
+        
     }
     
-    $pdf->Image($project_photo,12,135,125,0,$imageType);
+    $lineHeight = $x*0.2645833333333*1.4;
+
+    /* Output the title at the required font size */
+    $pdf->SetXY(145, 135);      
+    $pdf->MultiCell(125, $lineHeight, $project_short,0,'L');  
+        
+    //field 22 - project photo    
+    $pdf->Image($project_photo,12,135,125,0);
           
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 
@@ -137,13 +144,13 @@ function createOutput($entry_id,$pdf){
     
     //maker info, use a background of white to overlay any long images or text
     $pdf->setTextColor(0,174,239);
-    $pdf->SetFont('Helvetica','B',48);
+    $pdf->SetFont('Benton Sans','B',48);
     
     $pdf->SetXY(10, 270); 
     if (!empty($groupbio)) {                
         $pdf->MultiCell(0, 20, $groupname,0,'L',true); 
         $pdf->setTextColor(0);
-        $pdf->SetFont('Helvetica','',24);
+        $pdf->SetFont('Benton Sans','',24);
         $pdf->MultiCell(0, 10, $groupbio,0,'L',true);  
     }else {            
       $makerList = implode(', ',$makers);      
@@ -151,7 +158,7 @@ function createOutput($entry_id,$pdf){
       //if size of makers is 1, then display maker bio      
       if(sizeof($makers)==1){
         $pdf->setTextColor(0);
-        $pdf->SetFont('Helvetica','',24);
+        $pdf->SetFont('Benton Sans','',24);
         $pdf->MultiCell(0, 10, $bio,0,'L',true);          
       }
     }

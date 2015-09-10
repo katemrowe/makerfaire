@@ -31,21 +31,9 @@ function mf_sponsor_carousel( $category_name ) {
 	return $output;
 }
 
-function mf_sponsor_list( $category_name, $slug ) {
-    $category = array();
-        $slugData = get_term_by( 'name', $category_name, 'link_category', OBJECT );
-        $category[] = $slugData->term_id;
-    
-        $slugData = get_term_by( 'slug', $slug, 'link_category', OBJECT );
-        $category[] = $slugData->term_id;
-        
-        $searchCat = implode(",",$category);
-        $objects = get_objects_in_term($searchCat,'link_category');
-        $sponsors = get_bookmarks(array('include' => $objects,'orderby' => 'name', 'limit' => 40  ));
-        //var_dump($objects);
+function mf_sponsor_list( $category_name ) {
 	// Get all of the sponsor from the links
-        //$sponsors = wp_list_bookmarks( array( 'orderby' => 'name', 'category' => $searchCat, 'limit' => 40 ) );
-	//$sponsors = get_bookmarks( array( 'orderby' => 'name', 'category' => $searchCat, 'limit' => 40 ) );
+	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name, 'limit' => 40 ) );
 
 	// Split them into chucks of two
 	// $sponsors = array_chunk( $sponsors, 2, true );

@@ -4,10 +4,7 @@
  * Template Name: Meet the Makers page
  */
  get_header();
-
- $par_post = get_post($post->post_parent);
- $slug = $par_post->post_name;
-
+ 
  function mf_get_topics( ) { 	
      global $faire;
         //change to pull topics by taxonomy not category
@@ -155,7 +152,7 @@
         
 <?php the_content(); ?>
 
-<!-- Sponsor carousel section-->                 
+<!-- Sponsor carusel section-->                 
 <div class="sponsors-wrap">
 	<div class="container">
 		<div class="row">
@@ -172,7 +169,7 @@
 								<a class="opener" href="#"><span class="selected">Silversmith</span><i class="icon-arrow-right"></i></a>
 								<div class="slide">
 									<ul class="tabset">
-                                                                                <li class="active"><a href="#tab2">Goldsmith</a></li>
+		                                <li class="active"><a href="#tab2">Goldsmith</a></li>
 										<li><a href="#tab1">Silversmith</a></li>
 										<li><a href="#tab3">Coppersmith</a></li>
 		                                <!-- <li><a href="#tab4">Media</a></li>
@@ -186,14 +183,14 @@
 				<div class="sponsor-carousel">
 					<div class="mask">
 						<div class="slideset">
-                                                    <div class="slide">
-                                                        <?php echo mf_sponsor_list('Goldsmith Sponsor',$slug) ?>
-                                                    </div>
+                            <div class="slide">
+                                <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
+                            </div>
 						    <div class="slide">
-                                                      <?php echo mf_sponsor_list('Silversmith Sponsor',$slug) ?>
-                                                    </div>
+                                    <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
+					        </div>
 						    <div class="slide">
-					              <?php echo mf_sponsor_list('Coppersmith Sponsor',$slug) ?>	
+					              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
 						    </div>
                             <!--
                             <div class="slide">

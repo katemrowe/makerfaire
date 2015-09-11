@@ -188,7 +188,7 @@ function createOutput($entry_id,$pdf){
             $pdf->SetFont( 'Benton Sans','',$x);
         }
         
-        $lineHeight = $x*0.2645833333333*1.3;
+        $lineHeight = $x*0.2645833333333*1.37;
         $pdf->MultiCell(0, $lineHeight, $bio,0,'L',true);          
       }
     }

@@ -155,7 +155,7 @@ function createOutput($entry_id,$pdf){
         $x = 24;    // set the starting font size
 
         /* Cycle thru decreasing the font size until it's width is lower than the max width */
-        while( $pdf->GetStringWidth( utf8_decode( $groupbio)) > 1200 ){
+        while( $pdf->GetStringWidth( $groupbio) > 1200 ){
             $x--;   // Decrease the variable which holds the font size
             $pdf->SetFont( 'Benton Sans','',$x);
         }
@@ -183,13 +183,13 @@ function createOutput($entry_id,$pdf){
         //auto adjust the font so the text will fit
         $x = 24;    // set the starting font size
         /* Cycle thru decreasing the font size until it's width is lower than the max width */
-        while( $pdf->GetStringWidth( utf8_decode( $bio)) > 1200 ){
+        while( $pdf->GetStringWidth( $bio) > 1200 ){
             $x--;   // Decrease the variable which holds the font size
             $pdf->SetFont( 'Benton Sans','',$x);
         }
         
         $lineHeight = $x*0.2645833333333*1.3;
-        $pdf->MultiCell(0, $lineHeight, $bio,1,'L',true);          
+        $pdf->MultiCell(0, $lineHeight, $bio,0,'L',true);          
       }
     }
     

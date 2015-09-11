@@ -94,53 +94,47 @@ function createOutput($entry_id,$pdf){
     $pdf->SetXY(240, 20);      
     $pdf->MultiCell(115, 10, $entry_id,0,'L');  
     
-    // Project Title
-    $pdf->SetFont('Benton Sans','B',65);
+    // Project Title     
     $pdf->setTextColor(0);
-    $pdf->SetXY(12, 75);    
+    $pdf->SetXY(12, 75);   
+        
     //auto adjust the font so the text will fit
-    /* starting font size */
-    $x = 65;    // Will hold the font size
+    $x = 65;    // set the starting font size
+    $pdf->SetFont( 'Benton Sans','B',65);    
     
     /* Cycle thru decreasing the font size until it's width is lower than the max width */
-    while( $pdf->GetStringWidth( utf8_decode( $project_title) ) > 480 ){
+    while( $pdf->GetStringWidth( utf8_decode( $project_title)) > 1480 ){
         $x--;   // Decrease the variable which holds the font size
-        $pdf->SetFont( 'Benton Sans', 'B', $x );  // Set the new font size
-        
+        $pdf->SetFont( 'Benton Sans','B',$x);
     }
-    
     $lineHeight = $x*0.2645833333333*1.3;
+    
+    
     /* Output the title at the required font size */
     $pdf->MultiCell(0, $lineHeight, $project_title,0,'L');
     
-    //print white box to overlay any titles that are too long
-    $pdf->SetXY(10, 135); 
-    $pdf->Cell(300,20,'',0,2,'L',true);
-    
     //field 16 - short description    
     //auto adjust the font so the text will fit
-    /* starting font size */
-    $x = 30;    // Will hold the font size
+    $pdf->SetXY(145, 135);   
     
-    /* Cycle thru decreasing the font size until it's width is lower than the max width */
-    while( $pdf->GetStringWidth( utf8_decode( $project_short) ) > 1500 ){
-        $x--;   // Decrease the variable which holds the font size
-        $pdf->SetFont( 'Benton Sans', '', $x );  // Set the new font size
+    
+    //auto adjust the font so the text will fit
+    $sx = 30;    // set the starting font size
+    $pdf->SetFont( 'Benton Sans','',30); 
         
-    }
+    // Cycle thru decreasing the font size until it's width is lower than the max width 
+    while( $pdf->GetStringWidth( utf8_decode( $project_short))> 1400 ){
+        $sx--;   // Decrease the variable which holds the font size 
+        $pdf->SetFont( 'Benton Sans','',$sx);    
+        if($sx==10) break;
+    }   
     
-    $lineHeight = $x*0.2645833333333*1.4;
-
-    /* Output the title at the required font size */
-    $pdf->SetXY(145, 135);      
+    $lineHeight = $sx*0.2645833333333*1.2;
+       
     $pdf->MultiCell(125, $lineHeight, $project_short,0,'L');  
         
     //field 22 - project photo    
-    $pdf->Image($project_photo,12,135,125,0);
-          
-    //print white box to overlay long descriptions or photos
-    $pdf->SetXY(10, 250); 
-    $pdf->Cell(300,20,'',0,2,'L',true);
+    $pdf->Image($project_photo,12,135,125,0);          
     
     //maker info, use a background of white to overlay any long images or text
     $pdf->setTextColor(0,174,239);

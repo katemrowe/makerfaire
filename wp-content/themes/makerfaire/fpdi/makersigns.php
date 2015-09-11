@@ -136,6 +136,11 @@ function createOutput($entry_id,$pdf){
     //field 22 - project photo    
     $pdf->Image($project_photo,12,135,125,0);          
     
+    //print white box to overlay long descriptions or photos
+    $pdf->SetXY(10, 250); 
+    $pdf->Cell(300,20,'',0,2,'L',true);
+
+    
     //maker info, use a background of white to overlay any long images or text
     $pdf->setTextColor(0,174,239);
     $pdf->SetFont('Benton Sans','B',48);

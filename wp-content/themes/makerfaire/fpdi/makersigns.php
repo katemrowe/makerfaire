@@ -103,7 +103,7 @@ function createOutput($entry_id,$pdf){
     $pdf->SetFont( 'Benton Sans','B',65);    
     
     /* Cycle thru decreasing the font size until it's width is lower than the max width */
-    while( $pdf->GetStringWidth( utf8_decode( $project_title)) > 1480 ){
+    while( $pdf->GetStringWidth( utf8_decode( $project_title)) > 500 ){
         $x--;   // Decrease the variable which holds the font size
         $pdf->SetFont( 'Benton Sans','B',$x);
     }
@@ -138,7 +138,7 @@ function createOutput($entry_id,$pdf){
     
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 
-    $pdf->Cell(300,20,'',0,2,'L',true);
+    $pdf->Cell(300,80,'',0,2,'L',true);
 
     
     //maker info, use a background of white to overlay any long images or text
@@ -149,16 +149,47 @@ function createOutput($entry_id,$pdf){
     if (!empty($groupbio)) {                
         $pdf->MultiCell(0, 20, $groupname,0,'L',true); 
         $pdf->setTextColor(0);
-        $pdf->SetFont('Benton Sans','',24);
-        $pdf->MultiCell(0, 10, $groupbio,0,'L',true);  
+        $pdf->SetFont('Benton Sans','',24);        
+        
+        //auto adjust the font so the text will fit
+        $x = 24;    // set the starting font size
+
+        /* Cycle thru decreasing the font size until it's width is lower than the max width */
+        while( $pdf->GetStringWidth( utf8_decode( $groupbio)) > 1200 ){
+            $x--;   // Decrease the variable which holds the font size
+            $pdf->SetFont( 'Benton Sans','',$x);
+        }
+        $lineHeight = $x*0.2645833333333*1.3;
+        $pdf->MultiCell(0, $lineHeight, $groupbio,0,'L',true);  
     }else {            
-      $makerList = implode(', ',$makers);      
-      $pdf->MultiCell(0, 20, $makerList,0,'L',true);  
+        $makerList = implode(', ',$makers);              
+        $pdf->SetFont('Benton Sans','B',48);
+        
+        //auto adjust the font so the text will fit
+        $x = 48;    // set the starting font size
+
+        /* Cycle thru decreasing the font size until it's width is lower than the max width */
+        while( $pdf->GetStringWidth( utf8_decode( $makerList)) > 900 ){
+            $x--;   // Decrease the variable which holds the font size
+            $pdf->SetFont( 'Benton Sans','',$x);
+        }
+        $lineHeight = $x*0.2645833333333*1.3;
+        $pdf->MultiCell(0, $lineHeight, $makerList,0,'L',true);
       //if size of makers is 1, then display maker bio      
       if(sizeof($makers)==1){
         $pdf->setTextColor(0);
         $pdf->SetFont('Benton Sans','',24);
-        $pdf->MultiCell(0, 10, $bio,0,'L',true);          
+        
+        //auto adjust the font so the text will fit
+        $x = 24;    // set the starting font size
+        /* Cycle thru decreasing the font size until it's width is lower than the max width */
+        while( $pdf->GetStringWidth( utf8_decode( $bio)) > 1200 ){
+            $x--;   // Decrease the variable which holds the font size
+            $pdf->SetFont( 'Benton Sans','',$x);
+        }
+        
+        $lineHeight = $x*0.2645833333333*1.3;
+        $pdf->MultiCell(0, $lineHeight, $bio,1,'L',true);          
       }
     }
     

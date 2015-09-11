@@ -6,7 +6,7 @@ $form_id = 25;
 $search_criteria['status'] = 'active';
 $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
 $sorting         = array();
-$paging          = array( 'offset' => 0, 'page_size' => 10 );
+$paging          = array( 'offset' => 0, 'page_size' => 9999 );
 $total_count     = 0;
 $entries         = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
 

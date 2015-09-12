@@ -1458,9 +1458,8 @@ function add_menu_item( $menu_items ) {
     $menu_items[] = array( "name" => "mf_fsp", "label" => "Download FSP", "callback" => "build_pdf_fsp","permission" => "edit_posts" );
     $menu_items[] = array( "name" => "mf_gsp", "label" => "Download GSP", "callback" => "build_pdf_gsp","permission" => "edit_posts" );
     $menu_items[] = array( "name" => "mf_export", "label" => "MF Export", "callback" => "build_mf_export","permission" => "edit_posts" );
-    $menu_items[] = array( "name" => "mf_fairesign", "label" => "Faire Signs", "callback" => "faire_signs","permission" => "edit_posts" );
-    //this next link is to print the faire signs. it is only accesable from the faire signs page
-    $menu_items[] = array( "name" => "mf_printsign", "label" => "", "callback" => "build_faire_signs","permission" => "edit_posts" );
+    $menu_items[] = array( "name" => "mf_fairesign", "label" => "Faire Signs", "callback" => "build_faire_signs","permission" => "edit_posts" );
+    
     return $menu_items;
 }
 add_action( 'wp_ajax_createCSVfile', 'createCSVfile' );
@@ -1469,30 +1468,8 @@ add_action( 'admin_post_createCSVfile', 'createCSVfile' );
 function build_faire_signs(){    
     require_once( TEMPLATEPATH.'/classes/faire_signs.php' );    
 }
-function faire_signs(){
-     ?>
-<h2>Print Faire Signs</h2>
-    <?php 
-    $rec_limit = 300;
-    echo '<i>To avoid timeout issues, faire signs are limited to '.$rec_limit.' per page.</i><br/><br/>';
-    $form = GFAPI::get_form(25 );
-     echo esc_html( $form['title']);
-     //$sorting = array( 'key' => $sort_field, 'direction' => 'ASC' );
-        $search_criteria['status'] = 'active';
-        $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
-        //$entries = GFAPI::get_entries( 25, $search_criteria);
-        $total = GFAPI::count_entries( 25, $search_criteria); 
-        echo '('.$total.')';
-        echo '<br/>';
-        
-        
-        $offset = 0;
-        for($page=1;$offset<=$total;$page++){            
-            echo '<a target="_blank" href="'.admin_url( 'admin.php' ) . '?page=mf_printsign&paged='.$page.'">Page '.$page.'</a><br/>';
-            $offset = $rec_limit * $page;
-        }
 
-}
+
 function build_mf_export(){
     ?>
 <h2>Export MakerFaire Forms</h2>

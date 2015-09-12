@@ -67,14 +67,14 @@ function createOutput($entry_id,$pdf){
   
     $groupname=$entry['109'];
     $groupphoto=$entry['111'];
-    $groupbio=$entry['110'];
+    $groupbio=filterText($entry['110']);
 
-    $project_name = $entry['151']; 
+    $project_name = filterText($entry['151']); 
     $project_photo = $entry['22'];
-    $project_short = $entry['16'];
+    $project_short = filterText($entry['16']);
     $project_website = $entry['27'];
     $project_video = $entry['32'];
-    $project_title = (string)$entry['151'];
+    $project_title = filterText((string)$entry['151']);
 
     $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
     

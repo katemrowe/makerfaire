@@ -120,18 +120,17 @@ function make_enqueue_jquery() {
 	
 	wp_enqueue_script( 'bootgrid',  get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'thickbox',null, array( 'jquery' ), null );
-        wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
-        wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
-        
+         wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
+
     $translation_array = array('templateUrl' => get_stylesheet_directory_uri());
     wp_localize_script('jquery-main', 'object_name', $translation_array);
 	
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
-//add_action( 'gform_enqueue_scripts', 'enqueue_custom_script', 10, 2 );
+add_action( 'gform_enqueue_scripts', 'enqueue_custom_script', 10, 2 );
 
 function enqueue_custom_script( $form, $is_ajax ) {
-    
+    wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );
 }
 
 function load_admin_scripts() {

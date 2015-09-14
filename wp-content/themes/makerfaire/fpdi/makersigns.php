@@ -4,6 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 //set up database 
 $root = $_SERVER['DOCUMENT_ROOT'];
 require_once( $root.'/wp-config.php' );

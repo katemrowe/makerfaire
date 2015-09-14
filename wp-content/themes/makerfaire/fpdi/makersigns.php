@@ -104,7 +104,7 @@ function createOutput($entry_id,$pdf){
     $pdf->SetFont( 'Benton Sans','B',65);    
     
     /* Cycle thru decreasing the font size until it's width is lower than the max width */
-    while( $pdf->GetStringWidth( utf8_decode( $project_title)) > 500 ){
+    while( $pdf->GetStringWidth( utf8_decode( $project_title)) > 480 ){
         $x--;   // Decrease the variable which holds the font size
         $pdf->SetFont( 'Benton Sans','B',$x);
     }

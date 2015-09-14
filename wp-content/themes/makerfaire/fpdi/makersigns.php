@@ -140,8 +140,8 @@ function createOutput($entry_id,$pdf){
     	$pdf->Image($project_photo,12,135,null,null,image_type_to_extension($photo_extension,false));          
     }
     //print white box to overlay long descriptions or photos
-    $pdf->SetXY(10, 255); 
-    $pdf->Cell(300,80,'',0,2,'L',true);
+    /*$pdf->SetXY(10, 255); 
+    $pdf->Cell(300,80,'',0,2,'L',true);*/
 
     
     //maker info, use a background of white to overlay any long images or text

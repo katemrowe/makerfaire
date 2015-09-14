@@ -136,8 +136,8 @@ function createOutput($entry_id,$pdf){
     //field 22 - project photo   
     $photo_extension  = exif_imagetype($project_photo);
     if ($photo_extension) {
-    	$project_photo = legacy_get_resized_remote_image_url($project_photo,135,125,0);
-    	$pdf->Image($project_photo,12,135,125,0,image_type_to_extension($photo_extension,false));          
+    	$project_photo = legacy_get_resized_remote_image_url($project_photo,450,450,0);
+    	$pdf->Image($project_photo,12,135,null,null,image_type_to_extension($photo_extension,false));          
     }
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 

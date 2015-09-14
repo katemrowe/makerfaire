@@ -127,7 +127,7 @@ function make_enqueue_jquery() {
 	
 }
 add_action( 'wp_enqueue_scripts', 'make_enqueue_jquery' );
-add_action( 'gform_enqueue_scripts', 'enqueue_custom_script', 10, 2 );
+//add_action( 'gform_enqueue_scripts', 'enqueue_custom_script', 10, 2 );
 
 function enqueue_custom_script( $form, $is_ajax ) {
     wp_enqueue_script( 'make-gravityforms',  get_stylesheet_directory_uri() . '/js/gravityforms.js', array( 'jquery' ), null );

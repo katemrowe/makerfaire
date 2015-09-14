@@ -137,7 +137,7 @@ function createOutput($entry_id,$pdf){
     $photo_extension  = exif_imagetype($project_photo);
     if ($photo_extension) {
     	$project_photo = legacy_get_resized_remote_image_url($project_photo,135,125,0);
-    	$pdf->Image($project_photo,12,135,125,0,image_type_to_extension($photo_extension));          
+    	$pdf->Image($project_photo,12,135,125,0,gd_extension($photo_extension));          
     }
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 
@@ -597,6 +597,20 @@ function filterText($text)
 
 
 }
+function gd_extension($full_path_to_image='')
+{
+	$extension = 'null';
+	if($image_type = exif_imagetype($full_path_to_image))
+	{
+		$extension = image_type_to_extension($image_type, false);
+	}
+	$known_replacements = array(
+			'jpeg' => 'jpg',
+			'tiff' => 'tif',
+	);
+	$extension = '.'.str_replace(array_keys($known_replacements), array_values($known_replacements), $extension);
 
+	return $extension;
+}
 
 ?>

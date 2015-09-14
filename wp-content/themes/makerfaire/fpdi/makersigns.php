@@ -121,16 +121,15 @@ function createOutput($entry_id,$pdf){
     
     //auto adjust the font so the text will fit
     $sx = 30;    // set the starting font size
-    $pdf->SetFont( 'Benton Sans','',30); 
-        
+    $pdf->SetFont( 'Benton Sans','',$sx); 
+    
     // Cycle thru decreasing the font size until it's width is lower than the max width 
-    while( $pdf->GetStringWidth( utf8_decode( $project_short))> 1400 ){
+    while( $pdf->GetStringWidth( utf8_decode( $project_short)) > 1320 ){        
         $sx--;   // Decrease the variable which holds the font size 
-        $pdf->SetFont( 'Benton Sans','',$sx);    
-        if($sx==10) break;
+        $pdf->SetFont( 'Benton Sans','',$sx);            
     }   
     
-    $lineHeight = $sx*0.2645833333333*1.2;
+    $lineHeight = $sx*0.2645833333333*1.3;
        
     $pdf->MultiCell(125, $lineHeight, $project_short,0,'L');  
         
@@ -141,7 +140,7 @@ function createOutput($entry_id,$pdf){
     	$pdf->Image($project_photo,12,135,null,null,image_type_to_extension($photo_extension,false));          
     }
     //print white box to overlay long descriptions or photos
-    $pdf->SetXY(10, 250); 
+    $pdf->SetXY(10, 255); 
     $pdf->Cell(300,80,'',0,2,'L',true);
 
     

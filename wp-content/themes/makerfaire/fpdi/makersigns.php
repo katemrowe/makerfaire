@@ -124,7 +124,7 @@ function createOutput($entry_id,$pdf){
     $pdf->SetFont( 'Benton Sans','',$sx); 
     
     // Cycle thru decreasing the font size until it's width is lower than the max width 
-    while( $pdf->GetStringWidth( utf8_decode( $project_short)) > 1320 ){        
+    while( $pdf->GetStringWidth( utf8_decode( $project_short)) > 1300 ){        
         $sx--;   // Decrease the variable which holds the font size 
         $pdf->SetFont( 'Benton Sans','',$sx);            
     }   

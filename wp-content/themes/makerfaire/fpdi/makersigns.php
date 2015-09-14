@@ -133,9 +133,12 @@ function createOutput($entry_id,$pdf){
        
     $pdf->MultiCell(125, $lineHeight, $project_short,0,'L');  
         
-    //field 22 - project photo    
-    $pdf->Image($project_photo,12,135,125,0);          
-    
+    //field 22 - project photo   
+    $photo_extension  = exif_imagetype($project_photo);
+    if ($photo_extension) {
+    	$project_photo = legacy_get_resized_remote_image_url($project_photo,135,125,0);
+    	$pdf->Image($project_photo,12,135,125,0,image_type_to_extension($photo_extension));          
+    }
     //print white box to overlay long descriptions or photos
     $pdf->SetXY(10, 250); 
     $pdf->Cell(300,80,'',0,2,'L',true);

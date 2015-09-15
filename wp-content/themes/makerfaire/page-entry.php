@@ -89,19 +89,7 @@
             <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
-
-
-
-      <h2>Schedule</h2>
-      <hr />
-      <?php
-        if (!empty(display_entry_schedule($entryId))) {
-          display_entry_schedule($entryId);
-        }
-      ?>
-      <br />
-
-      <div class="clearfix">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
       <div class="clearfix">&nbsp;</div>
       <h2>Makers/Group</h2>
       <hr />
@@ -128,6 +116,18 @@
       }
       ?>
 
+
+
+      <h2>Location</h2>
+      <hr />
+      <?php
+        if (!empty(display_entry_schedule($entryId))) {
+          display_entry_schedule($entryId);
+        }
+      ?>
+      <br />
+
+      
     </div><!--col-md-8-->
 
     <?php get_sidebar(); ?>

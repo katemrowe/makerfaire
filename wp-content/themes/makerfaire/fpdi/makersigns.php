@@ -132,11 +132,14 @@ function createOutput($entry_id,$pdf){
     $lineHeight = $sx*0.2645833333333*1.3;
        
     $pdf->MultiCell(125, $lineHeight, $project_short,0,'L');  
-        
+   //DEBUG:
+    	 $project_photo = 'http://static1.squarespace.com/static/52c977e1e4b0268360df09dd/5569e67ae4b0bd1d74919ad2/558c03b5e4b00b444fe3b307/1435239588515/ClearStool%3Awhite+back.jpg';
+     
     //field 22 - project photo   
     $photo_extension  = exif_imagetype($project_photo);
     if ($photo_extension) {
-    	$project_photo = legacy_get_resized_remote_image_url($project_photo,450,450,0);
+    	//DEBUG:
+    	$project_photo = legacy_get_fit_remote_image_url($project_photo,450,450,0);
     	$pdf->Image($project_photo,12,135,null,null,image_type_to_extension($photo_extension,false));          
     }
     //print white box to overlay long descriptions or photos

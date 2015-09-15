@@ -39,8 +39,8 @@ get_header();
                                     <div class="col-xs-12">
                                     <a href="<?php echo $entry['4'] ?>" style="color:#FFF;">
                                         <h1><?php echo $entry['2'] ?></h1>
-                                        <p><?php echo $entry['3'] ?></p> 
-                                    </a>         
+                                        <p><?php echo $entry['3'] ?> <span class="icon-arrow-right"></span></p>
+                                    </a>
                                     </div>
                                 </div>
                             </div>

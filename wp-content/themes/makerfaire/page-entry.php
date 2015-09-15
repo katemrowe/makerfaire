@@ -91,7 +91,7 @@
       </div>
 
 
-<!-- Commenting out for now via Clair
+
       <h2>Schedule</h2>
       <hr />
       <?php
@@ -100,7 +100,7 @@
         }
       ?>
       <br />
--->
+
       <div class="clearfix">&nbsp;</div>
       <div class="clearfix">&nbsp;</div>
       <h2>Makers/Group</h2>
@@ -151,36 +151,32 @@ Duplicate to $entry['151']
  <?php get_footer();
  
 function display_entry_schedule($entry_id) {
-  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
-      <h4><label class="detail-label">Schedule:</label></h4>');
-  $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
-  if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-  }
-  $result = $mysqli->query("SELECT `wp_mf_schedule`.`ID`,
-    `wp_mf_schedule`.`entry_id`,
-    `wp_mf_schedule`.`location_id`,
-    `wp_mf_schedule`.`faire`,
-    `wp_mf_schedule`.`start_dt`,
-    `wp_mf_schedule`.`end_dt`,
-    `wp_mf_schedule`.`day`
-  FROM `wp_mf_schedule` where entry_id=$entry_id");
-
-  if ($result)
-  {
-    if ($result->num_rows === 0) echo 'No schedule found';
-    else 
-    {
-    echo '<ul>';
-    while($row = $result->fetch_row())
-    {
-      $start_dt = strtotime( $row[4]);
-      $end_dt = strtotime($row[5]);
-      $schedule_entry_id = $row[0];
-      echo ('<li>'.date("l",$start_dt).': '. date("H:i:s",$start_dt).' to '.date("H:i:s",$end_dt).'</li>');
-    }
-    echo '</ul>';
-    }
-  }
+  global $wpdb;
+  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>');
+  
+  $sql = "select location.entry_id, area.area, subarea.subarea,location.location, schedule.start_dt, schedule.end_dt
+            from  wp_mf_location location 
+            join  wp_mf_faire_subarea subarea 
+                            ON  location.subarea_id = subarea.ID
+            join wp_mf_faire_area area
+                            ON subarea.area_id = area.ID and area.faire_id = 2
+            left join wp_mf_schedule schedule
+                    on location.ID = schedule.location_id
+             where location.entry_id=$entry_id";
+  $results = $wpdb->get_results($sql);
+        echo '<table width="100%">';
+        //echo '<tr><td>Area</td><td>Subarea</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+        if($wpdb->num_rows > 0){
+            foreach($results as $row){    
+                echo '<tr><td>'.$row->area.'</td><td>'.$row->subarea.'</td>';
+                if(!is_null($row->start_dt)){
+                    $start_dt   = strtotime( $row->start_dt);
+                    $end_dt     = strtotime($row->end_dt);
+                    echo '<td>'.date("m/j/y",$start_dt).'</td><td>'. date("g:i a",$start_dt).' to '.date("g:i a",$end_dt).'</td>';
+                }
+                echo '</tr>';
+            }
+        }    
+        echo '</table>';
 }
 ?>

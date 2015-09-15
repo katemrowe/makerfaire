@@ -1,11 +1,11 @@
 <?php
 /**
- * v2 of the Maker Faire API - MAKER
+ * v2 of the Maker Faire API - VENUE
  *
  * Built specifically for the mobile app but we have interest in building it further
  * This page is the controller to grabbing the appropriate API version and files.
  *
- * This page specifically handles the Maker data.
+ * This page specifically handles the Venue data.
  *
  * @version 2.0
  * 
@@ -48,16 +48,29 @@ if ( $type == 'venue' ) {
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-	$select_query = sprintf("SELECT `wp_mf_api_venue`.`ID`,
-    `wp_mf_api_venue`.`area_id`,
-    `wp_mf_api_venue`.`subarea_id`,
-    `wp_mf_api_venue`.`description`,
-    `wp_mf_api_venue`.`longitude`,
-    `wp_mf_api_venue`.`latitude`,
-    `wp_mf_api_venue`.`child_id_refs`,
-    `wp_mf_api_venue`.`location_category_id`
-	FROM `wp_mf_api_venue`
-	WHERE `wp_mf_api_venue`.faire = '$faire' ");
+	$select_query = sprintf("select 
+		b.id as ID,
+		null as area_id,
+		null as subarea_id,
+		b.area as description,
+		group_concat(a.`id`  separator ',') as 'child_id_refs',
+		c.faire as faire
+		from wp_mf_faire_subarea a
+		join wp_mf_faire_area b on a.area_id=b.id
+		join wp_mf_faire c on b.faire_id=c.ID
+		where c.faire= '$faire'
+		group by b.id
+		UNION ALL
+		SELECT a.`ID` as ID,
+		a.area_id as area_id,
+		a.ID as subarea_id,
+			a.subarea as description,
+		    null as child_id_refs,
+		    c.faire as faire
+		FROM `wp_mf_faire_subarea` a
+		join wp_mf_faire_area b on a.area_id=b.id
+		join wp_mf_faire c on b.faire_id=c.ID 
+		where c.faire= '$faire'; ");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
  	// Loop through the posts
@@ -73,7 +86,7 @@ if ( $type == 'venue' ) {
 		$venue['name'] = html_entity_decode( $row[3], ENT_COMPAT, 'utf-8' );
 
 		// Get the child locations
-		$venue['child_id_refs'] = explode(',',$row[6]);
+		$venue['child_id_refs'] = explode(',',$row[4]);
 
 		
 		// Get the description, if it exists.
@@ -86,15 +99,15 @@ if ( $type == 'venue' ) {
 		//$meta = get_post_meta( $post->ID );
 
 		// Attach the lat/long to the data feed
-		$venue['latitude']	= ( isset( $row[5] ) ) ? floatval( $row[5] ) : '';
-		$venue['longitude']	= ( isset( $row[4] ) ) ? floatval( $row[4] ) : '';
+		//$venue['latitude']	= ( isset( $row[5] ) ) ? floatval( $row[5] ) : '';
+		//$venue['longitude']	= ( isset( $row[4] ) ) ? floatval( $row[4] ) : '';
 
 		// They apparently changed the spec.
-		$venue['gps_lat']	= $venue['latitude'];
-		$venue['gps_long']	= $venue['longitude'];
+		//$venue['gps_lat']	= $venue['latitude'];
+		//$venue['gps_long']	= $venue['longitude'];
 
 		// Let's add the venue categories
-		$venue['category_id_refs'] = explode(',',$row[7]);
+		//$venue['category_id_refs'] = explode(',',$row[7]);
 
 		// Put the maker into our list of makers
 		array_push( $venues, $venue );

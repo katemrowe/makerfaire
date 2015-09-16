@@ -11,9 +11,10 @@
   
   //find outwhich faire this entry is for to set the 'look for more makers link'
   $form_id = $entry['form_id'];
-  $formSQL = "select replace(lower(faire_name),' ','-') as faire_name from wp_mf_faire where FIND_IN_SET ($form_id, wp_mf_faire.form_ids)> 0";
+  $formSQL = "select replace(lower(faire_name),' ','-') as faire_name, faire from wp_mf_faire where FIND_IN_SET ($form_id, wp_mf_faire.form_ids)> 0";
   $results =  $wpdb->get_row( $formSQL );
-  $faire =  $results->faire_name;
+  $faire   =  $results->faire_name;
+  $faireID = $results->faire;
   
   $makers = array();
   if (strlen($entry['160.3']) > 0) $makers[] = array('firstname' => $entry['160.3'], 'lastname' => $entry['160.6'], 'bio'=>$entry['234'], 'photo'=>$entry['217']);
@@ -116,10 +117,6 @@
       }
       ?>
 
-
-
-      <h2>Location</h2>
-      <hr />
       <?php
         if (!empty(display_entry_schedule($entryId))) {
           display_entry_schedule($entryId);
@@ -151,7 +148,7 @@ Duplicate to $entry['151']
  <?php get_footer();
  
 function display_entry_schedule($entry_id) {
-  global $wpdb;
+  global $wpdb;global $faireID; global $faire;
   echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>');
   
   $sql = "select location.entry_id, area.area, subarea.subarea,location.location, schedule.start_dt, schedule.end_dt
@@ -164,15 +161,19 @@ function display_entry_schedule($entry_id) {
                     on location.ID = schedule.location_id
              where location.entry_id=$entry_id";
   $results = $wpdb->get_results($sql);
-        echo '<table width="100%">';
+        echo '<table>';
         //echo '<tr><td>Area</td><td>Subarea</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
         if($wpdb->num_rows > 0){
+            ?>
+      <h2>Location at <?php echo (strpos($faireID,'NY')!== false?'World':'');?> Maker Faire <?php echo ucwords(str_replace('-',' ', $faire));?></h2>
+      <hr />
+            <?php
             foreach($results as $row){    
-                echo '<tr><td>'.$row->area.'</td><td>'.$row->subarea.'</td>';
+                echo '<tr><td style="padding:10px">'.$row->area.'</td><td style="padding:10px">'.$row->subarea.'</td>';
                 if(!is_null($row->start_dt)){
                     $start_dt   = strtotime( $row->start_dt);
                     $end_dt     = strtotime($row->end_dt);
-                    echo '<td>'.date("m/j/y",$start_dt).'</td><td>'. date("g:i a",$start_dt).' to '.date("g:i a",$end_dt).'</td>';
+                    echo '<td style="padding:10px">'.date("m/j/y",$start_dt).'</td><td style="padding:10px">'. date("g:i a",$start_dt).' to '.date("g:i a",$end_dt).'</td>';
                 }
                 echo '</tr>';
             }

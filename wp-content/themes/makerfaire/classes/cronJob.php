@@ -176,6 +176,27 @@ function build_wp_mf_maker(){
                     //if first name is set for this type and the field numer is set in the returned table data, then use this data else use a blank 
                     $lastName   = (isset($typeArray['Last Name'])  && isset($lead[$lNameLoc])               ? esc_sql($lead[$lNameLoc])                : '');
                     
+                    //we need to have at least 1 presenter.  if these fields are empty, pull from the contact info
+                    if(trim($firstName)=='' && trim($lastName)==''){                        
+                        if($type=='presenter'){
+                           $fNameLoc = (string) $crossRef['wp_mf_maker_array']['contact']['First Name'];
+                           //if first name is set for this type and the field numer is set in the returned table data, then use this data else use a blank 
+                           $firstName  =  (isset($crossRef['wp_mf_maker_array']['contact']['First Name']) && isset($lead[$fNameLoc])              ? esc_sql($lead[$fNameLoc]) : '');
+
+                           $lNameLoc = (string) $crossRef['wp_mf_maker_array']['contact']['Last Name'];
+                           
+                           //if first name is set for this type and the field numer is set in the returned table data, then use this data else use a blank 
+                           $lastName   = (isset($crossRef['wp_mf_maker_array']['contact']['Last Name'])  && isset($lead[$lNameLoc])               ? esc_sql($lead[$lNameLoc])                : '');
+                           $bio        = (isset($crossRef['wp_mf_maker_array']['contact']['Bio'])        && isset($lead[$crossRef['wp_mf_maker_array']['contact']['Bio']])       ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['Bio']])        : '');
+                           $email      = (isset($crossRef['wp_mf_maker_array']['contact']['Email'])      && isset($lead[$crossRef['wp_mf_maker_array']['contact']['Email']])     ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['Email']])      : '');
+                           $phone      = (isset($crossRef['wp_mf_maker_array']['contact']['phone'])      && isset($lead[$crossRef['wp_mf_maker_array']['contact']['phone']])     ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['phone']])      : '');
+                           $twitter    = (isset($crossRef['wp_mf_maker_array']['contact']['TWITTER'])    && isset($lead[$crossRef['wp_mf_maker_array']['contact']['TWITTER']])   ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['TWITTER']])    : '');
+                           $photo      = (isset($crossRef['wp_mf_maker_array']['contact']['Photo'])      && isset($lead[$crossRef['wp_mf_maker_array']['contact']['Photo']])     ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['Photo']])      : '');
+                           $website    = (isset($crossRef['wp_mf_maker_array']['contact']['website'])    && isset($lead[$crossRef['wp_mf_maker_array']['contact']['website']])   ? esc_sql($lead[$crossRef['wp_mf_maker_array']['contact']['website']])    : '');
+                           $guid       = createGUID($key .'-'.$crossRef['wp_mf_maker_array']['contact']['identifier']);    
+                        }
+                    }
+                    
                     if(trim($firstName)=='' && trim($lastName)==''){
                         //don't write the record, no maker here
                     }else{

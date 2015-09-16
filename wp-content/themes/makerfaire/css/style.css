@@ -2421,6 +2421,11 @@ li.hidelink a:visited {
   width: 99999px;
   float: left;
 }
+.quora .carousel-holder .carousel-inner .mask .slideset .text-box span.icon-arrow-right {
+  font-size: .8em;
+  margin-top: .2em;
+  padding-left: .5em;
+}
 .quora .carousel-holder .carousel-inner .mask .slide {
   float: left;
   height: 369px;

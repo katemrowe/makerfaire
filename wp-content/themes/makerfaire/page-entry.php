@@ -159,7 +159,8 @@ function display_entry_schedule($entry_id) {
                             ON subarea.area_id = area.ID and area.faire_id = 2
             left join wp_mf_schedule schedule
                     on location.ID = schedule.location_id
-             where location.entry_id=$entry_id";
+             where location.entry_id=$entry_id"
+          . " group by area, subarea, location, start_dt, end_dt";
   $results = $wpdb->get_results($sql);
         echo '<table>';
         if($wpdb->num_rows > 0){

@@ -72,9 +72,15 @@ if ( $type == 'maker' ) {
 		$maker['name'] = $row['first_name'].' '.$row['last_name'];
 		$maker['child_id_refs'] = array(); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
 		$maker['category_id_refs'] = explode(',', $row['category']); //array_unique( get_post_meta( absint( $post->ID ), 'mfei_record' ) );
-		
-		// Application ID this maker is assigned to
-		
+		//add the sponsor category 333 if using a sponsor form
+                
+                //look for the word sponsor in the form name
+                $form = GFAPI::get_form( $row['form_id'] );		
+		$formTitle = $form['title'];                  
+                               
+                if (strpos($formTitle, 'Sponsor') !== false) {
+                    $maker['category_id_refs'][] = '333';
+                }
 		
 		// No longer have these
 		

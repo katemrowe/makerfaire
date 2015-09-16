@@ -162,18 +162,17 @@ function display_entry_schedule($entry_id) {
              where location.entry_id=$entry_id";
   $results = $wpdb->get_results($sql);
         echo '<table>';
-        //echo '<tr><td>Area</td><td>Subarea</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
         if($wpdb->num_rows > 0){
             ?>
       <h2>Location at <?php echo (strpos($faireID,'NY')!== false?'World':'');?> Maker Faire <?php echo ucwords(str_replace('-',' ', $faire));?></h2>
       <hr />
             <?php
             foreach($results as $row){    
-                echo '<tr><td style="padding:10px">'.$row->area.'</td><td style="padding:10px">'.$row->subarea.'</td>';
+                echo '<tr><td style="padding:0 10px">'.$row->area.'</td><td style="padding:0 10px">'.$row->subarea.'</td>';
                 if(!is_null($row->start_dt)){
                     $start_dt   = strtotime( $row->start_dt);
                     $end_dt     = strtotime($row->end_dt);
-                    echo '<td style="padding:10px">'.date("m/j/y",$start_dt).'</td><td style="padding:10px">'. date("g:i a",$start_dt).' to '.date("g:i a",$end_dt).'</td>';
+                    echo '<td style="padding:0 10px">'.date("m/j/y",$start_dt).'</td><td style="padding:0 10px">'. date("g:i a",$start_dt).' to '.date("g:i a",$end_dt).'</td>';
                 }
                 echo '</tr>';
             }

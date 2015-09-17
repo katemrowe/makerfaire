@@ -59,6 +59,7 @@ if ( $type == 'entity' ) {
                                maker_to_entity.maker_type  != 'Contact' 
                          group by maker_to_entity.entity_id
                         ) as exhibit_makers,
+                        (select form_id from wp_rg_lead where wp_rg_lead.id = entity.lead_id) as form_id,
 
                         (select wp_mf_api_venue.ID 
                          from   wp_mf_api_venue, wp_mf_location 
@@ -115,7 +116,16 @@ if ( $type == 'entity' ) {
 		// Application Categories
 		$category_ids = $row['Categories'];
 		$app['category_id_refs'] = explode(',',$category_ids);
-               
+                //add the sponsor category 333 if using a sponsor form
+                
+                //look for the word sponsor in the form name
+                $form = GFAPI::get_form( $row['form_id'] );		
+		$formTitle = $form['title'];                  
+                               
+                if (strpos($formTitle, 'Sponsor') !== false) {
+                    $app['category_id_refs'][] = '333';
+                }
+
 		// Application Description
 		$app['description'] = $row['Description'];
 

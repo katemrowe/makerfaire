@@ -52,6 +52,7 @@ if ( $type == 'entity' ) {
                         `entity`.`desc_short` as Description,
                         `entity`.`category` as `Categories`,
                         `entity`.`project_photo`,
+                        (select form_id from wp_rg_lead where wp_rg_lead.id = entity.lead_id) as form_id,
                         entity.mobile_app_discover,
                         (select group_concat( distinct maker_id separator ',') as Makers 
                          from wp_mf_maker_to_entity maker_to_entity 
@@ -115,7 +116,16 @@ if ( $type == 'entity' ) {
 		// Application Categories
 		$category_ids = $row['Categories'];
 		$app['category_id_refs'] = explode(',',$category_ids);
-               
+                //add the sponsor category 333 if using a sponsor form
+                
+                //look for the word sponsor in the form name
+                $form = GFAPI::get_form( $row['form_id'] );		
+		$formTitle = $form['title'];                  
+                               
+                if (strpos($formTitle, 'Sponsor') !== false) {
+                    $app['category_id_refs'][] = '333';
+                }
+                
 		// Application Description
 		$app['description'] = $row['Description'];
 

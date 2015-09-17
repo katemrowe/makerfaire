@@ -73,10 +73,9 @@ if ( $type == 'venue' ) {
 		where c.faire= '$faire'; ");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
-        
  	// Loop through the posts
 	while ( $row = $result->fetch_row () ) {
-		//var_dump($row);
+		
 		// Open the array.
 		$venue = array();
 

@@ -31,18 +31,9 @@ function mf_sponsor_carousel( $category_name ) {
 	return $output;
 }
 
-function mf_sponsor_list( $category_name, $slug ) {
-        
-        $slugData = get_term_by( 'slug', $slug, 'link_category', OBJECT );
-        $slugCat = $objects = get_objects_in_term($slugData->term_id,'link_category');
-        
-        $slugData = get_term_by( 'slug', $category_name, 'link_category', OBJECT );
-        $sponsorName = $objects = get_objects_in_term($slugData->term_id,'link_category');        
-        $category=array_intersect($slugCat,$sponsorName);
-        
-        $include = implode(',',$category); 
-        $sponsors = get_bookmarks( array( 'orderby' => 'name',  'limit' => 40, 'include'=> $include) );
-  
+function mf_sponsor_list( $category_name ) {
+	// Get all of the sponsor from the links
+	$sponsors = get_bookmarks( array( 'orderby' => 'rating', 'category_name' => $category_name, 'limit' => 40 ) );
 
 	// Split them into chucks of two
 	// $sponsors = array_chunk( $sponsors, 2, true );

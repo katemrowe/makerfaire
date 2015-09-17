@@ -1,5 +1,6 @@
 <?php
 error_reporting( 'NONE' );
+
 /**
  * v2 of the Maker Faire API - ENTITY
  *
@@ -44,8 +45,7 @@ if ( $type == 'entity' ) {
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-	// NOTE: For next year address Sponsors.
-	//The sql here is hardcoded for specific id's because of an issue with sponsors not being correctly added.
+
 	$select_query = sprintf("
                 SELECT  entity.lead_id,
                         `entity`.`presentation_title`,
@@ -61,15 +61,15 @@ if ( $type == 'entity' ) {
                         ) as exhibit_makers,
                         (select form_id from wp_rg_lead where wp_rg_lead.id = entity.lead_id) as form_id,
 
-                        (select wp_mf_api_venue.ID 
-                         from   wp_mf_api_venue, wp_mf_location 
-                         where  wp_mf_location.entry_id = entity.lead_id AND 
-                                wp_mf_location.subarea_id = wp_mf_api_venue.subarea_id                            
+                        (select wp_mf_location.subarea_id
+                         from   wp_mf_location
+                         where  wp_mf_location.entry_id = entity.lead_id limit 1                 
                         ) as venue_id
                 FROM    `wp_mf_entity` entity                  
                 WHERE   entity.status = 'Accepted' AND 
                         LOWER(entity.faire)='".strtolower($faire)."'"
                 );
+        echo $select_query;
  	$mysqli->query("SET NAMES 'utf8'");
         
 	$result = $mysqli->query($select_query) or trigger_error($mysqli->error."[$select_query]");
@@ -78,7 +78,7 @@ if ( $type == 'entity' ) {
 	$apps = array();
 
 	// Loop through the posts
-	while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+	while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {            
 		// Store the app information
 		//$app_data = json_decode( mf_clean_content( $post->post_content ) );
 
@@ -116,8 +116,8 @@ if ( $type == 'entity' ) {
 		// Application Categories
 		$category_ids = $row['Categories'];
 		$app['category_id_refs'] = explode(',',$category_ids);
-                //add the sponsor category 333 if using a sponsor form
                 
+                //add the sponsor category 333 if using a sponsor form                
                 //look for the word sponsor in the form name
                 $form = GFAPI::get_form( $row['form_id'] );		
 		$formTitle = $form['title'];                  

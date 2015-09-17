@@ -44,8 +44,7 @@ if ( $type == 'entity' ) {
 	if ($mysqli->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 	}
-	// NOTE: For next year address Sponsors.
-	//The sql here is hardcoded for specific id's because of an issue with sponsors not being correctly added.
+//venue_id = subarea_id
 	$select_query = sprintf("
                 SELECT  entity.lead_id,
                         `entity`.`presentation_title`,
@@ -61,15 +60,18 @@ if ( $type == 'entity' ) {
                          group by maker_to_entity.entity_id
                         ) as exhibit_makers,
 
-                        (select wp_mf_api_venue.ID 
-                         from   wp_mf_api_venue, wp_mf_location 
+                        (select subarea.ID 
+                         from   wp_mf_location, wp_mf_faire_subarea subarea
                          where  wp_mf_location.entry_id = entity.lead_id AND 
-                                wp_mf_location.subarea_id = wp_mf_api_venue.subarea_id                            
+                                wp_mf_location.subarea_id = subarea.ID                            
                         ) as venue_id
                 FROM    `wp_mf_entity` entity                  
                 WHERE   entity.status = 'Accepted' AND 
                         LOWER(entity.faire)='".strtolower($faire)."'"
                 );
+        
+        //echo $select_query;
+        
  	$mysqli->query("SET NAMES 'utf8'");
         
 	$result = $mysqli->query($select_query) or trigger_error($mysqli->error."[$select_query]");

@@ -69,7 +69,7 @@ if ( $type == 'entity' ) {
                 WHERE   entity.status = 'Accepted' AND 
                         LOWER(entity.faire)='".strtolower($faire)."'"
                 );
-        echo $select_query;
+        //echo $select_query;
  	$mysqli->query("SET NAMES 'utf8'");
         
 	$result = $mysqli->query($select_query) or trigger_error($mysqli->error."[$select_query]");

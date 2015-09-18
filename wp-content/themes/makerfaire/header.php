@@ -99,6 +99,22 @@
 Topbar
 ======
 -->
+<!-- TOP BRAND BAR -->
+<div class="hidden-xs top-header-bar-brand">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+      </div>
+      <div class="col-sm-6 text-center">
+        <p class="header-make-img"><a href="//makezine.com?utm_source=makerfaire.com&utm_medium=brand+bar&utm_campaign=explore+all+of+make" target="_blank">Explore all of <img src="<?php echo get_stylesheet_directory_uri(); ?>/img/make_logo.png" alt="Make: Makezine Logo" /></a></p>
+      </div>
+      <div class="col-sm-3">
+        <p class="header-sub-link pull-right"><a href="//readerservices.makezine.com/mk?utm_source=makerfaire.com&utm_medium=brand+bar&utm_campaign=mag+sub" target="_blank">Subscribe </a></p>
+      </div>
+    </div>
+  </div>   
+</div>
+
 <header id="header" class="quora">
 
 <?php

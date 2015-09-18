@@ -227,6 +227,40 @@ a:focus {
   width: 100%;
   position: absolute;
 }
+/* TOP BRAND BAR */
+.top-header-bar-brand {
+  background-color: #F0F0F0;
+}
+.top-header-bar-brand .container {
+  background: url('/wp-content/themes/makerfaire/img/magazine-icon.png') top right no-repeat;
+  background-size: 43px 50px;
+  background-position: right 11px bottom -18px;
+}
+.top-header-bar-brand p {
+  margin-bottom: 0;
+  line-height: 1.3em;
+}
+.top-header-bar-brand p a {
+  font-size: 12px;
+  padding: 7px 5px;
+  display: inline-block;
+}
+.top-header-bar-brand a {
+  color: #242424;
+}
+.top-header-bar-brand .header-sub-link a {
+  padding-right: 41px;
+  font-size: 11px;
+}
+.top-header-bar-brand .header-make-img img {
+  height: 12px;
+  padding-left: 2px;
+  vertical-align: baseline;
+}
+.top-header-bar-brand .header-sub-link img {
+  height: 12px;
+  padding-left: 2px;
+}
 .home .quora#header {
   margin-bottom: 0;
 }
@@ -2172,7 +2206,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-app {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }
@@ -2189,7 +2223,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-program {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }
@@ -2206,7 +2240,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-map {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }

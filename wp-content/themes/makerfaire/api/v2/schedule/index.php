@@ -75,8 +75,8 @@ if ( $type == 'schedule' ) {
                 
 		// REQUIED: Application title paired to scheduled item
 		$schedule['name']       = html_entity_decode( $schedule_name , ENT_COMPAT, 'utf-8' );
-		$schedule['time_start'] = date( DATE_ATOM, strtotime( '+7 hour',  $start ) );
-		$schedule['time_end']   = date( DATE_ATOM, strtotime( '+7 hour', $stop ) );
+		$schedule['time_start'] = date( DATE_ATOM, strtotime( '+4 hour',  $start ) );
+		$schedule['time_end']   = date( DATE_ATOM, strtotime( '+4 hour', $stop ) );
 		
 		//ORIGINAL CALL
 		//$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $start . $dates['time_zone'] ) ) );

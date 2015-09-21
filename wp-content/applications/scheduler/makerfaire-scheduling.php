@@ -320,21 +320,26 @@ function create_makerfaire_scheduler($faire_id) {
 		//->editable(array('update' => 'true','template'=>'customEditorTemplate'))
 		->timezone('UTC')
 		
-		->date(new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
+		->date(new DateTime ( '2015/9/26 00:00', new DateTimeZone ( 'UTC' ) ) )->height ( 900 )->pdf ( $pdf )->addToolbarItem ( new \Kendo\UI\SchedulerToolbarItem ( 'pdf' ) )->addResource ( $subareasResource, $entriesResource )->group ( array (
 			'resources' => array (
 					'Stages' 
 			) 
 	) )->addView ( array (
 			'type' => 'day',
 			'majorTick' => 30,
-			'startTime' => new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) 
+			'showWorkHours' => true,
+			'workWeekEnd' => 7,
+			'workDayStart' => new DateTime ( '2015/1/1 17:00', new DateTimeZone ( 'UTC' ) ),
+			'workDayEnd' => new DateTime ( '2015/1/1 02:00', new DateTimeZone ( 'UTC' ) )
 	), array (
 			'type' => 'workWeek',
 			'majorTick' => 30,
 			'selected' => true,
 			'workWeekStart' => 5,
 			'workWeekEnd' => 7,
-			'startTime' => new DateTime ( '2015/9/25 16:00', new DateTimeZone ( 'UTC' ) ) 
+			'showWorkHours' => true,
+			'workDayStart' => new DateTime ( '2015/1/1 17:00', new DateTimeZone ( 'UTC' ) ),
+			'workDayEnd' => new DateTime ( '2015/1/1 02:00', new DateTimeZone ( 'UTC' ) )
 	), 'agenda' )->dataSource ( $dataSource );
 	
 	return $scheduler;

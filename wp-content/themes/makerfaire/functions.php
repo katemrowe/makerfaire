@@ -1553,11 +1553,13 @@ function createCSVfile() {
    
     foreach($entries as $entry){
         $fieldArray = array($entry['id'],$form_id);
-        foreach($fieldData as $field){                        
-            if( in_array( $field->type, array('checkbox', 'select', 'radio') ) ){
-                $currency = GFCommon::get_currency();
-                $value = RGFormsModel::get_lead_field_value( $entry, $field );
-                array_push($fieldArray, GFCommon::get_lead_field_display( $field, $value, $currency, true ));            
+        foreach($fieldData as $field){             
+            if($field->id==320 || $field->id==321){
+                if( in_array( $field->type, array('checkbox', 'select', 'radio') ) ){
+                    $currency = GFCommon::get_currency();
+                    $value = RGFormsModel::get_lead_field_value( $entry, $field );
+                    array_push($fieldArray, GFCommon::get_lead_field_display( $field, $value, $currency, true ));            
+                }
             }else{
                 array_push($fieldArray, (isset($entry[$field->id])?$entry[$field->id]:""));
             }

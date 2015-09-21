@@ -1553,9 +1553,9 @@ function createCSVfile() {
    
     foreach($entries as $entry){
         $fieldArray = array($entry['id'],$form_id);
-        foreach($fieldData as $field){            
-            $currency = GFCommon::get_currency();
+        foreach($fieldData as $field){                        
             if( in_array( $field->type, array('checkbox', 'select', 'radio') ) ){
+                $currency = GFCommon::get_currency();
                 $value = RGFormsModel::get_lead_field_value( $entry, $field );
                 array_push($fieldArray, GFCommon::get_lead_field_display( $field, $value, $currency, true ));            
             }else{

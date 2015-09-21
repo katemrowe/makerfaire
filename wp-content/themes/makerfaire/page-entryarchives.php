@@ -200,8 +200,8 @@ Duplicate to $entry['151']
   	}
   }
 function display_entry_schedule($entry_id) {
-  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
-      <h4><label class="detail-label">Schedule:</label></h4>');
+  //echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+  echo ('<h4><label class="detail-label">Schedule:</label></h4>');
   $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
   if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;

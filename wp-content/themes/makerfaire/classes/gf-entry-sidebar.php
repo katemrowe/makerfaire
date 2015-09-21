@@ -2,7 +2,7 @@
 
 
 function mf_sidebar_entry_locations($form_id, $lead) {
-	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+	echo ('<link rel="stylesheet" type="text/css" href="'.get_stylesheet_directory_uri() . '/css/jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Faire Locations:</label></h4>');
 	$mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD, DB_NAME);
 	if ($mysqli->connect_errno) {
@@ -85,7 +85,7 @@ function mf_sidebar_entry_ticket($form_id, $lead) {
 }
 function mf_sidebar_entry_schedule($form_id, $lead) {
     global $wpdb;
-	echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>
+	echo ('<link rel="stylesheet" type="text/css" href="'.get_stylesheet_directory_uri() . '/css/jquery.datetimepicker.css"/>
 			<h4><label class="detail-label">Schedule:</label></h4>');
     //first, let's display any schedules already entered for this entry
 	$entry_id=$lead['id'];

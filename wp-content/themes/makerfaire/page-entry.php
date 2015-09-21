@@ -149,8 +149,7 @@ Duplicate to $entry['151']
  
 function display_entry_schedule($entry_id) {
   global $wpdb;global $faireID; global $faire;
-  echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>');
-  
+
   $sql = "select location.entry_id, area.area, subarea.subarea,location.location, schedule.start_dt, schedule.end_dt
             from  wp_mf_location location 
             join  wp_mf_faire_subarea subarea 

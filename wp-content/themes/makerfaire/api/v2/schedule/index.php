@@ -82,7 +82,7 @@ if ( $type == 'schedule' ) {
 		//$schedule['time_start'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $start . $dates['time_zone'] ) ) );
 		//$schedule['time_end'] = date( DATE_ATOM, strtotime( '-1 hour', strtotime( $dates[$day] . $stop . $dates['time_zone'] ) ) );
 		// Rename the field, keeping 'time_end' to ensure this works.
-		$schedule['time_stop'] = date( DATE_ATOM, strtotime( '+7 hour', $stop ) );			
+		$schedule['time_stop'] = date( DATE_ATOM, strtotime( '+4 hour', $stop ) );			
 
 		// Schedule thumbnails. Nothing more than images from the application it is tied to
 		$app_image = $project_photo;

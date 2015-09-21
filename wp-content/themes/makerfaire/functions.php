@@ -1515,7 +1515,11 @@ function build_mf_export(){
 function createCSVfile() { 
     //create CSV for individual entries come as a GET request, the mass entry list is a POST request
     $form_id = (isset($_POST['exportForm']) && $_POST['exportForm']!=''?$_POST['exportForm']:'');
-    $form_id = (isset($_GET['exForm']) && $_GET['exForm']!=''?$_GET['exForm']:'');
+    
+    //if the form_id is not set in the post fields, let check the get fields
+    if($form_id==''){
+        $form_id = (isset($_GET['exForm']) && $_GET['exForm']!=''?$_GET['exForm']:'');
+    }
     if($form_id==''){
         die('please select a form');
     }

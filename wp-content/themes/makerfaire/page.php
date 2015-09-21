@@ -1,4 +1,9 @@
-<?php get_header(); ?>
+<?php get_header(); 
+
+//determine the parent page slug
+ $par_post = get_post($post->post_parent);
+ $slug = $par_post->post_name;
+?>
 
 <div class="clear"></div>
 

@@ -2,7 +2,10 @@
 /*
 Template name: Slideshow
 */
-get_header(); ?>
+get_header(); 
+$par_post = get_post($post->post_parent);
+$slug = $par_post->post_name;
+        ?>
 <div class="clear"></div>
 <div class="container live-page">
 	<div class="row" style="margin-bottom:0px;padding-bottom:0px;">
@@ -88,13 +91,13 @@ get_header(); ?>
 						<div class="mask">
 							<div class="slideset">
 	                            <div class="slide">
-	                                <?php echo mf_sponsor_list('Goldsmith Sponsor') ?>
+	                                <?php echo mf_sponsor_list('Goldsmith Sponsor',$slug) ?>
 	                            </div>
 							    <div class="slide">
-	                                    <?php echo mf_sponsor_list('Silversmith Sponsor') ?>
+	                                    <?php echo mf_sponsor_list('Silversmith Sponsor',$slug) ?>
 						        </div>
 							    <div class="slide">
-						              <?php echo mf_sponsor_list('Coppersmith Sponsor') ?>	
+						              <?php echo mf_sponsor_list('Coppersmith Sponsor',$slug) ?>	
 							    </div>
 	                            <!--
 	                            <div class="slide">

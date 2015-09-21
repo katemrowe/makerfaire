@@ -1,3 +1,7 @@
+<?php 
+/* Retrieve the faire slug.  The Entries page are not under a specific faire parent, so the slug is set on that page */
+global $slug; 
+?>
 <div class="col-md-4">
     <!--    <div class="sidebar-bordered">
         <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/mr-makey.png" alt="Mr. Makey" class="makey pull-left">
@@ -29,19 +33,19 @@
         <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Goldsmith Sponsors</a></h3>
         <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
-                <?php echo mf_sponsor_carousel( 'Goldsmith Sponsor' ); ?>
+                <?php echo mf_sponsor_carousel( 'Goldsmith Sponsor',$slug ); ?>
             </div>
         </div>
         <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Silversmith Sponsors</a></h3>
         <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
-                <?php echo mf_sponsor_carousel( 'Silversmith Sponsor' ); ?>
+                <?php echo mf_sponsor_carousel( 'Silversmith Sponsor', $slug ); ?>
             </div>
         </div>
         <h3><a href="<?php echo esc_url( home_url( '/sponsors' ) ); ?>">Coppersmith Sponsors</a></h3>
         <div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
-                <?php echo mf_sponsor_carousel( 'Coppersmith Sponsor' ); ?>
+                <?php echo mf_sponsor_carousel( 'Coppersmith Sponsor', $slug ); ?>
             </div>
         </div>
     </div>

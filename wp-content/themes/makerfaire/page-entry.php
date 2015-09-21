@@ -13,7 +13,7 @@
   $form_id = $entry['form_id'];
   $formSQL = "select replace(lower(faire_name),' ','-') as faire_name, faire from wp_mf_faire where FIND_IN_SET ($form_id, wp_mf_faire.form_ids)> 0";
   $results =  $wpdb->get_row( $formSQL );
-  $faire   =  $results->faire_name;
+  $faire   =  $slug = $results->faire_name;
   $faireID = $results->faire;
   
   $makers = array();

@@ -48,8 +48,20 @@
   <div class="row">
 
     <div class="content col-md-8">
-
-      <a href="/<?php echo $faire;?>/meet-the-makers/">&#65513; Look for More Makers</a>
+<?php $url = parse_url(wp_get_referer()); //getting the referring URL   
+      $url['path'] = rtrim($url['path'], "/"); //remove any trailing slashes
+      $path = explode("/", $url['path']); // splitting the path
+      $slug = end($path); // get the value of the last element 
+      
+      if($slug=='schedule'){     
+          $backlink = wp_get_referer();
+          $backMsg = '&#65513; Back to the Schedule';
+      }else{
+          $backlink = "/".$faire."/meet-the-makers/";
+          $backMsg = '&#65513; Look for More Makers';
+      }
+?>
+      <a href="<?php echo $backlink;?>"><?php echo $backMsg;?></a>
 
       <div class="page-header">
 

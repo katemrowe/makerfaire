@@ -263,7 +263,7 @@ function buildCrossRef(){
                                     'Email'         =>  98,
                                     'phone'         =>  99,
                                     'identifier'    =>   1,
-                                    'TWITTER'       => 322
+                                    'TWITTER'       => 201
                                 ),
             'presenter'     =>  array(
                                     'First Name'    => 160.3,

@@ -262,7 +262,8 @@ function buildCrossRef(){
                                     'Last Name'     =>  96.6,
                                     'Email'         =>  98,
                                     'phone'         =>  99,
-                                    'identifier'    =>   1
+                                    'identifier'    =>   1,
+                                    'TWITTER'       => 322
                                 ),
             'presenter'     =>  array(
                                     'First Name'    => 160.3,
@@ -347,6 +348,7 @@ function buildCrossRef(){
                                     'Bio'           => 110,                                
                                     'Photo'         => 111,
                                     'website'       => 112,
+                                    'TWITTER'       => 322,
                                     'identifier'    =>   9
                                 )
     );       

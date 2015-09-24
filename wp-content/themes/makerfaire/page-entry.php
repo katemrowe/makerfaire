@@ -29,6 +29,16 @@
   $groupphoto=$entry['111'];
   $groupbio=$entry['110'];
   
+  // One maker
+  // A list of makers (7 max)
+  // A group or association
+  $displayType = $entry['105']; 
+  $isGroup = $isList = $isSingle = false;
+  $isGroup =(strpos($displayType, 'group') !== false);
+  $isList =(strpos($displayType, 'list') !== false);
+  $isSingle =(strpos($displayType, 'one') !== false);
+  
+  
   $project_name = $entry['151']; 
   $project_photo = $entry['22'];
   $project_short = $entry['16'];
@@ -90,12 +100,21 @@
             <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
-<div class="clearfix">&nbsp;</div>
+	  <div class="clearfix">&nbsp;</div>
       <div class="clearfix">&nbsp;</div>
-      <h2>Makers/Group</h2>
+      <h2><?php
+		if ($isGroup)
+			echo 'Group';
+		elseif($isList)
+			echo 'Makers';
+		else
+			echo 'Maker';
+		
+      
+      ?></h2>
       <hr />
       <?php
-      if (!empty($groupbio)) {
+      if ($isGroup) {
         echo '<div class="row padbottom">
                 ',(!empty($groupphoto) ? '<img class="col-md-3 pull-left img-responsive" src="' . $groupphoto . '" alt="Group Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Group Image">');
         echo    '<div class="col-md-5">

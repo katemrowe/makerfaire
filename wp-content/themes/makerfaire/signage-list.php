@@ -2,6 +2,8 @@
 
 if ( isset( $_GET['loc'] ) )
 	$location = intval( $_GET['loc'] );
+if ( isset( $_GET['faire'] ) )
+	$faire = intval( $_GET['faire'] );
 
 if ( ! isset( $_GET['description'] ) ) {
 	$short_description = true;
@@ -22,12 +24,11 @@ if ( ! empty( $location ) )
  * @param  String $location [description]
  * @return [type]           [description]
  */
-function get_schedule_list( $location, $short_description = false, $day_set = '' ) {
+function get_schedule_list( $location, $short_description = false, $day_set = '' , $faire = 'NY15') {
     global $orderBy;
     global $wpdb;
         $output = '';
         //retrieve Data
-        $faire = 'ba15'; //need to have this field passed in as a parameter.  default to newest faire?
         $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
                        DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
                        DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
@@ -48,7 +49,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
                     wp_mf_faire_area area
 
             where   schedule.faire          = '".$faire."' 
-                    AND schedule.entry_id   = entity.lead_id 
+                    AND schedule.location_id   = location.ID 
                     AND entity.status       = 'Accepted' 
                     and location.entry_id   = schedule.entry_id
                     and subarea.id          = location.subarea_id
@@ -136,6 +137,6 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
 		</style>
 	</head>
 	<body>
-		<?php echo get_schedule_list( $location, $short_description, $day ); ?>
+		<?php echo get_schedule_list( $location, $short_description, $day, $faire ); ?>
 	</body>
 </html>

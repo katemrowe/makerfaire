@@ -50,12 +50,12 @@ if ( $type == 'venue' ) {
 		c.faire as faire
 		
                 from wp_mf_faire_subarea a
-		join wp_mf_location l on a.ID = l.subarea_id
+		
                 join wp_mf_faire_area b on a.area_id=b.id
 		join wp_mf_faire c on b.faire_id=c.ID
 		
                 where c.faire= '$faire'
-                and l.subarea_id = a.ID
+             
 		group by b.id
 		UNION ALL
                     SELECT a.`ID` as ID,

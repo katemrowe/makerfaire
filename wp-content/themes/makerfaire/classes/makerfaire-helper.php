@@ -292,7 +292,7 @@ function get_mf_schedule_by_faire ($faire, $day='', $area='', $subarea=''){
                                 and subarea.id          = location.subarea_id
                                 and area.id             = subarea.area_id
                                 and schedule.faire      = '".$faire."' ".                                                         
-                       " ORDER BY   subarea, 
+                       " ORDER BY   subarea.sort_order, 
                                     schedule.start_dt ASC";
 
 $mysqli->query("SET NAMES 'utf8'");

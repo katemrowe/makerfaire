@@ -58,8 +58,20 @@
   <div class="row">
 
     <div class="content col-md-8">
-
-      <a href="/<?php echo $faire;?>/meet-the-makers/">&#65513; Look for More Makers</a>
+<?php $url = parse_url(wp_get_referer()); //getting the referring URL   
+      $url['path'] = rtrim($url['path'], "/"); //remove any trailing slashes
+      $path = explode("/", $url['path']); // splitting the path
+      $slug = end($path); // get the value of the last element 
+      
+      if($slug=='schedule'){     
+          $backlink = wp_get_referer();
+          $backMsg = '&#65513; Back to the Schedule';
+      }else{
+          $backlink = "/".$faire."/meet-the-makers/";
+          $backMsg = '&#65513; Look for More Makers';
+      }
+?>
+      <a href="<?php echo $backlink;?>"><?php echo $backMsg;?></a>
 
       <div class="page-header">
 
@@ -77,12 +89,12 @@
       
       <!-- Button to trigger video modal -->
       <?php if (!empty($project_video)) {
-          echo '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal">Project Video</a>';
+          echo '<a href="#entryModal" role="button" id="modalButton" class="btn btn-info" data-toggle="modal">Project Video</a>';
       } ?>
       <br />
 
       <!-- Video Modal -->
-      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div id="entryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           <h3 id="myModalLabel"><?php echo $entry['151']; ?></h3>
@@ -97,7 +109,8 @@
                $dispVideo = 'https://www.youtube.com/embed/'.$videoID;
            }
            ?>
-            <iframe src="<?php echo $dispVideo; ?>" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            <input id="entryVideo" type="hidden" value="<?php echo $dispVideo; ?>" />
+            <iframe width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
       </div>
 	  <div class="clearfix">&nbsp;</div>

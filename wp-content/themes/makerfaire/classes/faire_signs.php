@@ -2,24 +2,56 @@
 /* this provides a javascript button that allows the users to print out 
  * all maker pdf's 
  */
-$form_id = 25;
-$search_criteria['status'] = 'active';
-$search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
-$sorting         = array();
-$paging          = array( 'offset' => 0, 'page_size' => 9999 );
-$total_count     = 0;
-$entries         = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
-
-?>
-<h2>Print All Signs for NY15</h2>
-<input class="button button-large button-primary" style="text-align:center" value="Create all <?php echo $total_count;?> signs" id="processButton"   onClick="printSigns()"/><br/>
+?> 
+<h2>Print Faire Signs by Form</h2>
+    <form method="post" action="">
+        
+         
+        <select id="printForm" name="printForm">
+                <option value=""><?php _e( 'Select a form', 'gravityforms' ); ?></option>
+                <?php
+                $forms = RGFormsModel::get_forms( null, 'title' );
+                foreach ( $forms as $form ) {
+                        ?>
+                        <option value="<?php echo absint( $form->id ) ?>"><?php echo esc_html( $form->title ); ?></option>
+                <?php
+                }
+                ?>
+        </select>
+        <br/>
+        <input type="checkbox" name="showAll" value='yes'> Show for all Statuses
+        <br/><br/>
+        <input type="submit" value="Submit" class="button button-large button-primary" />
+    </form>
 <?php
-//var_dump($entries);
-foreach($entries as $entry){
-    $entry_id = $entry['id'];
+
+if(isset($_POST['printForm'])){
+
+    $form_id = $_POST['printForm'];
+    $search_criteria['status'] = 'active';
+    if(isset($_POST['showAll']) && $_POST['showAll']=='yes'){
+        //no search criteria
+        
+    }else{
+        $search_criteria['field_filters'][] = array( 'key' => '303', 'value' => 'Accepted');
+    }
+    $sorting         = array();
+    $paging          = array( 'offset' => 0, 'page_size' => 9999 );
+    $total_count     = 0;
+    $entries         = GFAPI::get_entries( $form_id, $search_criteria, $sorting, $paging, $total_count );
+
     ?>
-    <a class="fairsign" target="_blank" id="<?php echo $entry_id;?>" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><?php echo $entry_id;?></a><br/>  
-             <?php
+    <br/><br/>
+    <input class="button button-large button-primary" style="text-align:center" value="Create all for Form <?php echo $form_id;?>" id="processButton"   onClick="printSigns()"/><br/>
+    <br/>
+    <?php
+    //var_dump($entries);
+    foreach($entries as $entry){
+        $entry_id = $entry['id'];
+        ?>
+        <a class="fairsign" target="_blank" id="<?php echo $entry_id;?>" href="/wp-content/themes/makerfaire/fpdi/makersigns.php?eid=<?php echo $entry_id;?>"><?php echo $entry_id;?></a><br/>  
+                 <?php
+    }
 }
 ?>
 

@@ -33,14 +33,7 @@ if ( $type == 'venue' ) {
 	$query = new WP_Query( $args );
 	*/
 	// Define the API header (specific for Eventbase)
-	$header = array(
-		'header' => array(
-			'version' => esc_html( MF_EVENTBASE_API_VERSION ),
-			'results' => intval( $query->post_count ),
-		),
-	);
-
-
+	
 	// Init the entities header
 	$venues = array();
 	
@@ -55,24 +48,36 @@ if ( $type == 'venue' ) {
 		b.area as description,
 		group_concat(a.`id`  separator ',') as 'child_id_refs',
 		c.faire as faire
-		from wp_mf_faire_subarea a
-		join wp_mf_faire_area b on a.area_id=b.id
+		
+                from wp_mf_faire_subarea a
+		join wp_mf_location l on a.ID = l.subarea_id
+                join wp_mf_faire_area b on a.area_id=b.id
 		join wp_mf_faire c on b.faire_id=c.ID
-		where c.faire= '$faire'
+		
+                where c.faire= '$faire'
+                and l.subarea_id = a.ID
 		group by b.id
 		UNION ALL
-		SELECT a.`ID` as ID,
-		a.area_id as area_id,
-		a.ID as subarea_id,
-			a.subarea as description,
-		    null as child_id_refs,
-		    c.faire as faire
-		FROM `wp_mf_faire_subarea` a
-		join wp_mf_faire_area b on a.area_id=b.id
-		join wp_mf_faire c on b.faire_id=c.ID 
-		where c.faire= '$faire'; ");
+                    SELECT a.`ID` as ID,
+                    a.area_id as area_id,
+                    a.ID as subarea_id,
+                            a.subarea as description,
+                        null as child_id_refs,
+                        c.faire as faire
+                    FROM `wp_mf_faire_subarea` a
+                    join wp_mf_faire_area b on a.area_id=b.id
+                    join wp_mf_faire c on b.faire_id=c.ID 
+                    where c.faire= '$faire'; ");
  	$mysqli->query("SET NAMES 'utf8'");
 	$result = $mysqli->query ( $select_query );
+        
+        $header = array(
+		'header' => array(
+			'version' => esc_html( MF_EVENTBASE_API_VERSION ),
+			'results' => intval( $result->num_rows ),
+		),
+	);
+        
  	// Loop through the posts
 	while ( $row = $result->fetch_row () ) {
 		

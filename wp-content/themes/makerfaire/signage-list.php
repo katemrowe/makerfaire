@@ -51,7 +51,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
             where   schedule.faire          = '".$faire."' 
                     AND schedule.entry_id   = entity.lead_id 
                     AND entity.status       = 'Accepted' 
-                    and wp_mf_schedule.location_id=wp_mf_location.ID
+                    and schedule.location_id=location.ID
                     and location.entry_id   = schedule.entry_id
                     and subarea.id          = location.subarea_id
                     and area.id             = subarea.area_id"                    

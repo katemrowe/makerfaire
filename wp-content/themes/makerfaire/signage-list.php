@@ -32,7 +32,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
                        DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
                        DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
-                       subarea.nicename, area.area, entity.presentation_title as 'Exhibit',
+                       if(subarea.niceName = '' or subarea.niceName is null,subarea.subarea,subarea.niceName) as nicename, area.area, entity.presentation_title as 'Exhibit',
                     (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
                         from    wp_mf_maker maker, 
                                 wp_mf_maker_to_entity maker_to_entity

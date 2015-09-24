@@ -1,9 +1,7 @@
 <?php // Template Name: Signage
 
-if ( isset( $_GET['loc'] ) )
-	$location = intval( $_GET['loc'] );
-if ( isset( $_GET['faire'] ) )
-	$faire = intval( $_GET['faire'] );
+$location =  ( isset( $_GET['loc'] )?intval( $_GET['loc'] ):'' );
+$faire = (isset($_GET['faire']) ? $_GET['faire']:'ny15');
 
 if ( ! isset( $_GET['description'] ) ) {
 	$short_description = true;
@@ -24,7 +22,7 @@ if ( ! empty( $location ) )
  * @param  String $location [description]
  * @return [type]           [description]
  */
-function get_schedule_list( $location, $short_description = false, $day_set = '' , $faire = 'NY15') {
+function get_schedule_list( $location, $short_description = false, $day_set = '' , $faire = 'ny15') {
     global $orderBy;
     global $wpdb;
         $output = '';
@@ -32,35 +30,40 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
                        DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
                        DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
-                       subarea.nicename, area.area, entity.presentation_title as 'Exhibit',
-                    (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
-                        from    wp_mf_maker maker, 
-                                wp_mf_maker_to_entity maker_to_entity
-                        where   schedule.entry_id           = maker_to_entity.entity_id  AND
-                                maker_to_entity.maker_id = maker.maker_id AND
-                                maker_to_entity.maker_type != 'Contact' 
-                        group by maker.lead_id
-                    ) as Presenters        
+                       if(subarea.niceName = '' or subarea.niceName is null,subarea.subarea,subarea.niceName) as nicename,                         
+                       area.area, entity.presentation_title as 'Exhibit',
+                        (select  group_concat( distinct concat(maker.`FIRST NAME`,' ',maker.`LAST NAME`) separator ', ') as Makers
+                            from    wp_mf_maker maker, 
+                                    wp_mf_maker_to_entity maker_to_entity
+                            where   schedule.entry_id           = maker_to_entity.entity_id  AND
+                                    maker_to_entity.maker_id = maker.maker_id AND
+                                    maker_to_entity.maker_type != 'Contact' 
+                            group by maker.lead_id
+                        ) as Presenters        
 
-            FROM    wp_mf_schedule schedule, 
-                    wp_mf_entity entity, 
-                    wp_mf_location location, 
-                    wp_mf_faire_subarea subarea, 
-                    wp_mf_faire_area area
+                FROM    wp_mf_schedule schedule
+                join    wp_mf_entity entity on 
+                            schedule.entry_id   = entity.lead_id and 
+                            entity.status       = 'Accepted' 
+                join    wp_mf_location location on 
+                            schedule.location_id  = location.ID and
+                            schedule.entry_id = location.entry_id
+                join    wp_mf_faire_subarea subarea on
+                            location.subarea_id = subarea.id
+                join    wp_mf_faire_area area on 
+                            subarea.area_id = area.id
 
-            where   schedule.faire          = '".$faire."' 
-                    AND schedule.location_id   = location.ID 
-                    AND entity.status       = 'Accepted' 
-                    and location.entry_id   = schedule.entry_id
-                    and subarea.id          = location.subarea_id
-                    and area.id             = subarea.area_id"                    
-                    .($day_set!=''?" and DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."'":'');    
+                where   schedule.faire          = '".$faire."' 
+                        
+                        "                    
+                        .($day_set!=''?" and DAYNAME(`schedule`.`start_dt`)='".ucfirst($day_set)."'":'');    
                    
         if($orderBy=='time'){
             $sql .= " order by schedule.start_dt ASC, schedule.end_dt ASC, subarea.nicename ASC, 'Exhibit' ASC";            
         }else{
             $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
+        
         //group by stage and date
         $dayOfWeek = '';
         $stage     = '';

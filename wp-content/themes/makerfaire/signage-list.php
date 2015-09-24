@@ -1,5 +1,5 @@
 <?php // Template Name: Signage
-
+$location = '';
 if ( isset( $_GET['loc'] ) )
 	$location = intval( $_GET['loc'] );
 
@@ -27,7 +27,8 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
     global $wpdb;
         $output = '';
         //retrieve Data
-        $faire = 'ba15'; //need to have this field passed in as a parameter.  default to newest faire?
+        $faire = (isset($_GET['faire'])?$_GET['faire']:'ny15');
+        //$faire = 'ny15'; //need to have this field passed in as a parameter.  default to newest faire?
         $sql ="SELECT  DAYNAME(schedule.start_dt) as Day,
                        DATE_FORMAT(schedule.start_dt,'%h:%i %p') as 'Start Time',
                        DATE_FORMAT(schedule.end_dt,'%h:%i %p') as 'End Time',                    
@@ -60,6 +61,7 @@ function get_schedule_list( $location, $short_description = false, $day_set = ''
         }else{
             $sql .= " order by subarea.nicename ASC, schedule.start_dt ASC, schedule.end_dt ASC,  'Exhibit' ASC";
         }
+        
         //group by stage and date
         $dayOfWeek = '';
         $stage     = '';

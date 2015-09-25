@@ -40,7 +40,7 @@
   
   
   $project_name = $entry['151']; 
-  $project_photo = $entry['22'];
+  $project_photo = legacy_get_resized_remote_image_url($entry['22'],750,500);
   $project_short = $entry['16'];
   $project_website = $entry['27'];
   $project_video = $entry['32'];

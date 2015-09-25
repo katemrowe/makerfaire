@@ -82,16 +82,18 @@
                                                
                                                jQuery('#geotext').val();
                                                var output = '';
-                                               output = 'Returned Data: <br/>' + 
-                                                        'Latitude: '  +         position.coords.latitude  + "\n"+
-                                                        'Longitude: ' +         position.coords.longitude + "\n"+
-                                                        'Accuracy: '  +         position.coords.accuracy  + '\n'+
-                                                        'Altitude: '  +         position.coords.altitude  + '\n'+
-                                                        'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n'+
-                                                        'Heading as degrees clockwise from North: ' +   position.coords.heading	+ '\n'+
-                                                        'Speed (meters): '  +  position.coords.speed + '\n'+
+                                               output = 'Returned Data: ' + "\n "+
+                                                        'Latitude: '  +         position.coords.latitude  + "\n "+
+                                                        'Longitude: ' +         position.coords.longitude + "\n "+
+                                                        'Accuracy: '  +         position.coords.accuracy  + '\n '+
+                                                        'Altitude: '  +         position.coords.altitude  + '\n '+
+                                                        'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n '+
+                                                        'Heading as degrees clockwise from North: ' +   position.coords.heading	+ '\n '+
+                                                        'Speed (meters): '  +  position.coords.speed + '\n '+
                                                         'Timestamp: '       +  position.timestamp;
                                                jQuery('#geotext').val(output);
+                                               //var newtext = document.myform.geotext.value;
+                                                document.myform.geotext.value += output;
 
                                             }
                                             </script>

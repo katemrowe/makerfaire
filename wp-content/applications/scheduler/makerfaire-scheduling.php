@@ -69,7 +69,7 @@ echo $scheduler->render ();
 </script>
 <script id="presentation-template" type="text/x-kendo-template">
 # if(entries){ #
- <a target="_blank" title="#: title #" href="/wp-admin/admin.php?page=mf_entries&view=mfentry&lid=#:  #">#: entries[0] #</a>
+ <a target="_blank" title="#: title #" href="/wp-admin/admin.php?page=mf_entries&view=mfentry&lid=#: entries[0] #">#: entries[0] #</a>
 # } #
 <p>#: title #</p>
 </script>

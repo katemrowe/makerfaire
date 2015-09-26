@@ -68,7 +68,7 @@ class Make_Instagram {
         }
         public function cmp($a, $b)
         {
-            return strcmp($a->created_time, $b->created_time);
+            return strcmp($b->created_time, $a->created_time);
         }
 	public function show_images() {
 		// TODO:	This whole function is a bit of a mess of entangled php and html.

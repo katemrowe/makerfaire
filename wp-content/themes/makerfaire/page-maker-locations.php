@@ -13,7 +13,8 @@ if($wpdb->num_rows > 0){
    $markers = '';
    foreach($results as $row){   
        $i++;
-       $markers .=  "['$row->comments', $row->latitude,$row->longitude]";               
+       //$markers .=  "['$row->comments', $row->latitude,$row->longitude]";               
+       $markers .=  '["'.$row->comments.'",'. $row->latitude.','.$row->longitude.']';               
        if($i<$count){
            $markers .=  ',';
        }

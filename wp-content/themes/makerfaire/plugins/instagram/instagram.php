@@ -28,9 +28,10 @@ class Make_Instagram {
 	 *
 	 * @return OBJECT Instagram response
 	 */
-	public function load_data() {
+	public function load_data($url='') {
 
-		$base_url = 'https://api.instagram.com/v1/tags/makerfaire/media/recent';
+		$base_url = ($url!=''?$url:'https://api.instagram.com/v1/tags/makerfaire/media/recent');
+                
 		$params = array(
 			'access_token' => '227901753.5b9e1e6.7b46b974b69e434e9d3322f1e4463894',
 			'count' => 3
@@ -65,13 +66,22 @@ class Make_Instagram {
        
           return $output;
         }
-
+        public function cmp($a, $b)
+        {
+            return strcmp($a->created_time, $b->created_time);
+        }
 	public function show_images() {
 		// TODO:	This whole function is a bit of a mess of entangled php and html.
 		//			Would do a lot cleaner with some sort of templating engine.
 
-		$ps = $this->load_data();
-
+		$ps  = $this->load_data('https://api.instagram.com/v1/tags/makerfaire/media/recent');
+                $ps2 = $this->load_data('https://api.instagram.com/v1/tags/wmf15/media/recent');
+                                                                             
+                $ps = array_merge($ps,$ps2);
+                
+                //sort by created
+                usort($ps, array($this, "cmp"));                                                 
+                
 		// make sure $output exists, otherwise we may get an error in local environment
 		if(!isset($output) || !is_string($output)) {
 			$output = "";
@@ -79,18 +89,30 @@ class Make_Instagram {
 
 
 		$images_per_page = 3;
+                array_splice($ps, $images_per_page);
 		$num_images = count($ps);
-        $pages = array_chunk($ps, $images_per_page);
-        $num_pages = count($pages);
+                $pages = array_chunk($ps, $images_per_page);
+                $num_pages = count($pages);
 		?>
 		<?php
-		$output ="<div class=\"item-holder\"><div class=\"container\"><div class=\"row\"><div class=\"col-xs-12 col-sm-4\"><div class=\"social-holder twitter\"><div class=\"title\"><h1><a href=\"http://twitter.com/makerfaire\" target=\"_blank\">#MakerFaire</a></h1></div><div id=\"recent-twitter\"></div><a href=\"http://twitter.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Twitter</a></div></div>";
+		$output ="<div class=\"item-holder\">"
+                        . " <div class=\"container\">"
+                        . "     <div class=\"row\">"
+                        . "         <div class=\"col-xs-12 col-sm-4\">"
+                        . "             <div class=\"social-holder twitter\">"
+                        . "                 <div class=\"title\">"
+                        . "                     <h1><a href=\"http://twitter.com/makerfaire\" target=\"_blank\">#MakerFaire, #wmf15</a></h1>"
+                        . "                 </div>"
+                        . "                 <div id=\"recent-twitter\"></div>"
+                        . "                 <a href=\"http://twitter.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Twitter</a>"
+                        . "             </div>"
+                        . "         </div>";
 		
-		$output .="<div class=\"col-xs-12 col-sm-8\">
-							<div class=\"social-holder instagram\">
-								<div class=\"title\">
-									<h1>Instagram, <a href=\"http://instagram.com/makerfaire\" target=\"_blank\">#makerfaire</a></h1>
-								</div>";
+		$output .="         <div class=\"col-xs-12 col-sm-8\">
+                                        <div class=\"social-holder instagram\">
+                                                <div class=\"title\">
+                                                        <h1>Instagram, <a href=\"http://instagram.com/makerfaire\" target=\"_blank\">#makerfaire, #wm15</a></h1>
+                                                </div>";
 					foreach( $pages as $page ) {			
 							$output .= "<ul class=\"img-list\">";
 							foreach( $page as $img ) {
@@ -100,8 +122,10 @@ class Make_Instagram {
 					}
 						$output .= "<a href=\"http://instagram.com/makerfaire\" target=\"_blank\" class=\"follow\">Follow us on Instagram</a>
 							</div>
-						</div>";
-		$output .="</div></div></div>";
+                                    </div>";
+		$output .="     </div>"
+                        . "  </div>"
+                        . " </div>";
 	
 		return $output;
 	}

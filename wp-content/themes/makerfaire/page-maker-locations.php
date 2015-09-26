@@ -44,12 +44,7 @@ if($wpdb->num_rows > 0){
                                           var map;
                                             var bounds = new google.maps.LatLngBounds();
                                             var mapOptions = {
-                                                center: {lat: 0, lng: 0},
-                                                zoom: 1,
-                                                streetViewControl: false,
-                                                mapTypeControlOptions: {
-                                                  mapTypeIds: ['moon']
-                                                }
+                                                mapTypeId: 'roadmap'
                                             };
 
                                             // Display a map on the page

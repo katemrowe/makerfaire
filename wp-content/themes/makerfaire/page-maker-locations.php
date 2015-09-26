@@ -30,7 +30,7 @@ if($wpdb->num_rows > 0){
 
 	<div class="row">
 
-		<div class="content col-md-8">
+		<div class="content col-md-16">
 
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
@@ -44,13 +44,17 @@ if($wpdb->num_rows > 0){
                                           var map;
                                             var bounds = new google.maps.LatLngBounds();
                                             var mapOptions = {
-                                                mapTypeId: 'roadmap'
+                                                center: {lat: 0, lng: 0},
+                                                zoom: 1,
+                                                streetViewControl: false,
+                                                mapTypeControlOptions: {
+                                                  mapTypeIds: ['moon']
+                                                }
                                             };
 
                                             // Display a map on the page
                                             map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                                           
-                                            
+                                                                                       
                                             // Loop through our array of markers & place each one on the map  
                                             var markers = [<?php echo $markers;?>]
                                             for( i = 0; i < markers.length; i++ ) {
@@ -61,8 +65,6 @@ if($wpdb->num_rows > 0){
                                                     map: map,
                                                     title: markers[i][0]
                                                 });
-
-                                             
 
                                                 // Automatically center the map fitting all markers on the screen
                                                 map.fitBounds(bounds);

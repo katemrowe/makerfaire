@@ -103,7 +103,7 @@ function makeStyle(){
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
     jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MF_ThankYou.png" alt="Maker Faire Bay Area"><p>Maker Faire 10th Anniversary was incredible, thank you for being part of the celebration!</p><p><span><strong>SAVE THE DATE.</strong> Maker Faire Bay Area 2016 May 21-22</span></p></div>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire – 6th Annual</span> <br />New York Hall of Science, Queens <br />September 26 & 27 <br />Saturday and Sunday 10AM – 6PM</p></div>');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire 2015</span> <br /> An amazing show! Thank you to everyone for being part of the celebration!</p><p><span><strong>STAY TUNED.</strong> Details on World Maker Faire 2016 Coming Soon</span></p></div>');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**
@@ -181,7 +181,7 @@ function makeStyle(){
 * The New York menu item (menu's 3nd child) */
 
     jQuery(".nav li:nth-child(3) > div").addClass('area');
-    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/new-york-2015/maker-faire-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a><a href="/new-york-2015/education-forum/" target="_blank" class="btn btn-info">Education Forum</a><a href="//wmfny15.eventbrite.com/" target="_blank" class="btn btn-danger">Buy Tickets</a></div></div>');
+    jQuery(".nav li:nth-child(3) .top-holder").append('<div class="sponsor-holder"><div class="btn-holder"><a href="/new-york-2015/maker-faire-week/" class="btn btn-alert btn-info">Maker Faire Week</a><a href="http://makercon.com" target="_blank" class="btn btn-info">MakerCon</a><a href="/new-york-2015/education-forum/" target="_blank" class="btn btn-info">Education Forum</a></div></div>');
     
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col1').wrapAll("<li class='left box meet-the-makers'><ul class='show' />");
     jQuery('.navbar-nav > li:nth-child(3) .drop-holder .drop .column ul.sub-menu li.col2').wrapAll("<li class='left box attend'><ul class='show' />");

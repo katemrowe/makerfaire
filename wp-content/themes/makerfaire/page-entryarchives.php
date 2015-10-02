@@ -18,7 +18,7 @@
   $entrySlug =$the_slug;
   $json =  stripslashes(urldecode( $my_posts[0]->post_content )) ;
   $json = json_decode($json);
-  print_r($json);
+  //print_r($json);
    switch ($json->form_type) {
   	case 'exhibit':
   		$project_faire = $json->maker_faire;

@@ -23,11 +23,12 @@ class GWPerk {
 
     function __construct( $perk_file = null ) {
 
-        if( !class_exists( 'GWPerks') )
-            return;
+        if( ! class_exists( 'GWPerks') ) {
+	        return;
+        }
 
         $this->basename = $perk_file;
-        $this->slug = strtolower(basename($perk_file, '.php'));
+        $this->slug = strtolower( basename( $perk_file, '.php' ) );
 
     }
 
@@ -43,19 +44,33 @@ class GWPerk {
     * @param string $perk_file
     * @return GWPerk Object or WP_Error Object
     */
-    public static function get_perk($perk_file) {
+    public static function get_perk( $perk_file ) {
 
         $perk_class = str_replace( '-', '_', basename( $perk_file, '.php' ) );
 
         if( ! class_exists( $perk_class ) ) {
 
             $perk_path = WP_PLUGIN_DIR . '/' . $perk_file;
-            if( ! file_exists( $perk_path ) )
+            if( ! file_exists( $perk_path ) ) {
                 return new WP_Error( 'perk_file_error', __('The file for this perk does not exist.', 'gravityperks' ) );
+            }
 
             include_once( $perk_path );
-            if( ! class_exists( $perk_class ) )
-                return new WP_Error( 'perk_class_error', __('There is no class for this perk.', 'gravityperks' ) );
+            if( ! class_exists( $perk_class ) ) {
+
+	            $perk_bits     = explode( '/', $perk_file );
+	            $alt_perk_file = sprintf( '%s/class-%s', $perk_bits[0], $perk_bits[1] );
+	            $alt_perk_path = WP_PLUGIN_DIR . '/' . $alt_perk_file;
+	            if( file_exists( $alt_perk_path ) ) {
+		            include_once( $alt_perk_path );
+	            }
+
+	            if( ! class_exists( $perk_class ) ) {
+		            return new WP_Error( 'perk_class_error', __( 'There is no class for this perk.', 'gravityperks' ) );
+	            }
+
+            }
+
 
         }
 
@@ -243,7 +258,7 @@ class GWPerk {
         case 'documentation':
 
             $documentation = $this->get_documentation();
-            $url = add_query_arg( array( 'view' => 'documentation', 'slug' => $this->basename, 'TB_iframe' => true, 'width' => 600, 'height' => 500), $base_url );
+            $url = esc_url( add_query_arg( array( 'view' => 'documentation', 'slug' => $this->basename, 'TB_iframe' => true, 'width' => 600, 'height' => 500), $base_url ) );
 
             // support returning a array with a URL for documentation
             if( is_array( $documentation ) ) {
@@ -257,7 +272,7 @@ class GWPerk {
             return $url;
 
         case 'settings':
-            return add_query_arg(array('view' => 'perk_settings', 'slug' => $this->basename, 'TB_iframe' => true, 'width' => 600, 'height' => 500), $base_url);
+            return esc_url( add_query_arg( array( 'view' => 'perk_settings', 'slug' => $this->basename, 'TB_iframe' => true, 'width' => 600, 'height' => 500 ), $base_url ) );
             break;
 
         // @TODO REVIEW BELOW //
@@ -266,7 +281,7 @@ class GWPerk {
             return 'http://gravitywiz.com/gravity-perks/';
             break;
         case 'upgrade_details':
-            return add_query_arg(array('page' => 'gwp_perks', 'view' => 'perk_info', 'plugin' => $this->slug, 'TB_iframe' => 'true', 'width' => 600, 'height' => 500), admin_url('admin.php'));
+            return esc_url( add_query_arg(array('page' => 'gwp_perks', 'view' => 'perk_info', 'plugin' => $this->slug, 'TB_iframe' => 'true', 'width' => 600, 'height' => 500), admin_url('admin.php')) );
             break;
         }
 
@@ -566,8 +581,9 @@ class GWPerk {
         return WP_PLUGIN_DIR . "/$folder";
     }
 
-    public function key($key) {
-        return $this->slug . "_$key";
+    public function key( $key ) {
+	    $prefix = isset( $this->prefix ) ? $this->prefix : $this->slug . '_';
+        return $prefix . $key;
     }
 
     public function field_prop($field, $prop, $prefix = false) {
@@ -888,6 +904,10 @@ class GWPerk {
 
     public static function register_noconflict_script( $script_name ) {
         add_filter( 'gform_noconflict_scripts', create_function( '$scripts', '$scripts[] = "' . $script_name . '"; return $scripts;' ) );
+    }
+
+    public static function register_noconflict_styles( $style_name ) {
+        add_filter( 'gform_noconflict_styles', create_function( '$styles', '$styles[] = "' . $style_name . '"; return $styles;' ) );
     }
 
     public static function register_preview_style( $style_name ) {

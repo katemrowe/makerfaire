@@ -270,7 +270,16 @@ class GWPreviewConfirmation {
         
         if( empty( self::$entry ) ) {
 
-            self::$entry = GFFormsModel::create_lead( $form );
+	        if ( isset( $_GET['gf_token'] ) ) {
+		        $incomplete_submission_info = GFFormsModel::get_incomplete_submission_values( $_GET['gf_token'] );
+		        if ( $incomplete_submission_info['form_id'] == $form['id'] ) {
+			        $submission_details_json = $incomplete_submission_info['submission'];
+			        $submission_details      = json_decode( $submission_details_json, true );
+			        $entry                   = $submission_details['partial_entry'];
+		        }
+	        }
+
+            self::$entry = isset( $entry ) ? $entry : GFFormsModel::create_lead( $form );
             self::clear_field_value_cache( $form );
 
             foreach( $form['fields'] as $field ) {
@@ -368,8 +377,23 @@ class GWPreviewConfirmation {
 
     public static function get_uploaded_file_info( $form_id, $input_name, $field ) {
 
+	    // hack alert: force retrieval of unique ID for filenames when continuing from saved entry
+	    if( self::is_save_and_continue() && ! isset( $_POST['gform_submit'] ) ) {
+		    $is_gform_submit_set_manually = true;
+		    $_POST['gform_submit'] = $form_id;
+	    }
+
         $uploaded_files = isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] : array();
         $file_info      = self::is_multi_file_field( $field ) ? $uploaded_files : GFFormsModel::get_temp_filename( $form_id, $input_name );
+
+	    if( self::is_save_and_continue() && ! isset( $_POST['gform_submit'] ) ) {
+		    $_POST['gform_submit'] = $form_id;
+	    }
+
+	    // hack alert: force retrieval of unique ID for filenames when continuing from saved entry
+	    if( isset( $is_gform_submit_set_manually ) ) {
+		    unset( $_POST['gform_submit'] );
+	    }
 
         return $file_info;
     }
@@ -388,6 +412,10 @@ class GWPreviewConfirmation {
 		$value = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . basename( $file_path ) . "</a>";
 
 		return $value;
+	}
+
+	public static function is_save_and_continue() {
+		return rgget( 'gf_token' );
 	}
 
 }

@@ -3,7 +3,7 @@
 * Plugin Name: GP Copy Cat
 * Description: Allow users to copy the value of one field to another by clicking a checkbox. Is your shipping address the same as your billing? Copy cat!
 * Plugin URI: http://gravitywiz/category/perks/
-* Version: 1.2.4
+* Version: 1.3
 * Author: David Smith
 * Author URI: http://gravitywiz.com/
 * License: GPL2
@@ -19,214 +19,85 @@ if(!require_once(dirname($gw_perk_file) . '/safetynet.php'))
 
 class GWCopyCat extends GWPerk {
 
-	public $version = '1.2.4';
+	public $version = '1.3';
 	protected $min_perks_version = '1.0.6';
-
-    private $script_loaded;
+	protected $min_gravity_forms_version = '1.9.3';
 
     public function init() {
 
-        add_filter('gform_pre_render', array(&$this, 'copy_cat_js'));
+        $this->register_scripts();
+
+        add_filter( 'gform_enqueue_scripts',       array( $this, 'enqueue_form_scripts' ) );
+        add_action( 'gform_register_init_scripts', array( $this, 'register_init_scripts' ) );
+        add_filter( 'gform_pre_render',            array( $this, 'modify_frontend_form' ) );
 
     }
 
-    public function copy_cat_js($form) {
+    public function register_scripts() {
+        wp_register_script( 'gp-copy-cat', $this->get_base_url() . '/js/gp-copy-cat.js', array(), $this->version );
+    }
 
-        $form_id = $form['id'];
-        $copy_fields = $trigger_selectors = array();
+    public function enqueue_form_scripts( $form ) {
+        if( $this->has_copy_cat_field( $form ) ) {
+            wp_enqueue_script( 'gp-copy-cat'  );
+        }
+    }
 
-        foreach($form['fields'] as &$field) {
+    public function register_init_scripts( $form ) {
 
-            preg_match_all('/copy-([0-9]+(?:.[0-9]+)?)-to-([0-9]+(?:.[0-9]+)?)/', $field['cssClass'], $matches, PREG_SET_ORDER);
-
-            if(empty($matches))
-                continue;
-
-            foreach($matches as $match) {
-                list($class, $source_field, $target_field) = $match;
-                $copy_fields[$field['id']][] = array('source' => $source_field, 'target' => $target_field);
-            }
-
-            $field['cssClass'] .= ' gwcopy';
-
+        if( ! $this->has_copy_cat_field( $form ) ) {
+            return;
         }
 
-        if(empty($copy_fields))
+        $copy_fields      = $this->get_copy_cat_fields( $form );
+        $enable_overwrite = gf_apply_filters( 'gpcc_overwrite_existing_values', $form['id'], false, $form );
+        $script           = 'new gwCopyObj( ' . $form['id'] . ', ' . json_encode( $copy_fields ) . ', ' . ( $enable_overwrite ? 'true' : 'false' ) . ' );';
+
+        GFFormDisplay::add_init_script( $form['id'], 'gp-copy-cat', GFFormDisplay::ON_PAGE_RENDER, $script );
+
+    }
+
+    public function modify_frontend_form( $form ) {
+
+        if( ! $this->has_copy_cat_field( $form ) ) {
             return $form;
-
-        if(!$this->script_loaded) { ?>
-
-        <script type="text/javascript">
-
-        var gwCopyObj = function(formId, fields, overwrite) {
-
-            this._formId = formId;
-            this._fields = fields;
-
-            // do not overwrite existing values when a checkbox field is the copy trigger
-            this._overwrite = <?php echo GWPerks::apply_filters( 'gpcc_overwrite_existing_values', $form['id'], false, $form, 'test' ) ? 1 : 0; ?>;
-
-            this.init = function() {
-
-                var copyObj = this;
-
-                jQuery( '#gform_wrapper_' + this._formId + ' .gwcopy input[type="checkbox"]').bind( 'click.gpcopycat', function(){
-
-                    if(jQuery(this).is(':checked')) {
-                        copyObj.copyValues(this);
-                    } else {
-                        copyObj.clearValues(this);
-                    }
-
-                } );
-
-                jQuery( '#gform_wrapper_' + this._formId + ' .gwcopy' ).find( 'input, textarea' ).bind( 'change.gpcopycat', function() {
-                    copyObj.copyValues( this, true );
-                } );
-
-                jQuery( '#gform_wrapper_' + this._formId ).data( 'GPCopyCat', this );
-
-            }
-
-            this.copyValues = function( elem, isOverride ) {
-
-                var copyObj    = this,
-                    fieldId    = jQuery(elem).parents('li.gwcopy').attr('id').replace('field_' + this._formId + '_', '' ),
-                    fields     = this._fields[fieldId],
-                    isOverride = copyObj._overwrite || isOverride;
-
-                for( var i = 0; i < fields.length; i++ ) {
-
-                    var field        = fields[i],
-                        source       = parseInt( field.source ),
-                        target       = parseInt( field.target ),
-                        sourceValues = [],
-                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + source ).find( 'input, select, textarea' ),
-                        targetGroup  = jQuery( '#field_' + this._formId + '_' + target ).find( 'input, select, textarea' );
-
-                    if( target != field.target ) {
-                        var targetInputId = field.target.split( '.' )[1];
-	                    // search for field by ID - or - by name attribute
-                        targetGroup = targetGroup.filter( '#input_' + this._formId + '_' + target + '_' + targetInputId + ', input[name="input_' + field.target + '"]' );
-                    }
-
-	                if( source != field.source ) {
-
-		                var sourceInputId       = field.source.split( '.' )[1],
-			                filteredSourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source + '_' + sourceInputId + ', input[name="input_' + field.source + '"]' );
-
-		                // some fields (like email with confirmation enabled) have multiple inputs but the first input has no HTML ID (input_1_1 vs input_1_1_1)
-		                if( filteredSourceGroup.length <= 0 ) {
-			                sourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source );
-		                } else {
-			                sourceGroup = filteredSourceGroup;
-		                }
-	                }
-
-                    if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
-                        sourceGroup = sourceGroup.filter( ':checked' );
-                    }
-
-                    sourceGroup.each( function( i ) {
-                        sourceValues[i] = jQuery(this).val();
-                    } );
-
-                    targetGroup.each(function(i){
-
-                        var targetElem = jQuery(this);
-
-                        // if overwrite is false and a value exists, skip
-                        if( ! isOverride && targetElem.val() ) {
-                            return;
-                        }
-
-                        // if there is no source value for this element, skip
-                        if( ! sourceValues[i] || ! sourceValues.join(' ') ) {
-                            return;
-                        }
-
-                        if( targetGroup.length > 1 ) {
-                            targetElem.val(sourceValues[i]);
-                        }
-                        // if there is only one input, join the source values
-                        else {
-                            targetElem.val( sourceValues.join( ' ' ) );
-                        }
-
-                    } ).change();
-
-                }
-
-            }
-
-            this.clearValues = function(elem) {
-
-                var fieldId = jQuery(elem).parents('li.gwcopy').attr('id').replace('field_' + this._formId + '_', '');
-                var fields = this._fields[fieldId];
-
-                for( var i = 0; i < fields.length; i++ ) {
-
-                    var field        = fields[i],
-                        source       = parseInt( field.source ),
-                        target       = parseInt( field.target ),
-                        sourceValues = [],
-                        targetGroup  = jQuery( '#field_' + this._formId + '_' + target ).find( 'input, select, textarea' ),
-                        sourceGroup  = jQuery( '#field_' + this._formId + '_' + source ).find( 'input, select, textarea' );
-
-                    if( target != field.target ) {
-                        var targetInputId = field.target.split( '.' )[1];
-	                    targetGroup = targetGroup.filter( '#input_' + this._formId + '_' + target + '_' + targetInputId + ', input[name="input_' + field.target + '"]' );
-                    }
-
-                    if( source != field.source ) {
-
-                        var sourceInputId       = field.source.split( '.' )[1],
-	                        filteredSourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source + '_' + sourceInputId + ', input[name="input_' + field.source + '"]' );
-
-	                    if( filteredSourceGroup.length <= 0 ) {
-		                    sourceGroup = sourceGroup.filter( '#input_' + this._formId + '_' + source );
-	                    } else {
-		                    sourceGroup = filteredSourceGroup;
-	                    }
-                    }
-
-                    if( sourceGroup.is( 'input:radio, input:checkbox' ) ) {
-                        sourceGroup = sourceGroup.filter( ':checked' );
-                    }
-
-                    sourceGroup.each( function( i ) {
-                        sourceValues[i] = jQuery(this).val();
-                    } );
-
-                    targetGroup.each( function( i ) {
-
-                        var fieldValue = jQuery(this).val();
-
-                        if( fieldValue == sourceValues[i] ) {
-                            jQuery(this).val( '' );
-                        }
-
-                    } ).change();
-
-                }
-
-            }
-
-            this.init();
-
         }
 
-        </script>
+        $copy_field_ids = array_keys( $this->get_copy_cat_fields( $form ) );
 
-        <?php }
-
-        $this->script_loaded = true;
-
-        $script = 'new gwCopyObj(' . $form_id . ', ' . GFCommon::json_encode($copy_fields) . ', false);';
-
-        GFFormDisplay::add_init_script($form_id, 'gwcopycat', GFFormDisplay::ON_PAGE_RENDER, $script);
+        foreach( $form['fields'] as &$field ) {
+            if( in_array( $field['id'], $copy_field_ids ) ) {
+                $field['cssClass'] .= ' gwcopy';
+            }
+        }
 
         return $form;
+    }
+
+    function has_copy_cat_field( $form ) {
+        $copy_fields = $this->get_copy_cat_fields( $form );
+        return ! empty( $copy_fields );
+    }
+
+    function get_copy_cat_fields( $form ) {
+
+        $copy_fields = array();
+
+        foreach( $form['fields'] as &$field ) {
+
+            preg_match_all( '/copy-([0-9]+(?:.[0-9]+)?)-to-([0-9]+(?:.[0-9]+)?)/', $field['cssClass'], $matches, PREG_SET_ORDER );
+            if( empty( $matches ) ) {
+                continue;
+            }
+
+            foreach( $matches as $match ) {
+                list( $class, $source_field, $target_field ) = $match;
+                $copy_fields[ $field['id'] ][] = array( 'source' => $source_field, 'target' => $target_field );
+            }
+
+        }
+
+        return $copy_fields;
     }
 
     function documentation() {

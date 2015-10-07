@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Author URI: https://profiles.wordpress.org/iulia-cazan
 Tags: post, latest post, taxonomy, category, tag, parent, shortcode, latest, custom, selection, post by category, post by taxonomy, post by tag, post by id, post by parent, last post, tiles from posts, tile template, short content, short excerpt, limit content, limit excerpt, pagination, posts pagination
 Requires at least: not tested
-Tested up to: wp 4.2
-Stable tag:  3.1
+Tested up to: wp 4.3
+Stable tag:  5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -28,9 +28,34 @@ admin_enqueue_scripts, init, plugins_loaded, media_buttons_context, admin_footer
 None
 
 == Changelog ==
+= 5.3 =
+* Add the 'open in a new window' option for the links
+
+= 5.2 =
+* Implement changes to render full posts content (including the extra shortcodes)
+
+= 5.1 =
+* Add the order option (by date, title, menu order)
+* Add the ajax pagination option. As the shortcode pagination relies on the wp native pagination, when using more shortcodes with pagination on the same page, the navigation will affect all shortcodes, hence, by activating the ajax pagination, each shortcode pagination will act independent
+
+= 5.0 =
+* Add the extra display of post tags of the posts
+* Add filter to allow the text widget to render the content of a shortcode
+
+= 4.2 =
+* Introduce the post date in the output. The general settings will apply to the date and time format.
+
+= 4.1 =
+* Add changes to the javascript to avoid the content check for resize when lightbox resources are not available (compatibility with other plugins)
+
+= 4.0 =
+* Add Pagination Position (default to top only) so that the pagination can be displayed below the results, or above and below the results
+* Add Dynamic Tag option so that you can show the posts that have one of the current page tags (current page is the page where the shortcode is embedded), without the need to specify a particular tag. This is useful to display something like "similar posts" or "on the same topic", etc.
+
 = 3.1 =
 * Populate the "Use Image" dropdown dynamically from the list of image sizes registered in the application
 * Add global tile a class to differentiate when the link is applied to the entire tile content or to just the "read more" text
+
 = 3.0 =
 * Add No Pagination / Paginate Results option that allows to paginate the posts selection
 * Add Records Per Page option
@@ -54,5 +79,13 @@ Donation and reviews are welcomed and will help me to continue future developmen
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
 == Version history ==
+5.2 - Render full post content
+5.1 - Posts order and ajax pagination
+5.0 - Extra tags display and text widget filter
+4.2 - Post date option
+4.1 - Compatibility update
+4.0 - Pagination position and dynamic tag
+3.1 - Dynamic image dropdown option
+3.0 - Pagination options
 2.0 - Visual pattern selector and more features
 1.0 - Development version.

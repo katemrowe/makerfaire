@@ -71,3 +71,6 @@ body.perk-iframe { background-color: #f7f7f7; }
 
 .gfield .third { float: left; width: 30%; margin-left: 5%; }
 .gfield .third:first-child { margin-left: 0; }
+
+.gp-field-setting .gp-row { margin: 0 0 14px; }
+    .ui-tabs-panel .gp-field-setting .gp-row label { margin: 0 0 5px !important; }

@@ -14,7 +14,7 @@ function lps_recalculate_width() {
 
 function lps_init_embed_shortcode(ed) {
     var selected = '';
-    if (tinyMCE.activeEditor !== null) {
+    if (typeof tinyMCE != 'undefined' && tinyMCE.activeEditor !== null) {
         selected = tinyMCE.activeEditor.selection.getContent();
     } else {
         selected = jQuery('#content').val();
@@ -40,6 +40,9 @@ function lps_init_embed_shortcode(ed) {
                     break;
                 case 'showpages' :
                     jQuery('#lps_showpages').val(v);
+                    break;
+                case 'pagespos' :
+                    jQuery('#lps_showpages_pos').val(v);
                     break;
                 case 'type' :
                     jQuery('#lps_post_type').val(v);
@@ -75,17 +78,29 @@ function lps_init_embed_shortcode(ed) {
                 case 'tag' :
                     jQuery('#lps_tag').val(v);
                     break;
+                case 'dtag' :
+                    jQuery('#lps_dtag').val(v);
+                    break;
                 case 'id' :
                     jQuery('#lps_post_id').val(v);
                     break;
                 case 'parent' :
                     jQuery('#lps_parent_id').val(v);
                     break;
-
+                case 'show_extra' :
+                    var p = v.split(',');
+                    for (jj = 0; jj <= p.length; jj++) {
+                        if (typeof jQuery('#lps_show_extra_' + p[jj]) != 'undefined') {
+                            jQuery('#lps_show_extra_' + p[jj]).prop('checked', true);
+                        }
+                    }
+                    break;
+                case 'orderby' :
+                    jQuery('#lps_orderby').val(v);
+                    break;
                 default :
                     break;
             }
-
             if (( jQuery('#lps_offset').val() != 0 || jQuery('#lps_per_page').val() != 0 )) {
                 jQuery('#lps_pagination_options').show();
                 jQuery('#lps_use_pagination').val('yes');
@@ -103,12 +118,12 @@ function lps_preview_configures_shortcode() {
     if (limit != '') {
         sc += ' limit="' + limit + '"';
     }
-
     var use_pagination = jQuery('#lps_use_pagination').val();
     var perpage = jQuery('#lps_per_page').val();
     var offset = jQuery('#lps_offset').val();
     var showpages = jQuery('#lps_showpages').val();
-    if ( use_pagination != '' ) {
+    var pagespos = jQuery('#lps_showpages_pos').val();
+    if (use_pagination != '') {
         jQuery('#lps_pagination_options').show();
         if (perpage != 0) {
             sc += ' perpage="' + perpage + '"';
@@ -118,11 +133,13 @@ function lps_preview_configures_shortcode() {
         }
         if (showpages != '') {
             sc += ' showpages="' + showpages + '"';
+            if (pagespos != '') {
+                sc += ' pagespos="' + pagespos + '"';
+            }
         }
     } else {
         jQuery('#lps_pagination_options').hide();
     }
-
     var type = jQuery('#lps_post_type').val();
     if (type != '') {
         sc += ' type="' + type + '"';
@@ -130,10 +147,8 @@ function lps_preview_configures_shortcode() {
     var display = jQuery('#lps_display').val();
     if (display != '') {
         sc += ' display="' + display + '"';
-
-        if ('title,excerpt-small' == display || 'title,content-small' == display) {
+        if (display.indexOf('excerpt-small') >= 0 || display.indexOf('content-small') >= 0) {
             jQuery('#lps_display_limit').show();
-
             var chrlimit = jQuery('#lps_chrlimit').val();
             if (chrlimit != '') {
                 sc += ' chrlimit="' + chrlimit + '"';
@@ -142,7 +157,6 @@ function lps_preview_configures_shortcode() {
             jQuery('#lps_display_limit').hide();
         }
     }
-
     var image = jQuery('#lps_image').val();
     if (image != '') {
         sc += ' image="' + image + '"';
@@ -153,7 +167,6 @@ function lps_preview_configures_shortcode() {
         jQuery('#lps_url_options').show();
         jQuery('label.without-link').hide();
         jQuery('label.with-link').show();
-
         var linktext = jQuery('#lps_linktext').val();
         if (linktext != '') {
             sc += ' linktext="' + linktext + '"';
@@ -179,9 +192,14 @@ function lps_preview_configures_shortcode() {
     if (term != '') {
         sc += ' term="' + term + '"';
     }
-    var tag = jQuery('#lps_tag').val();
-    if (tag != '') {
-        sc += ' tag="' + tag + '"';
+    var dtag = jQuery('#lps_dtag').val();
+    if (dtag != '') {
+        sc += ' dtag="' + dtag + '"';
+    } else {
+        var tag = jQuery('#lps_tag').val();
+        if (tag != '') {
+            sc += ' tag="' + tag + '"';
+        }
     }
     var id = jQuery('#lps_post_id').val();
     if (id != '') {
@@ -190,6 +208,21 @@ function lps_preview_configures_shortcode() {
     var parent = jQuery('#lps_parent_id').val();
     if (parent != '') {
         sc += ' parent="' + parent + '"';
+    }
+    var show_extra = jQuery('.lps_show_extra:checkbox').map(function () {
+        return jQuery(this).is(":checked") ? jQuery(this).val() : '';
+    }).get();
+    if (show_extra != '') {
+        show_extra = show_extra.filter(function (e) {
+            return e
+        });
+        if (show_extra != '') {
+            sc += ' show_extra="' + show_extra + '"';
+        }
+    }
+    var orderby = jQuery('#lps_orderby').val();
+    if (orderby != '') {
+        sc += ' orderby="' + orderby + '"';
     }
     sc += ']';
     jQuery('#lps_preview_embed_shortcode').html(sc);
@@ -201,15 +234,17 @@ jQuery(document).ready(function () {
     });
     jQuery('#lps_button_embed_shortcode').click(lps_embed_shortcode);
     setTimeout(function () {
-        for (var i = 0; i < tinymce.editors.length; i++) {
-            lps_init_embed_shortcode(tinymce.editors[i]);
+        if (typeof tinymce != 'undefined') {
+            for (var i = 0; i < tinymce.editors.length; i++) {
+                lps_init_embed_shortcode(tinymce.editors[i]);
+            }
         }
     }, 2000);
 
     var visible = false;
     setInterval(function () {
         if (!visible) {
-            if (jQuery('#TB_window').is(":visible")) {
+            if (jQuery('#TB_window').is(":visible") && jQuery('#TB_window .lps_shortcode_popup_container_table').is(":visible")) {
                 visible = true;
                 lps_recalculate_width();
             }

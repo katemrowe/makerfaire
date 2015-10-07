@@ -3,14 +3,14 @@
 Plugin Name: Exports and Reports
 Plugin URI: http://scottkclark.com/wordpress/exports-and-reports/
 Description: Define custom exports / reports for users by creating each export / report and defining the fields as well as custom MySQL queries to run.
-Version: 0.6.4
+Version: 0.7.1
 Author: Scott Kingsley Clark
 Author URI: http://scottkclark.com/
 */
 
 global $wpdb;
 define( 'EXPORTS_REPORTS_TBL', $wpdb->prefix . 'exportsreports_' );
-define( 'EXPORTS_REPORTS_VERSION', '064' );
+define( 'EXPORTS_REPORTS_VERSION', '071' );
 define( 'EXPORTS_REPORTS_URL', plugin_dir_url( __FILE__ ) );
 define( 'EXPORTS_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -25,6 +25,16 @@ if ( ! defined( 'WP_ADMIN_UI_EXPORT_DIR' ) ) {
 add_action( 'admin_init', 'exports_reports_init' );
 add_action( 'admin_menu', 'exports_reports_menu' );
 add_action( 'admin_menu', 'exports_reports_admin_menu' );
+
+add_action( 'wp_ajax_wp_admin_ui_export', 'exports_reports_wp_admin_ui_export' );
+
+function exports_reports_wp_admin_ui_export() {
+
+	require_once EXPORTS_REPORTS_DIR . 'wp-admin-ui/Admin.class.php';
+
+	die( 'Invalid request' ); // AJAX dies
+
+}
 
 function exports_reports_reset() {
 
@@ -142,7 +152,6 @@ function exports_reports_admin_menu() {
 		add_submenu_page( 'exports-reports-admin', 'Manage Groups', 'Manage Groups', $has_full_access ? 'read' : 'exports_reports_settings', 'exports-reports-admin', 'exports_reports_groups' );
 		add_submenu_page( 'exports-reports-admin', 'Manage Reports', 'Manage Reports', $has_full_access ? 'read' : 'exports_reports_settings', 'exports-reports-admin-reports', 'exports_reports_reports' );
 		add_submenu_page( 'exports-reports-admin', 'Settings', 'Settings', $has_full_access ? 'read' : 'exports_reports_settings', 'exports-reports-admin-settings', 'exports_reports_settings' );
-		add_submenu_page( 'exports-reports-admin', 'About', 'About', $has_full_access ? 'read' : $min_cap, 'exports-reports-admin-about', 'exports_reports_about' );
 	}
 }
 
@@ -1005,74 +1014,6 @@ function exports_reports_view( $group_id = false ) {
 	}
 	$admin->go();
 }
-
-function exports_reports_about() {
-
-	?>
-	<div class="wrap">
-		<div id="icon-edit-pages" class="icon32" style="background-position:0 0;background-image:url(<?php echo EXPORTS_REPORTS_URL; ?>assets/icons/32.png);">
-			<br /></div>
-		<h2>About the Exports and Reports plugin</h2>
-
-		<div style="height:20px;"></div>
-		<link type="text/css" rel="stylesheet" href="<?php echo EXPORTS_REPORTS_URL; ?>assets/admin.css" />
-		<table class="form-table about">
-			<tr valign="top">
-				<th scope="row">About the Plugin Author</th>
-				<td><a href="http://scottkclark.com/">Scott Kingsley Clark</a> <span class="description">Scott specializes in WordPress development using PHP, MySQL, and AJAX. Scott is also the lead developer of the <a href="http://pods.io/">Pods Framework</a> plugin and has a creative outlet in music with his <a href="http://softcharisma.com/">Soft Charisma</a></span>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Official Support</th>
-				<td><a href="http://wordpress.org/support/plugin/exports-and-reports/">Exports and Reports - Support Forums</a>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Features</th>
-				<td>
-					<ul>
-						<li><strong>Administration</strong>
-							<ul>
-								<li>Create and Manage Groups</li>
-								<li>Create and Manage Reports</li>
-								<li>Limit which User Roles have access to a Group or Report</li>
-								<li>Ability to clear entire export directory (based on logged export files)</li>
-								<li>Daily Export Cleanup via wp_cron</li>
-								<li>WP Admin UI - A class for plugins to manage data using the WordPress UI appearance</li>
-							</ul>
-						</li>
-						<li><strong>Reporting</strong>
-							<ul>
-								<li>Filter by Date</li>
-								<li>Automatic Pagination</li>
-								<li>Show only the fields you want to show</li>
-								<li>Pre-display modification through custom defined function per field or row</li>
-							</ul>
-						</li>
-						<li><strong>Exporting</strong>
-							<ul>
-								<li>CSV - Comma-separated Values (w/ Excel support)</li>
-								<li>TSV - Tab-separated Values (w/ Excel support)</li>
-								<li>XML - XML 1.0 UTF-8 data</li>
-								<li>JSON - JSON for use in Javascript and PHP5+</li>
-								<li>Custom - Custom delimiter separated Values</li>
-							</ul>
-						</li>
-						<li><strong>Cronjob / JSON API</strong>
-							<ul>
-								<li>Run the Export action for a specific report to any supported export type</li>
-								<li>Get paginated / full data from a report in JSON format</li>
-							</ul>
-						</li>
-					</ul>
-				</td>
-			</tr>
-		</table>
-		<div style="height:50px;"></div>
-	</div>
-<?php
-}
-
 add_action( 'wp_admin_ui_post_export', 'exports_reports_log', 10, 2 );
 add_action( 'wp_admin_ui_post_remove_export', 'exports_reports_delete_log', 10, 2 );
 function exports_reports_log( $args, $obj ) {

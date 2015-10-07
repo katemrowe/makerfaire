@@ -3,7 +3,7 @@
 Plugin Name: Latest Post Shortcode
 Description: This plugin allows you to create a dynamic content selection from your posts, pages and custom post types that can be embedded with a shortcode.
 Author: Iulia Cazan
-Version: 3.1.0
+Version: 5.3
 Author URI: https://profiles.wordpress.org/iulia-cazan
 License: GPL2
 
@@ -22,6 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+define( 'LPS_PLUGIN_VERSION', '5.3' );
 
 class Latest_Post_Shortcode
 {
@@ -98,6 +100,9 @@ class Latest_Post_Shortcode
 		} else {
 			add_action( 'wp_head', array( $this, 'load_assets' ) );
 		}
+
+		add_action( 'wp_ajax_nopriv_lps_navigate_to_page', array( $this, 'lps_navigate_callback' ) );
+		add_action( 'wp_ajax_lps_navigate_to_page', array( $this, 'lps_navigate_callback' ) );
 	}
 
 	/**
@@ -111,15 +116,31 @@ class Latest_Post_Shortcode
 	 * Latest_Post_Shortcode::load_assets() Load the front assets
 	 */
 	function load_assets() {
-		wp_enqueue_style( 'lps-style', plugins_url( '/assets/css/style.css', __FILE__ ), array(), '3.0', false );
+		wp_enqueue_style( 'lps-style', plugins_url( '/assets/css/style.css', __FILE__ ), array(), LPS_PLUGIN_VERSION, false );
+
+		wp_register_script(
+			'lps-ajax-pagination-js',
+			plugins_url( '/assets/js/custom-pagination.js', __FILE__ ),
+			array( 'jquery' ),
+			LPS_PLUGIN_VERSION,
+			true
+		);
+		wp_localize_script(
+			'lps-ajax-pagination-js',
+			'LPS',
+			array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			)
+		);
+		wp_enqueue_script( 'lps-ajax-pagination-js' );
 	}
 
 	/**
 	 * Latest_Post_Shortcode::load_admin_assets() Load the admin assets
 	 */
 	function load_admin_assets() {
-		wp_enqueue_style( 'lps-admin-style', plugins_url( '/assets/css/admin-style.css', __FILE__ ), array(), '3.0', false );
-		wp_enqueue_script( 'lps-admin-shortcode-button', plugins_url( '/assets/js/custom.js', __FILE__ ), array( 'jquery' ), '3.0', true );
+		wp_enqueue_style( 'lps-admin-style', plugins_url( '/assets/css/admin-style.css', __FILE__ ), array(), LPS_PLUGIN_VERSION, false );
+		wp_enqueue_script( 'lps-admin-shortcode-button', plugins_url( '/assets/js/custom.js', __FILE__ ), array( 'jquery' ), LPS_PLUGIN_VERSION, true );
 	}
 
 	/**
@@ -191,6 +212,16 @@ class Latest_Post_Shortcode
 										</select>
 									</td>
 								</tr>
+								<tr>
+									<td>' . __( 'Pagination Position', 'lps' ) . '</td>
+									<td colspan="4">
+										<select name="lps_showpages_pos" id="lps_showpages_pos" onchange="lps_preview_configures_shortcode()">
+											<option value="">' . __( 'Above the results', 'lps' ) . '</option>
+											<option value="1">' . __( 'Below the results', 'lps' ) . '</option>
+											<option value="2">' . __( 'Above & below the result', 'lps' ) . '</option>
+										</select>
+									</td>
+								</tr>
 							</table>
 						</div>
 						<hr />
@@ -201,10 +232,21 @@ class Latest_Post_Shortcode
 					<td>
 						<select name="lps_display" id="lps_display" onchange="lps_preview_configures_shortcode()">
 							<option value="title">Title</option>
-							<option value="title,excerpt">Post Title + Post Excerpt</option>
-							<option value="title,content">Post Title + Post Content</option>
-							<option value="title,excerpt-small">Post Title + Few Chars From The Excerpt</option>
-							<option value="title,content-small">Post Title + Few Chars From The Content</option>
+							<option value="title,excerpt">Title + Post Excerpt</option>
+							<option value="title,content">Title + Post Content</option>
+							<option value="title,excerpt-small">Title + Few Chars From The Excerpt</option>
+							<option value="title,content-small">Title + Few Chars From The Content</option>
+							<option value="date">Date</option>
+							<option value="title,date">Title + Date</option>
+							<option value="title,date,excerpt">Title + Date + Post Excerpt</option>
+							<option value="title,date,content">Title + Date + Post Content</option>
+							<option value="title,date,excerpt-small">Title + Date + Few Chars From The Excerpt</option>
+							<option value="title,date,content-small">Title + Date + Few Chars From The Content</option>
+							<option value="date,title">Date + Title</option>
+							<option value="date,title,excerpt">Date + Title + Post Excerpt</option>
+							<option value="date,title,content">Date + Title + Post Content</option>
+							<option value="date,title,excerpt-small">Date + Title + Few Chars From The Excerpt</option>
+							<option value="date,title,content-small">Date + Title + Few Chars From The Content</option>
 						</select>
 						<div id="lps_display_limit">
 							<input type="text" name="lps_chrlimit" id="lps_chrlimit" onchange="lps_preview_configures_shortcode()" placeholder="Ex: 120" value="120" class="small" /> ' . __( 'chars from excerpt / content', 'lps' ) . '
@@ -215,10 +257,29 @@ class Latest_Post_Shortcode
 						<select name="lps_url" id="lps_url" onchange="lps_preview_configures_shortcode()">
 							<option value="">No link to the post</option>
 							<option value="yes">Link to the post</option>
+							<option value="yes_blank">Link to the post (_blank)</option>
 						</select>
 						<div id="lps_url_options">
 							<input type="text" name="lps_linktext" id="lps_linktext" onchange="lps_preview_configures_shortcode()" placeholder="Custom \'Read more\' message" />
 						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>' . __( 'Extra Options', 'lps' ) . '</td>
+					<td>
+						<label><input type="checkbox" name="lps_show_extra[]" id="lps_show_extra_tags" value="tags" onclick="lps_preview_configures_shortcode()" class="lps_show_extra" /> ' . __( 'Show post tags', 'lps' ) . '</label>
+						<label><input type="checkbox" name="lps_show_extra[]" id="lps_show_extra_tags" value="ajax_pagination" onclick="lps_preview_configures_shortcode()" class="lps_show_extra" /> ' . __( 'Ajax Pagination', 'lps' ) . '</label>
+					</td>
+					<td>' . __( 'Order by', 'lps' ) . '</td>
+					<td>
+						<select name="lps_orderby" id="lps_orderby" onchange="lps_preview_configures_shortcode()">
+							<option value="dateD">Date DESC</option>
+							<option value="dateA">Date ASC</option>
+							<option value="menuA">Menu Order ASC</option>
+							<option value="menuD">Menu Order DESC</option>
+							<option value="titleA">Title ASC</option>
+							<option value="titleD">Title DESC</option>
+						</select>
 					</td>
 				</tr>
 				<tr>					
@@ -229,14 +290,14 @@ class Latest_Post_Shortcode
 					<td>
 						<select name="lps_image" id="lps_image" onchange="lps_preview_configures_shortcode()">
 							<option value="">No Image</option>';
-							
-							$app_sizes = get_intermediate_image_sizes();
-							if ( ! empty( $app_sizes ) ) {
-								foreach ( $app_sizes as $s ) {
-									$body .= '<option value="' . $s . '">' . $s . '</option>';
-								}
-							}		
-							$body .= '
+
+		$app_sizes = get_intermediate_image_sizes();
+		if ( ! empty( $app_sizes ) ) {
+			foreach ( $app_sizes as $s ) {
+				$body .= '<option value="' . $s . '">' . $s . '</option>';
+			}
+		}
+		$body .= '
 							<option value="full">full (original size)</option>
 						</select>
 					</td>
@@ -286,7 +347,13 @@ class Latest_Post_Shortcode
 				<tr>
 					<td>' . __( 'Tag', 'lps' ) . '</td>
 					<td><input type="text" name="lps_tag" id="lps_tag" onchange="lps_preview_configures_shortcode()" /></td>
-					<td colspan="2"></td>
+					<td>' . __( 'Dynamic', 'lps' ) . '</td>
+					<td>
+						<select name="lps_dtag" id="lps_dtag" onchange="lps_preview_configures_shortcode()">
+							<option value="">No, use the selected ones</option>
+							<option value="yes">Yes, use the current post tags</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="4"><hr /><h3>' . __( 'OR Select', 'lps' ) . '</h3></td>
@@ -329,11 +396,19 @@ class Latest_Post_Shortcode
 	 * Latest_Post_Shortcode::get_short_text() Get short text of maximum x chars
 	 */
 	function get_short_text( $text, $limit ) {
-		$text = apply_filters( 'the_content', strip_shortcodes( $text ) );
 		$text = strip_tags( $text );
+		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
+		$text = strip_shortcodes( $text );
+		$text = apply_filters( 'the_content', strip_shortcodes( $text ) );
+		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
+		$text = strip_tags( $text );
+		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
 		/** This is a trick to replace the unicode whitespace :) */
 		$text = preg_replace( '/\xA0/u', ' ', $text );
+		$text = str_replace( '&nbsp;', ' ', $text );
+		$text = preg_replace( '/\s\s+/', ' ', $text );
 		$text = preg_replace( '/\s+/', ' ', $text );
+		$text = trim( $text );
 		if ( ! empty( $text ) ) {
 			$content = explode( ' ', $text );
 			$len = $i = 0;
@@ -356,9 +431,30 @@ class Latest_Post_Shortcode
 	}
 
 	/**
+	 * Latest_Post_Shortcode::lps_navigate() Return the content generated after an ajax call for the pagination
+	 */
+	function lps_navigate_callback() {
+		if ( ! empty( $_POST['args'] ) ) {
+			header ('Content-type: text/html; charset=utf-8');
+			$_args = $_POST['args'];
+			$_args = stripslashes( stripslashes( $_args ) );
+			$args = ( ! empty( $_POST['args'] ) ) ? json_decode( $_args ) : false;
+			if ( ! empty( $_POST['page'] ) && $args ) {
+				$args = (array) $args;
+				if ( ! empty( $args['linktext'] ) ) {
+					$args['linktext'] = preg_replace( '/u([0-9a-z]{4})+/', '&#x$1;', $args['linktext'] );
+				}
+				set_query_var( 'page', (int) $_POST['page'] );
+				echo $this->latest_selected_content( $args );
+			}
+		}
+		die();
+	}
+
+	/**
 	 * Latest_Post_Shortcode::lps_pagination() Return the content generated for plugin pagination with the specific arguments
 	 */
-	function lps_pagination( $total = 1, $per_page = 10, $range = 4 ) {
+	function lps_pagination( $total = 1, $per_page = 10, $range = 4, $shortcode_id = '' ) {
 		wp_reset_query();
 		$body = '';
 		$total = intval( $total );
@@ -369,14 +465,14 @@ class Latest_Post_Shortcode
 		if ( $total_pages > 1 ) {
 			$current_page = get_query_var( 'page' ) ? intval( get_query_var( 'page' ) ) : 1;
 			$body .= '
-			<ul class="latest-post-selection pages">
+			<ul class="latest-post-selection pages ' . esc_attr( $shortcode_id ) . '">
 				<li>' . __( 'Page', 'lps' ) . ' ' . $current_page . ' ' . __( 'of', 'lps' ) . ' ' . $total_pages . '</li>';
 
 			if ( $total_pages > $range && $current_page > 1 ) {
-				$body .= '<li><a href="' . get_permalink() . '">&lsaquo;&nbsp;</a></li>';
+				$body .= '<li><a href="' . get_permalink() . '" data-page="1">&lsaquo;&nbsp;</a></li>';
 			}
 			if ( $current_page > $range && $current_page > 1 ) {
-				$body .= '<li><a href="' . get_pagenum_link( $current_page - 1 ) . '">&laquo;</a></li>';
+				$body .= '<li><a href="' . get_pagenum_link( $current_page - 1 ) . '" data-page="' . ( $current_page - 1 ) . '">&laquo;</a></li>';
 			}
 
 			$lrang = ceil( ( $current_page % $range ) );
@@ -391,18 +487,22 @@ class Latest_Post_Shortcode
 			}
 
 			for ( $i = $start; $i <= $end; $i ++ ) {
-				if ( $current_page == $i ) {
-					$body .= '<li class="current"><a>' . $i . '</a></li>';
+				if ( 1 == $i ) {
+					$body .= '<li><a href="' . get_permalink() . '" data-page="1">' . $i . '</a></li>';
 				} else {
-					$body .= '<li><a href="' . get_pagenum_link( $i ) . '">' . $i . '</a></li>';
+					if ( $current_page == $i ) {
+						$body .= '<li class="current"><a data-page="' . $i . '">' . $i . '</a></li>';
+					} else {
+						$body .= '<li><a href="' . get_pagenum_link( $i ) . '" data-page="' . $i . '">' . $i . '</a></li>';
+					}
 				}
 			}
 
 			if ( $current_page < $total_pages ) {
-				$body .= '<li><a href="' . get_pagenum_link( $current_page + 1 ) . '">&raquo;</a></li>';
+				$body .= '<li><a href="' . get_pagenum_link( $current_page + 1 ) . '" data-page="' . ( $current_page + 1 ) . '">&raquo;</a></li>';
 			}
 			if ( $current_page < $total_pages - 1 && $current_page + $range - 1 < $total_pages && $current_page < $total_pages ) {
-				$body .= '<li><a href="' . get_pagenum_link( $total_pages ) . '">&nbsp;&rsaquo;</a></li>';
+				$body .= '<li><a href="' . get_pagenum_link( $total_pages ) . '" data-page="' . $total_pages . '">&nbsp;&rsaquo;</a></li>';
 			}
 			$body .= '</ul>';
 
@@ -434,24 +534,56 @@ class Latest_Post_Shortcode
 		$chrlimit = ( ! empty( $args['chrlimit'] ) ) ? intval( $args['chrlimit'] ) : 120;
 
 		$extra_display = ( ! empty( $args['display'] ) ) ? explode( ',', $args['display'] ) : array( 'title' );
-		$linkurl = ( ! empty( $args['url'] ) && 'yes' == $args['url'] ) ? true : false;
+		$linkurl = ( ! empty( $args['url'] ) && ( 'yes' == $args['url'] || 'yes_blank' == $args['url'] ) ) ? true : false;
 		$tile_type = 0;
 		if ( $linkurl ) {
 			$linktext = ( ! empty( $args['linktext'] ) ) ? $args['linktext'] : '';
 			$tile_type = ( ! empty( $args['elements'] ) && ! empty( $this->tile_pattern[$args['elements']] ) ) ? $args['elements'] : 0;
 		}
 		$tile_pattern = $this->tile_pattern[$tile_type];
-		$read_more_class = ( ! in_array( $tile_type, array( 3, 11, 14, 19 ) ) ) ? ' class="read-more"' : ' class="read-more-wrap"'; 
+		$read_more_class = ( ! in_array( $tile_type, array( 3, 11, 14, 19 ) ) ) ? ' class="read-more"' : ' class="read-more-wrap"';
+		$show_extra = ( ! empty( $args['show_extra'] ) ) ? explode( ',', $args['show_extra'] ) : array();
 
 		$qargs = array(
-			'post_status'  => 'publish',
-			'order'        => 'DESC',
-			'orderby'      => 'date_publish',
-			'offset'       => 0,
-			'numberposts'  => 1,
-			/** Make sure we do not loop in the current page */
-			'post__not_in' => array( $post->ID ),
+			'post_status' => 'publish',
+			'offset'      => 0,
+			'numberposts' => 1,
 		);
+
+		$orderby = ( ! empty( $args['orderby'] ) ) ? $args['orderby'] : 'dateD';
+		$qargs['order'] = 'DESC';
+		$qargs['orderby'] = 'date_publish';
+
+		switch ( $orderby ) {
+			case 'dateA' :
+				$qargs['order'] = 'ASC';
+				$qargs['orderby'] = 'date_publish';
+				break;
+			case 'menuA' :
+				$qargs['order'] = 'ASC';
+				$qargs['orderby'] = 'menu_order';
+				break;
+			case 'menuD' :
+				$qargs['order'] = 'DESC';
+				$qargs['orderby'] = 'menu_order';
+				break;
+			case 'titleA' :
+				$qargs['order'] = 'ASC';
+				$qargs['orderby'] = 'post_title';
+				break;
+			case 'titleD' :
+				$qargs['order'] = 'DESC';
+				$qargs['orderby'] = 'post_title';
+				break;
+			default :
+				break;
+		}
+
+		/** Make sure we do not loop in the current page */
+		if ( ! empty( $post->ID ) ) {
+			$qargs['post__not_in'] = array( $post->ID );
+		}
+
 		if ( ! empty( $args['limit'] ) ) {
 			$qargs['numberposts'] = ( ! empty( $args['limit'] ) ) ? intval( $args['limit'] ) : 1;
 		}
@@ -498,6 +630,28 @@ class Latest_Post_Shortcode
 				)
 			);
 		}
+		if ( ! empty( $args['dtag'] ) ) {
+			$tag_ids = wp_get_post_tags( $post->ID, array( 'fields' => 'ids' ) );
+			if ( ! empty( $tag_ids ) && is_array( $tag_ids ) ) {
+				if ( ! empty( $qargs['tax_query'] ) ) {
+					array_push(
+						$qargs['tax_query'],
+						array(
+							'relation' => 'AND',
+						)
+					);
+				}
+				array_push(
+					$qargs['tax_query'],
+					array(
+						'taxonomy' => 'post_tag',
+						'field'    => 'term_id',
+						'terms'    => $tag_ids,
+						'operator' => 'IN',
+					)
+				);
+			}
+		}
 		if ( ! empty( $args['taxonomy'] ) && ! empty( $args['term'] ) ) {
 			if ( ! empty( $qargs['tax_query'] ) ) {
 				array_push(
@@ -519,20 +673,44 @@ class Latest_Post_Shortcode
 
 		$posts = get_posts( $qargs );
 
+		$is_lps_ajax = get_query_var( 'lps_ajax' ) ? intval( get_query_var( 'lps_ajax' ) ) : 0;
+		$shortcode_id = 'lps-' . md5( serialize( $args ) . microtime() );
+
 		ob_start();
 		if ( ! empty( $qargs['posts_per_page'] ) && ! empty( $args['showpages'] ) ) {
 			$counter = new WP_Query( $qargs );
 			$found_posts = ( ! empty( $counter->found_posts ) ) ? $counter->found_posts : 0;
-			echo $this->lps_pagination( intval( $found_posts ), ( ! empty( $qargs['posts_per_page'] ) ) ? $qargs['posts_per_page'] : 1, intval( $args['showpages'] ) );
+			$pagination_html = $this->lps_pagination( intval( $found_posts ), ( ! empty( $qargs['posts_per_page'] ) ) ? $qargs['posts_per_page'] : 1, intval( $args['showpages'] ), $shortcode_id );
+
+			if ( in_array( 'ajax_pagination', $show_extra ) && ! $is_lps_ajax && ! empty( $args ) && is_array( $args ) ) {
+				if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
+					echo '<div id="' . esc_attr( $shortcode_id ) . '-wrap" data-args="' . esc_js( json_encode( $args ) ) . '">';
+				} else {
+					echo '<div id="' . esc_attr( $shortcode_id ) . '-wrap" data-args="' . esc_js( json_encode( $args, JSON_UNESCAPED_UNICODE ) ) . '">';
+				}
+			}
+
+			if ( empty( $args['pagespos'] ) || ( ! empty( $args['pagespos'] ) && 2 == $args['pagespos'] ) ) {
+				echo $pagination_html;
+			}
 		}
 		if ( ! empty( $posts ) ) {
+
+			if ( in_array( 'date', $extra_display ) ) {
+				$date_format = get_option( 'date_format' ) . ' \<\i\>' . get_option( 'time_format' ) . '\<\/\i\>';
+			}
+
 			$class = ( ! empty( $args['css'] ) ) ? ' ' . $args['css'] : '';
-			echo '<section class="latest-post-selection' . esc_attr( $class ) . '">';
+			if ( in_array( 'ajax_pagination', $show_extra ) ) {
+				$class .= ' ajax_pagination';
+			}
+			echo '<section class="latest-post-selection' . esc_attr( $class ) . '" id="' . esc_attr( $shortcode_id ) . '">';
 			foreach ( $posts as $post ) {
 				$tile = $tile_pattern;
 				$a_start = $a_end = '';
 				if ( $linkurl ) {
-					$a_start = '<a href="' . get_permalink( $post->ID ) . '"' . $read_more_class . '>';
+					$link_target = ( 'yes_blank' == $args['url'] ) ? ' target="_blank"' : '';
+					$a_start = '<a href="' . get_permalink( $post->ID ) . '"' . $read_more_class . $link_target . '>';
 					$a_end = '</a>';
 				}
 				$tile = str_replace( '[a]', $a_start, $tile );
@@ -547,6 +725,29 @@ class Latest_Post_Shortcode
 				} else {
 					$tile = str_replace( '[image]', '', $tile );
 				}
+
+				if ( in_array( 'date', $extra_display ) ) {
+					if ( in_array( 'title', $extra_display ) ) {
+						if ( ! empty( $args['display'] ) && substr_count( $args['display'], 'date,title' ) ) {
+							$tile = str_replace( '[title]', '[date][title]', $tile );
+						} else {
+							$tile = str_replace( '[title]', '[title][date]', $tile );
+						}
+					} else {
+						$tile = str_replace( '[title]', '[date]', $tile );
+					}
+				}
+				if ( in_array( 'date', $extra_display ) ) {
+					$tile = str_replace( '[date]', '<em>' . date_i18n( $date_format, strtotime( $post->post_date ), true ) . '</em>', $tile );
+				} else {
+					$tile = str_replace( '[date]', '', $tile );
+				}
+
+				if ( in_array( 'tags', $show_extra ) ) {
+					$tags = apply_filters( 'the_tags', get_the_term_list( $post->ID, 'post_tag', '<div class="tags">', ', ', '</div>' ), '<div class="tags">', ', ', '</div>', $post->ID );
+					$tile = str_replace( '[text]', '[text]' . $tags, $tile );
+				}
+
 				if ( in_array( 'title', $extra_display ) ) {
 					$tile = str_replace( '[title]', '<h1>' . esc_html( $post->post_title ) . '</h1>', $tile );
 				} else {
@@ -559,7 +760,7 @@ class Latest_Post_Shortcode
 					} elseif ( in_array( 'excerpt-small', $extra_display ) ) {
 						$text = $this->get_short_text( $post->post_excerpt, $chrlimit );
 					} else if ( in_array( 'content', $extra_display ) ) {
-						$text = apply_filters( 'the_content', strip_shortcodes( $post->post_content ) );
+						$text = apply_filters( 'the_content', $post->post_content );
 					} elseif ( in_array( 'content-small', $extra_display ) ) {
 						$text = $this->get_short_text( $post->post_content, $chrlimit );
 					}
@@ -570,13 +771,26 @@ class Latest_Post_Shortcode
 				} else {
 					$tile = str_replace( '[read_more_text]', '', $tile );
 				}
+
 				echo '<article>' . $tile . '<div class="clear"></div></article>';
 			}
 			echo '</section>';
 		}
+		if ( ! empty( $qargs['posts_per_page'] ) && ! empty( $args['showpages'] ) ) {
+			if ( ! empty( $args['pagespos'] ) && ( 1 == $args['pagespos'] || 2 == $args['pagespos'] ) ) {
+				echo $pagination_html;
+			}
+			if ( in_array( 'ajax_pagination', $show_extra ) && ! $is_lps_ajax && ! empty( $args ) && is_array( $args ) ) {
+				echo '</div>';
+			}
+		}
+		wp_reset_postdata();
 		return ob_get_clean();
 	}
 
 }
 
 Latest_Post_Shortcode::get_instance();
+
+/** Allow the text widget to render the Latest Post Shortcode */
+add_filter( 'widget_text', 'do_shortcode', 11 );

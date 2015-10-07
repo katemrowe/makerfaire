@@ -4,7 +4,7 @@
 * Plugin Name: GP Email Users
 * Description: Send a quick email to all users who have submitted a specific form.
 * Plugin URI: http://gravitywiz.com/
-* Version: 1.3
+* Version: 1.3.1
 * Author: David Smith
 * Author URI: http://gravitywiz.com/
 * License: GPL2
@@ -22,6 +22,7 @@ class GWEmailUsers extends GWPerk {
 
     public static $version_info;
     public static $email_errors;
+    public static $current_emails = array(); // used to prevent duplicates from being sent if 'gpeu_send_to_duplicates' filter is returned false
 
     function init() {
 
@@ -438,6 +439,8 @@ class GWEmailUsers extends GWPerk {
         $leads = RGFormsModel::get_leads($form['id'], 0, 'desc', '', 0, 999);
         $emails = array();
 
+        $send_duplicates = apply_filters( 'gpeu_send_to_duplicates', true, $form, $leads, $email_options );
+
         foreach($leads as $lead) {
 
             $options = array();
@@ -450,6 +453,14 @@ class GWEmailUsers extends GWPerk {
             }
 
             extract($options);
+
+            if( ! $send_duplicates ) {
+                if( in_array( $to, self::$current_emails ) ) {
+                    continue;
+                } else {
+                    self::$current_emails[] = $to;
+                }
+            }
 
             $content_type = "text/html";
 

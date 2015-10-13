@@ -6,8 +6,24 @@
 .new-footer {
     padding:20px 0;
     border-top: 20px solid #3FAFED;
-    .container {
-        padding-bottom: 15px;
+
+    .visible-xs-block {
+        text-align: center;
+
+        h4.panel-title {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            padding-top: 4px;
+        }
+        #accordion {
+            margin-top: 10px;
+        }
+        form input[name=email] {
+            text-align: center;
+        }
+        a:hover {
+            color: #005D8F;
+        }
     }
     .footer_copyright {
         p {
@@ -42,39 +58,65 @@
     .stay-connected {
         margin-bottom: 14px;
     }
-    .social-profile-icons {
-        height: 33px;
-        margin-bottom: 20px;
-        font-family: proxima-nova, sans-serif;
-        font-weight: 700;
+    form {
+        margin: 0 0 20px;
+
+        input[name=email] {
+            padding: 6px 8px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 1em;
+            border: 2px solid #cccccc;
+            width: 100%;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        span {
+            padding: 6px 10px;
+            color:rgb(85, 85, 85)!important;
+        }
     }
-        form {
-    	margin: 0 0 20px;
-	    input[name=email] {
-	        padding: 6px 8px;
-	        margin-bottom: 10px;
-	        font-size: 15px;
-	        line-height: 1em;
-	        border: 2px solid #cccccc;
-	        width: 100%;
-	        -webkit-border-radius: 4px;
-			-moz-border-radius: 4px;
-			border-radius: 4px;
-	        -webkit-box-sizing: border-box;
-	        -moz-box-sizing: border-box;
-	        box-sizing: border-box;
-	    }
-	    span {
-		    padding: 6px 10px;
-	  		color:rgb(85, 85, 85)!important;
-  		}
-	}
+    .mz-form-horizontal {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        border: 2px solid #cccccc;
+        border-radius: 4px;
+        max-width: 295px;
+
+        input[name=email] {
+            padding: 8px;
+            margin-bottom: 0;
+            font-size: 15px;
+            line-height: 1em;
+            height: auto;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            border-radius-top-left: 4px;
+            border-radius-bottom-left: 4px;
+            border: none;
+        }
+        .btn-cyan {
+            border-radius: 3px;
+            padding: 8px;
+        }
+    }
     
     .btn-cyan {
         padding: 10px 8px;
         font-size: 15px;
         line-height: 1em;
-        width: 100%;
     }
     .social-foot-mobile{
         .accordion-heading .accordion-toggle {
@@ -95,77 +137,101 @@
     .text-center {
     	text-align: center;
     }
-}
-// SOCIAL MEDIA SPRITES
-.stitches-sprite(@x: 0, @y: 0, @width: 0, @height: 0) {
-    background-position: @x @y;
-}
+    // SOCIAL MEDIA
+    .social-network-container {
+        margin-top: 0;
+    }
+    ul.social-network {
+        float: left;
+        list-style: none;
+        display: inline;
+        margin-left:0 !important;
+        margin-bottom: 0;
+        padding: 0;
 
-.social-profile-icons {
-    a {
-    	display: block;
-	    float: left;
-	    text-align: center;
-	    width: 23.75%;
-    	height: 33px;
-    	.social-profile-cont {
-    		background-position: center;
-    		display: inline-block;
-    		width: 32px;
-    	}
-	    &.sprite-facebook-32 {
-	        span {
-	        	.stitches-sprite(-5px, -5px, 17px, 32px);
-	        }
-	        background-color: #335A8E;
-	        transition: background-color 0.2s ease;
-	        margin-right: 1.25%;
-	    }
-	    &.sprite-facebook-32:hover {
-	    	background-color: #1d3250;
-	    	transition: background-color 0.2s ease;
-	    }
-	    &.sprite-googleplus-32 {
-	    	span {
-	        	.stitches-sprite(-5px, -47px, 32px, 32px);
-	    	}
-	        background-color: #C04B36;
-	        transition: background-color 0.2s ease;
-	    }
-	    &.sprite-googleplus-32:hover {
-	    	background-color: #7e3123;
-	    	transition: background-color 0.2s ease;
-	    }
-	    &.sprite-pinterest-32 {
-	    	span {
-	        	.stitches-sprite(-5px, -89px, 32px, 32px);
-	    	}
-	        background-color: #BA4236;
-	        transition: background-color 0.2s ease;
-	        margin-right: 1.25%;
-	    }
-	    &.sprite-pinterest-32:hover {
-	    	background-color: #782b23;
-	    	transition: background-color 0.2s ease;
-	    }
-	    &.sprite-twitter-32 {
-	    	span {
-	        	.stitches-sprite(-5px, -131px, 32px, 32px);
-	        }
-	        background-color: #75ADCF;
-	        transition: background-color 0.2s ease;
-	        margin-right: 1.25%;
-	    }
-	    &.sprite-twitter-32:hover {
-	    	background-color: #3e86b1;
-	    	transition: background-color 0.2s ease;
-	    }
+        li {
+            display: inline;
+            margin: 0 5px;
+        }
+        li:first-child {
+            margin-left: 0;
+        }
+        a.icoRss:hover {
+            background-color: #F56505;
+        }
+        a.icoFacebook:hover {
+            background-color:#3B5998;
+        }
+        a.icoTwitter:hover {
+            background-color:#33ccff;
+        }
+        a.icoInstagram:hover {
+            background-color:#3f729b;
+        }
+        a.icoGoogle-plus:hover {
+          background-color:#DC4E41;
+        }
+        a.icoPinterest:hover {
+            background-color:#cc2127;
+        }
+        a.icoLinkedin:hover {
+            background-color:#007bb7;
+        }
+        a.icoInstagram:hover i, 
+        a.icoFacebook:hover i, 
+        a.icoTwitter:hover i,
+        a.icoPinterest:hover i, 
+        a.icoVimeo:hover i, 
+        a.icoLinkedin:hover i {
+            color:#fff;
+        }
+        a.socialIcon:hover, .socialHoverClass {
+            color:#44BCDD;
+        }
+
+        &.social-circle i {
+            color: #fff;
+            margin:0;
+            line-height:30px;
+            text-align: center;
+        }
+
+        &.social-circle li a {
+            display:inline-block;
+            position:relative;
+            margin:0 auto 0 auto;
+            -moz-border-radius:50%;
+            -webkit-border-radius:50%;
+            border-radius:50%;
+            text-align:center;
+            width: 30px;
+            height: 30px;
+            font-size:20px;
+            background-color: #D3D3D3;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+            -ms-transition: all 0.2s;
+            transition: all 0.2s;
+        }
+
+        &.social-circle li a:hover {
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+            -ms-transition: all 0.2s;
+            transition: all 0.2s;
+        }
     }
 }
 
-.sprite {
-    background-image: url(../img/spritesheet.png);    
-    background-repeat: no-repeat;
-    display: block;
-    height: 33px;
+@media (max-width: 767px) {
+    .new-footer ul.social-network,
+    .new-footer form {
+        float: initial;
+        display: inline-block;
+    }
+    .uni-footer .mz-form-horizontal {
+        max-width: initial;
+    }
 }

@@ -22,6 +22,7 @@
 					<li><a href="//readerservices.makezine.com/mk/default.aspx?" target="_blank">Subscribe to Make:</a></li>
 				</ul>
 			</div>
+			<div class="visible-sm-block clearfix"></div>
 			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col">
 				<h4>Our Company</h4>
 				<ul class="list-unstyled">
@@ -32,108 +33,91 @@
 					<li><a href="//makermedia.com/privacy" target="_blank">Privacy</a></li>
 				</ul>
 			</div>
-			<div class="col-sm-12 col-sm-6 col-md-3 social-foot-col">
-				<h4 class="stay-connected">Stay Connected</h4>
-				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="//www.facebook.com/makerfaire" title="Facebook" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-twitter-32" href="//twitter.com/makerfaire" title="Twitter" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-pinterest-32" href="//www.pinterest.com/makemagazine/maker-faire/" title="Pinterest" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-googleplus-32" href="//plus.google.com/104410464300110463062/posts" rel="publisher" title="Google+" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-				</div>
-				<?php
-					$isSecure = "http://";
-					if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-						$isSecure = "https://";
-					}
-					?>
-				<form action="http://whatcounts.com/bin/listctrl" method="POST">
-					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
-					<input type="hidden" name="cmd" value="subscribe" />
-					<input type="hidden" name="custom_source" value="footer" /> 
-					<input type="hidden" name="custom_incentive" value="none" /> 
-					<input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" />
-					<input type="hidden" id="format_mime" name="format" value="mime" />
-					<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
-					<input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
-					<input type="hidden" name="errors_to" value="" />
-					<div>
-						<input name="email" placeholder="Enter your Email" required="required" type="text"><br>
-						<input value="Sign Up for our Newsletter" class="btn-cyan" type="submit">
-					</div>
-				</form>
-			</div>
+      <div class="col-sm-6 col-md-3 social-foot-col">
+        <h4 class="stay-connected">Follow Us</h4>
+        <div class="social-network-container">
+          <ul class="social-network social-circle">
+              <li><a href="//www.facebook.com/makerfaire" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="//twitter.com/makerfaire" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter" target="_blank"></i></a></li>
+              <li><a href="//www.pinterest.com/makemagazine/maker-faire/" class="icoPinterest" title="Pinterest" target="_blank"><i class="fa fa-pinterest-p" target="_blank"></i></a></li>
+              <li><a href="//plus.google.com/104410464300110463062/posts" class="icoGoogle-plus" title="Google+" target="_blank"><i class="fa fa-google-plus" target="_blank"></i></a></li>
+          </ul>    
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="mz-footer-subscribe"> 
+          <?php
+            $isSecure = "http://";
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+              $isSecure = "https://";
+            }
+          ?>
+          <h4>Sign Up</h4>
+          <p>Stay inspired and get fresh updates</p>
+          <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+            <input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A"/>
+            <input type="hidden" name="cmd" value="subscribe"/>
+            <input type="hidden" name="custom_source" value="footer"/>
+            <input type="hidden" name="custom_incentive" value="none"/>
+            <input type="hidden" name="custom_url" value="<?php echo $_SERVER[" HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>"/>
+            <input type="hidden" id="format_mime" name="format" value="mime"/>
+            <input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up"/>
+            <input type="hidden" name="custom_host" value="<?php echo $_SERVER[" HTTP_HOST"]; ?>" />
+            <input type="hidden" name="errors_to" value=""/>
+            <div class="mz-form-horizontal">
+              <input name="email" placeholder="Enter your Email" required type="email"><br>
+              <input value="GO" class="btn-cyan" type="submit">
+            </div>
+          </form>
+        </div>
+      </div>
 		</div>
 		<!-- END desktop row -->
 		<!-- Add back in when the site is responsive -->
 		<div class="row social-foot-mobile visible-xs-block">
-			<div class="col-xs-12 social-foot-col">
-				<h4 class="stay-connected">Stay Connected</h4>
-				<div class="social-profile-icons">
-					<a class="sprite-facebook-32" href="http://facebook.com/makemagazine" title="Facebook" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-twitter-32" href="http://twitter.com/make" title="Twitter" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-pinterest-32" href="http://pinterest.com/makemagazine/" title="Pinterest" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-					<a class="sprite-googleplus-32" href="https://plus.google.com/+MAKE/posts" rel="publisher" title="Google+" target="_blank">
-						<div class="social-profile-cont">	
-							<span class="sprite"></span>
-						</div>
-					</a>
-				</div>
-				<?php
-					$isSecure = "http://";
-					if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-						$isSecure = "https://";
-					}
-					?>
-				<form action="http://whatcounts.com/bin/listctrl" method="POST">
-					<input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A" />
-					<input type="hidden" name="cmd" value="subscribe" />
-					<input type="hidden" name="custom_source" value="footer" /> 
-					<input type="hidden" name="custom_incentive" value="none" /> 
-					<input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" />
-					<input type="hidden" id="format_mime" name="format" value="mime" />
-					<input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up" />
-					<input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
-					<input type="hidden" name="errors_to" value="" />
-					<div>
-						<input name="email" placeholder="Enter your Email" required="required" type="text"><br>
-						<input value="Sign Up for our Newsletter" class="btn-cyan" type="submit">
-					</div>
-				</form>
-			</div>
+      <div class="col-xs-12 social-foot-col">
+        <h4 class="stay-connected">Follow Us</h4>
+        <div class="social-network-container">
+          <ul class="social-network social-circle">
+              <li><a href="//www.facebook.com/makerfaire" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="//twitter.com/makerfaire" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter" target="_blank"></i></a></li>
+              <li><a href="//www.pinterest.com/makemagazine/maker-faire/" class="icoPinterest" title="Pinterest" target="_blank"><i class="fa fa-pinterest-p" target="_blank"></i></a></li>
+              <li><a href="//plus.google.com/104410464300110463062/posts" class="icoGoogle-plus" title="Google+" target="_blank"><i class="fa fa-google-plus" target="_blank"></i></a></li>
+          </ul>    
+        </div>
+        <div class="clearfix"></div>
+        <div class="mz-footer-subscribe"> 
+          <?php
+            $isSecure = "http://";
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+              $isSecure = "https://";
+            }
+          ?>
+          <h4>Sign Up</h4>
+          <p>Stay inspired and get fresh updates</p>
+          <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+            <input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A"/>
+            <input type="hidden" name="cmd" value="subscribe"/>
+            <input type="hidden" name="custom_source" value="footer"/>
+            <input type="hidden" name="custom_incentive" value="none"/>
+            <input type="hidden" name="custom_url" value="<?php echo $_SERVER[" HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>"/>
+            <input type="hidden" id="format_mime" name="format" value="mime"/>
+            <input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up"/>
+            <input type="hidden" name="custom_host" value="<?php echo $_SERVER[" HTTP_HOST"]; ?>" />
+            <input type="hidden" name="errors_to" value=""/>
+            <div class="mz-form-horizontal">
+              <input name="email" placeholder="Enter your Email" required type="email"><br>
+              <input value="GO" class="btn-cyan" type="submit">
+            </div>
+          </form>
+        </div>
+      </div>
 			<div class="col-xs-12 panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 				<div class="panel panel-default">
 					<div class="panel-heading" role="tab" id="heading1">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="false" aria-controls="collapse1">Make:</a>
-						</h4>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="false" aria-controls="collapse1">
+							<h4 class="panel-title">Make:</h4>
+						</a>
 					</div>
 					<div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
 						<div class="panel-body">
@@ -150,9 +134,9 @@
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading" role="tab" id="heading2">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">Explore Making</a>
-						</h4>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+							<h4 class="panel-title">Explore Making</h4>
+						</a>
 					</div>
 					<div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
 						<div class="panel-body">
@@ -168,9 +152,9 @@
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading" role="tab" id="heading3">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">Our Company</a>
-						</h4>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+							<h4 class="panel-title">Our Company</h4>
+						</a>
 					</div>
 					<div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
 						<div class="panel-body">
@@ -400,6 +384,7 @@
 		</div>
 		';
 	} ?>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 <!-- End pop up modal for school page -->
 <?php wp_footer(); ?>
 <script type="text/javascript">

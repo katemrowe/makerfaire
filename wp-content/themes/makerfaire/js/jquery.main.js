@@ -102,8 +102,8 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MF_ThankYou.png" alt="Maker Faire Bay Area"><p>Maker Faire 10th Anniversary was incredible, thank you for being part of the celebration!</p><p><span><strong>SAVE THE DATE.</strong> Maker Faire Bay Area 2016 May 21-22</span></p></div>');
-    jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire 2015</span> <br /> An amazing show! Thank you to everyone for being part of the celebration!</p><p><span><strong>STAY TUNED.</strong> Details on World Maker Faire 2016 Coming Soon</span></p></div>');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MF_ThankYou.png" alt="Maker Faire Bay Area"><p>Maker Faire 10th Anniversary was incredible, thank you for being part of the celebration!</p><p><span><strong>SAVE THE DATE!</strong> Maker Faire Bay Area 2016 on May 21-22</span></p></div>');
+    jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire 2015</span> <br /> An amazing show! Thank you to everyone for being part of the celebration!</p><p><span><strong>SAVE THE DATE!</strong> World Maker Faire 2016  on October 1 &amp; 2</span></p></div>');
     jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
 
     /**

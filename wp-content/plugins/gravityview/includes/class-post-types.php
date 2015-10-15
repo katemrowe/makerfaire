@@ -16,9 +16,12 @@ class GravityView_Post_Types {
 	function __construct() {
 
 		// Load custom post types. It's a static method.
+		// Load even when invalid to allow for export
 		add_action( 'init', array( 'GravityView_Post_Types', 'init_post_types' ) );
-		add_action( 'init', array( 'GravityView_Post_Types', 'init_rewrite' ) );
 
+		if( GravityView_Compatibility::is_valid() ) {
+			add_action( 'init', array( 'GravityView_Post_Types', 'init_rewrite' ) );
+		}
 	}
 
 	/**
@@ -29,6 +32,20 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_post_types() {
+
+		/**
+		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
+		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
+		 * @since 1.13
+		 * @param boolean $is_hierarchical Default: false
+		 */
+		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
+
+		$supports = array( 'title', 'genesis-layouts', 'revisions' );
+
+		if( $is_hierarchical ) {
+			$supports[] = 'page-attributes';
+		}
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
@@ -50,23 +67,33 @@ class GravityView_Post_Types {
 			'label'               => __( 'view', 'gravityview' ),
 			'description'         => __( 'Create views based on a Gravity Forms form', 'gravityview' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'genesis-layouts'),
-			'hierarchical'        => false,
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
+			'supports'            => $supports,
+			'hierarchical'        => $is_hierarchical,
+			'public'              => GravityView_Compatibility::is_valid(),
+			'show_ui'             => GravityView_Compatibility::is_valid(),
+			'show_in_menu'        => GravityView_Compatibility::is_valid(),
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 17,
 			'menu_icon'           => '',
 			'can_export'          => true,
-			'has_archive'         => false,
+			/**
+			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
+			 * @since 1.7.3
+			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
+			 */
+			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
 			'rewrite'             => array(
+				/**
+				 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+				 * @param string $slug The slug shown in the URL
+				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
-			'capability_type'     => 'page',
+			'capability_type'     => 'gravityview',
+			'map_meta_cap'        => true,
 		);
 
 		register_post_type( 'gravityview', $args );
@@ -82,12 +109,6 @@ class GravityView_Post_Types {
 	 */
 	public static function init_rewrite() {
 
-		global $wp_rewrite;
-
-		if( !$wp_rewrite->using_permalinks() ) {
-			return;
-		}
-
 		$endpoint = self::get_entry_var_name();
 
 		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
@@ -99,11 +120,17 @@ class GravityView_Post_Types {
 	 *
 	 * @access public
 	 * @static
-	 * @return void
-	 * @filter gravityview_directory_endpoint Change the slug used for single entries
+	 * @return string Default: "entry"
 	 */
 	public static function get_entry_var_name() {
-		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
+
+		/**
+		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
+		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 */
+		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
+
+		return sanitize_title( $endpoint );
 	}
 
 	/**
@@ -120,9 +147,13 @@ class GravityView_Post_Types {
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
-		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+		if( GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+		} else {
+			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+		}
 
-		return $image.wpautop( $not_found );
+		return $image . wpautop( $output );
 	}
 
 

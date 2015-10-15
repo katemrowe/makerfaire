@@ -11,10 +11,14 @@
  * @since 1.0.0
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 class GravityView_Admin_Views {
 
-	private $post_id;
+
 
 	function __construct() {
 
@@ -47,8 +51,57 @@ class GravityView_Admin_Views {
 
 		add_filter( 'gform_toolbar_menu', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
 
-		add_action( 'manage_gravityview_posts_custom_column', array( __CLASS__, 'add_connected_form_column_content'), 10, 2 );
+		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_custom_column_content'), 10, 2 );
 
+		add_action( 'restrict_manage_posts', array( $this, 'add_view_dropdown' ) );
+
+		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
+
+	}
+
+	/**
+	 * @since 1.15
+	 * @param WP_Query $query
+	 */
+	public function filter_pre_get_posts_by_gravityview_form_id( &$query ) {
+		global $pagenow;
+
+		if ( !is_admin() ) {
+			return;
+		}
+
+		if( 'edit.php' !== $pagenow || ! rgget( 'gravityview_form_id' ) || ! isset( $query->query_vars[ 'post_type' ] ) ) {
+			return;
+		}
+
+		if ( $query->query_vars[ 'post_type' ] == 'gravityview' ) {
+			$query->set( 'meta_query', array(
+				array(
+					'key' => '_gravityview_form_id',
+					'value' => rgget( 'gravityview_form_id' ),
+				)
+			) );
+		}
+	}
+
+	function add_view_dropdown() {
+		$current_screen = get_current_screen();
+
+		if( 'gravityview' !== $current_screen->post_type ) {
+			return;
+		}
+
+		$forms = gravityview_get_forms();
+		$current_form = rgget( 'gravityview_form_id' );
+		// If there are no forms to select, show no forms.
+		if( !empty( $forms ) ) { ?>
+			<select name="gravityview_form_id" id="gravityview_form_id">
+				<option value="" <?php selected( '', $current_form, true ); ?>><?php esc_html_e( 'All forms', 'gravityview' ); ?></option>
+				<?php foreach( $forms as $form ) { ?>
+					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
+				<?php } ?>
+			</select>
+		<?php }
 	}
 
 
@@ -58,7 +111,7 @@ class GravityView_Admin_Views {
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
         _deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
-		return GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
+		GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
 	}
 
 	/**
@@ -85,37 +138,45 @@ class GravityView_Admin_Views {
 			return $menu_items;
 		}
 
-		// This needs to be here to trigger Gravity Forms to use the submenu;
-		// If there's only submenu item, it replaces the main menu link with the submenu item.
-		$sub_menu_items = array(
-			array(
+		$sub_menu_items = array();
+		foreach ( (array)$connected_views as $view ) {
+
+			if( ! GVCommon::has_cap( 'edit_gravityview', $view->ID ) ) {
+				continue;
+			}
+
+			$label = empty( $view->post_title ) ? sprintf( __('No Title (View #%d)', 'gravityview' ), $view->ID ) : $view->post_title;
+
+			$sub_menu_items[] = array(
+				'label' => esc_attr( $label ),
+				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
+			);
+		}
+
+		// If there were no items added, then let's create the parent menu
+		if( $sub_menu_items ) {
+
+			// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
+			$sub_menu_items[] = array(
 				'url' => '#',
 				'label' => '',
 				'menu_class' => 'hidden',
 				'capabilities' => '',
-			)
-		);
+			);
 
-		foreach ( (array)$connected_views as $view ) {
-			$sub_menu_items[] = array(
-				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
-				'label' => esc_attr( $view->post_title ),
-				'capabilities' => current_user_can( 'edit_post', $view->ID ),
+			$menu_items['gravityview'] = array(
+				'label'          => __( 'Connected Views', 'gravityview' ),
+				'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+				'title'          => __( 'GravityView Views using this form as a data source', 'gravityview' ),
+				'url'            => '#',
+				'onclick'        => 'return false;',
+				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
+				'link_class'     => ( 1 === 1 ? '' : 'gf_toolbar_disabled' ),
+				'sub_menu_items' => $sub_menu_items,
+				'priority'       => 0,
+				'capabilities'   => array( 'edit_gravityviews' ),
 			);
 		}
-
-		$menu_items['gravityview'] = array(
-			'label' 			=> __( 'Connected Views', 'gravityview' ),
-			'icon' 			=> '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
-			'title'				=> __('GravityView Views using this form as a data source', 'gravityview'),
-			'url' 				=> '#',
-			'onclick'			=> 'return false;',
-			'menu_class' 		=> 'gv_connected_forms gf_form_toolbar_settings',
-			'link_class' 		=> ( 1 === 1 ? '' : 'gf_toolbar_disabled' ),
-			'sub_menu_items' 	=> $sub_menu_items,
-			'capabilities' 		=> array(),
-			'priority'			=> 0
-		);
 
 		return $menu_items;
 	}
@@ -126,10 +187,20 @@ class GravityView_Admin_Views {
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
 	 * @access public
-	 * @return void
+	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
-		return array_merge( $array, array( 'captcha', 'page' ) );
+
+		$add = array( 'captcha', 'page' );
+
+		// Don't allowing editing the following values:
+		if( $context === 'edit' ) {
+			$add[] = 'post_id';
+		}
+
+		$return = array_merge( $array, $add );
+
+		return $return;
 	}
 
 	/**
@@ -175,6 +246,10 @@ class GravityView_Admin_Views {
 			'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravityview'), '<code>', '</code>' )
 		);
 
+		/**
+		 * @filter `gravityview_tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 */
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
@@ -187,30 +262,67 @@ class GravityView_Admin_Views {
 		return $tooltips;
 	}
 
-	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
+	/**
+	 * Add the Data Source information
+	 *
+	 * @param null $column_name
+	 * @param $post_id
+	 *
+	 * @return void
+	 */
+	public function add_custom_column_content( $column_name = NULL, $post_id )	{
 
-		if( !empty( $column_name ) && $column_name !== 'gv_connected_form' )  { return; }
+		$output = '';
 
-		$form_id = gravityview_get_form_id( $post_id );
+		switch ( $column_name ) {
+			case 'gv_template':
 
-		// All Views should have a connected form. If it doesn't, that's not right.
-		if( empty($form_id) ) {
-			do_action( 'gravityview_log_error', sprintf( '[add_connected_form_column_content] View ID %s does not have a connected GF form.', $post_id ) );
-			echo __( 'Not connected.', 'gravityview' );
-			return;
+				$template_id = gravityview_get_template_id( $post_id );
+
+				// All Views should have a connected form. If it doesn't, that's not right.
+				if ( empty( $template_id ) ) {
+					do_action( 'gravityview_log_error', sprintf( __METHOD__ . ' View ID %s does not have a connected template.', $post_id ) );
+					break;
+				}
+
+				$templates = gravityview_get_registered_templates();
+
+				$template = isset( $templates[ $template_id ] ) ? $templates[ $template_id ] : false;
+
+				// Generate backup if label doesn't exist: `example_name` => `Example Name`
+				$template_id_pretty = ucwords( implode( ' ', explode( '_', $template_id ) ) );
+
+				$output = $template ? $template['label'] : $template_id_pretty;
+
+				break;
+
+			case 'gv_connected_form':
+
+				$form_id = gravityview_get_form_id( $post_id );
+
+				// All Views should have a connected form. If it doesn't, that's not right.
+				if ( empty( $form_id ) ) {
+					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] View ID %s does not have a connected GF form.', $post_id ) );
+					$output = __( 'Not connected.', 'gravityview' );
+					break;
+				}
+
+				$form = gravityview_get_form( $form_id );
+
+				if ( ! $form ) {
+					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] Connected form not found: Form #%d', $form_id ) );
+
+					$output = __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
+				}
+
+				$output = self::get_connected_form_links( $form );
+
+				break;
 		}
 
-		$form = gravityview_get_form( $form_id );
-
-		if( !$form ) {
-			do_action( 'gravityview_log_error', sprintf( '[add_connected_form_column_content] Connected form not found: Form #%d', $form_id ) );
-
-			echo __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
-		}
-
-		echo self::get_connected_form_links( $form );
-
+		echo $output;
 	}
+
 
 	/**
 	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
@@ -222,7 +334,7 @@ class GravityView_Admin_Views {
 
 		// Either the form is empty or the form ID is 0, not yet set.
 		if( empty( $form ) ) {
-			return;
+			return '';
 		}
 
 		// The $form is passed as the form ID
@@ -231,28 +343,29 @@ class GravityView_Admin_Views {
 		}
 
 		$form_id = $form['id'];
-		$form_link = '';
 		$links = array();
 
-		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
+		if( GVCommon::has_cap( 'gravityforms_edit_forms' ) ) {
 			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
-			$form_link = sprintf( '<strong class="gv-form-title"><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
-			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $form_url , __('Edit Form', 'gravityview') );
+			$form_link = '<strong class="gv-form-title">'.gravityview_get_link( $form_url, $form['title'], 'class=row-title' ).'</strong>';
+			$links[] = '<span>'.gravityview_get_link( $form_url, __('Edit Form', 'gravityview') ).'</span>';
+		} else {
+			$form_link = '<strong class="gv-form-title">'. esc_html( $form['title'] ). '</strong>';
 		}
 
-		if( GFCommon::current_user_can_any('gravityforms_view_entries') ) {
+		if( GVCommon::has_cap( 'gravityforms_view_entries' ) ) {
 			$entries_url = admin_url( sprintf( 'admin.php?page=gf_entries&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $entries_url , __( 'Entries', 'gravityview' ) );
+			$links[] = '<span>'.gravityview_get_link( $entries_url, __('Entries', 'gravityview') ).'</span>';
 		}
 
-		if( GFCommon::current_user_can_any('gravityforms_edit_settings') ) {
+		if( GVCommon::has_cap( array( 'gravityforms_edit_settings', 'gravityview_view_settings' ) ) ) {
 			$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Edit settings for this form', 'gravityview'), $settings_url, __('Settings', 'gravityview') );
+			$links[] = '<span>'.gravityview_get_link( $settings_url, __('Settings', 'gravityview'), 'title='.__('Edit settings for this form', 'gravityview') ).'</span>';
 		}
 
-		if( GFCommon::current_user_can_any( array("gravityforms_edit_forms", "gravityforms_create_form", "gravityforms_preview_forms") ) ) {
+		if( GVCommon::has_cap( array("gravityforms_edit_forms", "gravityforms_create_form", "gravityforms_preview_forms") ) ) {
 			$preview_url = site_url( sprintf( '?gf_page=preview&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Preview this form', 'gravityview'), $preview_url, __('Preview', 'gravityview') );
+			$links[] = '<span>'.gravityview_get_link( $preview_url, __('Preview Form', 'gravityview'), 'title='.__('Preview this form', 'gravityview') ).'</span>';
 		}
 
 		$output = '';
@@ -260,6 +373,14 @@ class GravityView_Admin_Views {
 		if( !empty( $include_form_link ) ) {
 			$output .= $form_link;
 		}
+
+		/**
+		 * @filter `gravityview_connected_form_links` Modify the links shown in the Connected Form links
+		 * @since 1.6
+		 * @param array $links Links to show
+		 * @param array $form Gravity Forms form array
+		 */
+		$links = apply_filters( 'gravityview_connected_form_links', $links, $form );
 
 		$output .= '<div class="row-actions">'. implode( ' | ', $links ) .'</div>';
 
@@ -278,7 +399,20 @@ class GravityView_Admin_Views {
 		$date = $columns['date'];
 		unset( $columns['date'] );
 
-		$columns['gv_connected_form'] = __('Data Source', 'gravityview');
+		$data_source_required_caps = array(
+			'gravityforms_edit_forms',
+			'gravityforms_view_entries',
+			'gravityforms_edit_settings',
+			'gravityview_view_settings',
+			'gravityforms_create_form',
+			'gravityforms_preview_forms',
+		);
+
+		if( GVCommon::has_cap( $data_source_required_caps ) ) {
+			$columns['gv_connected_form'] = __( 'Data Source', 'gravityview' );
+		}
+
+		$columns['gv_template'] = _x( 'Template', 'Column title that shows what template is being used for Views', 'gravityview' );
 
 		// Add the date back in.
 		$columns['date'] = $date;
@@ -290,7 +424,7 @@ class GravityView_Admin_Views {
 	 * Save View configuration
 	 *
 	 * @access public
-	 * @param mixed $post_id
+	 * @param int $post_id Currently saved Post ID
 	 * @return void
 	 */
 	function save_postdata( $post_id ) {
@@ -303,13 +437,11 @@ class GravityView_Admin_Views {
 		if ( ! isset( $_POST['post_type'] ) || 'gravityview' != $_POST['post_type'] ) {
 			return;
 		}
-		// validate user can edit and save post/page
-		if ( 'page' == $_POST['post_type'] ) {
-			if ( ! current_user_can( 'edit_page', $post_id ) )
-				return;
-		} else {
-			if ( ! current_user_can( 'edit_post', $post_id ) )
-				return;
+
+		// validate user can edit and save View
+		if ( ! GVCommon::has_cap( 'edit_gravityview', $post_id ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to edit View #' . $post_id, wp_get_current_user() );
+			return;
 		}
 
 		do_action( 'gravityview_log_debug', '[save_postdata] Saving View post type.', $_POST );
@@ -323,6 +455,11 @@ class GravityView_Admin_Views {
 			// save form id
 			$statii['form_id'] = update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 
+		}
+
+		if( false === GVCommon::has_cap( 'gravityforms_create_form' ) && empty( $statii['form_id'] ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to create a new Form.', wp_get_current_user() );
+			return;
 		}
 
 		// Was this a start fresh?
@@ -364,6 +501,7 @@ class GravityView_Admin_Views {
 
 					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
 					// Not using parse_str due to max_input_vars limitation
+					$fields_holder = array();
 					GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
 
 					if( isset( $fields_holder['fields'] ) ) {
@@ -408,7 +546,6 @@ class GravityView_Admin_Views {
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
-	 * @filter  gravityview_blacklist_field_types Modify the types of fields that shouldn't be shown in a View.
 	 * @access public
 	 * @param int $form_id Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
@@ -416,6 +553,11 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = '', $context = 'single' ) {
 
+		/**
+		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 */
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 		$fields = $this->get_available_fields( $form, $context );
@@ -452,6 +594,10 @@ class GravityView_Admin_Views {
 
 	function render_additional_fields( $form, $context ) {
 
+		/**
+		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
+		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
 			array(
 				'label_text' => __( '+ Add All Fields', 'gravityview' ),
@@ -538,6 +684,15 @@ class GravityView_Admin_Views {
 					'type'	=> 'custom',
 					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
 				),
+
+				/**
+				 * @since 1.7.2
+				 */
+			    'other_entries' => array(
+				    'label'	=> __('Other Entries', 'gravityview'),
+				    'type'	=> 'other_entries',
+				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+			    ),
 	        );
 
 
@@ -553,12 +708,18 @@ class GravityView_Admin_Views {
 		} // if not zone directory or single
 
 
+		/**
+		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
+		 * @param array $entry_default_fields Array of fields shown by default
+		 * @param  string|array $form form_ID or form object
+		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+		 */
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
 
 	/**
 	 * Calculate the available fields
-	 * @param  string|array form_ID or form object
+	 * @param  string|array $form form_ID or form object
 	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @return array         fields
 	 */
@@ -595,17 +756,32 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_widgets() {
 
-		// get the list of registered widgets
-		$widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+		$widgets = $this->get_registered_widgets();
 
-		if( !empty( $widgets ) ) :
-			foreach( $widgets as $id => $details ) :
+		if( !empty( $widgets ) ) {
+
+			foreach( $widgets as $id => $details ) {
 
 				echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
 
-			endforeach;
-		endif;
+			}
+		}
 
+	}
+
+	/**
+	 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+	 * @since 1.13.1
+	 * @return array
+	 */
+	function get_registered_widgets() {
+		/**
+		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * @param array $registered_widgets Empty array
+		 */
+		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+
+		return $registered_widgets;
 	}
 
 	/**
@@ -619,13 +795,13 @@ class GravityView_Admin_Views {
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 		global $post;
 
-		$available_items = array();
-
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravityview' );
-		} elseif( $type === 'field' ) {
+		} else {
 			$button_label = __( 'Add Field', 'gravityview' );
 		}
+
+		$available_items = array();
 
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
@@ -639,8 +815,7 @@ class GravityView_Admin_Views {
 			if( 'field' === $type ) {
 				$available_items = $this->get_available_fields( $form, $zone );
 			} else {
-				// get the list of registered widgets
-				$available_items = apply_filters( 'gravityview_register_directory_widgets', array() );
+				$available_items = $this->get_registered_widgets();
 			}
 
 		}
@@ -667,7 +842,7 @@ class GravityView_Admin_Views {
 
 										if( !$original_item ) {
 
-											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugn that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
+											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
 
 											$original_item = $field;
 										} else {
@@ -677,7 +852,7 @@ class GravityView_Admin_Views {
 										}
 
 										// Field options dialog box
-										$field_options = GravityView_Render_Settings::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										$field_options = GravityView_Render_Settings::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
 
 										$item = array(
 											'input_type' => $input_type,
@@ -758,7 +933,7 @@ class GravityView_Admin_Views {
 	 * @param string $template_id (default: '')
 	 * @param string $post_id (default: '')
 	 * @param string $context (default: 'single')
-	 * @return void
+	 * @return string HTML of the active areas
 	 */
 	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '', $echo = false ) {
 
@@ -767,35 +942,33 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		$output = '';
+		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id, $context );
 
-		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
+		if( empty( $template_areas ) ) {
 
-		$fields = '';
-		if( !empty( $post_id ) ) {
-			$fields = gravityview_get_directory_fields( $post_id );
+			do_action( 'gravityview_log_debug', '[render_directory_active_areas] No areas defined. Maybe template %s is disabled.', $template_id );
+			$output = '<div>';
+			$output .= '<h2 class="description" style="font-size: 16px; margin:0">'. sprintf( esc_html__( 'This View is configured using the %s View type, which is disabled.', 'gravityview' ), '<em>'.$template_id.'</em>' ) .'</h2>';
+			$output .= '<p class="description" style="font-size: 14px; margin:0 0 1em 0;padding:0">'.esc_html__('The data is not lost; re-activate the associated plugin and the configuration will re-appear.', 'gravityview').'</p>';
+			$output .= '</div>';
+		} else {
+
+			$fields = '';
+			if ( ! empty( $post_id ) ) {
+				$fields = gravityview_get_directory_fields( $post_id );
+			}
+
+			ob_start();
+			$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
+			$output = ob_get_clean();
+
 		}
-
-		ob_start();
-		$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
-		$output = ob_get_clean();
 
 		if( $echo ) {
 			echo $output;
 		}
 
 		return $output;
-	}
-
-	/**
-	 * Uservoice feedback widget
-	 */
-	static function enqueue_uservoice_widget() {
-		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice'.$script_debug.'.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
-		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array(
-			'email' => GravityView_Settings::getSetting( 'support-email' )
-		));
 	}
 
 	/**
@@ -806,31 +979,28 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page;
+		global $plugin_page, $pagenow;
+
+		$is_widgets_page = ( $pagenow === 'widgets.php' );
 
 		// Add the GV font (with the Astronaut)
-		wp_enqueue_style( 'gravityview_global', plugins_url('includes/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
-		if( !gravityview_is_admin_page($hook) ) { return; }
-
-
-		// Add the UserVoice widget on all GV pages
-		self::enqueue_uservoice_widget();
+		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }
 
 		// Only enqueue the following on single pages
-		if( gravityview_is_admin_page($hook, 'single')) {
+		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
-			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('includes/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie'  ), GravityView_Plugin::version );
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
@@ -847,7 +1017,7 @@ class GravityView_Admin_Views {
 				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
 			));
 
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
 			self::enqueue_gravity_forms_scripts();
 
@@ -878,7 +1048,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
+			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-support', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
 			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {

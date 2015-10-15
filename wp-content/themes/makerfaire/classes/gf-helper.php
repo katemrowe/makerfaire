@@ -6,7 +6,7 @@
  *
  * @param boolean $use_direct_access Default false
  */
-add_filter( 'gravityview/datatables/direct-ajax', '__return_true' );
+//add_filter( 'gravityview/datatables/direct-ajax', '__return_true' );
 
 /* Rewrite rules */
 function custom_rewrite_rule() {

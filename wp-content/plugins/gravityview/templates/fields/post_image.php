@@ -3,14 +3,15 @@
  * Display the fileupload field type
  *
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // Tell the renderer not to wrap this field in an anchor tag.
-$gravityview_view->field_data['field_settings']['show_as_link'] = false;
+$gravityview_view->setCurrentFieldSetting('show_as_link', false);
 
 /**
  * Parse the stored value of the post image
@@ -27,6 +28,31 @@ $caption = count($ary) > 2 ? $ary[2] : "";
 $description = count($ary) > 3 ? $ary[3] : "";
 
 $link_atts = '';
+
+/**
+ * @since 1.5.4
+ *
+ * $field['postFeaturedImage'] - holds if the Post Image field is set as post featured image
+ * $field_settings['dynamic_data'] - whether the field content should be fetched from the Post (dynamic data) or from the GF entry
+ *
+ * Dynamic data (get post featured image instead of GF entry field)
+ */
+if( !empty( $field['postFeaturedImage'] ) && !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
+
+	/**
+	 * Modify what size is fetched for the post's Featured Image
+	 * @param string $size The size to be fetched using `wp_get_attachment_image_src()` (default: 'large')
+	 * @param array $entry Gravity Forms entry array
+	 */
+	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry );
+	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
+
+	if( empty( $image_url[0] ) ) {
+		do_action('gravityview_log_debug', 'Dynamic featured image for post #'.$entry['post_id'].' doesnt exist (size: '.$image_size.').' );
+	} else {
+		$url = $image_url[0];
+	}
+}
 
 ##
 ## Get the link URL
@@ -46,7 +72,7 @@ else {
 	$href = $url;
 
 	// Only show the lightbox if linking to the file itself
-	if( !empty( $gravityview_view->atts['lightbox'] ) ) {
+	if( $gravityview_view->getAtts('lightbox') ) {
 		$link_atts .= "target='_blank' class='thickbox'";
 	}
 
@@ -74,11 +100,9 @@ $image = new GravityView_Image( $image_atts );
 
 
 /**
- * Modify the values used for the image meta.
- *
- * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
- *
- * @var array
+ * @filter `gravityview_post_image_meta` Modify the values used for the image meta.
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
+ * @var array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys
  */
 $image_meta = apply_filters('gravityview_post_image_meta', array(
 	'title' => array(
@@ -105,10 +129,9 @@ $image_meta = apply_filters('gravityview_post_image_meta', array(
 $wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
 
 /**
- * Whether to show labels for the image meta.
- *
- * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
- * @var boolean
+ * @filter `gravityview_post_image_meta_show_labels` Whether to show labels for the image meta.
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
+ * @var boolean $showlabels True: Show labels; False: hide labels
  */
 $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 

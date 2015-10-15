@@ -5,13 +5,25 @@
  */
 abstract class GravityView_FieldType {
 
-    //field form html name
+	/**
+	 * Field form html `name`
+	 *
+	 * @var string
+	 */
     protected $name;
 
-    // field settings
+	/**
+	 * Field settings
+	 *
+	 * @var array
+	 */
     protected $field;
 
-    // field current value
+	/**
+	 * Field current value
+	 *
+	 * @var mixed
+	 */
     protected $value;
 
     function __construct( $name = '', $field = array(), $curr_value = NULL ) {
@@ -39,6 +51,7 @@ abstract class GravityView_FieldType {
      * - desc       // option description
      * - value      // the option default value
      * - label      // the option label
+     * - left_label // In case of checkboxes, left label will appear on the left of the checkbox
      * - id         // the field id
      * - type       // the option type ( text, checkbox, select, ... )
      * - options    // when type is select, define the select options ('choices' is @deprecated)
@@ -90,6 +103,17 @@ abstract class GravityView_FieldType {
         return esc_html( trim( $this->field['label'] ) );
     }
 
+	/**
+	 * Retrieve field left label
+     *
+     * @since 1.7
+     *
+	 * @return string
+	 */
+	function get_field_left_label() {
+		return isset( $this->field['left_label'] ) ? esc_html( trim( $this->field['left_label'] ) ) : NULL;
+	}
+
     /**
      * Retrieve field label class
      * @return string
@@ -138,20 +162,20 @@ abstract class GravityView_FieldType {
     function render_setting( $override_input = NULL ) {
 
         if( !empty( $this->field['full_width'] ) ) : ?>
-            <td scope="row" colspan="2">
+            <th scope="row" colspan="2">
                 <div>
                     <label for="<?php echo $this->get_field_id(); ?>">
                         <?php echo $this->get_field_label() . $this->get_tooltip(); ?>
                     </label>
                 </div>
                 <?php $this->render_input( $override_input ); ?>
-            </td>
+            </th>
         <?php else: ?>
-            <td scope="row">
+            <th scope="row">
                 <label for="<?php echo $this->get_field_id(); ?>">
                     <?php echo $this->get_field_label() . $this->get_tooltip(); ?>
                 </label>
-            </td>
+            </th>
             <td>
                 <?php $this->render_input( $override_input ); ?>
             </td>

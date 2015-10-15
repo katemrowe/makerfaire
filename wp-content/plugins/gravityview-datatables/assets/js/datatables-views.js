@@ -12,6 +12,9 @@
 
 
 (function( $ ) {
+
+
+
 var gvDataTables = {
 
 	init: function() {
@@ -25,18 +28,17 @@ var gvDataTables = {
 			$.fn.dataTable.TableTools.buttons.pdf.fnCellRender = gvDataTables.customfnCellRender;
 		}
 
-        
-		
+
 		$('.gv-datatables').each( function( i, e ) {
 
 			var table =  $(this).DataTable( gvDTglobals[ i ] );
 
 			// init FixedHeader
-			if( gvDTFixedHeaderColumns[ i ].fixedheader.toString() === '1' ) {
+			if( i < gvDTFixedHeaderColumns.length && gvDTFixedHeaderColumns[ i ].fixedheader.toString() === '1' ) {
 				new $.fn.dataTable.FixedHeader( table );
 			}
 			// init FixedColumns
-			if( gvDTFixedHeaderColumns[ i ].fixedcolumns.toString() === '1' ) {
+			if(  i < gvDTFixedHeaderColumns.length && gvDTFixedHeaderColumns[ i ].fixedcolumns.toString() === '1' ) {
 				new $.fn.dataTable.FixedColumns( table );
 			}
 
@@ -44,28 +46,7 @@ var gvDataTables = {
 		});
 
 	},
-	initComplete: function () {
-        var api = this.api();
 
-        api.columns().indexes().flatten().each( function ( i ) {
-            var column = api.column( i );
-            var select = $('<select><option value=""></option></select>')
-                .appendTo( $(column.footer()).empty() )
-                .on( 'change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex(
-                        $(this).val()
-                    );
-
-                    column
-                        .search( val ? '^'+val+'$' : '', true, false )
-                        .draw();
-                } );
-
-            column.data().unique().sort().each( function ( d, j ) {
-                select.append( '<option value="'+d+'">'+d+'</option>' )
-            } );
-        } );
-    },
 	/**
 	 * Manipulate how TableTools format data imported from html
 	 *

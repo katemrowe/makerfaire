@@ -22,13 +22,15 @@ final class GravityView_Logging {
 	/**
 	 * Add integration with the Debug Bar plugin. It's awesome.
 	 *
-	 * @link http://wordpress.org/plugins/debug-bar/
+	 * @see http://wordpress.org/plugins/debug-bar/
 	 */
-	function add_debug_bar( $panels ) {
+	public function add_debug_bar( $panels ) {
 
-		if(!class_exists('Debug_Bar_Panel')) { return; }
+		if ( ! class_exists( 'Debug_Bar_Panel' ) ) {
+			return;
+		}
 
-		if(!class_exists('GravityView_Debug_Bar')) {
+		if ( ! class_exists( 'GravityView_Debug_Bar' ) ) {
 			include_once( GRAVITYVIEW_DIR . 'includes/class-debug-bar.php' );
 		}
 
@@ -46,34 +48,76 @@ final class GravityView_Logging {
 	    return $supported_plugins;
 	}
 
-	static function get_notices() {
+	/**
+	 * @static
+	 * @return array Array of notices (with `message`, `data`, and `backtrace` keys), if any
+	 */
+	public static function get_notices() {
 		return self::$notices;
 	}
 
-	static function get_errors() {
+	/**
+	 * @static
+	 * @return array Array of errors (with `message`, `data`, and `backtrace` keys), if any
+	 */
+	public static function get_errors() {
 		return self::$errors;
+	}
+
+	/**
+	 * Get the name of the function to print messages for debugging
+	 *
+	 * This is necessary because `ob_start()` doesn't allow `print_r()` inside it.
+	 *
+	 * @return string "print_r" or "var_export"
+	 */
+	static function get_print_function() {
+		if( ob_get_level() > 0 ) {
+			$function = 'var_export';
+		} else {
+			$function = 'print_r';
+		}
+
+		return $function;
 	}
 
 	static function log_debug( $message = '', $data = null ) {
 
-		self::$notices[] = array(
-			'message' => print_r( $message, true ),
-			'data' => $data
+		$function = self::get_print_function();
+
+		$notice = array(
+			'message' => $function( $message, true ),
+			'data' => $data,
+			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
+
+		if( !in_array( $notice, self::$notices ) ) {
+			self::$notices[] = $notice;
+		}
 
 		if ( class_exists("GFLogging") ) {
 			GFLogging::include_logger();
-	        GFLogging::log_message( 'gravityview', print_r( $message, true ) . print_r($data, true), KLogger::DEBUG );
+	        GFLogging::log_message( 'gravityview', $function( $message, true ) . $function($data, true), KLogger::DEBUG );
 	    }
 	}
 
 	static function log_error( $message = '', $data = null  ) {
 
-		self::$errors[] = array( 'message' => $message, 'data' => $data );
+		$function = self::get_print_function();
+
+		$error = array(
+			'message' => $message,
+			'data' => $data,
+			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
+		);
+
+		if( !in_array( $error, self::$errors ) ) {
+			self::$errors[] = $error;
+		}
 
 		if ( class_exists("GFLogging") ) {
 		    GFLogging::include_logger();
-		    GFLogging::log_message( 'gravityview', print_r( $message, true ) . print_r($data, true), KLogger::ERROR );
+		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ($data, true), KLogger::ERROR );
 		}
 	}
 

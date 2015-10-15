@@ -138,6 +138,7 @@ abstract class GV_DataTables_Extension {
 	 * Add Javascript specific config data based on admin settings
 	 */
 	function add_config( $dt_config, $view_id, $post  ) {
+
 		return $dt_config;
 	}
 

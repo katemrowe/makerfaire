@@ -26,7 +26,7 @@ class GravityView_Welcome {
 	/**
 	 * @var string The capability users should have to view the page
 	 */
-	public $minimum_capability = 'manage_options';
+	public $minimum_capability = 'gravityview_getting_started';
 
 	/**
 	 * Get things started
@@ -34,7 +34,7 @@ class GravityView_Welcome {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menus') );
+		add_action( 'admin_menu', array( $this, 'admin_menus'), 200 );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		add_action( 'admin_init', array( $this, 'welcome'    ) );
 		add_filter( 'gravityview_is_admin_page', array( $this, 'is_dashboard_page'), 10, 2 );
@@ -144,8 +144,8 @@ class GravityView_Welcome {
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
-		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
@@ -174,12 +174,12 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div style="text-align:center; padding-top: 1em;">
-			<h2>Read more articles on using GravityView</h2>
-			<p><a class="button button-primary button-hero" href="https://gravityview.co/support/documentation/?zen_section=200480627">Getting Started Articles</a></p>
-		</div>
-
 		<div class="wrap about-wrap">
+
+			<div style="text-align:center; padding-top: 1em;">
+				<h2>Read more articles on using GravityView</h2>
+				<p><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Getting Started Articles</a></p>
+			</div>
 
 			<div class="changelog"><h2 class="about-headline-callout">Configuring a View</h2></div>
 
@@ -193,26 +193,26 @@ class GravityView_Welcome {
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
 						<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
-						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong>, <strong>Listing</strong>, and <strong>DataTables</strong>.
+						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
 							<ul class="ul-square">
 								<li><strong>Table Views</strong> output entries as tables; a grid of data.</li>
 								<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
-								<li><strong>DataTables</strong> display entries in a dynamic table with advanced sorting capabilities provided by the <a href="http://datatables.net">DataTables</a> script.</li>
 							</ul>
 						</li>
+                        <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
 
 				<div class="last-feature">
 				<h2>Embed Views in Posts &amp; Pages</h2>
-					<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
+					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
 				</div>
 
 			</div>
 
 			<div class="feature-section clear">
-				<h2>Configure Mulitple Entry &amp; Single Entry Layouts</h2>
-				<p><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
+				<h2>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h2>
+				<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
 
 				<ul class="ul-disc">
 					<li>Click "+ Add Field" to add a field to a zone</li>
@@ -246,6 +246,7 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function changelog_screen() {
+
 	?>
 		<div class="wrap about-wrap">
 
@@ -253,396 +254,279 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
-				<h3>What's New</h3>
+				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
-				<div class="feature-section col two-col">
-					<div class="col-1">
-						<img src="<?php echo plugins_url( 'images/screenshots/delete-entry.png', GRAVITYVIEW_FILE ); ?>">
-						<h3 class="higher">Delete Entry Functionality</h3>
-						<p>Enable the new "Allow User Delete" setting to allow users to delete entries from the Edit Entry screen.</p>
-						<p>Once you enable User Delete, a "Delete" button will be displayed in the Edit Entry screen. You can also add a Delete Entry field to your View Configuration.</p>
-						<p><a href="https://gravityview.co/support/documentation/203458965/" class="button button-primary" rel="external">Learn How to Enable Delete Entry</a></p>
+				<div class="feature-section col two-col" style="margin-top:0">
+					<div class="col col-1">
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/caps.png', GRAVITYVIEW_FILE ); ?>" alt="Icons representing capabilities"></div>
+						<h4 class="higher">Capability Management</h4>
+						<p>Manage what users and roles have access to GravityView functionality. <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">See what capabilities are available</a>.</p>
+
+						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/get.png', GRAVITYVIEW_FILE ); ?>" alt=""></div>
+						<h4 class="higher">The <code>{get}</code> Merge Tag</h4>
+						<p>Pass data using URLs and create even more powerful integrations with GravityView. <a href="http://docs.gravityview.co/article/314-the-get-merge-tag">Learn how to use <code>{get}</code></a>.</p>
 					</div>
 
-					<div class="col-2 last-feature">
-						<img src="<?php echo plugins_url( 'images/screenshots/edit-tab.png', GRAVITYVIEW_FILE ); ?>">
-						<h3 class="higher">Edit Entry Configuration</h3>
-						<p>Starting in Version 1.5, you can choose which fields are editable in the Edit Entry screen.</p>
-						<p><a href="https://gravityview.co/support/documentation/203176225/" class="button button-primary" rel="external">Learn How to Configure Edit Entry</a></p>
+					<div class="col col-2 last-feature">
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/support-port.png', GRAVITYVIEW_FILE ); ?>" alt="The Support Port"></div>
+						<h4 class="higher">Support Port</h4>
+						<p>Users can easily search GravityView help docs. Administrators can use it to contact support. Just click the <img src="<?php echo plugins_url( 'assets/images/screenshots/beacon.png', GRAVITYVIEW_FILE ); ?>" width="16" alt="The Support Port icon looks like a question mark"> icon on GravityView screens to activate.</p>
 					</div>
 				</div>
 
 				<hr />
 
-				<h3>Changes in 1.5.3 (full list)</h3>
+				<h3>1.15 on October 15</h3>
 
 				<ul>
-					<li>Fixed: When adding more than 100 fields to the View some fields weren't saved.</li>
-					<li>Fixed: Do not set class tickbox for non-images files</li>
-					<li>Fixed: Display label "Is Fulfilled" on the search bar</li>
-					<li>Tested with Gravity Forms 1.9beta5 and WordPress 4.1</li>
-					<li>Fixed: PHP Notice with Gravity Forms 1.9 and PHP 5.4+</li>
-					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a> and Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>. Thanks!</li>
+					<li>Added: <code>{get}</code> Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. <a href="http://docs.gravityview.co/article/314-the-get-merge-tag">Learn how this works</a>.
+
+						<ul>
+							<li>Example: When adding <code>?first-name=Floaty</code> to a URL, the Custom Content <code>My name is {get:first-name}</code> would be replaced with <code>My name is Floaty</code></li>
+						</ul>
+					</li>
+					<li>Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">Learn more</a>.
+
+						<ul>
+							<li>Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"</li>
+							<li>Only add the Approve Entries column if user has the <code>gravityview_moderate_entries</code> capability (defaults to Editor role or higher)</li>
+							<li>Fixed: Contributors now have access to the GravityView "Getting Started" screen</li>
+						</ul>
+					</li>
+					<li>Added: <code>[gv_entry_link]</code> shortcode to link directly to an entry. <a href="http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes">Learn more</a>.
+
+						<ul>
+							<li>Existing <code>[gv_delete_entry_link]</code> and <code>[gv_edit_entry_link]</code> shortcodes will continue to work</li>
+						</ul>
+					</li>
+					<li>Added: Ability to filter View by form in the Admin. <a href="http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard">Learn more</a>.</li>
+					<li>Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. <a href="http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled">Learn more</a>.</li>
+					<li>Added: New support "Beacon" to easily search documentation and ask support questions</li>
+					<li>Added: Clear search button to the Search Widget (WP widget)</li>
+					<li>Fixed: <code>number_format()</code> PHP warning on blank Number fields</li>
+					<li>Fixed: <code>{created_by}</code> merge tags weren't being escaped using <code>esc_html()</code></li>
+					<li>Fixed: Checkmark icons weren't always available when displaying checkbox input field</li>
+					<li>Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected</li>
+					<li>Fixed: Only process "Create" Gravity Forms User Registration Addon feeds, by default the user role and the user display name format persist</li>
+					<li>Fixed: Error with List field  <code>Call to undefined method GF_Field::get_input_type()</code></li>
+					<li>Fixed: BuddyPress/bbPress <code>bbp_setup_current_user()</code> warning</li>
+					<li>Fixed: <code>gravityview_is_admin_page()</code> wasn't recognizing the Settings page as a GravityView admin page</li>
+					<li>Fixed: Custom Content Widgets didn't replace Merge Tags</li>
+					<li>Fixed: PHP Warnings</li>
+					<li>Fixed: WordPress Multisite fatal error when Gravity Forms not Network Activated</li>
+					<li>Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway</li>
+					<li>Tweak: Entry notes are now created using <code>GravityView_Entry_Notes</code> class</li>
+					<li>Tweak: Improved automated code testing</li>
+					<li>Tweak: Added <code>gravityview/support_port/display</code> filter to enable/disable displaying Support Port</li>
+					<li>Tweak: Added <code>gravityview/support_port/show_profile_setting</code> filter to disable adding the Support Port setting on User Profile pages</li>
+					<li>Tweak: Removed <code>gravityview/admin/display_live_chat</code> filter</li>
+					<li>Tweak: Removed <code>gravityview_settings_capability</code> filter</li>
+					<li>Tweak: Escape form name in dropdowns</li>
 				</ul>
 
 
-				<h3>Changes in 1.5.2 (full list)</h3>
+				<h3>1.14.2 &amp; 1.14.3 on September 17</h3>
+				<ul>
+					<li>Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.</li>
+				</ul>
+
+				<h3>1.14.1 on September 16</h3>
+				<ul>
+					<li>Fixed: Error with older versions of Maps Premium View</li>
+				</ul>
+
+				<h3>1.14 on September 16</h3>
 
 				<ul>
-					<li>Added: Possibility to show the label of Dropdown field types instead of the value (<a href="https://gravityview.co/support/documentation/202889199/" title="How to display the text label (not the value) of a dropdown field?">learn more</a>)</li>
-					<li>Fixed: Sorting numeric columns (field type number)</li>
-					<li>Fixed: View entries filter for Featured Entries extension</li>
-					<li>Fixed: Field options showing delete entry label</li>
-					<li>Fixed: PHP date formatting now keeps backslashes from being stripped</li>
-					<li>Modified: Allow license to be defined in <code>wp-config.php</code> (<a href="https://gravityview.co/support/documentation/202870789/">Read how here</a>)</li>
-					<li>Modified: Added <code>$post_id</code> parameter as the second argument for the <code>gv_entry_link()</code> function. This is used to define the entry's parent post ID.</li>
-					<li>Modified: Moved <code>GravityView_API::get_entry_id_from_slug()</code> to <code>GVCommon::get_entry_id_from_slug()</code></li>
-					<li>Modified: Added second parameter to <code>gravityview_get_entry()</code>, which forces the ability to fetch an entry by ID, even if custom slugs are enabled and <code>gravityview_custom_entry_slug_allow_id</code> is false.</li>
+					<li>Added: Search Bar now supports custom label text</li>
+					<li>Added: Show the value of a single column of a "Multiple Columns" List field</li>
+					<li>Added: Sorting by time now works. Why is this "Added" and not "Fixed"? Because Gravity Forms doesn't natively support sorting by time!</li>
+					<li>Added: Display the roles of the entry creator by using <code>{created_by:roles}</code> Merge Tag</li>
+					<li>Fixed: Field containers were being rendered even when empty</li>
+					<li>Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes</li>
+					<li>Fixed: Don't show "Width %" setting when in Single Entry configuration</li>
+					<li>Fixed: Error in extension class that assumes GravityView is active</li>
+					<li>Fixed: Add check for <code>{all_fields_display_empty}</code> Gravity Forms merge tag</li>
+					<li>Fixed: Hide metabox until View Data Source is configured</li>
+					<li>Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter</li>
+					<li>Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)</li>
+					<li>Fixed: Conflict with other icon fonts in the Dashboard</li>
+					<li>Fixed: Allow HTML in Source URL "Link Text" field setting</li>
+					<li>Fixed: Gravity Forms User Registration Addon conflicts
+						<ul>
+							<li>When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings</li>
+							<li>Users receive "Password Updated" emails in WordPress 4.3+, even if the password wasn't changed</li>
+						</ul>
+					</li>
+					<li>Tweak: Support for plugin banner images in the plugin changelog screen</li>
+					<li>Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"</li>
+					<li>Tweak: Sort user dropdown by display name instead of username</li>
+					<li>Tweak: Reduce size of AJAX responses</li>
+					<li>Tweak: Add "Template" column to the All Views list table - now you can better see what template is being used</li>
+					<li>Tweak: Remove redundant close icon for field and widget settings</li>
+					<li>Tweak: When adding notes via GravityView, set the note type to <code>gravityview</code> to allow for better searchability</li>
+					<li>Added: Automated code testing</li>
+				</ul>
+
+				<h3>1.13.1 on August 26</h3>
+
+				<ul>
+					<li>Fixed: Potential XSS security issue. <strong>Please update.</strong></li>
+					<li>Fixed: The cache was not being reset properly for entry changes, including:
+
+						<ul>
+							<li>Starring/unstarring</li>
+							<li>Moving to/from the trash</li>
+							<li>Changing entry owner</li>
+							<li>Being marked as spam</li>
+						</ul>
+					</li>
+					<li>Fixed: Delete entry URL not properly passing some parameters (only affecting pages with multiple <code>[gravityview]</code> shortcodes)</li>
+					<li>Added: <code>gravityview/delete-entry/mode</code> filter. When returning "trash", "Delete Entry" moves entries to the trash instead of permanently deleting them.</li>
+					<li>Added: <code>gravityview/admin/display_live_chat</code> filter to disable live chat widget</li>
+					<li>Added: <code>gravityview/delete-entry/message</code> filter to modify the "Entry Deleted" message content</li>
+					<li>Tweak: Improved license activation error handling by linking to relevant account functions</li>
+					<li>Tweak: Added settings link to plugin page actions</li>
+					<li>Tweak: Improved code documentation</li>
 					<li>Updated Translations:
+
 						<ul>
 							<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
-							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
-							<li>Mexican Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
+							<li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
 						</ul>
 					</li>
+					<li>New: Released a new <a href="http://codex.gravityview.co">GravityView Codex</a> for developers</li>
 				</ul>
 
-
-				<h3>Changes in 1.5.1 (full list)</h3>
-
-				<ul>
-					<li>Added: Delete Entry functionality!
-					<strong>  - New "User Delete" setting:</strong> allow the user who created an entry to delete it
-
-					<ul>
-					<li>Adds a "Delete" link in the Edit Entry form</li>
-					<li>Added a new "Delete Link" Field to the Field Picker</li>
-					</ul>
-					</li>
-					<li>Fixed: DataTables Extension hangs when a View has Custom Content fields</li>
-					<li>Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results</li>
-					<li>Fixed: Search Bar - supports "Match Any" search mode by default (<a href="https://gravityview.co/support/documentation/202722979/" title="How do I modify the Search mode?">learn more</a>)</li>
-					<li>Fixed: Single Entry View title when view is embedded</li>
-					<li>Fixed: Refresh the results cache when an entry is deleted or is approved/disapproved</li>
-					<li>Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them</li>
-					<li>Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated</li>
-					<li>Fixed: Incorrect link shortening for domains when it is second-level (for example, <code>example.co.uk</code> or <code>example.gov.za</code>)</li>
-					<li>Fixed: Cached directory link didn't respect page numbers</li>
-					<li>Fixed: Edit Entry Admin Bar link wouldn't work when using Custom Entry Slug</li>
-					<li>Added: Textarea field now supports an option to trim the number of words shown</li>
-					<li>Added: Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object (<a href="https://gravityview.co/support/documentation/202705059/" title="Read the support doc for the filter">learn more</a>)</li>
-					<li>Updated: Portuguese translation (thanks <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a>), Mexican translation (thanks, <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>), Turkish translation (thanks <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>)</li>
-				</ul>
-
-				<h3>Changes in 1.5 (full list)</h3>
+				<h3>1.13 on August 18</h3>
 
 				<ul>
-					<li>Added: New "Edit Entry" configuration
+					<li>Fixed: Wildcard search broken for Gravity Forms 1.9.12+</li>
+					<li>Fixed: Edit Entry validation messages not displaying for Gravity Forms 1.9.12+</li>
+					<li>Added: Number field settings
+
 						<ul>
-							<li>Configure which fields are shown when editing an entry</li>
-							<li>Set visibility for the fields (Entry Creator, Administrator, etc.)</li>
-							<li>Set custom edit labels</li>
+							<li>Format number: Display numbers with thousands separators</li>
+							<li>Decimals: Precision of the number of decimal places. Leave blank to use existing precision.</li>
 						</ul>
 					</li>
-					<li>Fixed: Single entry view now respects View settings
+					<li>Added: <code>detail</code> parameter to the <code>[gravityview]</code> shortcode. <a href="http://docs.gravityview.co/article/73-using-the-shortcode#detail-parameter">Learn more</a></li>
+					<li>Added: <code>context</code> parameter to the <code>[gvlogic]</code> shortcode to show/hide content based on current mode (Multiple Entries, Single Entry, Edit Entry). <a href="http://docs.gravityview.co/article/252-gvlogic-shortcode#context">Learn more</a></li>
+					<li>Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view using the <code>gravityview/edit_entry/pre_populate/override</code> filter</li>
+					<li>Added: "Edit View" link in the Toolbar when on an embedded View screen</li>
+					<li>Added: <code>gravityview_is_hierarchical</code> filter to enable defining a Parent View</li>
+					<li>Added: <code>gravityview/merge_tags/do_replace_variables</code> filter to enable/disable replace_variables behavior</li>
+					<li>Added: <code>gravityview/edit_entry/verify_nonce</code> filter to override nonce validation in Edit Entry</li>
+					<li>Added: <code>gravityview_strip_whitespace()</code> function to strip new lines, tabs, and multiple spaces and replace with single spaces</li>
+					<li>Added: <code>gravityview_ob_include()</code> function to get the contents of a file using combination of <code>include()</code> and <code>ob_start()</code></li>
+					<li>Fixed: Edit Entry link not showing for non-admins when using the DataTables template</li>
+					<li>Fixed: Cache wasn't being used for <code>get_entries()</code></li>
+					<li>Fixed: Extension class wasn't properly checking requirements</li>
+					<li>Fixed: Issue with some themes adding paragraphs to Javascript tags in the Edit Entry screen</li>
+					<li>Fixed: Duplicated information in the debugging logs</li>
+					<li>Updated: "Single Entry Title" and "Back Link Label" settings now support shortcodes, allowing for you to use <a href="http://docs.gravityview.co/article/252-gvlogic-shortcode"><code>[gvlogic]</code></a></li>
+					<li>Updated: German and Portuguese translations</li>
+				</ul>
+
+				<h3>1.12 on August 5</h3>
+
+				<ul>
+					<li>Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget</li>
+					<li>Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates</li>
+					<li>Fixed: Empty Product fields would show a string (", Qty: , Price:") instead of being empty. This prevented "Hide empty fields" from working</li>
+					<li>Fixed: When searching on the Entry Created date, the date used GMT, not blog timezone</li>
+					<li>Fixed: Issue accessing settings page on Multisite</li>
+					<li>Fixed: Don't show View post types if GravityView isn't valid</li>
+					<li>Fixed: Don't redirect to the List of Changes screen if you've already seen the screen for the current version</li>
+					<li>Fixed: When checking license status, the plugin can now fix PHP warnings caused by other plugins that messed up the requests</li>
+					<li>Fixed: In Multisite, only show notices when it makes sense to</li>
+					<li>Added: <code>gravityview/common/sortable_fields</code> filter to override which fields are sortable</li>
+					<li>Tweak: Extension class added ability to check for required minimum PHP versions</li>
+					<li>Tweak: Made the <code>GravityView_Plugin::$theInstance</code> private and renamed it to <code>GravityView_Plugin::$instance</code>. If you're a developer using this, please use <code>GravityView_Plugin::getInstance()</code> instead.</li>
+					<li>Updated: French translation</li>
+				</ul>
+
+				<h3>1.11.2 on July 22</h3>
+
+				<ul>
+					<li>Fixed: Bug when comparing empty values with <code>[gvlogic]</code></li>
+					<li>Fixed: Remove extra whitespace when comparing values using <code>[gvlogic]</code></li>
+					<li>Modified: Allow Avada theme Javascript in "No-Conflict Mode"</li>
+					<li>Updated: French translation</li>
+				</ul>
+
+
+				<h3>1.11.1 on July 20</h3>
+
+				<ul>
+					<li>Added: New filter hook to customise the cancel Edit Entry link: <code>gravityview/edit_entry/cancel_link</code></li>
+					<li>Fixed: Extension translations</li>
+					<li>Fixed: Dropdown inputs with long field names could overflow field and widget settings</li>
+					<li>Modified: Allow Genesis Framework CSS and Javascript in "No-Conflict Mode"</li>
+					<li>Updated: Danish translation (thanks <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a>!) and German translation</li>
+				</ul>
+
+
+				<h3>1.11 on July 15</h3>
+
+				<ul>
+					<li>Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on</li>
+					<li>Fixed: Removed User Registration Add-on validation when updating an entry</li>
+					<li>Fixed: Field custom class not showing correctly on the table header</li>
+					<li>Fixed: Editing Time fields wasn't displaying saved value</li>
+					<li>Fixed: Conflicts with the date range search when search inputs are empty</li>
+					<li>Fixed: Conflicts with the Other Entries field when placing a search:
+
 						<ul>
-							<li>If an entry isn't included in View results, the single entry won't be available either</li>
-							<li>If "Show Only Approved" is enabled, prevent viewing of unapproved entries</li>
-							<li>Respects View filters, including those added by the Advanced Filtering extension</li>
+							<li>Developer note: the filter hook <code>gravityview/field/other_entries/args</code> was replaced by "gravityview/field/other_entries/criteria". If you are using this filter, please <a href="mailto:support@gravityview.co">contact support</a> before updating so we can help you transition</li>
 						</ul>
 					</li>
-					<li>Fixed: Single entry Go back button context on Embedded Views</li>
-					<li>Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)</li>
-					<li>Fixed: Gravity Forms tooltip translations being overridden</li>
-					<li>Added: Choose to open the link from a website field in the same window (field option)</li>
+					<li>Updated: Turkish translation (thanks <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>!) and Mexican translation (thanks <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>!)</li>
 				</ul>
 
 
-				<h3>Changes in 1.4 (full list)</h3>
+				<h3>1.10 on June 25</h3>
 
 				<ul>
-					<li>Added: Custom entry slug capability. Instead of <code>/entry/123</code>, you can now use entry values in the URL, like <code>/entry/{company name}/</code> or <code>/entry/{first name}-{last name}/</code>. Requires some customization; <a href="https://gravityview.co/support/documentation/202239919">learn more here</a></li>
-					<li>Fixed: GravityView auto-updater script not showing updates</li>
-					<li>Fixed: Edit Entry when a form has required Upload Fields</li>
-					<li>Fixed: "Return to Directory" link not always working for sites in subdirectories</li>
-					<li>Fixed: Broken links to single entries when viewing paginated results</li>
-					<li>Fixed: Loaded field configurations when using "Start Fresh" presets</li>
-					<li>Fixed: Searches ending in a space caused PHP warning</li>
-					<li>Fixed: Custom "Edit Link Text" settings respected</li>
-					<li>Fixed: Don't rely on Gravity Forms code for escaping query</li>
-					<li>Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.</li>
-					<li>Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published</li>
-					<li>Tweak: Search Bar "Links" Input Type
-
-					<ul>
-					<li>Make link bold when filter is active</li>
-					<li>Clicking on an active filter removes the filter</li>
-					</ul>
-					</li>
-					<li>Tweak: Fixed updates for Multisite installations</li>
-					<li>Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the <code>post_id</code> parameter. This accepts the ID of the page where the View is embedded.</li>
-					<li>Modified: Added <code>$add_pagination</code> parameter to <code>GravityView_API::directory_link()</code></li>
-					<li>Added: Indonesian translation (thanks, <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>)!</li>
-					<li>Updated: Swedish translation 100% translated - thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>!</li>
-					<li>Updated: Dutch translation (thanks, <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>)!</li>
+					<li>Update: Due to the new Edit Entry functionality, GravityView now requires Gravity Forms 1.9 or higher</li>
+					<li>Fixed: Editing Hidden fields restored</li>
+					<li>Fixed: Edit Entry and Delete Entry may not always show in embedded Views</li>
+					<li>Fixed: Search Bar "Clear" button Javascript warning in Internet Explorer</li>
+					<li>Fixed: Edit Entry styling issues with input sizes. Edit Entry now uses 100% Gravity Forms styles.</li>
+					<li>Added: <code>[gv_edit_entry_link]</code> and <code>[gv_delete_entry_link]</code> shortcodes. <a href="http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes">Read how to use them</a></li>
 				</ul>
 
-				<h3>Changes in 1.3 (full list)</h3>
+				<h3>1.9.1 on June 24</h3>
 
 				<ul>
-				<li>Speed improvements - <a href="https://gravityview.co/support/documentation/202827685/">Learn more about GravityView caching</a>
-
-				<ul>
-				<li>Added caching functionality that saves results to be displayed</li>
-				<li>Automatically clean up expired caches</li>
-				<li>Reduce number of lookups for where template files are located</li>
-				<li>Store the path to the permalink for future reference when rendering a View</li>
-				<li>Improve speed of Gravity Forms fetching field values</li>
-				</ul>
-				</li>
-				<li>Modified: Allow <code>{all_fields}</code> and <code>{pricing_fields}</code> Merge Tags in Custom Content field. <a href="https://gravityview.co/support/documentation/201874189/">See examples of how to use these fields</a>.</li>
-				<li>Fixed: Message restored when creating a new View</li>
-				<li>Fixed: Searching advanced input fields</li>
-				<li>Fixed: Merge Tags available immediately when adding a new field</li>
-				<li>Fixed: Issue where jQuery Cookie script wouldn't load due to <code>mod_security</code> issues. <a href="http://docs.woothemes.com/document/jquery-cookie-fails-to-load/">Learn more here</a></li>
-				<li>Fixed (hopefully): Auto-updates for WordPress Multisite</li>
-				<li>Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page</li>
-				<li>Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field</li>
-				<li>Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled</li>
-				<li>Fixed: PHP warnings related to Section field descriptions</li>
-				<li>Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
-
-				<ul>
-				<li>Added: <code>gravityview_search_field_label</code> filter to allow modifying search bar labels</li>
-				</ul>
-				</li>
-				<li>Fixed: Field label disappears on closing settings if the field title is empty</li>
-				<li>Fixed: Sub-fields retain label after opening field settings in the View Configuration</li>
-				<li>Modified: Allow passing an array of form IDs to <code>gravityview_get_entries()</code></li>
-				<li>Tweak: If the View hasn't been configured yet, don't show embed shortcode in Publish metabox</li>
-				<li>Tweak: Add version info to scripts and styles to clear caches with plugin updates</li>
-				<li>Added: Swedish translation (thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>)!</li>
-				<li>Updated: Spanish (Mexican) translation by, <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, Dutch translation by <a href="https://www.transifex.com/accounts/profile/erikvanbeek/">@erikvanbeek</a>, and Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
-				<li>Updated: Changed Turkish language code from <code>tr</code> to <code>tr_TR</code> to match WordPress locales</li>
+					<li>Fixed: Allow "Admin Only" fields to appear in Edit Entry form</li>
 				</ul>
 
-
-				<h3>Changes in 1.2 (full list)</h3>
+				<h3>1.9 on June 23</h3>
 
 				<ul>
-					<li>Added: New Search Bar!
+					<li>Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
+
 						<ul>
-							<li>No longer check boxes in each field to add a field to the search form</li>
-							<li>Add any searchable form fields, not just fields added to the View</li>
-							<li>Easy new drag &amp; drop way to re-order fields</li>
-							<li>Horizontal and Vertical layouts</li>
-							<li>Choose how your search fields are displayed (if you have a checkbox field, for example, you can choose to have a drop-down, a multiselect field, checkboxes, radio buttons, or filter links)</li>
-							<li>Existing search settings will be migrated over on upgrade</li>
+							<li>Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration</li>
+							<li>Edit Entry supports <a href="https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/">Gravity Forms CSS Ready Classes</a> - the layout you have configured for your form will be used for Edit Entry, too.</li>
+							<li>If you customized the CSS of your Edit Entry layout, <strong>you will need to update your stylesheet</strong>. Sorry for the inconvenience!</li>
+							<li>If visiting an invalid Edit Entry link, you are now provided with a back link</li>
+							<li>Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new <code>gravityview/edit-entry/hide-product-fields</code> filter</li>
 						</ul>
 					</li>
-					<li>Added: "Custom Content" field type
-						<ul>
-							<li>Insert arbitrary text or HTML in a View</li>
-							<li>Supports shortcodes (including Gravity Forms shortcodes)!</li>
-						</ul>
-					</li>
-					<li>Added: Support for Gravity Forms Section &amp; HTML field types</li>
-					<li>Added: Improved textarea field support. Instead of using line breaks,textareas now output with paragraphs.
-						<ul>
-							<li>Added new <code>/templates/fields/textarea.php</code> file</li>
-						</ul>
-					</li>
-					<li>Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.</li>
-					<li>Added: Option to disable "Map It" link for the full Address field.
-						<ul>
-							<li>New <code>gravityview_get_map_link()</code> function with <code>gravityview_map_link</code> filter. To learn how to modify the map link, <a href="https://gravityview.co/support/documentation/201608159">refer to this how-to article</a></li>
-							<li>The "Map It" string is now translatable</li>
-						</ul>
-					</li>
-					<li>Added: When editing a View, there are now links in the Data Source box to easily access the Form: edit form, form entries, form settings and form preview</li>
-					<li>Added: Additional information in the "Add Field" or "Add Widget" picker (also get details about an item by hovering over the name in the View Configuration)</li>
-					<li>Added: Change Entry Creator functionality. Easily change the creator of an entry when editing the entry in the Gravity Forms Edit Entry page
-
-					<ul>
-					<li>If you're using the plugin downloaded from <a href="https://gravityview.co/support/documentation/201991205/">the how-to page</a>, you can de-activate it</li>
-					</ul>
-					</li>
-					<li>Modified: Changed translation textdomain to <code>gravityview</code> instead of <code>gravity-view</code></li>
-					<li>Modified: Always show label by default, regardless of whether in List or Table View type</li>
-					<li>Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in <a href="http://gravityview.co/support/documentation/202551113/">the override documentation</a> to learn more.</li>
-					<li>Modified: File Upload field output no longer run through <code>wpautop()</code> function</li>
-					<li>Modified: Audio and Video file uploads are now displayed using WordPress' built-in <a href="http://codex.wordpress.org/Audio_Shortcode">audio</a> and <a href="http://codex.wordpress.org/Video_Shortcode">video</a> shortcodes (requires WordPress 3.6 or higher)
-						<ul>
-							<li>Additional file type support</li>
-							<li>Added <code>gravityview_video_settings</code> and <code>gravityview_audio_settings</code> filters to modify the parameters passed to the shortcode</li>
-						</ul>
-					</li>
-					<li>Fixed: Shortcode attributes not overriding View defaults</li>
-					<li>Fixed: Uploading and deleting files works properly in Edit Entry mode</li>
-					<li>Fixed: Configurations get truncated when configuring Views with many fields</li>
-					<li>Fixed: Empty <code>&lt;span class="gv-field-label"&gt;</code> tags no longer output
-						<ul>
-							<li>Modified: <code>gv_field_label()</code> no longer returns the label with a trailing space. Instead, we use the <code>.gv-field-label</code> CSS class to add spacing using CSS padding.</li>
-						</ul>
-					</li>
-					<li>Fixed: Conflict with Relevanssi plugin</li>
-					<li>Fixed: If a date search isn't valid, remove the search parameter so it doesn't cause an error in Gravity Forms</li>
-					<li>Fixed: Email field was displaying label even when email was empty.</li>
-					<li>Settings page improvements
-						<ul>
-							<li>When changing the license value and saving the form, GravityView now re-checks the license status</li>
-							<li>Improved error messages</li>
-							<li>Made license settings translatable</li>
-						</ul>
-					</li>
-					<li>Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.</li>
-					<li>Updated list of allowed image formats to include <code>.bmp</code>, <code>.jpe</code>, <code>.tiff</code>, <code>.ico</code></li>
-					<li>Modified: <code>/templates/fields/fileupload.php</code> file - removed the logic for how to output the different file types and moved it to the <code>gravityview_get_files_array()</code> function in <code>includes/class-api.php</code></li>
-					<li>Modified: <code>gv_value()</code> no longer needs the <code>$field</code> parameter</li>
-					<li>Tweak: Fixed email setting description text.</li>
-					<li>Tweak: Don't show Entry Link field output on single entry</li>
-					<li>Tweak: Improved Javascript performance in the Admin</li>
-					<li>Tweak: "Custom Label" is now shown as the field title in View Configuration</li>
-					<li>Tweak: Fixed "Left Footer" box not properly cleared</li>
-					<li>Tweak: Show warning if the Directory plugin is running</li>
-					<li>Tweak: Use icon font in Edit Entry mode for the download/delete file buttons. Now stylable using <code>.gv-edit-entry-wrapper .dashicons</code> CSS class.</li>
-					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>, Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>, Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
+					<li>Added: Define column widths for fields in each field's settings (for Table and DataTable View Types only)</li>
+					<li>Added: <code>{created_by}</code> Merge Tag that displays information from the creator of the entry (<a href="http://docs.gravityview.co/article/281-the-createdby-merge-tag">learn more</a>)</li>
+					<li>Added: Edit Entry field setting to open link in new tab/window</li>
+					<li>Added: CSS classes to the Update/Cancel/Delete buttons (<a href="http://docs.gravityview.co/article/63-css-guide#edit-entry">learn more</a>)</li>
+					<li>Fixed: Shortcodes not processing properly in DataTables Extension</li>
+					<li>Tweak: Changed support widget to a Live Chat customer support and feedback form widget</li>
 				</ul>
 
-				<h3>What changed in 1.1.6</h3>
-				<ul>
-					<li><img src="<?php echo plugins_url( 'images/screenshots/single-entry-link.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots alignright" />A link icon is shown when a field is being used as a link to the Single Entry mode (see screenshot)</li>
-					<li>Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)</li>
-					<li>Email addresses are now encrypted by default to prevent spammers</li>
-					<li>Fixed: License Activation works when No-Conflict Mode is enabled</li>
-					<li>Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button</li>
-					<li>Fixed: Recognize single entry when using WordPress "Default" Permalink setting</li>
-					<li>Fixed: Edit Entry issues
-						<ul>
-							<li>Fixed form validation errors when a scheduled form has expired and also when a form has reached its entry limit</li>
-							<li>Fixed PHP warning messages when editing entries</li>
-							<li>When an Edit Entry form is submitted and there are errors, the submitted values stay in the form; the user won't need to fill in the form again.</li>
-						</ul>
-					</li>
-					<li>Added: Email field settings
-						<ul>
-							<li>Added option to display email plaintext or as a link</li>
-							<li>Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled</li>
-						</ul>
-					</li>
-					<li>Source URL field settings, including show as a link and custom link text</li>
-					<li>Fixed: Empty truncated URLs no longer get shown</li>
-					<li>Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time</li>
-					<li>Fixed: Product sub-fields (Name, Quantity &amp; Price) displayed properly</li>
-					<li>Fixed: Empty entry display when using Job Board preset caused by incorrect template files being loaded</li>
-					<li>Fixed: Files now can be deleted when a non-administrator is editing an entry</li>
-					<li>Fixed: PHP Notices on Admin Views screen for users without edit all entries capabilities</li>
-					<li>Modified: Added ability to customize and translate the Search Bar's date picker. You can now fully customize the date picker.</li>
-					<li>Tweak: Added helper text when a new form is created by GravityView</li>
-					<li>Tweak: Renamed "Description" drop zone to "Other Fields" to more accurately represent use</li>
-					<li>Tweak: Remove all fields from a zone by holding down the Alt key while clicking the remove icon</li>
-					<li><strong>And much more!</strong> See <a href="<?php echo plugins_url('readme.txt', GRAVITYVIEW_FILE ); ?>">the full plugin changelog</a> for more information.</li>
-				</ul>
+				<p style="text-align: center">
+					<a href="https://gravityview.co/changelog/" class="aligncenter button button-secondary button-hero" style="margin: 0 auto; display: inline-block;">View All Changes</a>
+				</p>
 
-
-				<h3>What changed in 1.1.5</h3>
-				<ul>
-					<li>Added: New "Edit" link in Gravity Forms Entries screen - allows you to easily access the Edit screen for an entry.</li>
-					<li>Fixed: Show tooltips when No Conflict Mode is enabled</li>
-					<li>Fixed: Merge Vars for labels in Single Entry table layouts</li>
-					<li>Fixed: Duplicate "Edit Entry" fields in field picker</li>
-					<li>Fixed: Custom date formatting for Date Created field</li>
-					<li>Fixed: Searching full names or addresses now works</li>
-					<li>Fixed: Custom CSS classes are now added to cells in table-based Views</li>
-					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
-				</ul>
-
-				<h3>What changed in 1.1.4</h3>
-				<ul>
-					<li>Fixed: Sort &amp; Filter box not displaying</li>
-					<li>Fixed: Multi-select fields now display as drop-down field instead of text field in the search bar widget</li>
-					<li>Fixed: Edit Entry now compatibile with Gravity Forms forms when "No Duplicates" is enabled</li>
-				</ul>
-
-				<h3>What changed in 1.1.3</h3>
-				<ul>
-					<li>Fixed: Fatal error on activation when running PHP 5.2</li>
-					<li>Fixed: PHP notice when in No-Conflict mode</li>
-				</ul>
-
-				<h3>What changed in 1.1.2</h3>
-				<ul>
-					<li>Added: Extensions framework to allow for extensions to auto-update</li>
-					<li>Fixed: Entries not displaying in Visual Composer plugin editor</li>
-					<li>Fixed: Allow using images as link to entry</li>
-					<li>Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)</li>
-					<li>Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error</li>
-					<li>Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)</li>
-					<li>Fixed: Improved style for Edit Entry mode</li>
-					<li>Fixed: Editing entry updates the Approved status</li>
-					<li>New translations - thank you, everyone!
-						<ul>
-							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
-							<li>Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
-							<li>Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
-						</ul>
-					</li>
-				</ul>
-
-				<h3>What changed in 1.1.1</h3>
-
-				<ul>
-					<li><strong>We fixed license validation and auto-updates</strong>. Sorry for the inconvenience of having to re-download the plugin!</li>
-					<li>Added: View Setting to allow users to edit only entries they created.</li>
-					<li>Fixed: Could not edit an entry with Confirm Email fields</li>
-					<li>Fixed: Field setting layouts not persisting</li>
-					<li>Updated: Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
-					<li>Fixed: Logging re-enabled in Admin</li>
-					<li>Tweak: Added links to View Type picker to live demos of presets.</li>
-					<li>Tweak: Added this "List of Changes" tab.</li>
-				</ul>
-
-				<h3>What changed in 1.1</h3>
-				<ul>
-					<li>Refactored (re-wrote) View data handling. Now saves up to 10 queries on each page load.</li>
-					<li>Fixed: Infinite loop for rendering <code>post_content</code> fields</li>
-					<li>Fixed: Page length value now respected for DataTables</li>
-					<li>Fixed: Formatting of DataTables fields is now processed the same way as other fields. Images now work, for example.</li>
-					<li>Modified: Removed redundant <code>gravityview_hide_empty_fields</code> filters</li>
-					<li>Fixed/Modified: Enabled <q>wildcard</q> search instead of strict search for field searches.</li>
-					<li>Added: <code>gravityview_search_operator</code> filter to modify the search operator used by the search.</li>
-					<li>Added: <code>gravityview_search_criteria</code> filter to modify all search criteria before being passed to Gravity Forms</li>
-					<li>Added: Website Field setting to display shortened link instead of full URL</li>
-					<li>Fixed: Form title gets replaced properly in merge tags</li>
-					<li>Modified: Tweaked preset templates</li>
-				</ul>
-
-
-				<h3>What changed in 1.0.9</h3>
-				<div class="alignright">
-					<img src="<?php echo plugins_url( 'images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
-					<p class="howto" style="text-align:center;">New Buttons form Gravity Forms</p>
-				</div>
-				<ul>
-					<li>Added: Time field support, with date format default and options</li>
-					<li>Added: <q>Event Listings</q> View preset</li>
-					<li>Added: <q>Show Entry On Website</q> Gravity Forms form button. This is meant to be an opt-in checkbox that the user sees and can control, unlike the <q>Approve/Reject</q> button, which is designed for adminstrators to manage approval.</li>
-					<li>Improved horizontal search widget layout</li>
-					<li>Fixed: Only show Edit Entry link to logged-in users</li>
-					<li>Updated: Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a> (100% coverage, thank you!)</li>
-				</ul>
-
-				<h3>What changed in 1.0.8</h3>
-				<ul>
-					<li><img src="<?php echo plugins_url( 'images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots alignright" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
-						<ul>
-							<li>For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we&#39;ll be adding refined controls over who can edit which entries.</li>
-							<li>It supports modifying existing Entry uploads and the great Multiple-File Upload field.</li>
-						</ul>
-					</li>
-					<li>Fixed: Insert View embed code now works again</li>
-					<li>Fixed: Filtering by date now working</li>
-				</ul>
 				<div class="clear"></div>
 			</div>
 
@@ -666,18 +550,18 @@ class GravityView_Welcome {
 
 			<div class="feature-section col two-col">
 
-				<div>
+				<div class="col">
 					<h2>Zack Katz</h2>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
-					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'images/zack.png', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
+					<p><img style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife (and cat) in Denver, Colorado.</p>
 					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
 				</div>
 
-				<div class="last-feature">
+				<div class="col last-feature">
 					<h2>Luis Godinho</h2>
 					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
-					<p><img class="alignleft avatar" src="<?php echo plugins_url( 'images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
+					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
 				</div>
 
@@ -694,26 +578,22 @@ class GravityView_Welcome {
 						<li class="wp-person">German translation by <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a>, <a href="https://www.transifex.com/accounts/profile/abdmc/">@abdmc</a>, and <a href="https://www.transifex.com/accounts/profile/deckerweb/">@deckerweb</a></li>
 						<li class="wp-person">Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
 						<li class="wp-person">Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>, <a href="https://www.transifex.com/accounts/profile/Weergeven/">@Weergeven</a>, and <a href="https://www.transifex.com/accounts/profile/erikvanbeek/">@erikvanbeek</a></li>
-						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>!</li>
-						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
+						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a> and <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a></li>
+						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/Lurtz/">@Lurtz</a> and <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
 						<li class="wp-person">French translation by <a href="https://www.transifex.com/accounts/profile/franckt/">@franckt</a> and <a href="https://www.transifex.com/accounts/profile/Newbdev/">@Newbdev</a></li>
 						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
 						<li class="wp-person">Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
 						<li class="wp-person">Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
 						<li class="wp-person">Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, <a href="https://www.transifex.com/accounts/profile/luisdiazvenero/">@luisdiazvenero</a>, and <a href="https://www.transifex.com/accounts/profile/josemv/">@josemv</a></li>
-						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>
-						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/dmlinn">@dmlinn</a></li>
-
-						<!-- No translation strings yet... -->
-						<!-- <li class="wp-person">Greek translation by <a href="https://www.transifex.com/accounts/profile/asteri/">@asteri</a></li> -->
-						<!-- <li class="wp-person">Russian translation by <a href="https://www.transifex.com/accounts/profile/badsmiley/">@badsmiley</a></li> -->
-
+						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a></li>
+						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a></li>
+						<li class="wp-person">Norwegian translation by <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a></li>
+						<li class="wp-person">Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a> and <a href="https://github.com/dmlinn">@dmlinn</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/katzwebservices/GravityView">', '</a>' ); ?></p>
 				</div>
 			</div>
 
@@ -725,12 +605,12 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
-					<li><a href="http://reduxframework.com">ReduxFramework</a> - a powerful settings library</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
+					<li>The Duplicate View functionality is based on the excellent <a href="http://lopo.it/duplicate-post-plugin/">Duplicate Post plugin</a> by Enrico Battocchi</li>
 				</ul>
 
 			</div>
@@ -761,6 +641,11 @@ class GravityView_Welcome {
 		delete_transient( '_gv_activation_redirect' );
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
+
+		// Don't do anything if they've already seen the new version info
+		if( $upgrade === GravityView_Plugin::version ) {
+			return;
+		}
 
 		// Add "Upgraded From" Option
 		update_option( 'gv_version_upgraded_from', GravityView_Plugin::version );

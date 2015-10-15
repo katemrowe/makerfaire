@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView - DataTables Extension
  * Plugin URI:        	http://gravityview.co/extensions/datatables/
  * Description:       	Display entries in a dynamic table powered by DataTables & GravityView.
- * Version:          	1.2.2
+ * Version:          	1.3
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gv-datatables
@@ -58,9 +58,9 @@ function gv_extension_featured_entry_load() {
 
 		protected $_title = 'DataTables';
 
-		protected $_version = '1.2.2';
+		protected $_version = '1.3';
 
-		const version = '1.2.2';
+		const version = '1.3';
 
 		protected $_text_domain = 'gv-datatables';
 

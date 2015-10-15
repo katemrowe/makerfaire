@@ -15,7 +15,20 @@ class GravityView_Change_Entry_Creator {
     	// ONLY ADMIN FROM HERE ON.
     	if( !is_admin() ) { return; }
 
-    	add_action('plugins_loaded', array( $this, 'load'), 100 );
+	    /**
+         * @filter `gravityview_disable_change_entry_creator` Disable the Change Entry Creator functionality
+	     * @since 1.7.4
+	     * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
+	     */
+	    if( apply_filters('gravityview_disable_change_entry_creator', false ) ) {
+		    return;
+	    }
+
+        /**
+         * Use `init` to fix bbPress warning
+         * @see https://bbpress.trac.wordpress.org/ticket/2309
+         */
+    	add_action('init', array( $this, 'load'), 100 );
 
     	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
 
@@ -60,7 +73,7 @@ class GravityView_Change_Entry_Creator {
 
     	do_action( 'gravityview_log_debug', 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - '.$note );
 
-    	RGFormsModel::add_note( $entry['id'], -1, 'GravityView', $note );
+        GravityView_Entry_Notes::add_note( $entry['id'], -1, 'GravityView', $note, 'gravityview' );
 
     }
 
@@ -102,7 +115,7 @@ class GravityView_Change_Entry_Creator {
         }
 
         // Can the user edit entries?
-        if( !GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+        if( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
             return;
         }
 
@@ -174,7 +187,7 @@ class GravityView_Change_Entry_Creator {
                 $created_by_name = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
             }
 
-            RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ) );
+            GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ), 'note' );
         }
 
     }
@@ -191,14 +204,7 @@ class GravityView_Change_Entry_Creator {
             return;
         }
 
-        /**
-         * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
-         * @link   text http://codex.wordpress.org/Function_Reference/get_users
-         * @var  array Settings array
-         */
-        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 300 ) );
-
-        $users = get_users( $get_users_settings );
+        $users = GVCommon::get_users( 'change_entry_creator' );
 
         $output = '<label for="change_created_by">';
         $output .= esc_html__('Change Entry Creator:', 'gravityview');

@@ -2,35 +2,49 @@
 
 class GravityView_Admin {
 
-	static private $admin_notices = array();
-	static private $dismissed_notices = array();
-
 	function __construct() {
 
-		if( !is_admin() ) { return; }
-
-		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
-
-		// Check if Gravity Forms Directory is running.
-		self::check_gf_directory();
+		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
-		if( false === self::check_gravityforms() ) {
+		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
+
+		$this->include_required_files();
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.15
+	 * @return void
+	 */
+	private function include_required_files() {
 
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
 
 		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( !GFForms::is_gravity_page() ) {
+		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
 		}
 
-		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
+
+		/** @since 1.15 **/
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
+
+		/** @since 1.6 */
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
+	}
+
+	/**
+	 * @since 1.7.5
+	 * @return void
+	 */
+	private function add_hooks() {
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -41,13 +55,14 @@ class GravityView_Admin {
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
 		//Hooks for no-conflict functionality
-	    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
-	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
+		add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
+		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
 
-	    add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
-	    add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 1);
-	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
-	    add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+		add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
+		add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 11);
+		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
+		add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+
 	}
 
 	/**
@@ -58,6 +73,7 @@ class GravityView_Admin {
 	 */
 	public function backend_actions() {
 
+		/** @define "GRAVITYVIEW_DIR" "../" */
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class.field.type.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class.render.settings.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-label.php' );
@@ -66,30 +82,36 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-
-		// Load Field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
-			require_once( $gv_field_filename );
-		}
-
-		// Nice place to insert extensions' backend stuff
+		/**
+		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 *
+		 * Nice place to insert extensions' backend stuff
+		 */
 		do_action('gravityview_include_backend_actions');
 	}
 
 	/**
 	 * Modify plugin action links at plugins screen
 	 *
+	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
 	 * @access public
 	 * @static
-	 * @param mixed $links
-	 * @return void
+	 * @param array $links Array of action links under GravityView on the plugin page
+	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$actions = array();
 
-		return array_merge( $action, $links );
+		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
+			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
+		}
+
+		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
+			$actions[] = '<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
+		}
+
+		return array_merge( $actions, $links );
 	}
 
 	/**
@@ -97,7 +119,7 @@ class GravityView_Admin {
 	 * @return string HTML image tag with floaty's cute mug on it
 	 */
 	public static function get_floaty() {
-		return '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
+		return gravityview_get_floaty();
 	}
 
 	/**
@@ -180,16 +202,20 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	function no_conflict_scripts() {
+		global $wp_scripts;
 
-		global $gravityview_settings;
-
-		if( ! gravityview_is_admin_page() || empty( $gravityview_settings['no-conflict-mode'] ) ) {
+		if( ! gravityview_is_admin_page() ) {
 			return;
 		}
 
-		global $wp_scripts;
+		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
 
-		$wp_required_scripts = array(
+		if( empty( $no_conflict_mode ) ) {
+			return;
+		}
+
+
+		$wp_allowed_scripts = array(
 			'debug-bar-extender',
             'backcallsc',
             'common',
@@ -200,6 +226,7 @@ class GravityView_Admin {
             'puc-debug-bar-js',
             'autosave',
             'post',
+			'inline-edit-post',
             'utils',
             'svg-painter',
             'wp-auth-check',
@@ -207,51 +234,69 @@ class GravityView_Admin {
 			'media-editor',
 			'media-upload',
             'thickbox',
-            'jquery-ui-dialog',
-            'jquery-ui-tabs',
-            'jquery-ui-draggable',
-            'jquery-ui-droppable',
+			'wp-color-picker',
 
             'gform_tooltip_init',
             'gform_field_filter',
             'gform_forms',
 
-            // Redux Framework
+		    // Settings
+			'gv-admin-edd-license',
+
+            // Common
             'select2-js',
             'qtip-js',
-            'nouislider-js',
-            'serializeForm-js',
-            'ace-editor-js',
-            'redux-vendor',
-            'redux-js',
-            'jquery',
+
+            // jQuery
+			'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
             'jquery-ui-datepicker',
             'jquery-ui-dialog',
             'jquery-ui-slider',
-            'wp-color-picker',
+			'jquery-ui-dialog',
+			'jquery-ui-tabs',
+			'jquery-ui-draggable',
+			'jquery-ui-droppable',
             'jquery-ui-accordion',
-            'redux-edd_license',
-            'redux-field-edd-js',
-            );
 
-		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
+			// WP SEO
+			'wp-seo-metabox',
+			'wpseo-admin-media',
+			'jquery-qtip',
+			'jquery-ui-autocomplete',
+
+			// Genesis theme framework
+		    'genesis_admin_js',
+
+			// Avada
+			'jquery.biscuit',
+			'avada_upload',
+			'tipsy',
+			'jquery-ui-slider',
+			'smof',
+			'cookie',
+			'kd-multiple-featured-images',
+			'media-upload',
+			'jquery-ui-core',
+		);
+
+		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
 	}
 
 	/**
 	 * Callback to eliminate any non-registered style
-	 * @todo  Move this to GravityView_Admin_Views
 	 * @return void
 	 */
 	function no_conflict_styles() {
-		global $gravityview_settings, $wp_styles;
+		global $wp_styles;
 
 		if( ! gravityview_is_admin_page() ) {
 			return;
 		}
 
-		// Something's not right; the styles aren't registered.
+		// Dequeue other jQuery styles even if no-conflict is off.
+		// Terrible-looking tabs help no one.
 		if( !empty( $wp_styles->registered ) )  {
 			foreach ($wp_styles->registered as $key => $style) {
 				if( preg_match( '/^(?:wp\-)?jquery/ism', $key ) ) {
@@ -260,12 +305,14 @@ class GravityView_Admin {
 			}
 		}
 
-		// Making sure jQuery is unset will be enough
-		if( empty( $gravityview_settings['no-conflict-mode'] ) ) {
+		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
+
+		// If no conflict is off, jQuery will suffice.
+		if( empty( $no_conflict_mode ) ) {
 			return;
 		}
 
-        $wp_required_styles = array(
+        $wp_allowed_styles = array(
         	'debug-bar-extender',
 	        'admin-bar',
 	        'debug-bar',
@@ -285,44 +332,52 @@ class GravityView_Admin {
 	        'gform_tooltip',
 	        'gform_font_awesome',
 
-	        // Redux Framework
-	        'redux-css',
-	        'redux-elusive-icon',
-	        'redux-elusive-icon-ie7',
-	        'select2-css',
-	        'qtip-css',
-	        'nouislider-css',
-	        'jquery-ui-css',
-	        'redux-rtl-css',
-	        'wp-color-picker',
-	        'redux-field-edd-css',
-	        'redux-field-info-css',
-	        'redux-edd_license',
+            // Settings
+	        'gravityview_settings',
+
+	        // WP SEO
+	        'wp-seo-metabox',
+	        'wpseo-admin-media',
+	        'metabox-tabs',
+	        'metabox-classic',
+	        'metabox-fresh',
+
+	        // Genesis theme framework
+            'genesis_admin_css',
+
+	        // @todo qTip styles not loading for some reason!
+	        'jquery-qtip.js',
 	    );
 
-		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
+		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
-		// Allow settings, etc, to hook in after
+		/**
+		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
 
 	/**
 	 * Remove any style or script non-registered in the no conflict mode
 	 * @todo  Move this to GravityView_Admin_Views
-	 * @param  object $wp_objects        Object of WP_Styles or WP_Scripts
+	 * @param  WP_Dependencies $wp_objects        Object of WP_Styles or WP_Scripts
 	 * @param  array $required_objects   List of registered script/style handles
 	 * @param  string $type              Either 'styles' or 'scripts'
 	 * @return void
 	 */
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
-        //allowing addons or other products to change the list of no conflict scripts or styles
+        /**
+         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
+         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
+         * @param array $required_objects
+         */
         $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
         //reset queue
         $queue = array();
         foreach( $wp_objects->queue as $object ) {
-            if( in_array( $object, $required_objects ) ) {
+	        if( in_array( $object, $required_objects ) || preg_match('/gravityview|gf_|gravityforms/ism', $object ) ) {
                 $queue[] = $object;
             }
         }
@@ -346,213 +401,65 @@ class GravityView_Admin {
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
-	private function add_script_dependencies($registered, $scripts){
+	private function add_script_dependencies($registered, $scripts) {
 
-        //gets all dependent scripts linked to the $scripts array passed
-        do{
-            $dependents = array();
-            foreach($scripts as $script){
-                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
-                foreach($deps as $dep){
-                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
-                        $dependents[] = $dep;
-                    }
-                }
-            }
-            $scripts = array_merge($scripts, $dependents);
-        }while(!empty($dependents));
+		//gets all dependent scripts linked to the $scripts array passed
+		do {
+			$dependents = array();
+			foreach ( $scripts as $script ) {
+				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
+				foreach ( $deps as $dep ) {
+					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
+						$dependents[] = $dep;
+					}
+				}
+			}
+			$scripts = array_merge( $scripts, $dependents );
+		} while ( ! empty( $dependents ) );
 
-        return $scripts;
-    }
+		return $scripts;
+	}
 
-    function dismiss_notice() {
-
-    	// No dismiss sent
-    	if( empty( $_GET['gv-dismiss'] ) ) {
-    		return;
-    	}
-
-    	// Invalid nonce
-    	if( !wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
-    		return;
-    	}
-
-    	$notice_id = esc_attr( $_GET['notice'] );
-
-    	//don't display a message if use has dismissed the message for this version
-    	$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
-
-    	$dismissed_notices[] = $notice_id;
-
-    	$dismissed_notices = array_unique( $dismissed_notices );
-
-    	// Remind users every 8 weeks
-    	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 8 );
-
-    }
-
-    /**
-     * Should the notice be shown in the admin (Has it been dismissed already)?
-     *
-     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-     * we check against other notices that have already been dismissed.
-     *
-     * @see GravityView_Admin::dismiss_notice()
-     * @see GravityView_Admin::add_notice()
-     * @param  string $notice            Notice array, set using `add_notice()`.
-     * @return boolean                   True: show notice; False: hide notice
-     */
-    function _maybe_show_notice( $notice ) {
-
-    	// There are no dismissed notices.
-    	if( empty( self::$dismissed_notices ) ) {
-    		return true;
-    	}
-
-    	// Has the
-    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
-
-    	return $is_dismissed ? false : true;
-    }
 
 	/**
-	 * Outputs the admin notices generated by the plugin
-	 *
-	 * @return void
+	 * Get admin notices
+	 * @deprecated since 1.12
+	 * @return array
 	 */
-	function admin_notice() {
-
-		if( empty( self::$admin_notices ) ) {
-			return;
-		}
-
-		//don't display a message if use has dismissed the message for this version
-		self::$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
-
-		foreach( self::$admin_notices as $notice ) {
-
-			if( false === $this->_maybe_show_notice( $notice ) ) {
-				continue;
-			}
-
-			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
-
-			// Too cute to leave out.
-			echo GravityView_Admin::get_floaty() ;
-
-			if( !empty( $notice['title'] ) ) {
-				echo '<h3>'.esc_html( $notice['title'] ) .'</h3>';
-			}
-
-			echo wpautop( $notice['message'] );
-
-			if( !empty( $notice['dismiss'] ) ) {
-
-				$dismiss = esc_attr($notice['dismiss']);
-
-				$url = add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) );
-
-				echo wpautop( '<a href="'.$url.'" data-notice="'.$dismiss.'" class="button-small button button-secondary">'.esc_html__('Dismiss', 'gravityview' ).'</a>' );
-			}
-
-			echo '<div class="clear"></div>';
-			echo '</div>';
-
-		}
-
-		//reset the notices handler
-		self::$admin_notices = array();
+	public static function get_notices() {
+		return GravityView_Admin_Notices::get_notices();
 	}
 
 	/**
 	 * Add a notice to be displayed in the admin.
+	 * @deprecated since 1.12
 	 * @param array $notice Array with `class` and `message` keys. The message is not escaped.
 	 */
 	public static function add_notice( $notice = array() ) {
-
-		if( !isset( $notice['message'] ) ) {
-			do_action( 'gravityview_log_error', 'GravityView_Admin[add_notice] Notice not set', $notice );
-			return;
-		}
-
-		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
-
-		self::$admin_notices[] = $notice;
-	}
-
-	public static function check_gf_directory() {
-
-		if( class_exists( 'GFDirectory' ) ) {
-
-			self::$admin_notices['gf_directory'] = array(
-				'class' => 'error',
-				'title' => __('Potential Conflict', 'gravityview' ),
-				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
-				'dismiss' => 'gf_directory',
-			);
-
-		}
-
+		GravityView_Admin_Notices::add_notice( $notice );
 	}
 
 	/**
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
-	 * @access public
-	 * @return void
+	 * @deprecated since 1.12
+	 * @see GravityView_Compatibility::get_plugin_status()
+	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
-
-		// Bypass other checks: if the class exists and the version's right, we're good.
-		if( class_exists( 'GFCommon' ) && true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-			return true;
-		}
-
-		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
-
-		if( $gf_status !== true ) {
-			if( $gf_status === 'inactive' ) {
-				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
-			} else {
-				self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-			}
-			return false;
-
-		} else if( class_exists( 'GFCommon' ) && false === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-
-			return false;
-		}
-
-		return true;
+		return GravityView_Compatibility::check_gravityforms();
 	}
 
 	/**
 	 * Check if specified plugin is active, inactive or not installed
 	 *
-	 * @access public
-	 * @static
-	 * @param string $location (default: '')
-	 * @return void
+	 * @deprecated since 1.12
+	 * @see GravityView_Compatibility::get_plugin_status()
+
+	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	static function get_plugin_status( $location = '' ) {
-
-		if( ! function_exists('is_plugin_active') ) {
-			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		}
-
-		if( is_plugin_active( $location ) ) {
-			return true;
-		}
-
-		if( !file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) ) {
-			return false;
-		}
-
-		if( is_plugin_inactive( $location ) ) {
-			return 'inactive';
-		}
+		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
 	static function is_admin_page($hook = '', $page = NULL) {
@@ -566,6 +473,8 @@ class GravityView_Admin {
 
 		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
 
+		$is_gv_settings_get = isset( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings';
+
 		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
 			$gv_post = get_post( intval( $_GET['post'] ) );
 			$is_gv_post_type = (!empty($gv_post) && !empty($gv_post->post_type) && $gv_post->post_type === 'gravityview');
@@ -573,18 +482,23 @@ class GravityView_Admin {
 			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
 		}
 
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get || $is_gv_settings_get ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ($plugin_page === 'settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'settings' ) ) {
+			} else if ( in_array( $plugin_page, array( 'gravityview_settings', 'gravityview_page_gravityview_settings' ) ) || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';
 			}
 		}
 
+		/**
+		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page

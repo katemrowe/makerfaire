@@ -1,7 +1,7 @@
 === GravityView - DataTables Extension ===
 Tags: gravityview
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.2.2
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -15,6 +15,21 @@ Display entries in a dynamic table powered by DataTables & GravityView.
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.3 on June 23, 2015 =
+* Added: Support for column widths (requires GravityView 1.9)
+* Added: Option to enable faster results, with potential reliability tradeoffs. Developers: to enable, return true on `gravityview/datatables/direct-ajax` filter.
+* Fixed: Make sure the Advanced Filter Extension knows the View ID
+* Updated: Bengali translation (thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/))
+
+= 1.2.4 on March 19, 2015 =
+* Fixed: Compatibility with GravityView 1.7.2
+* Fixed: Error with FixedHeader
+* Updated: Bengali translation (thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/))
+
+= 1.2.3 on February 19, 2015 =
+* Added: Automatic translations for DataTables content
+* Updated: Hungarian translation (thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!)
 
 = 1.2.2 on January 18, 2015 =
 * Fixed: Not showing entries when TableTools were disabled.

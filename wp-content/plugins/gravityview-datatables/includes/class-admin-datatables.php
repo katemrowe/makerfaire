@@ -15,6 +15,12 @@ class GV_Extension_DataTables_Admin {
 
 	function __construct() {
 
+		$this->initialize();
+
+	}
+
+	function initialize() {
+
 		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ) );
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
@@ -29,7 +35,34 @@ class GV_Extension_DataTables_Admin {
 	 * Add DataTables Extension settings
 	 */
 	function register_metabox() {
-		add_meta_box( 'gravityview_datatables_settings', __( 'DataTables Settings', 'gv-datatables' ), array( $this, 'render_metabox' ), 'gravityview', 'side', 'default' );
+
+		$m = array(
+			'id' => 'datatables_settings',
+			'title' => __( 'DataTables Settings', 'gv-datatables' ),
+			'callback' => array( $this, 'render_metabox' ),
+			'callback_args' => array(),
+			'screen' => 'gravityview',
+			'file' => '',
+			'icon-class' => 'gv-icon-datatables',
+			'context' => 'side',
+			'priority' => 'default',
+		);
+
+		if( class_exists('GravityView_Metabox_Tab') ) {
+
+			$metabox = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
+
+			GravityView_Metabox_Tabs::add( $metabox );
+
+			unset( $metabox );
+
+		} else {
+
+			add_meta_box( 'gravityview_' . $m['id'], $m['title'], $m['callback'], $m['screen'], $m['context'], $m['priority'] );
+
+		}
+
+
 	}
 
 	/**

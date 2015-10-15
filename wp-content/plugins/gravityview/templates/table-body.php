@@ -1,21 +1,35 @@
+<?php
+/**
+ * Display the entry loop when using a table template
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ *
+ * @global GravityView_View $this
+ */
+?>
 	<tbody>
 		<?php
 
 		do_action('gravityview_table_body_before', $this );
 
-		if((int)$this->total_entries === 0) {
+		if( 0 === $this->getTotalEntries() ) {
+
+			$directory_table_columns = $this->getFields('directory_table-columns');
 			?>
 			<tr>
 				<?php do_action('gravityview_table_tr_before', $this ); ?>
-				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>" class="gv-no-results">
+				<td colspan="<?php echo $directory_table_columns ? sizeof( $directory_table_columns ) : ''; ?>" class="gv-no-results">
 					<?php echo gv_no_results(); ?>
 				</td>
 				<?php do_action('gravityview_table_tr_after', $this ); ?>
 			</tr>
 		<?php
 		} else {
-			$class = true;
-			foreach( $this->entries as $entry ) :
+
+			foreach( $this->getEntries() as $entry ) :
+
+				$this->setCurrentEntry( $entry );
 
 				// Add `alt` class to alternate rows
 				$alt = empty( $alt ) ? 'alt' : false;
@@ -26,20 +40,13 @@
 		<?php
 					do_action('gravityview_table_cells_before', $this );
 
-					if( !empty(  $this->fields['directory_table-columns'] ) ) {
+					$this->renderZone( 'columns', array(
+						'markup' => '<td id="{{ field_id }}" class="{{class}}">{{value}}</td>',
+						'hide_empty' => false, // Always show <td>
+					));
 
-						/**
-						 * Modify the fields displayed in the table
-						 * @var array
-						 */
-						$fields = apply_filters('gravityview_table_cells', $this->fields['directory_table-columns'], $this );
-
-						foreach( $fields as $field ) {
-							echo '<td class="' . gv_class( $field, $this->form, $entry ) .'">'.gv_value( $entry, $field ).'</td>';
-						}
-					}
-
-					do_action('gravityview_table_cells_after', $this ); ?>
+					do_action('gravityview_table_cells_after', $this );
+		?>
 				</tr>
 			<?php
 			endforeach;

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Instead of passing DataTables AJAX requests through admin-ajax.php, directly access the data
+ * 
+ * @since 1.3
+ *
+ * @param boolean $use_direct_access Default false
+ */
+add_filter( 'gravityview/datatables/direct-ajax', '__return_true' );
+
 /* Rewrite rules */
 function custom_rewrite_rule() {
 	add_rewrite_rule('^mf/([^/]*)/([^/]*)/?','index.php?pagename=maker-faire-gravity-forms-display-page&makerfaire=$matches[1]&entryid=$matches[2]','top');

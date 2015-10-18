@@ -908,6 +908,16 @@ function create_post_type() {
 	'has_archive' => true,
 	)
 	);
+        register_post_type( 'maker-entry-archive',
+            array(
+            'labels' => array(
+            'name' => __( 'Maker Entry Archives' ),
+            'singular_name' => __( 'Maker Entry Archive' )
+            ),
+            'public' => true,
+            'has_archive' => true,
+            )
+	);
 }
 
 

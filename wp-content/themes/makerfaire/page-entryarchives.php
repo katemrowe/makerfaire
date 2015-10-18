@@ -6,68 +6,133 @@
  * @version 2.0
  */
 
-  global $wp_query;
-  $the_slug = $wp_query->query_vars['entryslug'];
-   $args = array(
-  		'name'        => $the_slug,
-  		'post_type'   => 'mf_form',
-  		'post_status'   => 'accepted',
-  		'numberposts' => 1
-  );
-  $my_posts = get_posts($args);
-  $entrySlug =$the_slug;
-  $json =  stripslashes(urldecode( $my_posts[0]->post_content )) ;
-  $json = json_decode($json);
-  //print_r($json);
-   switch ($json->form_type) {
-  	case 'exhibit':
-  		$project_faire = $json->maker_faire;
-  		$project_name = $json->project_name;
-  		$project_photo = $json->project_photo;
-  		$project_short = $json->public_description;
-  		$project_website = $json->project_website;
-  		$project_video = $json->project_video;
-  		$project_title = $json->project_name;
-  		$makers = array();
-  		if (strlen($json->m_maker_name[0]) > 0)
-  			$makers[] = array('firstname' => $json->m_maker_name[0],
-  					'bio'=>$json->m_maker_bio[0],
-  					'photo'=>$json->m_maker_photo[0]);
-  	break;
-  	case 'performer':
-  		$project_faire = $json->maker_faire;
-  		$project_name = $json->performer_name;
-  		$project_photo = $json->performer_photo;
-  		$project_short = $json->public_description;
-  		$project_website = $json->performer_website;
-  		$project_video = $json->performer_video;
-  		$project_title = $json->performer_name;
-  		$makers = array();
-  		
-  		break;
-  	default:
-  		$project_faire = $json->maker_faire; 
-  $project_name = $json->presentation_name; 
-  $project_photo = $json->presentation_photo;
-  $project_short = $json->short_description;
-  $project_website = $json->presentation_website;
-  $project_video = $json->video;
-  $project_title = $json->presentation_name;
-  $makers = array();
-  if (strlen($json->presenter_name[0]) > 0)
-  	$makers[] = array('firstname' => $json->presenter_name[0],
-  			'bio'=>$json->presenter_bio[0],
-  			'photo'=>$json->presenter_photo[0]);
-  	break;
-  }
- 
+global $wp_query;
+//entry archive data is stored in 2 post_types: mf_form and maker-entry-archive
+//                        (hope to correct this soon)
+// formats: 
+//     mf_form - entry data is stored in the post_content field as json data
+//     maker-entry-archive - data is stored in ACF fields
   
+$the_slug = $wp_query->query_vars['entryslug'];
+$makers = array();
+$args = array(
+              'name'          => $the_slug,
+              'post_type'     => 'maker-entry-archive',
+              //'post_status'   => 'accepted',
+              'numberposts'   => 1
+);
+$my_posts = get_posts($args);
+if(!empty($my_posts)){  
+    $custom_fields      = get_post_custom($my_posts[0]->ID);
+    
+    $project_faire      = $custom_fields['faire'][0];
+    $project_name       = $custom_fields['project_name'][0];
+    $project_photo      = $custom_fields['photo'][0];
+    //remove extra data
+    $project_photo = substr($project_photo, strpos($project_photo, "http://faire.smrtdsgn.com/timthumb/thumb.php?src=") + 1);    
+    
+    $project_short      = $custom_fields['project_description'][0];
+    $project_website    = $custom_fields['website'][0];
+    $project_video      = $custom_fields['video'][0];
+    $project_title      = $custom_fields['project_name'][0];
+    //get maker info
+    for($x=0;$x<=6;$x++){
+        $mname  = 'maker_information_'.$x.'_maker_name';
+        $mdesc  = 'maker_information_'.$x.'_maker_description';
+        $memail = 'maker_information_'.$x.'_maker_email';
+        $mweb   = 'maker_information_'.$x.'_maker_website';
+        $mtitle = 'maker_information_'.$x.'_maker_title';
+        $mphoto = 'maker_information_'.$x.'_maker_photo';
+        $photo = (isset($custom_fields[$mphoto][0]) ? $custom_fields[$mphoto][0] : '');
+                
+        if(isset($custom_fields[$mname][0]) && $custom_fields[$mname][0]!=''){
+        $makers[] = array('name'    => (isset($custom_fields[$mname][0])  ? $custom_fields[$mname][0]  : ''),
+                            'bio'     => (isset($custom_fields[$mdesc][0])  ? $custom_fields[$mdesc][0]  : ''),
+                            'photo'   => $photo
+                            );
+        }
+        
+        
+    }
+    
+//    $makers
+    $entrySlug =$the_slug;
+    if($my_posts[0]->post_content!=''){
+        $json =  stripslashes(urldecode( $my_posts[0]->post_content )) ;
+        $json = json_decode($json);
+        //print_r($json);
+         switch ($json->form_type) {
+              case 'exhibit':
+                      $project_faire = $json->maker_faire;
+                      $project_name = $json->project_name;
+                      $project_photo = $json->project_photo;
+                      $project_short = $json->public_description;
+                      $project_website = $json->project_website;
+                      $project_video = $json->project_video;
+                      $project_title = $json->project_name;
+                      $makers = array();
+                      if (strlen($json->m_maker_name[0]) > 0)
+                              $makers[] = array('firstname' => $json->m_maker_name[0],
+                                              'bio'=>$json->m_maker_bio[0],
+                                              'photo'=>$json->m_maker_photo[0]);
+              break;
+              case 'performer':
+                      $project_faire = $json->maker_faire;
+                      $project_name = $json->performer_name;
+                      $project_photo = $json->performer_photo;
+                      $project_short = $json->public_description;
+                      $project_website = $json->performer_website;
+                      $project_video = $json->performer_video;
+                      $project_title = $json->performer_name;
+                      $makers = array();
 
-  
-  
-  
+                      break;
+              default:
+                      $project_faire = $json->maker_faire; 
+        $project_name = $json->presentation_name; 
+        $project_photo = $json->presentation_photo;
+        $project_short = $json->short_description;
+        $project_website = $json->presentation_website;
+        $project_video = $json->video;
+        $project_title = $json->presentation_name;
+        $makers = array();
+        if (strlen($json->presenter_name[0]) > 0)
+              $makers[] = array('firstname' => $json->presenter_name[0],
+                              'bio'=>$json->presenter_bio[0],
+                              'photo'=>$json->presenter_photo[0]);
+              break;
+        }
+    }
   $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
-  
+}else{
+    //determine if we are looking by faire or by entry id
+
+    $posts = get_posts(array(
+        'numberposts'	=> -1,
+	'post_type'	=> 'maker-entry-archive',
+	'meta_key'	=> 'faire',
+	'meta_value'	=> urldecode($the_slug)
+    ));
+    echo urldecode($the_slug);
+    if(!empty($posts)){  
+        ?>
+        <ul>		
+	<?php foreach( $posts as $post ): 		
+		setup_postdata( $post )		
+		?>
+		<li>
+			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+		</li>	
+	<?php endforeach; ?>	
+	</ul>	
+	<?php wp_reset_postdata();
+    }else{
+        $project_title = 'I\'m sorry, we can\'t find this maker.'; 
+        $project_video = $project_website = $project_photo = '';
+        $project_short = $project_name    = $project_faire = '';
+        $makers = array();
+    }
+}
   
   get_header();
   
@@ -84,7 +149,7 @@
       <div class="page-header">
 
         <h1><?php echo $project_title; ?></h1>
-        <?php echo ( !empty( $json->maker_faire ) ) ? '<h5><small>' . archives_better_name( $json->maker_faire ) . '</small></h5>' : ''; ?>
+        <?php echo ( !empty( $project_faire ) ) ? '<h5><small>' . archives_better_name( $project_faire ) . '</small></h5>' : ''; ?>
         
 
       </div>
@@ -156,7 +221,7 @@
       		echo '<div class="row padbottom">
                   ',(!empty($maker['photo']) ? '<img class="col-md-3 pull-left img-responsive" src="' . $maker['photo'] . '" alt="Maker Image">' : '<img class="col-md-3 pull-left img-responsive" src="' . get_stylesheet_directory_uri() . '/images/maker-placeholder.jpg" alt="Maker Image">');
           echo    '<div class="col-md-5">
-                    <h3 style="margin-top: 0px;">' . $maker['firstname'] . ' ' . $maker['lastname'] . '</h3>
+                    <h3 style="margin-top: 0px;">' . $maker['name'] . '</h3>
                     <p>' . make_clickable($maker['bio']) . '</p>
                   </div>
                 </div>';
@@ -197,7 +262,12 @@ Duplicate to $entry['151']
   		return 'Maker Faire Bay Area 2014';
   	} elseif ( $str == '2014_newyork' ) {
   		return 'World Maker Faire New York 2014';
-  	}
+  	}else{
+            //replace hyphen and underscore with space and use sentance case
+            $str =  str_replace('-',' ',$str);
+            $str =  str_replace('_',' ',$str);
+            return ucwords($str);
+        }
   }
 function display_entry_schedule($entry_id) {
   //echo ('<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css"/>

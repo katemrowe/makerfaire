@@ -914,6 +914,9 @@ function create_post_type() {
             'name' => __( 'Maker Entry Archives' ),
             'singular_name' => __( 'Maker Entry Archive' )
             ),
+            'taxonomies' => array('category'),      
+            'show_ui' => true,
+            'hierarchical' => true,
             'public' => true,
             'has_archive' => true,
             )

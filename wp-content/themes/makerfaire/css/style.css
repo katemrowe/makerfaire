@@ -4060,6 +4060,23 @@ span.icon-rocket {
 .slideshow-nav .col-xs-3:first-child {
   border: none !important;
 }
+img.attachment-post-thumbnail {
+  width: 100%;
+  height: auto;
+}
+.ribbons ul {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.ribbons ul li {
+  list-style: none;
+  margin-bottom: 25px;
+}
+.ribbons ul li img {
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+}
 @media (max-width: 767px) {
   #main {
     margin-top: 66px;

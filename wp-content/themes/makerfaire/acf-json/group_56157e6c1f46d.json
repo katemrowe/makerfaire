@@ -157,8 +157,8 @@
         {
             "key": "field_56156dbd04358",
             "label": "Photo",
-            "name": "photo",
-            "type": "text",
+            "name": "project_photo",
+            "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -167,18 +167,21 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": "",
-            "readonly": 0,
-            "disabled": 0
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_56156dcc04359",
-            "label": "Location",
-            "name": "location",
+            "label": "Email",
+            "name": "email",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -192,7 +195,6 @@
             "placeholder": "",
             "prepend": "",
             "append": "",
-            "formatting": "html",
             "maxlength": "",
             "readonly": 0,
             "disabled": 0
@@ -282,7 +284,7 @@
                     "key": "field_56157eded04c6",
                     "label": "Maker Photo",
                     "name": "maker_photo",
-                    "type": "text",
+                    "type": "image",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -291,13 +293,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": "",
-                    "readonly": 0,
-                    "disabled": 0
+                    "return_format": "url",
+                    "preview_size": "thumbnail",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
                 },
                 {
                     "key": "field_56157efcd04c7",
@@ -382,5 +387,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1444936404
+    "modified": 1445551263
 }

@@ -124,7 +124,7 @@ foreach($postData as $ID=>$post){
 
     
     $sql  = "update wp_posts set post_type = 'maker-entry-archive', post_status='publish', "
-            . "     post_title='".$ID."',post_name='".$ID."'  "
+                . "     post_title='".$ID
             . " where id = ".$ID;
     $result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
     $makerTitle = '';

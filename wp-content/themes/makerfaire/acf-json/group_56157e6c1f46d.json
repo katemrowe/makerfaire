@@ -3,6 +3,27 @@
     "title": "Entry Information",
     "fields": [
         {
+            "key": "field_562ed934b9416",
+            "label": "Entry ID",
+            "name": "entry_id",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_56156d5f04351",
             "label": "Faire",
             "name": "faire",
@@ -387,5 +408,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1445551263
+    "modified": 1445910873
 }

@@ -25,13 +25,13 @@ $my_posts = get_posts(array(
    ));
 
 if(empty($my_posts)){     
-    //if that fails, try pulling using the slug
+    //if that fails, try pulling by post name or slug
     $args = array(
                   'name'          => $the_slug,              
-                  'post_type' => array( 'maker-entry-archive', 'mf_form'),
-                  'post_status'   => 'accepted',
+                  'post_type' => array( 'maker-entry-archive', 'mf_form'),      
                   'numberposts'   => 1
-    );
+    );    
+
     $my_posts = get_posts($args);   
 }
 

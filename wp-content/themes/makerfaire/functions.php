@@ -1813,3 +1813,55 @@ function update_bn_fields($form ) {
     }
     return $form;
 }
+
+
+/**
+ * Adds the subscribe header return path overlay
+ */
+function subscribe_return_path_overlay() { ?>
+  <div class="overlay-div overlay-slidedown hidden-xs">
+    <div class="container-fluid-overlay">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4 overlay-1">
+            <img class="img-responsive" src="//makezine.com/wp-content/uploads/2015/10/Magazine-cover-44-for-overlay.jpg" alt="Make Magazine Volume 44 Cover" />
+          </div>
+          <div class="col-sm-4 overlay-2">
+            <h2>Get the Magazine</h2>
+            <p>Make: is the voice of the Maker Movement, empowering, inspiring, and connecting Makers worldwide to tinker and hack. Subscribe to Make Magazine Today!</p>
+            <a class="black-overlay-btn" target="_blank" href="//readerservices.makezine.com/mk?utm_source=makerfaire.com&utm_medium=brand+bar&utm_campaign=mag+sub">SUBSCRIBE</a>
+          </div>
+          <div class="col-sm-4 overlay-3">
+            <h2>Sign Up for the Maker Faire Newsletter</h2>
+            <p>Keep informed, stay inspired.</p>
+            <form class="sub-form" action="http://whatcounts.com/bin/listctrl" method="POST">
+              <input type="hidden" name="slid" value="6B5869DC547D3D46E66DEF1987C64E7A"/>
+              <input type="hidden" name="cmd" value="subscribe"/>
+              <input type="hidden" name="custom_source" value="Subscribe return path overlay"/>
+              <input type="hidden" name="custom_incentive" value="none"/>
+              <input type="hidden" name="custom_url" value=""/>
+              <input type="hidden" id="format_mime" name="format" value="mime"/>
+              <input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up"/>
+              <input type="hidden" name="custom_host" value="makerfaire.com" />
+              <input type="hidden" name="errors_to" value=""/>
+              <input name="email" class="overlay-input" placeholder="Enter your email" required type="email"><br>
+              <input value="GO" class="black-overlay-btn" type="submit">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    jQuery('#trigger-overlay, .overlay-div').hover(
+      function () {
+          jQuery('.overlay-div').stop().addClass( 'open' );
+          jQuery( 'body' ).addClass( 'modal-open' );
+      },
+      function () {
+          jQuery('.overlay-div').stop().removeClass( 'open' );
+          jQuery( 'body' ).removeClass( 'modal-open' );
+      }
+    );
+  </script>
+<?php }

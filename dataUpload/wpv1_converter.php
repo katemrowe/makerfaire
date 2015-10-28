@@ -11,7 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
 
 //pull all archive data
-$sql = "SELECT * FROM wp_posts WHERE post_type = 'mf_form' limit 1000";
+$sql = "SELECT * FROM wp_posts WHERE post_type = 'mf_form' limit 500";
 
 $mysqli->query("SET NAMES 'utf8'");
 $result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");

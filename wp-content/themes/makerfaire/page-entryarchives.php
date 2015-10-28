@@ -21,6 +21,8 @@ $my_posts = get_posts(array(
            'numberposts'	=> 1,
            'post_type'		=> 'maker-entry-archive',
            'meta_key'		=> 'entry_id',
+           'post_status'   => 'publish',
+
            'meta_value'	=> $the_slug
    ));
 
@@ -29,6 +31,7 @@ if(empty($my_posts)){
     $args = array(
                   'name'          => $the_slug,              
                   'post_type' => array( 'maker-entry-archive', 'mf_form'),      
+                   'post_status'   => 'publish',
                   'numberposts'   => 1
     );    
 

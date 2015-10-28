@@ -919,6 +919,7 @@ function create_post_type() {
             'hierarchical' => true,
             'public' => true,
             'has_archive' => true,
+            'rewrite'            => array( 'slug' => 'mfarchives', 'with_front' => true ),
             )
 	);
 }

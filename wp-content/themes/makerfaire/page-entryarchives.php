@@ -7,17 +7,30 @@
  */
 
 global $wp_query;
-//pull by the slug name entry-id
+
+//pull by the slug name 
   
 $the_slug = $wp_query->query_vars['entryslug'];
 $makers = array();
-$args = array(
-              'name'          => $the_slug,              
-              'post_type' => array( 'maker-entry-archive', 'mf_form'),
-              'post_status'   => 'accepted',
-              'numberposts'   => 1
-);
-$my_posts = get_posts($args);
+
+//pull by ACF field - entry id
+ $my_posts = get_posts(array(
+            'numberposts'	=> 1,
+            'post_type'		=> 'maker-entry-archive',
+            'meta_key'		=> 'entry_id',
+            'meta_value'	=> $the_slug
+    ));
+if(empty($my_posts)){ 
+    //if that fails, try pulling using the slug
+    $args = array(
+                  'name'          => $the_slug,              
+                  'post_type' => array( 'maker-entry-archive', 'mf_form'),
+                  'post_status'   => 'accepted',
+                  'numberposts'   => 1
+    );
+    $my_posts = get_posts($args);   
+}
+
 if(!empty($my_posts)){  
     $custom_fields      = get_post_custom($my_posts[0]->ID); 
     if(is_array($custom_fields)){

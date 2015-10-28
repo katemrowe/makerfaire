@@ -15,7 +15,7 @@ if($the_slug==''){
     $the_slug = $wp_query->query_vars['maker-entry-archive'];
 }
 $makers = array();
-
+echo '$the_slug='.$the_slug;
 //pull by ACF field - entry id
 $my_posts = get_posts(array(
            'numberposts'	=> 1,
@@ -31,7 +31,7 @@ if(empty($my_posts)){
                   'post_type' => array( 'maker-entry-archive', 'mf_form'),      
                   'numberposts'   => 1
     );    
-
+var_dump($args);
     $my_posts = get_posts($args);   
 }
 

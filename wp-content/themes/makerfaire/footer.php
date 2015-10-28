@@ -176,6 +176,10 @@
 	<?php echo make_copyright_footer(); ?>
 </footer>
 <!-- END new-footer -->
+
+<!-- Subscribe return path overlay -->
+<?php echo subscribe_return_path_overlay(); ?>
+
 <!-- Clear the WP admin bar when in mobile fixed header -->
 <script>
 	jQuery(document).ready(function(){

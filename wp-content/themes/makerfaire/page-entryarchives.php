@@ -9,18 +9,22 @@
 global $wp_query;
 
 //pull by the slug name 
-  
-$the_slug = $wp_query->query_vars['entryslug'];
+$the_slug = $wp_query->query_vars['entryslug']; //entry-id
+
+if($the_slug==''){
+    $the_slug = $wp_query->query_vars['maker-entry-archive'];
+}
 $makers = array();
 
 //pull by ACF field - entry id
- $my_posts = get_posts(array(
-            'numberposts'	=> 1,
-            'post_type'		=> 'maker-entry-archive',
-            'meta_key'		=> 'entry_id',
-            'meta_value'	=> $the_slug
-    ));
-if(empty($my_posts)){ 
+$my_posts = get_posts(array(
+           'numberposts'	=> 1,
+           'post_type'		=> 'maker-entry-archive',
+           'meta_key'		=> 'entry_id',
+           'meta_value'	=> $the_slug
+   ));
+
+if(empty($my_posts)){     
     //if that fails, try pulling using the slug
     $args = array(
                   'name'          => $the_slug,              

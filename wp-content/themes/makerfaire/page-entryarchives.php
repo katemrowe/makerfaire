@@ -44,9 +44,8 @@ if(!empty($my_posts)){
     }
     $project_faire      = (isset($custom_fields['faire'][0])        ? $custom_fields['faire'][0]        : '');
     $project_name       = (isset($custom_fields['project_name'][0]) ? $custom_fields['project_name'][0] : '');
-    $project_photo      = (isset($custom_fields['photo'][0])        ? $custom_fields['photo'][0]        : '');
-    //remove extra data
-    $project_photo = substr($project_photo, strpos($project_photo, "http://faire.smrtdsgn.com/timthumb/thumb.php?src=") + 1);    
+    $attachment_id      = (isset($custom_fields['project_photo'][0])  ? $custom_fields['project_photo'][0]        : '');
+    $project_photo = wp_get_attachment_url( $attachment_id);
     
     $project_short      = (isset($custom_fields['project_description'][0]) ? $custom_fields['project_description'][0] : '');
     $project_website    = (isset($custom_fields['website'][0])             ? $custom_fields['website'][0]             : '');
@@ -61,8 +60,8 @@ if(!empty($my_posts)){
         $mweb   = 'maker_information_'.$x.'_maker_website';
         $mtitle = 'maker_information_'.$x.'_maker_title';
         $mphoto = 'maker_information_'.$x.'_maker_photo';
-        $photo = (isset($custom_fields[$mphoto][0]) ? $custom_fields[$mphoto][0] : '');
-                
+        $mattachment_id = (isset($custom_fields[$mphoto][0]) ? $custom_fields[$mphoto][0] : '');
+        $photo = wp_get_attachment_url( $mattachment_id);       
         if(isset($custom_fields[$mname][0]) && $custom_fields[$mname][0]!=''){
         $makers[] = array('name'    => (isset($custom_fields[$mname][0])  ? $custom_fields[$mname][0]  : ''),
                             'bio'     => (isset($custom_fields[$mdesc][0])  ? $custom_fields[$mdesc][0]  : ''),

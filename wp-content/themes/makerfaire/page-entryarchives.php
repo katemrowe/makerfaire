@@ -7,7 +7,7 @@
  */
 
 global $wp_query;
-
+var_dump($wp_query->query_vars);
 //pull by the slug name 
 $the_slug = $wp_query->query_vars['entryslug']; //entry-id
 
@@ -16,22 +16,21 @@ if($the_slug==''){
 }
 $makers = array();
 
-//pull by ACF field - entry id
+//pull by ACF field - entry id (cs format)
 $my_posts = get_posts(array(
            'numberposts'	=> 1,
            'post_type'		=> 'maker-entry-archive',
            'meta_key'		=> 'entry_id',
-           'post_status'   => array('publish','accepted'),
-
-           'meta_value'	=> $the_slug
+           'post_status'        => 'publish',
+           'meta_value'	        => $the_slug
    ));
 
 if(empty($my_posts)){     
-    //if that fails, try pulling by post name or slug
+    //if that fails, try pulling by post name or slug wp v1 format
     $args = array(
                   'name'          => $the_slug,              
-                  'post_type' => array( 'maker-entry-archive', 'mf_form'),      
-                   'post_status'   => array('publish','accepted'),
+                  'post_type'	  => 'maker-entry-archive',
+                  'post_status'   => 'accepted',
                   'numberposts'   => 1
     );    
 

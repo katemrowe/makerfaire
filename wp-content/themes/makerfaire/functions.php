@@ -916,9 +916,9 @@ function create_post_type() {
             ),
             'taxonomies' => array('category'),      
             'show_ui' => true,
-            'hierarchical' => true,
+            
             'public' => true,
-            'has_archive' => true,
+            
             'rewrite'            => array( 'slug' => 'mfarchives', 'with_front' => true ),
             )
 	);

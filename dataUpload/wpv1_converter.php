@@ -128,9 +128,8 @@ foreach($postData as $ID=>$post){
     $link = $post['data']['post_name'];
 
     
-    $UPDsql  = "update wp_posts set post_type   = 'maker-entry-archive', "
-             . "                  post_status = 'publish',  "
-             . "                  post_title  = '".$ID."' "
+    $UPDsql  = "update wp_posts set post_type   = 'maker-entry-archive', "             
+             . "                    post_title  = '".$ID."' "
              . " where ID = ".$ID;
     $UPDresult = $mysqli->query($UPDsql) or trigger_error($mysqli->error."[$UPDsql]");
     //echo 'Sql Used: '.$sql;

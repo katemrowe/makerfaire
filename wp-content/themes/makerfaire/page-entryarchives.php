@@ -7,7 +7,7 @@
  */
 
 global $wp_query;
-var_dump($wp_query->query_vars);
+
 //pull by the slug name 
 $the_slug = $wp_query->query_vars['entryslug']; //entry-id
 

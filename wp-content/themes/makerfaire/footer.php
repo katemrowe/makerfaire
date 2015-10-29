@@ -59,10 +59,10 @@
             <input type="hidden" name="cmd" value="subscribe"/>
             <input type="hidden" name="custom_source" value="footer"/>
             <input type="hidden" name="custom_incentive" value="none"/>
-            <input type="hidden" name="custom_url" value="<?php echo $_SERVER[" HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>"/>
+            <input type="hidden" name="custom_url" value="<?php echo $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>"/>
             <input type="hidden" id="format_mime" name="format" value="mime"/>
             <input type="hidden" name="goto" value="//makerfaire.com/thanks-for-signing-up"/>
-            <input type="hidden" name="custom_host" value="<?php echo $_SERVER[" HTTP_HOST"]; ?>" />
+            <input type="hidden" name="custom_host" value="<?php echo $_SERVER["HTTP_HOST"]; ?>" />
             <input type="hidden" name="errors_to" value=""/>
             <div class="mz-form-horizontal">
               <input name="email" placeholder="Enter your Email" required type="email"><br>

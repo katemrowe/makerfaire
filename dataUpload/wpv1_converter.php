@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 //include 'db_connect.php';
-
+global $wpdb;
 //pull all archive data
 $sql = "SELECT post_content,ID  FROM wp_posts
         right join `wp_postmeta` on ID=post_id
@@ -15,12 +15,13 @@ $sql = "SELECT post_content,ID  FROM wp_posts
                limit 100";
 //$sql = "SELECT * FROM wp_posts WHERE post_type = 'maker-entry-archive' and post_content!=''";
 
-$mysqli->query("SET NAMES 'utf8'");
-$result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
+//$mysqli->query("SET NAMES 'utf8'");
+//$result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
 
 // Loop through the posts
 $count=0;
-while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+foreach($wpdb->get_results($sql,ARRAY_A) as $row){   
+//while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
     $count++;
     $content = $row['post_content'];
 

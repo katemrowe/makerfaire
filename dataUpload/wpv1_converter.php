@@ -4,34 +4,35 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//include 'db_connect.php';
-global $wpdb;
+include 'db_connect.php';
+
 //pull all archive data
-$sql = "SELECT post_content,ID  FROM wp_posts
-        right join `wp_postmeta` on ID=post_id
-        WHERE `meta_key` LIKE 'project_name' and 
-               meta_value = '' 
-               and post_content !=''
-               limit 500";
+ $sql = "SELECT post_content,ID  FROM wp_posts right join wp_postmeta on id = post_id "
+         . " and `meta_key` = 'project_name' and meta_value = '' "
+         . " WHERE post_type = 'maker-entry-archive' and post_content!='' limit 200";
+
 //$sql = "SELECT * FROM wp_posts WHERE post_type = 'maker-entry-archive' and post_content!=''";
 
-//$mysqli->query("SET NAMES 'utf8'");
-//$result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
+$mysqli->query("SET NAMES 'utf8'");
+$result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
+while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+    //build archive array
+    $postData[$row['ID']] = array(                
+        'post_content'  => $row['post_content'],
+        'post_title'    => $row['post_title'],
+        'post_name'     => $row['post_name']  
+    );  
+}
 
 // Loop through the posts
-$count=0;
-foreach($wpdb->get_results($sql,ARRAY_A) as $row){   
-//while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+$errorCount = 0;
+$total = 0;
+foreach($postData as $ID=>$post){   
+    echo 'Updating '.$ID.'<br/>';
     $count++;
-    $content = $row['post_content'];
-
-    $ID      = $row['ID'];
-    
-    // Loop through the posts
-    echo 'Updating '.$ID.'<br/>';        
-    
-    $makers=array();
-    
+    $content = $post['post_content'];    
+        
+    $makers=array();    
     //build json Array    
     $jsonArray = json_decode( $content, true );
   

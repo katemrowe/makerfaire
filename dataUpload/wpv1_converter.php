@@ -222,7 +222,7 @@ echo 'Updated '.$count;
 
 function fetch_media($file_url, $post_id) {
     
-//	require_once(ABSPATH . 'wp-admin/includes/image.php');
+	require_once(ABSPATH . 'wp-admin/includes/image.php');
 	global $wpdb;
 
 	if(!$post_id) {

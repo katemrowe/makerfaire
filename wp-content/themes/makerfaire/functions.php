@@ -1869,7 +1869,5 @@ function subscribe_return_path_overlay() { ?>
 
 add_action('cron_wp_v2_ACF', 'build_wp_v2_ACF');
 function build_wp_v2_ACF(){    
-    //$siteURL = get_site_url();
-    $base = dirname(__FILE__);
-    require_once( $base.'/dataUpload/wpv1_converter.php');
+    require_once('../../../dataUpload/wpv1_converter.php');
 }

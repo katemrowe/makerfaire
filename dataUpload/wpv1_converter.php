@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-include 'db_connect.php';
+//include 'db_connect.php';
 
 //pull all archive data
 $sql = "SELECT post_content,ID  FROM wp_posts
@@ -221,7 +221,7 @@ echo 'Updated '.$count;
 
 function fetch_media($file_url, $post_id) {
     
-	require_once(ABSPATH . 'wp-admin/includes/image.php');
+//	require_once(ABSPATH . 'wp-admin/includes/image.php');
 	global $wpdb;
 
 	if(!$post_id) {

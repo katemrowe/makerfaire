@@ -12,7 +12,7 @@ $sql = "SELECT post_content,ID  FROM wp_posts
         WHERE `meta_key` LIKE 'project_name' and 
                meta_value = '' 
                and post_content !=''
-               limit 100";
+               limit 500";
 //$sql = "SELECT * FROM wp_posts WHERE post_type = 'maker-entry-archive' and post_content!=''";
 
 //$mysqli->query("SET NAMES 'utf8'");
@@ -126,7 +126,7 @@ foreach($wpdb->get_results($sql,ARRAY_A) as $row){
                  $project_title   = $jsonArray['project_name'];
                  $makers = array();
                  if(is_array($jsonArray['m_maker_name']) &&
-                         isset($jsonArray['m_maker_name'][0]) &&
+                         isset($jsonArray['m_maker_name']) &&
                          trim($jsonArray['m_maker_name'][0])!=''){ 
                      foreach($jsonArray['m_maker_name'] as $mkey=>$mvalue){
                          $makers[] = array('maker_name'         => $mvalue,

@@ -1869,5 +1869,5 @@ function subscribe_return_path_overlay() { ?>
 
 add_action('cron_wp_v2_ACF', 'build_wp_v2_ACF');
 function build_wp_v2_ACF(){    
-    require_once('/nas/wp/www/staging/makerfaire/dataUpload/wpv1_converter.php');
+    require_once(ABSPATH . 'dataUpload/wpv1_converter.php');
 }

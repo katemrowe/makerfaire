@@ -21,7 +21,7 @@ $my_posts = get_posts(array(
            'numberposts'	=> 1,
            'post_type'		=> 'maker-entry-archive',
            'meta_key'		=> 'entry_id',
-           'post_status'        => 'publish',
+           'post_status'        => 'accepted',
            'meta_value'	        => $the_slug
    ));
 
@@ -38,7 +38,7 @@ if(empty($my_posts)){
 }
 
 if(!empty($my_posts)){  
-    $custom_fields      = get_post_custom($my_posts[0]->ID); 
+    $custom_fields      = get_post_custom($my_posts[0]->ID);     
     if(is_array($custom_fields)){
         
     }
@@ -61,7 +61,8 @@ if(!empty($my_posts)){
         $mtitle = 'maker_information_'.$x.'_maker_title';
         $mphoto = 'maker_information_'.$x.'_maker_photo';
         $mattachment_id = (isset($custom_fields[$mphoto][0]) ? $custom_fields[$mphoto][0] : '');
-        $photo = wp_get_attachment_url( $mattachment_id);       
+        $photo = wp_get_attachment_url( $mattachment_id);     
+        
         if(isset($custom_fields[$mname][0]) && $custom_fields[$mname][0]!=''){
         $makers[] = array('name'    => (isset($custom_fields[$mname][0])  ? $custom_fields[$mname][0]  : ''),
                             'bio'     => (isset($custom_fields[$mdesc][0])  ? $custom_fields[$mdesc][0]  : ''),
@@ -217,9 +218,9 @@ if(!empty($my_posts)){
       <h2>Schedule</h2>
       <hr />
       <?php
-        if (!empty(display_entry_schedule($entryId))) {
-          display_entry_schedule($entryId);
-        }
+        //if (!empty(display_entry_schedule($entryId))) {
+          //display_entry_schedule($entryId);
+       // }
       ?>
       <br />
 -->

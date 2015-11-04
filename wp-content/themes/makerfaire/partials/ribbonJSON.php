@@ -7,10 +7,10 @@
  */
 include 'db_connect.php';
 $filter = '';
-/*
+
 $year = (isset($_GET['year']) ? $_GET['year']:'');
 $year = filter_var(trim($year), FILTER_SANITIZE_STRING);
-$filter = " and year= ".($year!=''? $year:date("Y"));*/
+$filter = " and year= ".($year!=''? $year:date("Y"));
 
 $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo "
         . " FROM `wp_mf_ribbons` where entry_id > 0 ".$filter." "

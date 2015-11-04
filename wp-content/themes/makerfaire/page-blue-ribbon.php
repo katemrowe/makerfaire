@@ -1,5 +1,23 @@
 <?php get_header(); ?>
+<?php
+$yearOption='';
+$yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 order by year desc");
+$firstYear = $yearSql[0]->year;
+foreach($yearSql as $year){
+    $selected='';
+    //$selected = ($year->year==$firstYear ? 'ng-selected="faire_year==\''.$year->year.'\'"':''); //select the first year
+    $yearOption .= '<option '.$selected.' value="'.$year->year.'">'.$year->year.'</option>';
+    if($year->year == $firstYear){
+        $yearJSON = '{"id" : "'.$year->year.'", "name": "'.$year->year.'"}';
+    }else{
+        $yearJSON .= ',{"id" : "'.$year->year.'", "name": "'.$year->year.'"}';
+    }    
+}
 
+?>
+<script>
+ var yearJson =  [<?php echo $yearJSON;?>]
+</script>
 <div class="clear"></div>
 <?php
     // Output the featured image.
@@ -27,9 +45,14 @@
                 <div id="ribbonPage">       
                     
                  <div ng-controller="ribbonController" class="my-controller">                         
-                    <select ng-init="query.faireData.year = years[0]" ng-model="query.faireData.year">
-                        <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
-                    </select>
+                     <!--
+                     <select id="faire_year" ng-model="faire_year" ng-init="faire_year = '2013'"  ng-change="loadData(faire_year)">
+                         <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>
+                     </select>-->
+                     <select ng-model="faire_year"
+                             ng-init="faire_year = '<?php echo $firstYear;?>'"  ng-change="loadData(faire_year)">
+                        <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>         
+                     </select>
                      <select ng-model="query.faireData.faire">
                         <option value=" " selected>All Faires</option>
                         <option ng-repeat="faire in faires" value="{{faire}}">{{faire}}</option>

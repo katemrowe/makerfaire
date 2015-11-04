@@ -25,7 +25,7 @@ $data = array();
 $json = array();
 while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
     $entry_id   = $ribbon['entry_id'];
-
+/*
     //determine the postID
     $makerSQL= "select p1.post_id, p2.meta_key, p2.meta_value "
             . "   from wp_postmeta p1 right join wp_postmeta p2 "
@@ -37,7 +37,8 @@ while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
     $maker = mysqli_fetch_array($makerData);
     
     //if maker name has field_ in it, it is not a valid maker name.  return spaces instead
-    $ribbonData[$entry_id]['maker_name']    = (strpos($maker['meta_value'], 'field_')===false?$maker['meta_value']:'');
+    $ribbonData[$entry_id]['maker_name']    = (strpos($maker['meta_value'], 'field_')===false?$maker['meta_value']:'');*/
+    $ribbonData[$entry_id]['maker_name'] ='';
     
     $location   = $ribbon['location'];
         

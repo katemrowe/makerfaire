@@ -86,7 +86,7 @@ foreach($yearSql as $year){
                          <div class="makerData">
                              <div class="projName">
                              {{ribbon.project_name}}
-                             </div><br>{{ribbon.maker_name}}
+                             </div>{{ribbon.maker_name}}<br><br>
                              <span ng-repeat="faire in ribbon.faireData" class="{{faire.ribbonType}}data"> {{faire.faire}} {{faire.year}}</span>                             
                          </div>
                      </div>   

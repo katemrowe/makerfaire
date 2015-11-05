@@ -21,7 +21,7 @@ $my_posts = get_posts(array(
            'numberposts'	=> 1,
            'post_type'		=> 'maker-entry-archive',
            'meta_key'		=> 'entry_id',
-           'post_status'        => 'publish',
+           'post_status'        => 'accepted',
            'meta_value'	        => $the_slug
    ));
 

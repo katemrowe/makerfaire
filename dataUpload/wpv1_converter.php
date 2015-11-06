@@ -5,47 +5,39 @@
  * and open the template in the editor.
  */
 include 'db_connect.php';
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
 
 //pull all archive data
-$sql = "SELECT * FROM wp_posts WHERE post_type = 'mf_form' limit 500";
+ $sql = "SELECT post_content,ID  FROM wp_posts right join wp_postmeta on id = post_id "
+         . " and `meta_key` = 'project_name' and meta_value = '' "
+         . " WHERE post_type = 'maker-entry-archive' and post_content!='' limit 200";
+
+//$sql = "SELECT * FROM wp_posts WHERE post_type = 'maker-entry-archive' and post_content!=''";
 
 $mysqli->query("SET NAMES 'utf8'");
 $result = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
-
-$postData = array();
-// Loop through the posts
 while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
     //build archive array
-    $postData[$row['ID']]['data'] = array(                
+    $postData[$row['ID']] = array(                
         'post_content'  => $row['post_content'],
         'post_title'    => $row['post_title'],
         'post_name'     => $row['post_name']  
     );  
 }
+
+// Loop through the posts
 $errorCount = 0;
 $total = 0;
 foreach($postData as $ID=>$post){   
-// Loop through the posts
-//while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
-  //  $ID = $row['ID'];
     echo 'Updating '.$ID.'<br/>';
-    $post = array();
-    $post['data']['post_content']  = $row['post_content'];
-    $post['data']['post_title']    = $row['post_title'];
-    $post['data']['post_name']     = $row['post_name'];
-    
-    $makers=array();
-    //build json Array
-    $jsonArray = json_decode( $post['data']['post_content'], true );
-    
+    $count++;
+    $content = $post['post_content'];    
+        
+    $makers=array();    
+    //build json Array    
+    $jsonArray = json_decode( $content, true );
+  
     //some data contains double quotes within the json field value.  This will fix it
-     if(empty($jsonArray)){  
-         $content = $post['data']['post_content'];
-         
+     if(empty($jsonArray)){                    
         //left and right curly brace
          $content = str_replace('{"',  ' ||squigDQ|| ', $content);
          $content = str_replace('"}',  ' ||DQsquig|| ', $content);
@@ -122,18 +114,6 @@ foreach($postData as $ID=>$post){
          $jsonArray = json_decode($content, true );
         
     }
-     
-    //now let's update the db
-    $projectName = $post['data']['post_title'];            
-    $link = $post['data']['post_name'];
-
-    
-    $UPDsql  = "update wp_posts set post_type   = 'maker-entry-archive', "             
-             . "                    post_title  = '".$ID."' "
-             . " where ID = ".$ID;
-    $UPDresult = $mysqli->query($UPDsql) or trigger_error($mysqli->error."[$UPDsql]");
-    //echo 'Sql Used: '.$sql;
-    //echo '<br/><br/>';
     
     $makerTitle = '';
     switch ($jsonArray['form_type']) {
@@ -147,7 +127,7 @@ foreach($postData as $ID=>$post){
                  $project_title   = $jsonArray['project_name'];
                  $makers = array();
                  if(is_array($jsonArray['m_maker_name']) &&
-                         isset($jsonArray['m_maker_name'][0]) &&
+                         isset($jsonArray['m_maker_name']) &&
                          trim($jsonArray['m_maker_name'][0])!=''){ 
                      foreach($jsonArray['m_maker_name'] as $mkey=>$mvalue){
                          $makers[] = array('maker_name'         => $mvalue,
@@ -162,7 +142,7 @@ foreach($postData as $ID=>$post){
                                           'maker_email'       => $jsonArray['maker_email']);
                  }
          break;
-         case 'performer':
+         case 'performer':             
                  $project_faire = $jsonArray['maker_faire'];
                  $project_name  = $jsonArray['performer_name'];
                  $project_photo = $jsonArray['performer_photo'];
@@ -198,7 +178,8 @@ foreach($postData as $ID=>$post){
                  }
                 break;
        }
-    $projectEmail = $jsonArray['email'];
+       
+    $projectEmail = $jsonArray['email'];    
     
     //update project image    
     $attachment_id = fetch_media($project_photo, $ID);
@@ -213,24 +194,24 @@ foreach($postData as $ID=>$post){
         'field_56156da704357'=>$project_video,
         'field_562ed934b9416'=>$ID
     );
-    //echo 'ACF fields<br/>';
-    foreach($field_array as $field_key=>$field){
-        //echo 'Updating ' . $field_key .' to '.$field.'<br/>';
-        //set ACF data
+    
+    //set ACF data
+    foreach($field_array as $field_key=>$field){        
         update_field($field_key, $field, $ID);
     }
     
-    //maker data
-    //upload maker images
+    //maker data    
     foreach($makers as $makerKey=>$maker){
         if($maker['maker_photo']!=''){
+            //upload maker images
             $attachment_id = fetch_media($maker['maker_photo'], $ID);
             $makers[$makerKey]['maker_photo'] = $attachment_id;
         }
     }
-    update_field('field_56157e9ad04c2',$makers,$ID);   
+    update_field('field_56157e9ad04c2',$makers,$ID);       
 }
 
+echo 'Updated '.$count;
 
 /* Import media from url
  *
@@ -241,6 +222,7 @@ foreach($postData as $ID=>$post){
  */
 
 function fetch_media($file_url, $post_id) {
+    
 	require_once(ABSPATH . 'wp-admin/includes/image.php');
 	global $wpdb;
 
@@ -257,10 +239,13 @@ function fetch_media($file_url, $post_id) {
 	}
 
 	//rename the file... alternatively, you could explode on "/" and keep the original file name
-	$ext = array_pop(explode(".", $file_url));
-	$new_filename = 'blogmedia-'.$post_id.".".$ext; //if your post has multiple files, you may need to add a random number to the file name to prevent overwrites
+        $url_array = explode(".", $file_url);
+	$ext = array_pop($url_array);
+
+        $new_filename = 'entry-'.$post_id.".".$ext; //if your post has multiple files, you may need to add a random number to the file name to prevent overwrites
 
 	if (@fclose(@fopen($file_url, "r"))) { //make sure the file actually exists
+            
 		copy($file_url, ABSPATH.$artDir.$new_filename);
 
 		$siteurl = get_option('siteurl');
@@ -293,13 +278,13 @@ function fetch_media($file_url, $post_id) {
 		$attach_id = wp_insert_attachment( $artdata, $save_path, $post_id );
 
 		//generate metadata and thumbnails
-		if ($attach_data = wp_generate_attachment_metadata( $attach_id, $save_path)) {
+		if ($attach_data = wp_generate_attachment_metadata( $attach_id, $save_path)) {                    
 			wp_update_attachment_metadata($attach_id, $attach_data);
 		}
-
+    
 		//optional make it the featured image of the post it's attached to
 		$rows_affected = $wpdb->insert($wpdb->prefix.'postmeta', array('post_id' => $post_id, 'meta_key' => '_thumbnail_id', 'meta_value' => $attach_id));
-	}else {
+        }else {            
 		return 'false';
 	}
 

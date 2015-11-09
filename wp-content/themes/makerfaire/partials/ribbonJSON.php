@@ -5,26 +5,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-include 'db_connect.php';
+//include 'db_connect.php';
 $filter = '';
 
-$year = (isset($_GET['year']) ? $_GET['year']:'');
+$year = (isset($_REQUEST['year']) ? $_REQUEST['year']:'');
 $year = filter_var(trim($year), FILTER_SANITIZE_STRING);
 $filter = " and year= ".($year!=''? $year:date("Y"));
 
 $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo "
         . " FROM `wp_mf_ribbons` where entry_id > 0 ".$filter." "
         . " group by entry_id, location, year, ribbonType, numRibbons order by year DESC, location ASC";
-$mysqli->query("SET NAMES 'utf8'");
-
-$ribbons = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
+//$mysqli->query("SET NAMES 'utf8'");
+//$ribbons = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
 
 $ribbonData=array();
 $data = array();
-
 $json = array();
-while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
+
+foreach($wpdb->get_results($sql,ARRAY_A) as $ribbon){  
+//while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
     $entry_id   = $ribbon['entry_id'];
+    //echo $entry_id.'<br/>';
 /*
     //determine the postID
     $makerSQL= "select p1.post_id, p2.meta_key, p2.meta_value "
@@ -48,14 +49,16 @@ while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
                         
     $project_name  = $ribbon['project_name'];
     $project_photo = $ribbon['project_photo']; 
-    
+    //echo '$project_photo='.$project_photo.'<br/>';
+    $project_photo = legacy_get_fit_remote_image_url($project_photo,285,270,0);
+    //echo '$project_photo='.$project_photo.'<br/><br/><br/>';
     $currCount = (isset($ribbonData[$entry_id]['ribbon'][$ribbonType]['count']) ? $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']:0);
     $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']  = $currCount + $numRibbons;
     $ribbonData[$entry_id]['fairedata'][] = 
             array( 'year'=>$year, 'faire'=>$location,'ribbonType'=>($ribbonType==0?'blue':'red'),'numRibbons'=>$numRibbons);
     $ribbonData[$entry_id]['project_name']  = $project_name;
     $ribbonData[$entry_id]['project_photo'] = $project_photo;    
-    
+   
 }
 foreach($ribbonData as $entry_id=>$data){  
     $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);

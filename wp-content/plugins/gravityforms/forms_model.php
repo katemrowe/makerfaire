@@ -2377,6 +2377,7 @@ class GFFormsModel {
 	}
 
 	public static function get_fileupload_value( $form_id, $input_name ) {
+            echo 'hellllllo';
 		_deprecated_function( 'GFFormsModel::get_fileupload_value', '1.9', 'GF_Field_Fileupload::get_fileupload_value' );
 		global $_gf_uploaded_files;
 

@@ -1888,13 +1888,25 @@ function angular_scripts() {
 		get_stylesheet_directory_uri() . '/js/angular/scripts.js',
 		array( 'angularjs', 'angularjs-route' )
 	);
-	wp_localize_script(
+        wp_localize_script('angular-scripts',  'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+
+        wp_localize_script(
 		'angular-scripts',
 		'angularLocalized',
 		array(
 			'partials' => trailingslashit( get_template_directory_uri() ) . 'partials/'
 			)
-	);        
+	);         
 }
-
 add_action( 'wp_enqueue_scripts', 'angular_scripts' );
+
+add_action( 'wp_ajax_nopriv_getRibbonData', 'retrieveRibbonData' );
+add_action( 'wp_ajax_getRibbonData', 'retrieveRibbonData' );
+
+//ajax for retrieving blue ribbon data
+function retrieveRibbonData() {
+    global $wpdb;
+   require_once( TEMPLATEPATH. '/partials/ribbonJSON.php' );
+    // IMPORTANT: don't forget to "exit"
+    exit;
+}

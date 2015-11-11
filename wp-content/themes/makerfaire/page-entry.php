@@ -53,6 +53,22 @@
     return $url;
     }
     
+    add_filter( 'wpseo_twitter_image', 'change_wpseo_twitter_image' );
+    function change_wpseo_twitter_image( $url ) {
+    global $project_photo;
+    $url = $project_photo;
+    return $url;
+    }
+    // Card Type
+    add_filter( 'wpseo_twitter_card_type', 'change_wpseo_twitter_card_type' );
+    function change_wpseo_twitter_card_type( $url ) {
+    $url = 'summary_large_image';
+    return $url;
+    }
+    
+    
+    
+    
     // Description
     global $project_short;
     $project_short = $entry['16'];
@@ -62,8 +78,7 @@
     return $text;
     }
     add_filter( 'wpseo_metadesc', 'change_wpseo_metadesc' );
-   
-    
+ 
     //Website
     global $project_website;
     $project_website = $entry['27'];

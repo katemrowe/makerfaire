@@ -79,8 +79,7 @@
 	<script type="text/javascript">
 		dataLayer = [];
 	</script>
-        <script src="//load.sumome.com/" data-sumo-site-id="c3289af6b35bf7ccd70c5e301ddfa544d7b33e05965181613fdd67e0add29ba7" async="async"></script>
-	</head>
+       </head>
 
 <body id="bootstrap-js" <?php body_class('no-js'); ?>>
 	

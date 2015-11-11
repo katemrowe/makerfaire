@@ -87,7 +87,7 @@
     //Url
     global $canonical_url;
     global $wp;
-     $canonical_url = home_url( $wp->request ) ;    
+     $canonical_url = home_url( $wp->request ) . '/' ;    
     function change_wpseo_canonical( $url ) {
     global $canonical_url;
     $url = $canonical_url;

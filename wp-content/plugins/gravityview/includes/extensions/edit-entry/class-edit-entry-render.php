@@ -156,10 +156,14 @@ class GravityView_Edit_Entry_Render {
 
         $entries = $gravityview_view->getEntries();
         $this->entry = $entries[0];
-
-
+                
+  /*
+        $this->form_id = $this->entry['form_id'];
+        $this->form = GFAPI::get_form($this->form_id);
+*/
         $this->form = $gravityview_view->getForm();
         $this->form_id = $gravityview_view->getFormId();
+
         $this->view_id = $gravityview_view->getViewId();
 
         self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
@@ -323,7 +327,7 @@ class GravityView_Edit_Entry_Render {
      */
     private function form_prepare_for_save() {
         $form = $this->form;
-
+        
         foreach( $form['fields'] as &$field ) {
 
             $field->adminOnly = false;

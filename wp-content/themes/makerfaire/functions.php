@@ -1369,7 +1369,7 @@ function gform_skip_page($form) {
 add_filter( 'gform_entry_field_value', 'entry_field_standout', 10, 4 );
 function entry_field_standout( $value, $field, $lead, $form ) {
     //topics/category fields
-    if ( $field['id'] != 64)
+    if (isset($field['id']) && $field['id'] != 64)
         return $value;
     
     $value = '<span class="entryStandout">'.$value.'</span>';
@@ -1724,7 +1724,7 @@ function entry_schedule_field_content($field_content, $field, $value, $lead_id, 
 function get_schedule($lead){    
     global $wpdb;
     $schedule = '';
-    $entry_id = $lead['id'];
+    $entry_id = (isset($lead['id'])?$lead['id']:'');
     
     if($entry_id!=''){
         //get scheduling information for this lead
@@ -1866,3 +1866,61 @@ function subscribe_return_path_overlay() { ?>
     );
   </script>
 <?php }
+
+/* Changes to gravity view for maker admin tool */
+//use all forms
+add_filter('gravityview_before_get_entries','define_entry_search_criteria',10,4);
+add_filter('gravityview_pre_get_entries','define_entry_search_criteria',10,4);
+
+function define_entry_search_criteria($return,$criteria,$passed_criteria,$total){    
+ $entries = GFAPI::get_entries( 0, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+ return $entries;
+}
+
+//add faire field to available field list 
+/* Filter Parameters
+ * array -  $additional_fields	
+ *          Associative array of field arrays, with label_text, desc, field_id, 
+ *          label_type, input_type, field_options, and settings_html keys
+*/
+add_filter('gravityview_additional_fields','gv_add_faire',10,2);
+function gv_add_faire($additional_fields){
+  $additional_fields[] = array("label_text" => "Faire", "desc"         => "Display Faire Name", 
+                               "field_id"   => "faire_name", "label_type"   => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  return $additional_fields;
+}
+
+//set faire name and year
+/* Filter Parameters
+    string	$item_output	The HTML output for the item
+    array	$entry	Gravity Forms entry array
+    GravityView_Entry_List	$this	The current class instance */
+add_filter('gform_entry_field_value','gv_faire_name',10,4);
+function gv_faire_name($display_value, $field, $entry, $form){
+    if($field["type"]=='faire_name'){
+        global $wpdb;
+
+        $form_id = $entry['form_id'];
+        $sql = "select faire_name from wp_mf_faire where FIND_IN_SET ($form_id,wp_mf_faire.form_ids)> 0";    
+        $faire = $wpdb->get_results($sql);
+
+        $faire_name = (isset($faire[0]->faire_name) ? $faire[0]->faire_name:$sql);
+        $display_value = $faire_name;
+    }
+    return $display_value;
+}
+
+/* set the form_ID based on the faire */
+add_filter('gravityview_edit_entry_title','set_gv_formID');
+function set_gv_formID(){
+    //global $gravityview_view;
+    //$form_id = $gravityview_view->entry['form_id'];
+    //$gravityview_view->form_id = $form_id;
+    //$form = GFAPI::get_form($form_id);
+    //var_dump($gravityview_view->form);
+    //$gravityview_view->form = $form;
+    //echo $form_id;
+    
+}
+/*End changes to gravity view*/

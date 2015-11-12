@@ -13,6 +13,9 @@ require_once( TEMPLATEPATH. '/plugins/public-pages/makers.php' );
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/post-types/maker.php' );
 
+// include global-maker-faires post type 
+require_once( TEMPLATEPATH. '/post-types/global-maker-faire.php' );
+
 // Markdown
 require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
 
@@ -1053,7 +1056,7 @@ function create_post_type() {
     	 */
     	static public function log_message( $slug, $message, $debug_level ) {
             //don't log debug messages
-            if($debug_level==KLogger::ERROR){
+            if($debug_level==KLogger::DEBUG){
                 error_log( "GF LOG: $slug, $message, $debug_level" );
             }
     	}

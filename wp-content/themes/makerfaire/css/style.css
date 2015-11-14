@@ -4111,11 +4111,17 @@ header.store-header {
 header.store-header .store-intro-text1 {
   padding-top: 50px;
 }
-header.store-header .store-intro-text1 h3 {
-  font-size: 22px;
+header.store-header .store-intro-text1 h2 {
+  font-size: 25px;
+  font-family: Roboto;
+  padding: 5px;
+  border-top: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
+  display: inline-block;
 }
 header.store-header .store-intro-text1 h1 {
   font-weight: 200;
+  font-family: Roboto;
 }
 header.store-header .store-intro-text2 {
   padding-top: 50px;
@@ -4123,6 +4129,7 @@ header.store-header .store-intro-text2 {
 }
 header.store-header .store-intro-text2 h2 {
   font-size: 26px;
+  font-family: Roboto;
 }
 header.store-header i {
   color: #fff;
@@ -4139,6 +4146,7 @@ section.store-apply-bar p {
   font-size: 16px;
   color: #fff;
   margin: 0;
+  font-family: Roboto;
 }
 section.store-apply-bar p a {
   color: #fff;
@@ -4164,9 +4172,11 @@ section.store-centered-stuff img.store-img200 {
 }
 section.store-centered-stuff h2 span {
   color: red;
+  font-family: Roboto;
 }
 section.store-centered-stuff a {
   color: #fff;
+  font-family: Roboto;
 }
 section.store-centered-stuff a:hover {
   color: #ddd;
@@ -4251,6 +4261,7 @@ section.store-pictures * {
 .store-red-footer {
   color: red;
   margin-bottom: 50px;
+  font-family: Roboto;
 }
 .store-red-footer a {
   color: red;

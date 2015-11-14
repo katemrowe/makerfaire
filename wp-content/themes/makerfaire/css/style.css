@@ -4159,6 +4159,9 @@ section.store-centered-stuff {
 section.store-centered-stuff img {
   margin: 0 auto;
 }
+section.store-centered-stuff img.store-img200 {
+  max-width: 200px;
+}
 section.store-centered-stuff h2 span {
   color: red;
 }

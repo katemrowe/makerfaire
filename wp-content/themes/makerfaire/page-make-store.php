@@ -8,8 +8,8 @@ get_header(); ?>
 <header class="store-header">
   <div class="container">
     <div class="store-intro-text1">
-      <h3>Merry Making!</h3>
-      <h1><strong>Make:</strong> Store<br />Now open in Union Square, SF</h1>
+      <h1><strong>Make:</strong> Store<br />Now open in Union Square, San Francisco</h1>
+      <h2>Showcasing the best of the Maker Movement</h2>
     </div>
     <div class="store-intro-text2">
       <h2><strong>345 Sutter St., b/t Grant + Stockton</strong><br />Open from November 25 through January 15, 2016</h2>
@@ -29,7 +29,7 @@ get_header(); ?>
 
   <!-- Centered Stuff -->
   <section class="store-centered-stuff">
-    <img class="img-responsive" src="/wp-content/themes/makerfaire/images/Make-store-makey_badge.jpg" alt="Makey Badge" />
+    <img class="img-responsive store-img200" src="/wp-content/themes/makerfaire/images/Make-store-makey_badge.jpg" alt="Makey Badge" />
     <h2>Shop Make: In Real Life <span>#makestore</span></h2>
     <p class="lead">Get the full #makestore experience with one of our special in-store events.</p>
     <div class="row">

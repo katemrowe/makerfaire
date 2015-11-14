@@ -1,0 +1,196 @@
+// Background Features
+.background-cover() {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+@brand-primary: #fed136;
+
+header.store-header {
+  background-image: url('/wp-content/themes/makerfaire/images/Make-store-hero-desktop.png');
+  background-repeat: none;
+  background-attachment: scroll;
+  background-position: center center;
+  margin-top: -20px;
+  .background-cover;
+  text-align: center;
+  color: white;
+  .store-intro-text1 {
+    padding-top: 50px;
+    h3 {
+      font-size: 22px;
+    }
+    h1 {
+      font-weight: 200;
+    }
+  }
+  .store-intro-text2 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    h2 {
+      font-size: 26px;
+    }
+  }
+  i {
+    color: #fff;
+    margin-bottom: 50px;
+    display: inline-block;
+    padding: 5px;
+  }
+}
+
+// Blue Apply Bar
+section.store-apply-bar {
+  background: #3FAFED;
+  text-align: center;
+  padding: 10px 0;
+  p {
+    font-size: 16px;
+    color: #fff;
+    margin: 0;
+    a {
+      color: #fff;
+      &:hover {
+        color: #ddd;
+      }
+    }
+  }
+}
+
+// Container
+.store-container {
+  background-image: url('/wp-content/themes/makerfaire/images/Make-stire-background-pattern.png');
+  background-size: contain;
+  background-position: center center;
+}
+
+// Centered Stuff
+section.store-centered-stuff {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  img {
+    margin: 0 auto;
+  }
+  h2 {
+    span {
+      color: red;
+    }
+  }
+  a {
+    color: #fff;
+    &:hover {
+      color: #ddd;
+    }
+  }
+}
+
+// Global Section Styles
+section.store-pictures {
+    padding: 50px 0;
+    h2.section-heading {
+    font-size: 40px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    }
+    h3.section-subheading {
+    font-size: 16px;
+    text-transform: none;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 75px;
+    }
+}
+
+// Portfolio Section
+
+section.store-pictures {
+  display: none;
+    .portfolio-item {
+        margin: 0 0 15px;
+        right: 0;
+        .portfolio-link {
+            display: block;
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+            .portfolio-hover {
+                background: fade(@brand-primary, 90%);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                transition: all ease 0.5s;
+                -webkit-transition: all ease 0.5s;
+                -moz-transition: all ease 0.5s;
+                &:hover {
+                    opacity: 1;
+                }
+                .portfolio-hover-content {
+                    position: absolute;
+                    width: 100%;
+                    height: 20px;
+                    font-size: 20px;
+                    text-align: center;
+                    top: 50%;
+                    margin-top: -12px;
+                    color: white;
+                    i {
+                        margin-top: -12px;
+                    }
+                    h3,
+                    h4 {
+                        margin: 0;
+                    }
+                }                
+            }            
+        }
+        .portfolio-caption {
+          max-width: 400px;
+          margin: 0 auto;
+          background-color: white;
+          text-align: center;
+          padding: 25px;
+          h4 {
+            text-transform: none;
+            margin: 0;
+          }
+          p {
+            font-style: italic;
+            font-size: 16px;
+            margin: 0;
+          }
+        }
+    }
+    * {
+        z-index: 2;
+    }
+}
+
+.store-red-footer {
+  color: red;
+  margin-bottom: 50px;
+  a {
+    color: red;
+    &:hover {
+      color: #DA0101;
+    }
+  }
+}
+
+@media(min-width:1200px) {
+  .store-container {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+}
+@media(min-width:767px) {
+    #portfolio {
+        .portfolio-item {
+            margin: 0 0 30px;
+        }
+    }
+}

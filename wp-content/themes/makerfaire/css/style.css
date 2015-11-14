@@ -4131,6 +4131,12 @@ header.store-header .store-intro-text2 h2 {
   font-size: 26px;
   font-family: Roboto;
 }
+header.store-header .store-intro-text2 h2 a {
+  color: #fff;
+}
+header.store-header .store-intro-text2 h2 a:hover {
+  color: #ccc;
+}
 header.store-header i {
   color: #fff;
   margin-bottom: 50px;

@@ -8,11 +8,12 @@ get_header(); ?>
 <header class="store-header">
   <div class="container">
     <div class="store-intro-text1">
-      <h1><strong>Make:</strong> Store<br />Now open in Union Square, San Francisco</h1>
+      <h1><strong>Make:</strong> Store<br />Coming Soon to Union Square, San Francisco</h1>
       <h2>Showcasing the best of the Maker Movement</h2>
     </div>
     <div class="store-intro-text2">
-      <h2><strong>345 Sutter St., b/t Grant + Stockton</strong><br />Open from November 21 through January 15, 2016</h2>
+      <h2><a href="https://www.google.com/maps/place/345+Sutter+St,+San+Francisco,+CA+94108/@37.789314,-122.4082707,17z/data=!3m1!4b1!4m2!3m1!1s0x8085808947591f45:0x718185232713938" target="_blank">
+        <strong>345 Sutter St., b/t Grant + Stockton</strong></a><br />Open from November 21 through January 15, 2016</h2>
       <h2>Open daily, 10am to 7pm</h2>
       <p>(Closed Thanksgiving, Christmas, and New Year's Day)
     </div>
@@ -22,7 +23,7 @@ get_header(); ?>
 
 <!-- Apply blue bar -->
 <section class="store-apply-bar">
-  <!-- <p>WANT TO WORK AT THE STORE?  <a href="#">APPLY HERE</a> -->
+  <p>WANT TO WORK AT THE STORE?  <a href="https://www.staffly.com/makers" target="_blank">APPLY HERE</a>
 </section>
 
 <div class="container store-container">

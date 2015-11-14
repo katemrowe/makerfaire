@@ -12,7 +12,7 @@ get_header(); ?>
       <h2>Showcasing the best of the Maker Movement</h2>
     </div>
     <div class="store-intro-text2">
-      <h2><strong>345 Sutter St., b/t Grant + Stockton</strong><br />Open from November 25 through January 15, 2016</h2>
+      <h2><strong>345 Sutter St., b/t Grant + Stockton</strong><br />Open from November 21 through January 15, 2016</h2>
       <h2>Open daily, 10am to 7pm</h2>
       <p>(Closed Thanksgiving, Christmas, and New Year's Day)
     </div>
@@ -22,7 +22,7 @@ get_header(); ?>
 
 <!-- Apply blue bar -->
 <section class="store-apply-bar">
-  <p>WANT TO WORK AT THE STORE?  <a href="#">APPLY HERE</a>
+  <!-- <p>WANT TO WORK AT THE STORE?  <a href="#">APPLY HERE</a> -->
 </section>
 
 <div class="container store-container">

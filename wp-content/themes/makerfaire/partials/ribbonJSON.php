@@ -12,9 +12,9 @@ $year = (isset($_REQUEST['year']) ? $_REQUEST['year']:'');
 $year = filter_var(trim($year), FILTER_SANITIZE_STRING);
 $filter = " and year= ".($year!=''? $year:date("Y"));
 
-$sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo "
+$sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo, post_id "
         . " FROM `wp_mf_ribbons` where entry_id > 0 ".$filter." "
-        . " group by entry_id, location, year, ribbonType, numRibbons order by year DESC, location ASC";
+        . " group by entry_id, location, year, ribbonType, numRibbons";
 //$mysqli->query("SET NAMES 'utf8'");
 //$ribbons = $mysqli->query($sql) or trigger_error($mysqli->error."[$sql]");
 
@@ -25,21 +25,16 @@ $json = array();
 foreach($wpdb->get_results($sql,ARRAY_A) as $ribbon){  
 //while ($ribbon = mysqli_fetch_array($ribbons, MYSQLI_ASSOC)) {
     $entry_id   = $ribbon['entry_id'];
-    //echo $entry_id.'<br/>';
-/*
+    $post_id    = $ribbon['post_id'];
+
     //determine the postID
-    $makerSQL= "select p1.post_id, p2.meta_key, p2.meta_value "
-            . "   from wp_postmeta p1 right join wp_postmeta p2 "
-            . "         on p1.post_id=p2.post_id and "
-            . "            p2.meta_value !=''    and "
-            . "                 p2.meta_key like '%maker_name%' "
-            . "   where p1.meta_key='entry_id' and p1.meta_value='".$entry_id."'";
+    /*$makerSQL= "select meta_value from wp_postmeta where post_id = $post_id  and meta_key like '%maker_name%' ";            
     $makerData = $mysqli->query($makerSQL) or trigger_error($mysqli->error."[$makerSQL]");    
-    $maker = mysqli_fetch_array($makerData);
+    $maker = mysqli_fetch_array($makerData);*/
     
     //if maker name has field_ in it, it is not a valid maker name.  return spaces instead
-    $ribbonData[$entry_id]['maker_name']    = (strpos($maker['meta_value'], 'field_')===false?$maker['meta_value']:'');*/
-    $ribbonData[$entry_id]['maker_name'] ='';
+    $ribbonData[$entry_id]['maker_name']    = (strpos($maker['meta_value'], 'field_')===false?$maker['meta_value']:'');
+    //$ribbonData[$entry_id]['maker_name'] ='';
     
     $location   = $ribbon['location'];
         

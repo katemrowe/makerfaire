@@ -12,7 +12,7 @@ $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 build_wp_mf_maker(); //for testing*/
 
 add_action('cron_wp_mf_maker', 'build_wp_mf_maker');
-add_action('crin_wp_mf_api_entity', 'build_wp_mf_api_entity');
+add_action('cron_wp_mf_api_entity', 'build_wp_mf_api_entity');
 
 function build_wp_mf_api_entity(){
     global $wpdb;
@@ -371,3 +371,16 @@ function buildCrossRef(){
 }
 
 
+//this cron action will create the JSON files used by the blue ribbon page
+add_action('cron_ribbonJSON', 'build_ribbonJSON');
+
+function build_ribbonJSON(){
+    require_once( TEMPLATEPATH. '/partials/ribbonJSON.php' );  
+  
+    $yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 order by year desc");
+
+    foreach($yearSql as $year){
+        $json = createJSON($year->year);
+        //write json file
+    }      
+}

@@ -4,7 +4,7 @@
  *
  * @version 2.0
  */
-
+ 
   global $wp_query;
   $entryId = $wp_query->query_vars['e_id'];
   $entry = GFAPI::get_entry($entryId);
@@ -38,80 +38,37 @@
   $isList =(strpos($displayType, 'list') !== false);
   $isSingle =(strpos($displayType, 'one') !== false);
   
+    $sharing_cards = new mf_sharing_cards();
+    
     //Change Project Name
-    global $project_name;
     $project_name = $entry['151'];
    
-   
     // Url
-    add_filter( 'wpseo_opengraph_image', 'change_wpseo_opengraph_image' );
-    global $project_photo;
     $project_photo = legacy_get_resized_remote_image_url($entry['22'],750,500);
-    function change_wpseo_opengraph_image( $url ) {
-    global $project_photo;
-    $url = $project_photo;
-    return $url;
-    }
-    
-    add_filter( 'wpseo_twitter_image', 'change_wpseo_twitter_image' );
-    function change_wpseo_twitter_image( $url ) {
-    global $project_photo;
-    $url = $project_photo;
-    return $url;
-    }
-    // Card Type
-    add_filter( 'wpseo_twitter_card_type', 'change_wpseo_twitter_card_type' );
-    function change_wpseo_twitter_card_type( $url ) {
-    $url = 'summary_large_image';
-    return $url;
-    }
-    
-    
-    
-    
+    $sharing_cards->project_photo = $project_photo;
+   
     // Description
-    global $project_short;
     $project_short = $entry['16'];
-    function change_wpseo_metadesc( $title ) {
-    global $project_short;
-    $text = $project_short;
-    return $text;
-    }
-    add_filter( 'wpseo_metadesc', 'change_wpseo_metadesc' );
- 
+    $sharing_cards->project_short = $project_short;
+
     //Website
-    global $project_website;
     $project_website = $entry['27'];
-    
-    
     //Video
-    global $project_video;
     $project_video = $entry['32'];
-    
     //Title
-    global $project_title;
     $project_title = (string)$entry['151'];
     $project_title  = preg_replace('/\v+|\\\[rn]/','<br/>',$project_title);
-    function change_wpseo_title( $title ) {
-    global $project_title;
-    $title = $project_title;
-    return $title;
-    }
-    add_filter( 'wpseo_title', 'change_wpseo_title' );
+    $sharing_cards->project_title = $project_title;
+   
    
     //Url
-    global $canonical_url;
     global $wp;
-     $canonical_url = home_url( $wp->request ) . '/' ;    
-    function change_wpseo_canonical( $url ) {
-    global $canonical_url;
-    $url = $canonical_url;
-    return $url;
-    }
-    add_filter( 'wpseo_canonical', 'change_wpseo_canonical' );
+    $canonical_url = home_url( $wp->request ) . '/' ;    
+    $sharing_cards->canonical_url = $canonical_url;
    
-
-  get_header();
+    $sharing_cards->set_values();
+    print_r($sharing_cards);
+    get_header();
 ?>
 
 <div class="clear"></div>

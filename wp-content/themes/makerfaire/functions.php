@@ -55,6 +55,7 @@ include_once TEMPLATEPATH. '/classes/gf-entry-notifications.php';
 include_once TEMPLATEPATH. '/classes/gf-helper.php';
 include_once TEMPLATEPATH. '/classes/makerfaire-helper.php';
 include_once TEMPLATEPATH. '/classes/gf-jdb-helper.php';
+include_once TEMPLATEPATH. '/classes/mf-sharing-cards.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';

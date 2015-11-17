@@ -67,7 +67,6 @@
     $sharing_cards->canonical_url = $canonical_url;
    
     $sharing_cards->set_values();
-    print_r($sharing_cards);
     get_header();
 ?>
 

@@ -2271,7 +2271,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-app,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-app {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }
@@ -2288,7 +2288,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-program,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-program {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }
@@ -2305,7 +2305,7 @@ li.hidelink a:visited {
 .quora .navbar-nav > li:nth-child(2) .drop-holder .drop .col li.icon-map,
 .quora .navbar-nav > li:nth-child(3) .drop-holder .drop .col li.icon-map {
   padding: 0 0 8px 26px;
-  font-size: 0.8571428571428571px "latobold";
+  font-size: 0.85714286px "latobold";
   position: relative;
   font-weight: bold;
 }
@@ -4094,6 +4094,199 @@ img.attachment-post-thumbnail {
   cursor: pointer;
   width: 100%;
   height: auto;
+}
+header.store-header {
+  background-image: url('/wp-content/themes/makerfaire/images/Make-store-hero-desktop.png');
+  background-repeat: none;
+  background-attachment: scroll;
+  background-position: center center;
+  margin-top: -20px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  text-align: center;
+  color: white;
+}
+header.store-header .store-intro-text1 {
+  padding-top: 50px;
+}
+header.store-header .store-intro-text1 h2 {
+  font-size: 25px;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+  padding: 5px;
+  border-top: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
+  display: inline-block;
+}
+header.store-header .store-intro-text1 h1 {
+  font-weight: 300;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+header.store-header .store-intro-text2 {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+header.store-header .store-intro-text2 h2 {
+  font-size: 26px;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+header.store-header .store-intro-text2 h2 a {
+  color: #fff;
+}
+header.store-header .store-intro-text2 h2 a:hover {
+  color: #ccc;
+}
+header.store-header i {
+  color: #fff;
+  margin-bottom: 50px;
+  display: inline-block;
+  padding: 5px;
+}
+section.store-apply-bar {
+  background: #3FAFED;
+  text-align: center;
+  padding: 10px 0;
+}
+section.store-apply-bar p {
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+section.store-apply-bar p a {
+  color: #fff;
+}
+section.store-apply-bar p a:hover {
+  color: #ddd;
+}
+.store-container {
+  background-image: url('/wp-content/themes/makerfaire/images/Make-stire-background-pattern.png');
+  background-size: contain;
+  background-position: center center;
+}
+section.store-centered-stuff {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+section.store-centered-stuff img {
+  margin: 0 auto;
+}
+section.store-centered-stuff img.store-img200 {
+  max-width: 200px;
+}
+section.store-centered-stuff h2 span {
+  color: red;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+section.store-centered-stuff a {
+  color: #fff;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+section.store-centered-stuff a:hover {
+  color: #ddd;
+}
+section.store-pictures {
+  padding: 50px 0;
+}
+section.store-pictures h2.section-heading {
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+section.store-pictures h3.section-subheading {
+  font-size: 16px;
+  text-transform: none;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 75px;
+}
+section.store-pictures {
+  display: none;
+}
+section.store-pictures .portfolio-item {
+  margin: 0 0 15px;
+  right: 0;
+}
+section.store-pictures .portfolio-item .portfolio-link {
+  display: block;
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+}
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover {
+  background: rgba(254, 209, 54, 0.9);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+}
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover:hover {
+  opacity: 1;
+}
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  font-size: 20px;
+  text-align: center;
+  top: 50%;
+  margin-top: -12px;
+  color: white;
+}
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content i {
+  margin-top: -12px;
+}
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content h3,
+section.store-pictures .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content h4 {
+  margin: 0;
+}
+section.store-pictures .portfolio-item .portfolio-caption {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: white;
+  text-align: center;
+  padding: 25px;
+}
+section.store-pictures .portfolio-item .portfolio-caption h4 {
+  text-transform: none;
+  margin: 0;
+}
+section.store-pictures .portfolio-item .portfolio-caption p {
+  font-style: italic;
+  font-size: 16px;
+  margin: 0;
+}
+section.store-pictures * {
+  z-index: 2;
+}
+.store-red-footer {
+  color: red;
+  margin-bottom: 50px;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+}
+.store-red-footer a {
+  color: red;
+}
+.store-red-footer a:hover {
+  color: #DA0101;
+}
+@media (min-width: 1200px) {
+  .store-container {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+}
+@media (min-width: 767px) {
+  #portfolio .portfolio-item {
+    margin: 0 0 30px;
+  }
 }
 /* overlay-div style */
 .overlay-div {

@@ -2922,6 +2922,10 @@ console.time("acf_test_ready");
 		
 		fetch: function(){
 			
+			// bail early if no ajax
+			if( !acf.get('ajax') ) return;
+			
+			
 			// abort XHR if is already loading AJAX data
 			if( this.xhr ) {
 			

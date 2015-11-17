@@ -17,10 +17,6 @@
 
 function acf_get_field_reference( $field_name, $post_id ) {
 	
-	// vars
-	$reference = false;
-	
-	
 	// try cache
 	$found = false;
 	$cache = wp_cache_get( "field_reference/post_id={$post_id}/name={$field_name}", 'acf', false, $found );
@@ -32,57 +28,8 @@ function acf_get_field_reference( $field_name, $post_id ) {
 	}
 			
 	
-	// load value depending on the $type
-	if( is_numeric($post_id) ) {
-		
-		$v = get_post_meta( $post_id, "_{$field_name}", false );
-		
-		// value is an array
-		if( isset($v[0]) ) {
-			
-		 	$reference = $v[0];
-		 	
-	 	}
-
-	} elseif( strpos($post_id, 'user_') !== false ) {
-		
-		$user_id = str_replace('user_', '', $post_id);
-		$user_id = intval( $user_id );
-		
-		$v = get_user_meta( $user_id, "_{$field_name}", false );
-		
-		// value is an array
-		if( isset($v[0]) ) {
-			
-		 	$reference = $v[0];
-		 	
-	 	}
-	 	
-	} elseif( strpos($post_id, 'comment_') !== false ) {
-		
-		$comment_id = str_replace('comment_', '', $post_id);
-		$comment_id = intval( $comment_id );
-		
-		$v = get_comment_meta( $comment_id, "_{$field_name}", false );
-		
-		// value is an array
-		if( isset($v[0]) ) {
-			
-		 	$reference = $v[0];
-		 	
-	 	}
-	 	
-	} else {
-		
-		$v = get_option( "_{$post_id}_{$field_name}", false );
-	
-		if( ! is_null($v) ) {
-			
-			$reference = $v;
-			
-	 	}
-	 	
-	}
+	// get reference
+	$reference = acf_get_metadata( $post_id, $field_name, true );
 	
 	
 	//update cache

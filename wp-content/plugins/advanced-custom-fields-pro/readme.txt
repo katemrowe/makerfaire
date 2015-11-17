@@ -106,6 +106,9 @@ http://support.advancedcustomfields.com/
 
 == Changelog ==
 
+= 5.3.2.1 =
+* Core: Fixed bug causing issues when loading values from an options page, widget or taxonomy term
+
 = 5.3.2 =
 * Repeater field: Added new setting and icon to collapse row
 * Google Maps: Improved google API loading for better theme compatibility

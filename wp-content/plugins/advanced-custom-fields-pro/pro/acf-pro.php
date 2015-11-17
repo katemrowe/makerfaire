@@ -47,7 +47,7 @@ class acf_pro {
 		
 		// actions
 		add_action('init',										array($this, 'register_assets'));
-		add_action('acf/include_field_types',					array($this, 'include_field_types'));
+		add_action('acf/include_field_types',					array($this, 'include_field_types'), 5);
 		add_action('acf/input/admin_enqueue_scripts',			array($this, 'input_admin_enqueue_scripts'));
 		add_action('acf/field_group/admin_enqueue_scripts',		array($this, 'field_group_admin_enqueue_scripts'));
 		add_action('acf/field_group/admin_l10n',				array($this, 'field_group_admin_l10n'));

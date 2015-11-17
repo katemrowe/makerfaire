@@ -13,6 +13,9 @@ require_once( TEMPLATEPATH. '/plugins/public-pages/makers.php' );
 // include maker-faire-forms plugin
 require_once( TEMPLATEPATH. '/post-types/maker.php' );
 
+// include global-maker-faires post type 
+require_once( TEMPLATEPATH. '/post-types/global-maker-faire.php' );
+
 // Markdown
 require_once( TEMPLATEPATH. '/plugins/markdown/markdown.php' );
 
@@ -100,6 +103,7 @@ function make_enqueue_jquery() {
 	wp_enqueue_style( 'make-gravityforms', get_stylesheet_directory_uri() . '/css/gravityforms.css' );
 	wp_enqueue_style( 'make-bootstrap', get_stylesheet_directory_uri() . '/css/bootstrap.min.css' );
 	wp_enqueue_style( 'make-bootstrapdialog', get_stylesheet_directory_uri() . '/css/bootstrap-dialog.min.css' );
+	wp_enqueue_style( 'wpb-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:400,500,300', false );
 	wp_enqueue_style( 'make-styles', get_stylesheet_directory_uri() . '/css/style.css' );
 	wp_enqueue_style( 'ytv', get_stylesheet_directory_uri() . '/css/ytv.css' );
 	wp_enqueue_style( 'bootgrid', get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.css' );
@@ -1053,7 +1057,7 @@ function create_post_type() {
     	 */
     	static public function log_message( $slug, $message, $debug_level ) {
             //don't log debug messages
-            if($debug_level==KLogger::ERROR){
+            if($debug_level==KLogger::DEBUG){
                 error_log( "GF LOG: $slug, $message, $debug_level" );
             }
     	}

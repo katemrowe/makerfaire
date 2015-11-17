@@ -80,7 +80,7 @@
 	<script type="text/javascript">
 		dataLayer = [];
 	</script>
-	</head>
+       </head>
 
 <body id="bootstrap-js" <?php body_class('no-js'); ?>>
 	

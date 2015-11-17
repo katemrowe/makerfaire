@@ -99,8 +99,7 @@ class GF_Field_FileUpload extends GF_Field {
 
 
 	public function get_field_input( $form, $value = '', $entry = null ) {
-
-		$lead_id = absint( rgar( $entry, 'id' ) );
+                $lead_id = absint( rgar( $entry, 'id' ) );
 
 		$form_id         = absint( $form['id'] );
 		$is_entry_detail = $this->is_entry_detail();
@@ -215,14 +214,17 @@ class GF_Field_FileUpload extends GF_Field {
 				//  MAX_FILE_SIZE > 2048MB fails. The file size is checked anyway once uploaded, so it's not necessary.
 				$upload = sprintf( "<input type='hidden' name='MAX_FILE_SIZE' value='%d' />", $max_upload_size );
 			}
-			$upload .= sprintf( "<input name='input_%d' id='%s' type='file' class='%s' aria-describedby='extensions_message' {$tabindex} %s/>", $id, $field_id, esc_attr( $class ), $disabled_text );
-
+			
+                        $upload .= sprintf( "<input name='input_%d' id='%s' type='file' class='%s' aria-describedby='extensions_message' {$tabindex} %s/>", $id, $field_id, esc_attr( $class ), $disabled_text );
+                        $upload .= sprintf( '<input type="text" name="input_%d_original" value=\'%s\' readonly />', $id, esc_attr( $value ) );
+			
 			if ( ! $is_admin ) {
 				$upload .= "<span id='extensions_message' class='screen-reader-text'>{$extensions_message}</span>";
 			}
 		}
 
-		if ( $is_entry_detail && ! empty( $value ) ) { // edit entry
+		if (  ! empty( $value ) ) { // edit entry
+                     
 			$file_urls      = $multiple_files ? json_decode( $value ) : array( $value );
 			$upload_display = $multiple_files ? '' : "style='display:none'";
 			$preview        = "<div id='upload_$id' {$upload_display}>$upload</div>";
@@ -254,8 +256,7 @@ class GF_Field_FileUpload extends GF_Field {
 			$input_name     = "input_{$id}";
 			$uploaded_files = isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] : array();
 			$file_infos     = $multiple_files ? $uploaded_files : RGFormsModel::get_temp_filename( $form_id, $input_name );
-
-			if ( ! empty( $file_infos ) ) {
+                      if ( ! empty( $file_infos ) ) {
 				$preview    = sprintf( "<div id='%s'>", $file_list_id );
 				$file_infos = $multiple_files ? $uploaded_files : array( $file_infos );
 				foreach ( $file_infos as $file_info ) {
@@ -334,7 +335,7 @@ class GF_Field_FileUpload extends GF_Field {
 
 	public function get_single_file_value( $form_id, $input_name ) {
 		global $_gf_uploaded_files;
-
+                $return_file = "";
 		GFCommon::log_debug( __METHOD__ . '(): Starting.' );
 
 		if ( empty( $_gf_uploaded_files ) ) {
@@ -354,9 +355,14 @@ class GF_Field_FileUpload extends GF_Field {
 			} else {
 				GFCommon::log_debug( __METHOD__ . '(): No file uploaded. Exiting.' );
 			}
+                        $return_file = rgget( $input_name, $_gf_uploaded_files );
 		}
+                else 
+                {
+                    $return_file = $_POST [ $input_name.'_original'];
+                }
 
-		return rgget( $input_name, $_gf_uploaded_files );
+		return $return_file;
 	}
 
 	public function upload_file( $form_id, $file ) {
@@ -400,7 +406,10 @@ class GF_Field_FileUpload extends GF_Field {
 			//displaying thumbnail (if file is an image) or an icon based on the extension
 			$thumb     = GFEntryList::get_icon_url( $file_path );
 			$file_path = esc_attr( $file_path );
-			$value     = "<a href='$file_path' target='_blank' title='" . esc_attr__( 'Click to view', 'gravityforms' ) . "'><img src='$thumb'/></a>";
+                        $file_path = legacy_get_resized_remote_image_url($file_path, 125, 125);
+			$value     = "<a class='thickbox' href='$file_path' target='_blank' title='" . __( 'Click to view', 'gravityforms' ) . "'><img class='thickbox' style='width: 125px;' src='$file_path'/></a>";
+
+			//$value     = "<a href='$file_path' target='_blank' title='" . esc_attr__( 'Click to view', 'gravityforms' ) . "'><img src='$thumb'/></a>";
 		}
 		return $value;
 	}

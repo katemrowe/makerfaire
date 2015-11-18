@@ -1057,7 +1057,8 @@ function create_post_type() {
     	 */
     	static public function log_message( $slug, $message, $debug_level ) {
             //don't log debug messages
-            if($debug_level==KLogger::DEBUG){
+            //if($debug_level==KLogger::DEBUG){
+            if($debug_level==KLogger::ERROR){
                 error_log( "GF LOG: $slug, $message, $debug_level" );
             }
     	}

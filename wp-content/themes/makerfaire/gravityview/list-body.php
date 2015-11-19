@@ -10,6 +10,7 @@
  * @global GravityView_View $this
  */
 
+
 /**
  * @action `gravityview_list_body_before` Tap in before the entry loop has been displayed
  * @param GravityView_View $this The GravityView_View instance
@@ -86,7 +87,7 @@ if( ! $total ) {
                                                     $title_args['markup'] = '<span class="title">{{value}}</span>';
                                                     $titleDiv .=  gravityview_field_output( $title_args );
                                                     unset( $title_args['markup'] );
-                                                } elseif($field['id']=='edit_link'){ //project name
+                                                } elseif($field['id']=='edit_link' || $field['id']=='cancel_link'){ //project name
                                                     $title_args['markup'] = '<span class="edit">{{value}}</span>';
                                                     $titleDiv .=  gravityview_field_output( $title_args );
                                                     unset( $title_args['markup'] );    
@@ -203,7 +204,26 @@ if( ! $total ) {
 		?>
 
 		</div>
+                <div class="modal" id="cancelEntry">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Cancel Exhibit ID: <span id="cancelEntryID" name="entryID"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                  <p>We are sorry to see you leave.  Please leave us a message as to why you are cancelling.</p><br/>
 
+                  <textarea rows="4" cols="50" name="cancelReason"></textarea>
+                    <br/><span id="cancelResponse"></span><br/>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" id="submitCancel">Submit</button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 	<?php }
 
 } // End if has entries

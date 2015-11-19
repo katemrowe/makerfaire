@@ -3324,3 +3324,36 @@ jQuery( document ).ready(function() {
     });
         
 });
+
+
+//gravity view jQuery
+jQuery(document).ready(function() {
+    jQuery('#cancelEntry').on('show.bs.modal', function(e) {
+        //make sure the cancel response is empty
+        jQuery(e.currentTarget).find('#cancelResponse').html('');
+        
+        //populate the entry id
+        var entryId = jQuery(e.relatedTarget).data('entry-id');
+        jQuery(e.currentTarget).find('span[name="entryID"]').html(entryId);
+    });
+    
+    jQuery('#submitCancel').click(function () {            
+        //disable the submit button
+        jQuery('#submitCancel').prop('disabled', true);
+        //submit the cancellation via ajax                            
+        var entry_id      = jQuery("#cancelEntryID").html();
+        var cancel_reason = jQuery('textarea[name="cancelReason"]').val();
+        var data = {
+                'action': 'maker-cancel-entry',
+                'cancel_entry_id': entry_id,
+                'cancel_reason': cancel_reason
+        };
+        jQuery.post(object_name.ajaxurl, data, function(response) {
+            jQuery('#cancelResponse').text(response);
+        });           
+    });
+    //modal close - refresh page  
+    jQuery('#cancelEntry').on('hidden.bs.modal', function(e) {
+        location.reload();
+    });
+});

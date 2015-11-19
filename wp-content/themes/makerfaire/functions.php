@@ -124,9 +124,9 @@ function make_enqueue_jquery() {
 	
 	wp_enqueue_script( 'bootgrid',  get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'thickbox',null, array( 'jquery' ), null );
-         wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
+        wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
 
-    $translation_array = array('templateUrl' => get_stylesheet_directory_uri());
+    $translation_array = array('templateUrl' => get_stylesheet_directory_uri(),'ajaxurl' => admin_url( 'admin-ajax.php' ));
     wp_localize_script('jquery-main', 'object_name', $translation_array);
 	
 }
@@ -1761,10 +1761,11 @@ function get_schedule($lead){
     return $schedule;
 }
 
-//add new Notification event of - send confirmation letter
+//add new Notification event of - send confirmation letter and maker cancelled exhibit
 add_filter( 'gform_notification_events', 'add_event' );
 function add_event( $notification_events ) {
     $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
+    $notification_events['maker_cancel_exhibit'] = __( 'Maker Cancelled Exhibit', 'gravityforms' );
     return $notification_events;
 }
     
@@ -1890,9 +1891,13 @@ function define_entry_search_criteria($return,$criteria,$passed_criteria,$total)
 */
 add_filter('gravityview_additional_fields','gv_add_faire',10,2);
 function gv_add_faire($additional_fields){
-  $additional_fields[] = array("label_text" => "Faire", "desc"         => "Display Faire Name", 
-                               "field_id"   => "faire_name", "label_type"   => "field", 
+  $additional_fields[] = array("label_text" => "Faire",        "desc"          => "Display Faire Name", 
+                               "field_id"   => "faire_name",   "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  $additional_fields[] = array("label_text" => "Cancel Entry",       "desc"          => "Cancel Entry Link", 
+                               "field_id"   => "cancel_link",  "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  
   return $additional_fields;
 }
 
@@ -1912,6 +1917,8 @@ function gv_faire_name($display_value, $field, $entry, $form){
 
         $faire_name = (isset($faire[0]->faire_name) ? $faire[0]->faire_name:$sql);
         $display_value = $faire_name;
+    }elseif($field["type"]=='cancel_link'){    
+        $display_value = '<a href="#cancelEntry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Cancel</a>';
     }
     return $display_value;
 }
@@ -1946,7 +1953,7 @@ function gv_my_update_message( $message, $view_id, $entry, $back_link ) {
 add_filter( 'gravityview/edit_entry/success', 'gv_my_update_message', 10, 4 );
 
 /**
- * Customise the cancel button link
+ * Customise the cancel(back) button link
  *
  * @param $back_link string
  *
@@ -1956,3 +1963,44 @@ function gv_my_edit_cancel_link( $back_link, $form, $entry, $view_id ) {
     return str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
 }
 add_filter( 'gravityview/edit_entry/cancel_link', 'gv_my_edit_cancel_link', 10, 4 );
+
+//ajax to cancel the entry
+function makerCancelEntry(){
+  $entryID = (isset($_POST['cancel_entry_id']) ? $_POST['cancel_entry_id']:0);
+  $reason  = (isset($_POST['cancel_reason'])   ? $_POST['cancel_reason']  :'');
+  if($entryID!=0){
+    //get entry data and form data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+    $form = GFAPI::get_form( $lead['form_id']);
+    
+    //Update Status to Cancelled 
+    mf_update_entry_field($entryID,'303','Cancelled');
+    
+    //Make a note of the cancellation
+    $cancelText = "The Exhibit has been cancelled by the maker.  Reason given is: ".$reason;            
+    mf_add_note($entryID,$cancelText);
+
+    //Handle notifications for acceptance
+    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_cancel_exhibit', $form, $lead );
+    foreach ( $notifications_to_send as $notification ) {
+            if($notification['isActive']){                                            
+                GFCommon::send_notification( $notification, $form, $lead );
+            }
+
+    }
+    
+    //GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
+
+    echo 'Exhibit ID '.$entryID.' has been cancelled';
+    
+  }else{
+    echo 'Error in cancelling this exhibit.';
+  }
+  
+  exit;  
+}
+
+add_action( 'wp_ajax_maker-cancel-entry', 'makerCancelEntry' );
+
+//disable gravity view cache
+add_filter('gravityview_use_cache', '__return_false');

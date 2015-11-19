@@ -18,7 +18,7 @@
 do_action( 'gravityview_list_body_before', $this );
 $total = count($this->getEntries());
 // There are no entries.
-if( ! $total ) {
+if( ! $total or !( is_user_logged_in() )) {
 
 	?>
 	<div class="gv-list-view gv-no-results">

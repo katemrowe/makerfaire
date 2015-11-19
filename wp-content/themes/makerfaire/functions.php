@@ -1999,8 +1999,14 @@ function makerCancelEntry(){
   
   exit;  
 }
-
 add_action( 'wp_ajax_maker-cancel-entry', 'makerCancelEntry' );
+
+//redirect makers to the edit entry page
+function acme_login_redirect( $redirect_to, $request, $user  ) {
+  return ( is_array( $user->roles ) && in_array( 'maker', $user->roles ) ? site_url():admin_url());
+}
+
+add_filter( 'login_redirect', 'acme_login_redirect', 10, 3 );
 
 //disable gravity view cache
 add_filter('gravityview_use_cache', '__return_false');

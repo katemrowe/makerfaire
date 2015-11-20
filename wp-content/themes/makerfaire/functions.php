@@ -2001,12 +2001,33 @@ function makerCancelEntry(){
 }
 add_action( 'wp_ajax_maker-cancel-entry', 'makerCancelEntry' );
 
-//redirect makers to the edit entry page
-function acme_login_redirect( $redirect_to, $request, $user  ) {
+//redirect makers to the edit entry page  **need to replace site url with actual view path ** 
+function mf_login_redirect( $redirect_to, $request, $user  ) {
   return ( is_array( $user->roles ) && in_array( 'maker', $user->roles ) ? site_url():admin_url());
 }
+add_filter( 'login_redirect', 'mf_login_redirect', 10, 3 );
 
-add_filter( 'login_redirect', 'acme_login_redirect', 10, 3 );
+function edit_admin_bar() {
+    global $current_user;
+
+     $user = wp_get_current_user();
+    if(is_array( $user->roles ) && in_array( 'maker', $user->roles )){
+        global $wp_admin_bar;
+
+        $wp_admin_bar->remove_menu('wp-logo'); // This line deactivate WP logo and it menu.
+        $wp_admin_bar->remove_menu('site-name');//remove link to dashboard
+        $wp_admin_bar->remove_menu('search');//remove search link
+        // if you want the logo but not the menu put this line :
+        $wp_admin_bar->remove_menu('about'); // This line deactivate about link
+        $wp_admin_bar->remove_menu('wporg'); // This line deactivate wordpress.org link
+        $wp_admin_bar->remove_menu('documentation'); // This line deactivate the documentation link
+        $wp_admin_bar->remove_menu('support-forums');  // This line deactivate the support-forum link
+        $wp_admin_bar->remove_menu('feedback'); // This line deactivate the feedback link
+        $wp_admin_bar->remove_menu('view-site'); // This line deactivate the sub-menu go to the site but not the button in the bar with the name of your site
+        $wp_admin_bar->remove_menu('mf_admin_parent');
+    }
+}
+add_action('wp_before_admin_bar_render', 'edit_admin_bar');
 
 //disable gravity view cache
 add_filter('gravityview_use_cache', '__return_false');

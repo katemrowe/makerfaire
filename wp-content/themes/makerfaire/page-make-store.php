@@ -8,7 +8,7 @@ get_header(); ?>
 <header class="store-header">
   <div class="container">
     <div class="store-intro-text1">
-      <h1><strong>Make:</strong> Store<br />Coming Soon to Union Square, San Francisco</h1>
+      <h1><strong>Make:</strong> Store<br />Open Now in Union Square, San Francisco</h1>
       <h2>Showcasing the best of the Maker Movement</h2>
     </div>
     <div class="store-intro-text2">

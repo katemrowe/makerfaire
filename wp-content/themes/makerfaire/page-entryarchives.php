@@ -151,7 +151,21 @@ if(!empty($my_posts)){
         $makers = array();
     }
 }
-  
+    
+    //Setup Sharing Cards
+    $sharing_cards = new mf_sharing_cards();
+    // Url
+    $sharing_cards->project_photo = $project_photo;
+    // Description
+    $sharing_cards->project_short = $project_short;
+    //Title
+    $sharing_cards->project_title = $project_title;
+    //Url
+    global $wp;
+    $canonical_url = home_url( $wp->request ) . '/' ;    
+    $sharing_cards->canonical_url = $canonical_url;
+    $sharing_cards->set_values();
+    
   get_header();
   
 ?>

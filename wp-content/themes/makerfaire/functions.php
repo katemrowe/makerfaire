@@ -55,6 +55,7 @@ include_once TEMPLATEPATH. '/classes/gf-entry-notifications.php';
 include_once TEMPLATEPATH. '/classes/gf-helper.php';
 include_once TEMPLATEPATH. '/classes/makerfaire-helper.php';
 include_once TEMPLATEPATH. '/classes/gf-jdb-helper.php';
+include_once TEMPLATEPATH. '/classes/mf-sharing-cards.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';
@@ -657,6 +658,15 @@ add_filter( 'jetpack_open_graph_tags', function( $tags ) {
 }, 10 );
 
 
+
+// show admin bar only for admins
+if (!current_user_can('manage_options')) {
+	add_filter('show_admin_bar', '__return_false');
+}
+// show admin bar only for admins and editors
+if (!current_user_can('edit_posts')) {
+	add_filter('show_admin_bar', '__return_false');
+}
 /**
  * OBSOLETE: No longer using this functionality: Hide Maker Faire applications from past faires
  *

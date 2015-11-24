@@ -1894,10 +1894,12 @@ function gv_add_faire($additional_fields){
   $additional_fields[] = array("label_text" => "Faire",        "desc"          => "Display Faire Name", 
                                "field_id"   => "faire_name",   "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
-  $additional_fields[] = array("label_text" => "Cancel Entry",       "desc"          => "Cancel Entry Link", 
+  $additional_fields[] = array("label_text" => "Cancel Entry", "desc"          => "Cancel Entry Link", 
                                "field_id"   => "cancel_link",  "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
-  
+  $additional_fields[] = array("label_text" => "Copy Entry",   "desc"          => "Copy Entry Link", 
+                               "field_id"   => "copy_entry",   "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
   return $additional_fields;
 }
 
@@ -1919,32 +1921,15 @@ function gv_faire_name($display_value, $field, $entry, $form){
         $display_value = $faire_name;
     }elseif($field["type"]=='cancel_link'){    
         $display_value = '<a href="#cancelEntry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Cancel</a>';
+    }elseif($field["type"]=='copy_entry'){    
+        $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Submit Another Entry</a>';
     }
+    
     return $display_value;
 }
 
-/* set the form_ID based on the faire */
-add_filter('gravityview_edit_entry_title','set_gv_formID');
-function set_gv_formID(){
-    //global $gravityview_view;
-    //$form_id = $gravityview_view->entry['form_id'];
-    //$gravityview_view->form_id = $form_id;
-    //$form = GFAPI::get_form($form_id);
-    //var_dump($gravityview_view->form);
-    //$gravityview_view->form = $form;
-    //echo $form_id;
-    
-}
-/*End changes to gravity view*/
-
-
 /**
  * Change the update entry success message, including the link
- * 
- * @param $message string The message itself
- * @param $view_id int View ID
- * @param $entry array The Gravity Forms entry object
- * @param $back_link string Url to return to the original entry
  */
 function gv_my_update_message( $message, $view_id, $entry, $back_link ) {
     $link = str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
@@ -1954,10 +1939,6 @@ add_filter( 'gravityview/edit_entry/success', 'gv_my_update_message', 10, 4 );
 
 /**
  * Customise the cancel(back) button link
- *
- * @param $back_link string
- *
- * since 1.11.1
  */
 function gv_my_edit_cancel_link( $back_link, $form, $entry, $view_id ) {
     return str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
@@ -2031,3 +2012,66 @@ add_action('wp_before_admin_bar_render', 'edit_admin_bar');
 
 //disable gravity view cache
 add_filter('gravityview_use_cache', '__return_false');
+
+/* 
+ * ajax to copy an entry into a new form
+ */
+function makeAdminCopyEntry(){
+  $entryID    = (isset($_POST['copy_entry_id']) ? $_POST['copy_entry_id']:0);
+  $copy2Form  = (isset($_POST['copy2Form'])   ? $_POST['copy2Form']  :'');
+  $view_id    = (isset($_POST['view_id'])?$_POST['view_id']:0);
+  
+  if($entryID!=0 and $copy2Form != '' && $view_id!=0){    
+    //get entry data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+
+    //get new form field ID's
+    $form = GFAPI::get_form( $copy2Form);    
+
+    /*The following fields will not be copied from one entry to another
+     * Page 4 review fields:
+     * 295 - Are you 18 years or older
+     * 114 - Full Name
+     * 297 - I am the parent and/or legal guardian of 
+     * 115 - Date
+     * 117 - Release and consent
+     * all admin only fields
+     */
+    $doNotCopy = array(295,114,297,115,117);
+    
+    /*loop thru fields in existing entry and if they are in the new form copy them */
+    $newEntry = array();
+    $newEntry['form_id'] = $copy2Form;
+    foreach($form['fields'] as $field){
+        //skip doNotCopy fields
+        if(!in_array($field['id'], $doNotCopy)){
+            //do not copy admin only fields   
+            $adminOnly = (isset($field['adminOnly']) ? $field['adminOnly'] : FALSE);
+            if(!$adminOnly){
+                if(is_array($field['inputs'])){
+                    foreach($field['inputs'] as $inputs){
+                        $fieldID = $inputs['id']; 
+                        if(isset($lead[$fieldID])){
+                            $newEntry[$fieldID] = $lead[$fieldID];
+                        }   
+                    }
+                }
+                if(isset($lead[$field['id']])){
+                    $newEntry[$field['id']] = $lead[$field['id']];
+                }    
+            }
+        }
+    }
+    $newEntry['303'] = 'Incomplete';
+    $newEntry_id = GFAPI::add_entry( $newEntry );
+    $entry = GFAPI::get_entry($newEntry_id);    
+    $href = GravityView_Edit_Entry::get_edit_link( $entry, $view_id );    
+    
+    echo 'New Entry created:'.$newEntry_id.'. Please click <a href="entry/'.$newEntry_id.'/'.$href.'">here</a> to finish the submission process';    
+  }else{
+    echo 'Error in creating a new entry. Proper data was not received.';
+  }
+  
+  exit;  
+}
+add_action( 'wp_ajax_make-admin-copy-entry', 'makeAdminCopyEntry' );

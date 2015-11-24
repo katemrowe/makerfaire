@@ -17,6 +17,17 @@
  */
 do_action( 'gravityview_list_body_before', $this );
 $total = count($this->getEntries());
+global $wpdb;
+//find current active forms for the copy entry feature
+$faireSQL = "SELECT form.id, form.title FROM wp_rg_form form, `wp_mf_faire` "
+          . " WHERE start_dt <= CURDATE() and end_dt >= CURDATE() and "
+          . " FIND_IN_SET (form.id, wp_mf_faire.form_ids)> 0";
+$faires = $wpdb->get_results($faireSQL);
+$formArr = array();
+foreach($faires as $faire){
+    $formArr[] = array($faire->id,$faire->title);
+}
+
 // There are no entries.
 if( ! $total or !( is_user_logged_in() )) {
 
@@ -87,7 +98,10 @@ if( ! $total or !( is_user_logged_in() )) {
                                                     $title_args['markup'] = '<span class="title">{{value}}</span>';
                                                     $titleDiv .=  gravityview_field_output( $title_args );
                                                     unset( $title_args['markup'] );
-                                                } elseif($field['id']=='edit_link' || $field['id']=='cancel_link'){ //project name
+                                                } elseif($field['id']=='edit_link'   || 
+                                                         $field['id']=='cancel_link' ||
+                                                         $field['id']=='copy_entry'
+                                                        ) { //project name
                                                     $title_args['markup'] = '<span class="edit">{{value}}</span>';
                                                     $titleDiv .=  gravityview_field_output( $title_args );
                                                     unset( $title_args['markup'] );    
@@ -219,6 +233,33 @@ if( ! $total or !( is_user_logged_in() )) {
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" id="submitCancel">Submit</button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Modal to copy entry to a new form -->
+                  <div class="modal" id="copy_entry">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Copy Exhibit ID: <span id="copyEntryID" name="entryID"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                  <p>Please choose from the options below:</p><br/>
+                  <select id="copy2Form">
+                      <?php
+                      foreach($formArr as $availForm){
+                          echo '<option value='.$availForm[0].'>'.$availForm[1].'</option>';
+                      }
+                      ?>
+                  </select>
+                  
+                    <br/><span id="copyResponse"></span><br/>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" id="submitCopy">Submit</button>
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                       </div>

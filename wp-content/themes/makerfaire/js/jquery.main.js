@@ -102,10 +102,10 @@ function makeStyle(){
      * The logo's to the menu items
      */
     jQuery(".nav li:nth-child(1) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/about-logo.png" alt="Maker Faire Badge logo">');
-    jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MF_ThankYou.png" alt="Maker Faire Bay Area"><p>Maker Faire 10th Anniversary was incredible, thank you for being part of the celebration!</p><p><span><strong>SAVE THE DATE!</strong> Maker Faire Bay Area 2016 on May 21-22</span></p></div>');
+    jQuery(".nav li:nth-child(2) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/MFBA_image_nav.png" alt="Maker Faire Bay Area"><p><span><strong>SAVE THE DATE!</strong> Maker Faire Bay Area, 11th Annual May 20-22, 2016</span></p></div>');
     jQuery(".nav li:nth-child(3) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/newyork-logo.png" alt="Maker Faire New York Badge logo" width="95" height="95"><p><span>World Maker Faire 2015</span> <br /> An amazing show! Thank you to everyone for being part of the celebration!</p><p><span><strong>SAVE THE DATE!</strong> World Maker Faire 2016  on October 1 &amp; 2</span></p></div>');
     // jQuery(".nav li:nth-child(4) .drop-logo").append('<img class="img-responsive" src="'+templateUrl+'/images/world-logo.png" alt="Maker Faire World logo">');
-    jQuery(".nav li:nth-child(4) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/mmf-barnes-noble-logo-01.png" alt="Maker Faire World logo" width="95" height="95"><p><a href="/barnesandnoble/"><span>Barnes &amp; Noble Mini Maker Faire </span> <br />Join us on November 6 – 8 at 650 store locations nationwide</a></p><p><span><strong><a href="/barnesandnoble" style="color:red;">GET THE DETAILS HERE!</a><strong><span></p></div>');
+    jQuery(".nav li:nth-child(4) .drop-logo").append('<div class="nav-thanks"><img class="nav-image img-responsive" src="'+templateUrl+'/images/mf-feature-mfba16-200px.png" alt="Maker Faire World logo" width="95" height="95"><p><a href="#"><span>Maker Faire Bay Area 2016</span></a></p><p><span><strong><a href="#" style="color:red;">CALL FOR MAKERS COMING&nbsp;SOON!</a><strong><span></p></div>');
 
 
     /**

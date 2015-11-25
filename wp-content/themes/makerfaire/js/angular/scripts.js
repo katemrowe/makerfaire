@@ -25,15 +25,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
         'year': faireYear
     };
     
-    // $http.get("/wp-content/themes/makerfaire/partials/ribbonJSON.php?year="+faireYear).
-    $http({ 
-            method: 'POST', 
-            url: MyAjax.ajaxurl, 
-            params: {
-                action: 'getRibbonData',
-                year: faireYear
-            }
-    }).success(function(data, status, headers, config) {
+    $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
       $scope.ribbons  = data;
       angular.forEach(data, function(row, key) {        
         angular.forEach(row.faireData, function(value, faire) {

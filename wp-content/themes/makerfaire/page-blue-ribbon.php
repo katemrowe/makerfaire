@@ -43,13 +43,8 @@ foreach($yearSql as $year){
 				<p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
 			<?php endif; ?>
 		<!-- start blue ribbon data -->
-                <div id="ribbonPage">       
-                    
+                <div id="ribbonPage">                           
                  <div ng-controller="ribbonController" class="my-controller">                         
-                     <!--
-                     <select id="faire_year" ng-model="faire_year" ng-init="faire_year = '2013'"  ng-change="loadData(faire_year)">
-                         <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>
-                     </select>-->
                      <select ng-model="faire_year"
                              ng-init="faire_year = '<?php echo $firstYear;?>'"  ng-change="loadData(faire_year)">
                         <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>         
@@ -70,7 +65,7 @@ foreach($yearSql as $year){
                      <br/><br/>
 
                     <!--| filter:year -->
-                     <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons | filter:query |itemsPerPage: 50" current-page="currentPage">                         
+                     <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 50" current-page="currentPage">                         
                           
                          <a href="/mfarchives/{{ribbon.entryID}}">
                               <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo}}"></a>

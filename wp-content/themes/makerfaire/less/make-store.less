@@ -9,10 +9,20 @@
 
 #store-black-friday-banner {
   margin-top: -20px;
+  position: relative;
   img {
     width: 100%;
     height: auto;
   }
+}
+.store-black-friday-terms-link {
+  position: absolute;
+  top: 5px;
+  display: inline;
+  right: 15px;
+  font-size: 11px;
+  font-family: Roboto, Helvetica, Sans-serif;
+  color: #eee;
 }
 
 header.store-header {
@@ -225,5 +235,10 @@ section.store-pictures {
 @media(max-width:767px) {
   #store-black-friday-banner {
     margin-top: 0;
+  }
+  .store-black-friday-terms-link {
+    top: inherit;
+    bottom: 5px;
+    font-size: 9px;
   }
 }

@@ -6,6 +6,7 @@ get_header(); ?>
 
 <!-- Black Friday Banner -->
 <div id="store-black-friday-banner">
+  <a href="//makerfaire.com/wp-content/uploads/2015/11/MakeStorePop_Sweepstakes_Rules_112715.pdf" class="store-black-friday-terms-link">Raffle Terms and Conditions</a>
   <picture>
       <source media="(min-width: 767px)" srcset="/wp-content/themes/makerfaire/images/drone_promo_desktop.jpg">
       <img src="/wp-content/themes/makerfaire/images/drone_promo_mobile_2x.jpg" alt="Make Popup Store Black Friday Banner">

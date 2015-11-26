@@ -7,12 +7,20 @@
 }
 @brand-primary: #fed136;
 
+#store-black-friday-banner {
+  margin-top: -20px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
 header.store-header {
   background-image: url('/wp-content/themes/makerfaire/images/Make-store-hero-desktop.png');
   background-repeat: none;
   background-attachment: scroll;
   background-position: center center;
-  margin-top: -20px;
+  // margin-top: -20px;
   .background-cover;
   text-align: center;
   color: white;
@@ -76,7 +84,7 @@ section.store-apply-bar {
 .store-container {
   background-image: url('/wp-content/themes/makerfaire/images/Make-stire-background-pattern.png');
   background-size: contain;
-  background-position: center center;
+  background-position: center top;
 }
 
 // Centered Stuff
@@ -207,10 +215,15 @@ section.store-pictures {
     -o-background-size: cover;
   }
 }
-@media(min-width:767px) {
+@media(min-width:768px) {
     #portfolio {
         .portfolio-item {
             margin: 0 0 30px;
         }
     }
+}
+@media(max-width:767px) {
+  #store-black-friday-banner {
+    margin-top: 0;
+  }
 }

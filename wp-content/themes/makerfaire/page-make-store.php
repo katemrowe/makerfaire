@@ -4,6 +4,14 @@
 */
 get_header(); ?>
 
+<!-- Black Friday Banner -->
+<div id="store-black-friday-banner">
+  <picture>
+      <source media="(min-width: 767px)" srcset="/wp-content/themes/makerfaire/images/drone_promo_desktop.jpg">
+      <img src="/wp-content/themes/makerfaire/images/drone_promo_mobile_2x.jpg" alt="Make Popup Store Black Friday Banner">
+  </picture>
+</div>
+
 <!-- Header -->
 <header class="store-header">
   <div class="container">

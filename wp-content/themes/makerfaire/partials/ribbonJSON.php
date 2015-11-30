@@ -10,7 +10,7 @@ function  createJson($year=''){
     global $wpdb;
     $filter = " and year= ".($year!=''? $year:date("Y"));
     $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo, post_id, maker_name "
-            . " FROM `wp_mf_ribbons` where entry_id > 0 ".$filter." "
+            . " FROM `wp_mf_ribbons` where entry_id > 0 AND post_id > 0 ".$filter." "
             . " group by entry_id, location, year, ribbonType, numRibbons";
 
     $ribbonData=array();
@@ -18,10 +18,10 @@ function  createJson($year=''){
     $json = array();
 
     foreach($wpdb->get_results($sql,ARRAY_A) as $ribbon){  
-        $entry_id   = $ribbon['entry_id'];
-        $post_id    = $ribbon['post_id'];
-        $project_name  = $ribbon['project_name'];
-        $project_photo = $ribbon['project_photo'];                 
+        $entry_id       = $ribbon['entry_id'];
+        $post_id        = $ribbon['post_id'];
+        $project_name   = $ribbon['project_name'];
+        $project_photo  = $ribbon['project_photo'];                 
         $maker_name     = $ribbon['maker_name'];
                 
                 
@@ -32,7 +32,13 @@ function  createJson($year=''){
         foreach($wpdb->get_results($makerSQL,ARRAY_A) as $projData){ 
             $field = $projData['meta_key'];
             $value = $projData['meta_value'];
-            if($field=='project_photo' && $project_photo =='')  $project_photo = $value;
+            if($field=='project_photo' && $project_photo ==''){  
+                if(is_numeric($value)){                    
+                    $project_photo = wp_get_attachment_url( $value);
+                }else{
+                    $project_photo = $value;
+                }
+            }
             if($field=='project_name'  && $project_name =='')   $project_name  = $value;
             if(strpos($field, 'maker_name')!== false){
                 //if maker name has field_ in it, it is not a valid maker name.

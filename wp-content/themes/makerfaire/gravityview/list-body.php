@@ -113,15 +113,11 @@ if( ! $total or !( is_user_logged_in() )) {
                                 <div class="fleft"> <?php echo $entryData['faire_name'];?></div>
                                 <div class="fright"><?php echo $entryData['303'];?></div>                                
                                 <span class="title"><?php echo $entryData['151'];?></span>                                
-                                <div class="clear fleft"><?php echo $entryData['id'];?></div>  
-                                
-                                <div class="clear links">
-                                    <div class="tBorder bBorder">
-                                        <div class="fleft"><?php echo $entryData['date_created'];?></div>
-                                        <div class="fright"><?php echo $links;?></div>
-                                    </div>
+                                <div class="clear fleft"><?php echo $entryData['id'];?></div>                               
+                                <div class="clear links ">
+                                    <div class="fleft"><?php echo $entryData['date_created'];?></div>
+                                    <div class="fright"><?php echo $links;?></div>
                                 </div>
-                                
                             </div>
                             
                             <?php
@@ -131,6 +127,7 @@ if( ! $total or !( is_user_logged_in() )) {
 					'wrapper_class' => 'gv-list-view-subtitle',
 				));
 			?>
+                            <div class="clear"></div>
 			</div>
 
 			<?php

@@ -4096,28 +4096,67 @@ img.attachment-post-thumbnail {
   height: auto;
 }
 /* maker admin */
+.gv-list-container .maker-admin {
+  /* parent container */
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin: 2em 0;
+}
 .gv-list-container .maker-admin .entryImg {
   float: left;
   padding-right: 5px;
-  width: 15%;
-  padding-bottom: 10px;
+  width: 25%;
+  height: auto;
 }
 .gv-list-container .maker-admin .entryData {
-  float: left;
   padding-left: 5px;
+  height: 100%;
   width: 70%;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
-.gv-list-container .maker-admin .entryData div,
-.gv-list-container .maker-admin .entryData span,
-.gv-list-container .maker-admin .entryData p {
+.gv-list-container .maker-admin .entryData .clear {
+  clear: both;
+}
+.gv-list-container .maker-admin .entryData .fleft,
+.gv-list-container .maker-admin .entryData .fLeft {
   float: left;
-  margin: 0;
 }
-.gv-list-container .maker-admin .entryData div {
-  width: 40%;
-  margin-bottom: 5px;
+.gv-list-container .maker-admin .entryData .fleft div,
+.gv-list-container .maker-admin .entryData .fLeft div,
+.gv-list-container .maker-admin .entryData .fleft span,
+.gv-list-container .maker-admin .entryData .fLeft span,
+.gv-list-container .maker-admin .entryData .fleft p,
+.gv-list-container .maker-admin .entryData .fLeft p {
+  float: left;
+}
+.gv-list-container .maker-admin .entryData .fright,
+.gv-list-container .maker-admin .entryData .fRight {
+  float: right;
+}
+.gv-list-container .maker-admin .entryData .fright div,
+.gv-list-container .maker-admin .entryData .fRight div,
+.gv-list-container .maker-admin .entryData .fright span,
+.gv-list-container .maker-admin .entryData .fRight span,
+.gv-list-container .maker-admin .entryData .fright p,
+.gv-list-container .maker-admin .entryData .fRight p {
+  float: left;
+}
+.gv-list-container .maker-admin .entryData .links {
+  position: absolute;
+  bottom: 1em;
+  width: 100%;
+}
+.gv-list-container .maker-admin .entryData .tBorder {
+  border-top: thin solid grey;
+}
+.gv-list-container .maker-admin .entryData .bBorder {
+  border-bottom: thin solid grey;
 }
 .gv-list-container .maker-admin span.title {
+  clear: both;
   float: left;
   font-weight: bold;
   margin-bottom: 10px;
@@ -4125,6 +4164,7 @@ img.attachment-post-thumbnail {
 .gv-list-container .maker-admin span.edit {
   float: left;
   padding: 0 10px;
+}
 header.store-header {
   background-image: url('/wp-content/themes/makerfaire/images/Make-store-hero-desktop.png');
   background-repeat: none;

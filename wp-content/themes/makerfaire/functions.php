@@ -1922,7 +1922,7 @@ function gv_faire_name($display_value, $field, $entry, $form){
     }elseif($field["type"]=='cancel_link'){    
         $display_value = '<a href="#cancelEntry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Cancel</a>';
     }elseif($field["type"]=='copy_entry'){    
-        $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Submit Another Entry</a>';
+        $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Copy</a>';
     }
     
     return $display_value;

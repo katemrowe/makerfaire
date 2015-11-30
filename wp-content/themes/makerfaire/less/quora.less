@@ -1,3 +1,4 @@
+
 .quora {
     .no-js .mf-form div.step,
     .no-js .mf-breadcrumbs,
@@ -3261,13 +3262,37 @@ img.attachment-post-thumbnail{width:100%;height:auto;}
 
 /* maker admin */
 .gv-list-container .maker-admin{
-    .entryImg{float:left;padding-right: 5px;width:15%;padding-bottom: 10px;}
-    .entryData{
-        float:left;padding-left: 5px;width:70%;
-        div,span,p{float:left; margin:0}
-        div{width:40%;margin-bottom: 5px;}
+    /* parent container */
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    margin: 2em 0;
+    .entryImg{float:left;padding-right: 5px;width:25%;height:auto;}
+    .entryData{                       
+        padding-left: 5px;width:70%;   
+        height: 100%;
+        width: 70%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        .clear{clear:both}
+        
+        .fleft,  .fLeft{
+            float:left;
+            div, span, p{float:left}
+        }
+        .fright, .fRight{
+            float:right;
+            div, span, p{float:left}
+        }
+        .links{position: absolute;
+        bottom: 1em;
+        width: 100%;}
+        .tBorder{border-top: thin solid grey;}
+        .bBorder{border-bottom: thin solid grey;}
     }
-    span.title{    float: left;font-weight: bold;margin-bottom: 10px;}
+    
+    span.title{clear:both;float: left;font-weight: bold;margin-bottom: 10px;}
     span.edit{    float: left;padding: 0 10px;}
     
 }

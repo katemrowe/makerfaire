@@ -73,50 +73,59 @@ if( ! $total or !( is_user_logged_in() )) {
 			do_action( 'gravityview_entry_title_before', $entry, $this );
 
 			?>
-			<div class="gv-list-view-title-maker-entry">
-                                                               
-				<?php if ( $this->getField('directory_list-title') ) {
-					$i          = 0;
-					$title_args = array(
-						'entry'      => $entry,
-						'form'       => $this->getForm(),
-						'hide_empty' => $this->getAtts( 'hide_empty' ),
-					);
-                                        
-                                        $imgDiv  = '<div class="entryImg">';
-                                        $titleDiv = '<div class="entryData">';
-                                        $dataDiv = '<div class="entryData">';
-                                        
-                                        
-                                        
-					foreach ( $this->getField( 'directory_list-title' ) as $field ) {                                            
-						$title_args['field'] = $field;                                                
-                                                if($field['id']==22){  //project photo           
+			<div class="gv-list-view-title-maker-entry">                                
+				<?php 
+                                $entryData = array();      
+                                $links = '';
+                                if ( $this->getField('directory_list-title') ) {
+                                    $i          = 0;
+                                    $title_args = array(
+                                            'entry'      => $entry,
+                                            'form'       => $this->getForm(),
+                                            'hide_empty' => $this->getAtts( 'hide_empty' ),
+                                    );
+                                                                                                                                                                                                    
+                                    foreach ( $this->getField( 'directory_list-title' ) as $field ) {                                                                                        
+                                            $title_args['field'] = $field;                                                   
+                                            
+                                            switch ($field['id']){                                                
+                                                case '22':     
                                                     $title_args['wpautop'] = true;
-                                                    $imgDiv .= gravityview_field_output( $title_args );
-                                                } elseif($field['id']==151){ //project name
-                                                    $title_args['markup'] = '<span class="title">{{value}}</span>';
-                                                    $titleDiv .=  gravityview_field_output( $title_args );
-                                                    unset( $title_args['markup'] );
-                                                } elseif($field['id']=='edit_link'   || 
-                                                         $field['id']=='cancel_link' ||
-                                                         $field['id']=='copy_entry'
-                                                        ) { //project name
+                                                    break;                                                
+                                                case 'edit_link':
+                                                case 'cancel_link':
+                                                case 'copy_entry':         
                                                     $title_args['markup'] = '<span class="edit">{{value}}</span>';
-                                                    $titleDiv .=  gravityview_field_output( $title_args );
-                                                    unset( $title_args['markup'] );    
-                                                } else { //project data
-                                                    $title_args['markup'] = '<div>{{label}} {{value}}</div>';
-                                                    $dataDiv .= gravityview_field_output( $title_args );
-                                                    unset( $title_args['markup'] ); 
-                                                }  
-                                                
-					}
+                                                    $links .=  gravityview_field_output( $title_args );                                                    
+                                                    break;
+                                                default:                                                    
+                                                    $title_args['markup'] = '{{label}} {{value}}';                                                    
+                                            }
+                                            $entryData[$field['id']] = gravityview_field_output( $title_args );
+                                            unset( $title_args['markup'] );
+                                    }
 				}
-                                echo $imgDiv  . '</div>';
-                                echo $titleDiv . '</div>';
-                                echo $dataDiv . '</div>';
+                                ?>
+                            
+                            <div class="entryImg"><?php echo $entryData['22'];?></div>
+                            
+                            <div class="entryData">
+                                <div class="fleft"> <?php echo $entryData['faire_name'];?></div>
+                                <div class="fright"><?php echo $entryData['303'];?></div>                                
+                                <span class="title"><?php echo $entryData['151'];?></span>                                
+                                <div class="clear fleft"><?php echo $entryData['id'];?></div>  
                                 
+                                <div class="clear links">
+                                    <div class="tBorder bBorder">
+                                        <div class="fleft"><?php echo $entryData['date_created'];?></div>
+                                        <div class="fright"><?php echo $links;?></div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <?php
+                                               
 				$this->renderZone('subtitle', array(
 					'markup' => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
 					'wrapper_class' => 'gv-list-view-subtitle',
@@ -217,8 +226,9 @@ if( ! $total or !( is_user_logged_in() )) {
 
 		?>
 
-		</div>
-                <div class="modal" id="cancelEntry">
+		</div>               
+	<?php } ?>
+    <div class="modal" id="cancelEntry">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -265,8 +275,7 @@ if( ! $total or !( is_user_logged_in() )) {
                       </div>
                     </div>
                   </div>
-	<?php }
-
+                  <?php
 } // End if has entries
 
 /**

@@ -21,7 +21,8 @@ function  createJson($year=''){
         $entry_id       = $ribbon['entry_id'];
         $post_id        = $ribbon['post_id'];
         $project_name   = $ribbon['project_name'];
-        $project_photo  = $ribbon['project_photo'];                 
+        $project_photo  = $ribbon['project_photo']; 
+        $project_photo  = legacy_get_fit_remote_image_url($project_photo,285,270,0);
         $maker_name     = $ribbon['maker_name'];
                 
                 
@@ -46,7 +47,7 @@ function  createJson($year=''){
             }
         }
                
-        $project_photo                       = legacy_get_fit_remote_image_url($project_photo,285,270,0);
+        
         $ribbonData[$entry_id]['maker_name'] = $maker_name;
         
         $location   = $ribbon['location'];

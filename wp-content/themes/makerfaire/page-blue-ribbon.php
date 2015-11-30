@@ -67,7 +67,7 @@ foreach($yearSql as $year){
                     <!--| filter:year -->
                      <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 50" current-page="currentPage">                         
                           
-                         <a href="/mfarchives/{{ribbon.entryID}}">
+                         <a href="/mfarchives/{{ribbon.entryID}}" target="_blank" >
                               <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo}}"></a>
                               <div class="ribbons">
                              

@@ -1920,7 +1920,7 @@ function gv_faire_name($display_value, $field, $entry, $form){
         $faire_name = (isset($faire[0]->faire_name) ? $faire[0]->faire_name:$sql);
         $display_value = $faire_name;
     }elseif($field["type"]=='cancel_link'){    
-        $display_value = '<a href="#cancelEntry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Cancel</a>';
+        $display_value = '<a href="#cancelEntry" data-toggle="modal" data-projName="'.$entry['151'].'" data-entry-id="'.$entry['id'].'">Cancel</a>';
     }elseif($field["type"]=='copy_entry'){    
         $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Copy</a>';
     }
@@ -1933,7 +1933,7 @@ function gv_faire_name($display_value, $field, $entry, $form){
  */
 function gv_my_update_message( $message, $view_id, $entry, $back_link ) {
     $link = str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
-    return 'Entry Updated. <a href="'.esc_url($link).'">Return to the list</a>';
+    return 'Entry Updated. <a href="'.esc_url($link).'">Return to your entry list</a>';
 }
 add_filter( 'gravityview/edit_entry/success', 'gv_my_update_message', 10, 4 );
 
@@ -1958,7 +1958,7 @@ function makerCancelEntry(){
     mf_update_entry_field($entryID,'303','Cancelled');
     
     //Make a note of the cancellation
-    $cancelText = "The Exhibit has been cancelled by the maker.  Reason given is: ".$reason;            
+    $cancelText = "The Exhibit has been cancelled by the maker.  Reason given is: ".stripslashes($reason);            
     mf_add_note($entryID,$cancelText);
 
     //Handle notifications for acceptance
@@ -1972,7 +1972,7 @@ function makerCancelEntry(){
     
     //GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
 
-    echo 'Exhibit ID '.$entryID.' has been cancelled';
+    echo $lead['151'].', Exhibit ID '.$entryID.' has been cancelled';
     
   }else{
     echo 'Error in cancelling this exhibit.';

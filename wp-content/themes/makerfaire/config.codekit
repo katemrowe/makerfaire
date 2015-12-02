@@ -728,6 +728,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/fpdi\/pdf\/maker_sign.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 289570,
+		"inputAbbreviatedPath": "\/fpdi\/pdf\/maker_sign.png",
+		"outputAbbreviatedPath": "\/fpdi\/pdf\/maker_sign.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/front-page.php": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -751,6 +762,33 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/gravity-forms-iframe.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/gravityview\/fields\/other_entries.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/gravityview\/fields\/other_entries.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/gravityview\/list-body.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/gravityview\/list-body.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/gravityview\/table-body.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/gravityview\/table-body.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -879,6 +917,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/blue-ribbon.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1839,
+		"inputAbbreviatedPath": "\/images\/blue-ribbon.png",
+		"outputAbbreviatedPath": "\/images\/blue-ribbon.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/images\/border.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -919,6 +968,17 @@
 		"initialSize": 10980,
 		"inputAbbreviatedPath": "\/images\/CalltoMakers_280px.png",
 		"outputAbbreviatedPath": "\/images\/CalltoMakers_280px.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/cancelled.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1977,
+		"inputAbbreviatedPath": "\/images\/cancelled.png",
+		"outputAbbreviatedPath": "\/images\/cancelled.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -1517,17 +1577,6 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
-	"\/images\/maker_sign.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 289570,
-		"inputAbbreviatedPath": "\/images\/maker_sign.png",
-		"outputAbbreviatedPath": "\/images\/maker_sign.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
 	"\/images\/MakerFaire_TicketButton.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -1568,17 +1617,6 @@
 		"initialSize": 60513,
 		"inputAbbreviatedPath": "\/images\/mf-sub-promo-43.jpg",
 		"outputAbbreviatedPath": "\/images\/mf-sub-promo-43.jpg",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/images\/MF15NY_Badge.jpg": {
-		"fileType": 16384,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 391191,
-		"inputAbbreviatedPath": "\/images\/MF15NY_Badge.jpg",
-		"outputAbbreviatedPath": "\/images\/MF15NY_Badge.jpg",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -1766,6 +1804,17 @@
 		"initialSize": 1009,
 		"inputAbbreviatedPath": "\/images\/program.png",
 		"outputAbbreviatedPath": "\/images\/program.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/red-ribbon.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2813,
+		"inputAbbreviatedPath": "\/images\/red-ribbon.png",
+		"outputAbbreviatedPath": "\/images\/red-ribbon.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -2060,6 +2109,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/js\/login.js",
 		"outputAbbreviatedPath": "\/js\/min\/login-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/min\/jquery.main-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/min\/jquery.main-min.js",
+		"outputAbbreviatedPath": "\/js\/min\/min\/jquery.main-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -3574,7 +3634,7 @@
 	},
 "hooks": [
 	],
-"lastSavedByUser": "David Beauchamp",
+"lastSavedByUser": "Alicia Williams",
 "manualImportLinks": {
 	},
 "projectAttributes": {

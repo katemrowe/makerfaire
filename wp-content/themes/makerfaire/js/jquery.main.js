@@ -3336,15 +3336,20 @@ jQuery(document).ready(function() {
     jQuery('#cancelEntry').on('show.bs.modal', function(e) {
         //make sure the cancel response is empty
         jQuery(e.currentTarget).find('#cancelResponse').html('');
-        
+        jQuery('#cancelText').show();
         //populate the entry id
         var entryId = jQuery(e.relatedTarget).data('entry-id');
         jQuery(e.currentTarget).find('span[name="entryID"]').html(entryId);
+        
+        //populate the project Name        
+        var projName = jQuery(e.relatedTarget).data('projname');
+        jQuery("#projName").html(projName);
+        
     });
     
     jQuery('#submitCancel').click(function () {            
         //disable the submit button
-        jQuery('#submitCancel').prop('disabled', true);
+        jQuery('#submitCancel').hide();
         //submit the cancellation via ajax                            
         var entry_id      = jQuery("#cancelEntryID").html();
         var cancel_reason = jQuery('textarea[name="cancelReason"]').val();
@@ -3353,7 +3358,9 @@ jQuery(document).ready(function() {
                 'cancel_entry_id': entry_id,
                 'cancel_reason': cancel_reason
         };
+        jQuery('#cancelText').hide();
         jQuery.post(object_name.ajaxurl, data, function(response) {
+            jQuery('.modal-title').hide();
             jQuery('#cancelResponse').text(response);
         });           
     });

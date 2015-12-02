@@ -10,13 +10,54 @@
  * @global GravityView_View $this
  */
 
+/*
+ * Retrieve all entries for this user - created with user email as the contact email and created by this user id 
+ */
+$gravityview_view = GravityView_View::getInstance();
+
+// Get the settings for the View ID
+$view_settings = gravityview_get_template_settings( $gravityview_view->getViewId() );
+$view_settings['page_size'] = $gravityview_view->getCurrentFieldSetting('page_size');
+
+$form_id = 0;
+
+global $current_user;
+get_currentuserinfo();
+global $user_ID;global $user_email;
+
+// Prepare paging criteria
+$criteria['paging'] = array(
+    'offset' => 0,
+    'page_size' => $view_settings['page_size']
+);
+
+//pull by user id or user email
+$criteria['search_criteria'] = array(
+    'status'        => 'active',
+    'field_filters' => array(
+        'mode' => 'any',
+        array(
+            'key'   => '98',
+            'value' => $user_email,
+            'operator' => 'like'
+        ),
+        array(
+            'key' => 'created_by',
+            'value' => $user_ID,
+            'operator' => 'is'
+        )
+    )
+);
+
+$entries = GFAPI::get_entries( $form_id, $criteria['search_criteria'] );
 
 /**
  * @action `gravityview_list_body_before` Tap in before the entry loop has been displayed
  * @param GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_before', $this );
-$total = count($this->getEntries());
+$total = count($entries);
+
 global $wpdb;
 //find current active forms for the copy entry feature
 $faireSQL = "SELECT form.id, form.title FROM wp_rg_form form, `wp_mf_faire` "
@@ -42,7 +83,7 @@ if( ! $total or !( is_user_logged_in() )) {
 } else {
 
 	// There are entries. Loop through them.
-	foreach ( $this->getEntries() as $entry ) {
+	foreach ( $entries as $entry ) {
 
 		$this->setCurrentEntry( $entry );
 
@@ -89,21 +130,27 @@ if( ! $total or !( is_user_logged_in() )) {
                                     $form = GFAPI::get_form( $entry['form_id'] );
                                     $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].' : </p>':'');                                    
                                                                                                                              
-                                    foreach ( $this->getField( 'directory_list-title' ) as $field ) {       
-                                        
+                                    foreach ( $this->getField( 'directory_list-title' ) as $field ) {                                               
                                             $title_args['field'] = $field;                                                   
                                             
                                             switch ($field['id']){                                                
                                                 case '22':     
                                                     $title_args['wpautop'] = true;
                                                     break;                                                
+                                                case 'delete_link':                                                    
+                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-trash-o"></i>{{value}}</span>';
+                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    break;
                                                 case 'edit_link':                                                    
                                                     $title_args['markup'] = '<span class="edit"><i class="fa fa-pencil-square-o"></i>{{value}}</span>';
                                                     $links .=  gravityview_field_output( $title_args );                                                                                                        
                                                     break;
                                                 case 'cancel_link':
-                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-ban"></i>{{value}}</span>';
-                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    //do not display if entry is already cancelled
+                                                    if($entry['303']!='Cancelled'){
+                                                        $title_args['markup'] = '<span class="edit"><i class="fa fa-ban"></i>{{value}}</span>';
+                                                        $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    }
                                                     break;   
                                                 case 'copy_entry':                                                    
                                                     $title_args['markup'] = '<span class="edit"><i class="fa fa-files-o"></i>{{value}}</span>';
@@ -209,13 +256,14 @@ if( ! $total or !( is_user_logged_in() )) {
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title">Cancel Exhibit ID: <span id="cancelEntryID" name="entryID"></span></h4>
+                            <h4 class="modal-title">Cancel <span id="projName"></span>, Exhibit ID: <span id="cancelEntryID" name="entryID"></span></h4>
                         </div>
                         <div class="modal-body">
-                  <p>Sorry you can't make it. Why are you canceling?</p><br/>
-
-                  <textarea rows="4" cols="50" name="cancelReason"></textarea>
-                    <br/><span id="cancelResponse"></span><br/>
+                            <div id="cancelText">
+                                <p>Sorry you can't make it. Why are you canceling?</p><br/>
+                                <textarea rows="4" cols="50" name="cancelReason"></textarea>
+                            </div>                    
+                        <span id="cancelResponse"></span><br/>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" id="submitCancel">Submit</button>

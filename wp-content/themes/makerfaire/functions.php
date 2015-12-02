@@ -2062,7 +2062,7 @@ function makeAdminCopyEntry(){
             }
         }
     }
-    $newEntry['303'] = 'Incomplete';
+    $newEntry['303'] = 'In Progress'; //in-progress
     $newEntry_id = GFAPI::add_entry( $newEntry );
     $entry = GFAPI::get_entry($newEntry_id);    
     $href = GravityView_Edit_Entry::get_edit_link( $entry, $view_id );    
@@ -2075,3 +2075,31 @@ function makeAdminCopyEntry(){
   exit;  
 }
 add_action( 'wp_ajax_make-admin-copy-entry', 'makeAdminCopyEntry' );
+
+add_filter( 'gform_form_settings', 'my_custom_form_setting', 10, 2 );
+function my_custom_form_setting( $settings, $form ) {
+    //var_dump($settings['Form Basics']);
+    $form_type = rgar($form, 'form_type');
+    $settings['Form Basics']['form_type'] = '
+        <tr>
+            <th><label for="my_custom_setting">Project Type</label></th>
+            <td><select name="form_type">
+                <option value="Exhibit" '.($form_type=='Exhibit'?'selected':'').'>Exhibit</option>
+                <option value="Presentation" '.($form_type=='Presentation'?'selected':'').'>Presentation</option>
+                <option value="Performance" '.($form_type=='Performance'?'selected':'').'>Performance</option>
+                <option value="Showcase" '.($form_type=='Showcase'?'selected':'').'>Showcase</option>
+                <option value="Sponsor Startup" '.($form_type=='Sponsor Startup'?'selected':'').'>Sponsor Startup</option>
+                <option value="Sponsors" '.($form_type=='Sponsors'?'selected':'').'>Sponsors</option>                                                        
+                    <option value="Other" '.($form_type=='Other' || $form_type==''?'selected':'').'>Other</option>                                                        
+            </select></td>
+        </tr>';
+
+    return $settings;
+}
+
+// save your custom form setting
+add_filter( 'gform_pre_form_settings_save', 'save_form_type_form_setting' );
+function save_form_type_form_setting($form) {
+    $form['form_type'] = rgpost( 'form_type' );
+    return $form;
+}

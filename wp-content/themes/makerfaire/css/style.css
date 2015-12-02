@@ -4109,7 +4109,17 @@ img.attachment-post-thumbnail {
   width: 25%;
   height: auto;
 }
+.gv-list-container .maker-admin .entryImg p {
+  margin: 0;
+}
+.gv-list-container .maker-admin .entryImg img {
+  width: 100%;
+  height: auto;
+  min-height: 10em;
+}
 .gv-list-container .maker-admin .entryData {
+  font-weight: bold;
+  font-size: 1.3rem;
   padding-left: 5px;
   height: 100%;
   width: 70%;
@@ -4120,46 +4130,109 @@ img.attachment-post-thumbnail {
 .gv-list-container .maker-admin .entryData .clear {
   clear: both;
 }
-.gv-list-container .maker-admin .entryData .fleft,
-.gv-list-container .maker-admin .entryData .fLeft {
-  float: left;
-}
-.gv-list-container .maker-admin .entryData .fleft div,
-.gv-list-container .maker-admin .entryData .fLeft div,
-.gv-list-container .maker-admin .entryData .fleft span,
-.gv-list-container .maker-admin .entryData .fLeft span,
-.gv-list-container .maker-admin .entryData .fleft p,
-.gv-list-container .maker-admin .entryData .fLeft p {
-  float: left;
-}
-.gv-list-container .maker-admin .entryData .fright,
-.gv-list-container .maker-admin .entryData .fRight {
-  float: right;
-}
-.gv-list-container .maker-admin .entryData .fright div,
-.gv-list-container .maker-admin .entryData .fRight div,
-.gv-list-container .maker-admin .entryData .fright span,
-.gv-list-container .maker-admin .entryData .fRight span,
-.gv-list-container .maker-admin .entryData .fright p,
-.gv-list-container .maker-admin .entryData .fRight p {
-  float: left;
-}
 .gv-list-container .maker-admin .entryData .links {
   position: absolute;
-  bottom: 1em;
-  width: 100%;
+  bottom: 0;
+  width: 98%;
   border-top: thin solid grey;
   border-bottom: thin solid grey;
 }
-.gv-list-container .maker-admin span.title {
-  clear: both;
-  float: left;
-  font-weight: bold;
-  margin-bottom: 10px;
+.gv-list-container .maker-admin .entryData .links p {
+  margin: 0;
+}
+.gv-list-container .maker-admin .entryData .links i {
+  margin: .2em;
 }
 .gv-list-container .maker-admin span.edit {
   float: left;
-  padding: 0 10px;
+  margin-right: .2em;
+}
+.gv-list-container,
+.gv-grid {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+}
+.gv-list-container .fleft,
+.gv-grid .fleft,
+.gv-list-container .fLeft,
+.gv-grid .fLeft {
+  float: left;
+}
+.gv-list-container .fleft div,
+.gv-grid .fleft div,
+.gv-list-container .fLeft div,
+.gv-grid .fLeft div,
+.gv-list-container .fleft span,
+.gv-grid .fleft span,
+.gv-list-container .fLeft span,
+.gv-grid .fLeft span,
+.gv-list-container .fleft p,
+.gv-grid .fleft p,
+.gv-list-container .fLeft p,
+.gv-grid .fLeft p,
+.gv-list-container .fleft i,
+.gv-grid .fleft i,
+.gv-list-container .fLeft i,
+.gv-grid .fLeft i {
+  float: left;
+}
+.gv-list-container .fright,
+.gv-grid .fright,
+.gv-list-container .fRight,
+.gv-grid .fRight {
+  float: right;
+}
+.gv-list-container .fright div,
+.gv-grid .fright div,
+.gv-list-container .fRight div,
+.gv-grid .fRight div,
+.gv-list-container .fright span,
+.gv-grid .fright span,
+.gv-list-container .fRight span,
+.gv-grid .fRight span,
+.gv-list-container .fright p,
+.gv-grid .fright p,
+.gv-list-container .fRight p,
+.gv-grid .fRight p,
+.gv-list-container .fright i,
+.gv-grid .fright i,
+.gv-list-container .fRight i,
+.gv-grid .fRight i {
+  float: left;
+}
+.gv-list-container .maName,
+.gv-grid .maName {
+  font-size: 1.25em;
+  font-weight: bold;
+  line-height: 1.24em;
+}
+.gv-list-container .maTitle,
+.gv-grid .maTitle {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  line-height: 1.54em;
+  margin: 0;
+}
+.gv-list-container .maHeadLinks,
+.gv-grid .maHeadLinks {
+  font-size: 1.3rem;
+}
+.gv-list-container h3.title,
+.gv-grid h3.title {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  clear: both;
+  float: left;
+  margin-bottom: 10px;
+  font-size: 1.93em;
+}
+.gv-list-container .latReg,
+.gv-grid .latReg {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+}
+.gv-list-container .entryID,
+.gv-grid .entryID {
+  font-size: 1.385em;
 }
 header.store-header {
   background-image: url('/wp-content/themes/makerfaire/images/Make-store-hero-desktop.png');

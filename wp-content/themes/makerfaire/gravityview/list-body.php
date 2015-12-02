@@ -47,7 +47,7 @@ if( ! $total or !( is_user_logged_in() )) {
 		$this->setCurrentEntry( $entry );
 
 	?>
-
+            <hr/>
 		<div id="gv_list_<?php echo $entry['id']; ?>" class="maker-admin">
 
 		<?php
@@ -84,20 +84,31 @@ if( ! $total or !( is_user_logged_in() )) {
                                             'form'       => $this->getForm(),
                                             'hide_empty' => $this->getAtts( 'hide_empty' ),
                                     );
-                                                                                                                                                                                                    
-                                    foreach ( $this->getField( 'directory_list-title' ) as $field ) {                                                                                        
+                                    
+                                    
+                                    $form = GFAPI::get_form( $entry['form_id'] );
+                                    $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].' : </p>':'');                                    
+                                                                                                                             
+                                    foreach ( $this->getField( 'directory_list-title' ) as $field ) {       
+                                        
                                             $title_args['field'] = $field;                                                   
                                             
                                             switch ($field['id']){                                                
                                                 case '22':     
                                                     $title_args['wpautop'] = true;
                                                     break;                                                
-                                                case 'edit_link':
-                                                case 'cancel_link':
-                                                case 'copy_entry':         
-                                                    $title_args['markup'] = '<span class="edit">{{value}}</span>';
-                                                    $links .=  gravityview_field_output( $title_args );                                                    
+                                                case 'edit_link':                                                    
+                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-pencil-square-o"></i>{{value}}</span>';
+                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
                                                     break;
+                                                case 'cancel_link':
+                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-ban"></i>{{value}}</span>';
+                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    break;   
+                                                case 'copy_entry':                                                    
+                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-files-o"></i>{{value}}</span>';
+                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    break;   
                                                 default:                                                    
                                                     $title_args['markup'] = '{{label}} {{value}}';                                                    
                                             }
@@ -112,9 +123,9 @@ if( ! $total or !( is_user_logged_in() )) {
                             <div class="entryData">
                                 <div class="fleft"> <?php echo $entryData['faire_name'];?></div>
                                 <div class="fright"><?php echo $entryData['303'];?></div>                                
-                                <span class="title"><?php echo $entryData['151'];?></span>                                
-                                <div class="clear fleft"><?php echo $entryData['id'];?></div>                               
-                                <div class="clear links ">
+                                <h3 class="title"><?php echo $entryData['151'];?></h3>                                
+                                <div class="clear fleft entryID latReg"><?php echo $form_type.' '.$entryData['id'];?></div>                               
+                                <div class="clear links latReg">
                                     <div class="fleft"><?php echo $entryData['date_created'];?></div>
                                     <div class="fright"><?php echo $links;?></div>
                                 </div>
@@ -127,8 +138,9 @@ if( ! $total or !( is_user_logged_in() )) {
 					'wrapper_class' => 'gv-list-view-subtitle',
 				));
 			?>
-                            <div class="clear"></div>
+                            
 			</div>
+<div class="clear"></div>
 
 			<?php
 
@@ -143,40 +155,6 @@ if( ! $total or !( is_user_logged_in() )) {
 
 		<?php endif; ?>
 
-		<div class="gv-grid gv-list-view-content">
-
-			<?php
-
-				/**
-				 * @action `gravityview_entry_content_before` Tap in inside the View Content wrapper <div>
-				 * @param array $entry Gravity Forms Entry array
-				 * @param GravityView_View $this The GravityView_View instance
-				 */
-				do_action( 'gravityview_entry_content_before', $entry, $this );
-
-				$this->renderZone('image', 'wrapper_class="gv-grid-col-1-3 gv-list-view-content-image"');
-
-				$this->renderZone('description', array(
-					'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
-					'label_markup' => '<h4>{{label}}</h4>',
-					'wpautop'      => true
-				));
-
-				$this->renderZone('content-attributes', array(
-					'wrapper_class' => 'gv-list-view-content-attributes',
-					'markup'     => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>'
-				));
-
-				/**
-				 * @action `gravityview_entry_content_after` Tap in at the end of the View Content wrapper <div>
-				 * @param array $entry Gravity Forms Entry array
-				 * @param GravityView_View $this The GravityView_View instance
-				 */
-				do_action( 'gravityview_entry_content_after', $entry, $this );
-
-			?>
-
-		</div>
 
 		<?php
 
@@ -223,7 +201,8 @@ if( ! $total or !( is_user_logged_in() )) {
 
 		?>
 
-		</div>               
+		</div>   
+
 	<?php } ?>
     <div class="modal" id="cancelEntry">
                     <div class="modal-dialog">
@@ -233,7 +212,7 @@ if( ! $total or !( is_user_logged_in() )) {
                             <h4 class="modal-title">Cancel Exhibit ID: <span id="cancelEntryID" name="entryID"></span></h4>
                         </div>
                         <div class="modal-body">
-                  <p>We are sorry to see you leave.  Please leave us a message as to why you are cancelling.</p><br/>
+                  <p>Sorry you can't make it. Why are you canceling?</p><br/>
 
                   <textarea rows="4" cols="50" name="cancelReason"></textarea>
                     <br/><span id="cancelResponse"></span><br/>

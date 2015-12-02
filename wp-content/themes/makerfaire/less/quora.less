@@ -3267,32 +3267,61 @@ img.attachment-post-thumbnail{width:100%;height:auto;}
     position: relative;
     width: 100%;
     margin: 2em 0;
-    .entryImg{float:left;padding-right: 5px;width:25%;height:auto;}
-    .entryData{                       
-        padding-left: 5px;width:70%;   
+    .entryImg{
+        float:left;
+        padding-right: 5px;
+        width:25%;
+        height:auto;
+        p{margin:0}
+        img {width:100%; height:auto; min-height:10em}
+    }
+    
+    .entryData{  
+        
+        font-weight:bold;
+        font-size: 1.3rem;
+        padding-left: 5px;
+        width:70%;   
         height: 100%;
         width: 70%;
         position: absolute;
         right: 0;
         top: 0;
-        .clear{clear:both}
-        
-        .fleft,  .fLeft{
-            float:left;
-            div, span, p{float:left}
-        }
-        .fright, .fRight{
-            float:right;
-            div, span, p{float:left}
-        }
+        .clear{clear:both}                
         .links{position: absolute;
-        bottom: 1em;
-        width: 100%;
+        bottom: 0;
+        width: 98%;
         border-top: thin solid grey;
-        border-bottom: thin solid grey;}
+        border-bottom: thin solid grey;
+        
+        p {margin:0}
+        i{margin:.2em;}
+        }
     }
     
-    span.title{clear:both;float: left;font-weight: bold;margin-bottom: 10px;}
-    span.edit{    float: left;padding: 0 10px;}
-    
+    span.edit{float: left;margin-right: .2em;}        
 }
+.gv-list-container, .gv-grid{  
+    font-family: 'Roboto', Helvetica, Arial, sans-serif; 
+    .fleft,  .fLeft{
+        float:left;
+        div, span, p, i{float:left;}
+    }
+    .fright, .fRight{
+        float:right;
+        div, span, p, i {float:left;}
+    }   
+    .maName{font-size: 1.25em;font-weight: bold;line-height: 1.24em;}
+    .maTitle{font-family: 'Roboto', Helvetica, Arial, sans-serif; font-weight:100;   line-height: 1.54em;margin:0}
+    .maHeadLinks{font-size: 1.3rem;}
+    h3.title{
+        font-family: 'Roboto', Helvetica, Arial, sans-serif; font-weight:100;
+        clear:both;
+        float: left;        
+        margin-bottom: 10px;
+        font-size: 1.93em;
+    }
+    .latReg{font-family: 'Roboto', Helvetica, Arial, sans-serif;font-weight:500;}
+    .entryID{font-size: 1.385em}
+}
+  

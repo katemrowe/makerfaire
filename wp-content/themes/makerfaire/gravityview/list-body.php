@@ -129,7 +129,13 @@ if( ! $total or !( is_user_logged_in() )) {
                                     
                                     $form = GFAPI::get_form( $entry['form_id'] );
                                     $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].' : </p>':'');                                    
-                                                                                                                             
+                                    //set status color
+                                    if($entry['303']=='Accepted'){
+                                        $statusBlock = 'greenStatus';
+                                    }else{
+                                        $statusBlock = 'greyStatus';
+                                    }
+                                        
                                     foreach ( $this->getField( 'directory_list-title' ) as $field ) {                                               
                                             $title_args['field'] = $field;                                                   
                                             
@@ -168,8 +174,10 @@ if( ! $total or !( is_user_logged_in() )) {
                             <div class="entryImg"><?php echo $entryData['22'];?></div>
                             
                             <div class="entryData">
-                                <div class="fleft"> <?php echo $entryData['faire_name'];?></div>
-                                <div class="fright"><?php echo $entryData['303'];?></div>                                
+                                <div class="statusBox <?php echo $statusBlock;?>">
+                                    <div class="fleft"> <?php echo $entryData['faire_name'];?></div>
+                                    <div class="fright statusText"><?php echo $entryData['303'];?></div>      
+                                </div>
                                 <h3 class="title"><?php echo $entryData['151'];?></h3>                                
                                 <div class="clear fleft entryID latReg"><?php echo $form_type.' '.$entryData['id'];?></div>                               
                                 <div class="clear links latReg">

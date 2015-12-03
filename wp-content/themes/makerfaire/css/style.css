@@ -4127,6 +4127,21 @@ img.attachment-post-thumbnail {
   right: 0;
   top: 0;
 }
+.gv-list-container .maker-admin .entryData .statusBox {
+  height: 1.924em;
+  display: block;
+  padding: .2em 1em;
+  border-radius: 4px;
+}
+.gv-list-container .maker-admin .entryData .statusBox .statusText {
+  color: white;
+}
+.gv-list-container .maker-admin .entryData .greenStatus {
+  background-color: #7ED321;
+}
+.gv-list-container .maker-admin .entryData .greyStatus {
+  background-color: #B6B6B6;
+}
 .gv-list-container .maker-admin .entryData .clear {
   clear: both;
 }

@@ -38,7 +38,6 @@ get_header(); ?>
         <img class="img-responsive" src="/wp-content/themes/makerfaire/images/Make-store-kids.jpg" alt="Make Store kids at play" />
       </div>
     </div>
-    <p class="lead padtop">Stay tuned for our schedule of free DIY events for the whole family</p>
   </section>
 
   <!-- Photo Grid Section -->

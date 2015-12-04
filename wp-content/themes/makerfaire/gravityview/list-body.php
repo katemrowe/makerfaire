@@ -10,6 +10,7 @@
  * @global GravityView_View $this
  */
 
+
 /*
  * Retrieve all entries for this user - created with user email as the contact email and created by this user id 
  */
@@ -143,7 +144,7 @@ if( ! $total or !( is_user_logged_in() )) {
                                                 case '22':     
                                                     $title_args['wpautop'] = true;
                                                     break;                                                
-                                                case 'delete_link':    
+                                                case 'delete_entry':    
                                                     if($entry['303']=='Proposed' || $entry['303']=='In Progress'){
                                                         $title_args['markup'] = '<span class="edit"><i class="fa fa-trash-o"></i>{{value}}</span>';
                                                         $links .=  gravityview_field_output( $title_args );                                                                                                        
@@ -197,7 +198,7 @@ if( ! $total or !( is_user_logged_in() )) {
 			?>
                             
 			</div>
-<div class="clear"></div>
+                        <div class="clear"></div>
 
 			<?php
 
@@ -261,7 +262,7 @@ if( ! $total or !( is_user_logged_in() )) {
 		</div>   
 
 	<?php } ?>
-    <div class="modal" id="cancelEntry">
+                <div class="modal" id="cancelEntry">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -281,9 +282,10 @@ if( ! $total or !( is_user_logged_in() )) {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Modal to copy entry to a new form -->
-                  <div class="modal" id="copy_entry">
+                </div>
+                
+                <!-- Modal to copy entry to a new form -->
+                <div class="modal" id="copy_entry">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -291,20 +293,47 @@ if( ! $total or !( is_user_logged_in() )) {
                             <h4 class="modal-title">Copy Exhibit ID: <span id="copyEntryID" name="entryID"></span></h4>
                         </div>
                         <div class="modal-body">
-                  <p>Please choose from the options below:</p><br/>
+                  <?php if(!empty($formArr)){ ?>
+                            <p>Please choose from the options below:</p><br/>                  
                   <select id="copy2Form">
                       <?php
+                      
                       foreach($formArr as $availForm){
                           echo '<option value='.$availForm[0].'>'.$availForm[1].'</option>';
                       }
                       ?>
                   </select>
-                  
+                  <?php }else{
+                      echo 'No Open faires at the moment';
+                  }
+?>
                     <br/><span id="copyResponse"></span><br/>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" id="submitCopy">Submit</button>
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!--Modal to delete entry-->
+                <div class="modal" id="deleteEntry">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Delete <span id="delProjName"></span>, Exhibit ID: <span id="deleteEntryID" name="entryID"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="deleteText">
+                            <p>Are you sure you want to trash this entry? You can not reverse this action.</p> 
+                            </div>                    
+                        <span id="deleteResponse"></span><br/>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" id="submitDelete">Yes, delete it</button>
+                          <button type="button" class="btn btn-default" id="cancelDelete" data-dismiss="modal">No, I'll keep it</button>
+                          <button type="button" class="btn btn-default" id="closeDelete" data-dismiss="modal">Close</button>
                         </div>
                       </div>
                     </div>

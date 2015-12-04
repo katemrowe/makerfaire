@@ -3406,4 +3406,56 @@ jQuery(document).ready(function() {
         });           
     });
     
+    /*
+     * Maker Admin - Delete Entry functionality
+     */
+    
+    /* Set up the modal for the maker admin delete entry function */
+    jQuery('#deleteEntry').on('show.bs.modal', function(e) {
+        //make sure the delete response is empty
+        jQuery(e.currentTarget).find('#deleteResponse').html('');
+        jQuery('#deleteText').show();
+        //show the submit button
+        jQuery('#submitDelete').show();
+        //hide the close button        
+        jQuery("#closeDelete").hide();
+        //show the cancel button
+        jQuery("#cancelDelete").show();
+        
+        //populate the entry id
+        var entryId = jQuery(e.relatedTarget).data('entry-id');
+        //jQuery(e.currentTarget).find('span[name="deleteEntryID"]').html(entryId);
+        jQuery("#deleteEntryID").html(entryId)
+        
+        //populate the project Name        
+        var projName = jQuery(e.relatedTarget).data('projname');
+        jQuery("#delProjName").html(projName);
+        
+    });
+    
+    jQuery('#submitDelete').click(function () {            
+        //hide the submit button
+        jQuery('#submitDelete').hide();
+        //show the close button        
+        jQuery("#closeDelete").show();
+        //hide the cancel button
+        jQuery("#cancelDelete").hide();
+        
+        //submit the cancellation via ajax                            
+        var entry_id      = jQuery("#deleteEntryID").html();        
+        var data = {
+                'action': 'maker-delete-entry',
+                'delete_entry_id': entry_id
+        };
+        jQuery('#deleteText').hide();
+        jQuery.post(object_name.ajaxurl, data, function(response) {
+            jQuery('.modal-title').hide();
+            jQuery('#deleteResponse').text(response);
+        });           
+    });
+    
+    //modal close - refresh page  
+    jQuery('#closeDelete').click(function () {            
+        location.reload();
+    });
 });

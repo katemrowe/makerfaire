@@ -1776,6 +1776,7 @@ add_filter( 'gform_notification_events', 'add_event' );
 function add_event( $notification_events ) {
     $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
     $notification_events['maker_cancel_exhibit'] = __( 'Maker Cancelled Exhibit', 'gravityforms' );
+    $notification_events['maker_delete_exhibit'] = __( 'Maker Deleted Exhibit', 'gravityforms' );
     return $notification_events;
 }
     
@@ -1904,11 +1905,14 @@ function gv_add_faire($additional_fields){
   $additional_fields[] = array("label_text" => "Faire",        "desc"          => "Display Faire Name", 
                                "field_id"   => "faire_name",   "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
-  $additional_fields[] = array("label_text" => "Cancel Entry", "desc"          => "Cancel Entry Link", 
+  $additional_fields[] = array("label_text" => "Maker Cancel Entry", "desc"          => "Maker Cancel Entry Link", 
                                "field_id"   => "cancel_link",  "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
-  $additional_fields[] = array("label_text" => "Copy Entry",   "desc"          => "Copy Entry Link", 
+  $additional_fields[] = array("label_text" => "Maker Copy Entry",   "desc"          => "Maker Copy Entry Link", 
                                "field_id"   => "copy_entry",   "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  $additional_fields[] = array("label_text" => "Maker Delete Entry",   "desc"          => "Maker Delete Entry Link", 
+                               "field_id"   => "delete_entry",   "label_type"    => "field", 
                                "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
   return $additional_fields;
 }
@@ -1933,6 +1937,8 @@ function gv_faire_name($display_value, $field, $entry, $form){
         $display_value = '<a href="#cancelEntry" data-toggle="modal" data-projName="'.$entry['151'].'" data-entry-id="'.$entry['id'].'">Cancel</a>';
     }elseif($field["type"]=='copy_entry'){    
         $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Copy</a>';
+    }elseif($field["type"]=='delete_entry'){    
+        $display_value = '<a href="#deleteEntry" data-toggle="modal" data-projName="'.$entry['151'].'" data-entry-id="'.$entry['id'].'">Delete</a>';
     }
     
     return $display_value;
@@ -1991,6 +1997,39 @@ function makerCancelEntry(){
   exit;  
 }
 add_action( 'wp_ajax_maker-cancel-entry', 'makerCancelEntry' );
+
+//ajax to delete entry from maker admin and to send notification
+function makerDeleteEntry(){
+  $entryID = (isset($_POST['delete_entry_id']) ? $_POST['delete_entry_id']:0);
+  if($entryID!=0){
+    //get entry data and form data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+    $form = GFAPI::get_form( $lead['form_id']);
+    
+    $trashed = GFAPI::update_entry_property( $entryID, 'status', 'trash' );
+    new GravityView_Cache;
+
+    if( ! $trashed ) {
+        echo new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
+    } 
+         
+    //Make a note of the delete      
+    mf_add_note($entryID,"The Exhibit has been deleted by the maker.");
+
+    //Handle notifications for acceptance
+    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_delete_exhibit', $form, $lead );
+    foreach ( $notifications_to_send as $notification ) {
+        if($notification['isActive']){                                            
+            GFCommon::send_notification( $notification, $form, $lead );
+        }
+    }    
+    echo $lead['151'].', Exhibit ID '.$entryID.' has been deleted';    
+  }else{
+    echo 'Error in deleting this entry.';
+  }  
+  exit;  
+}
+add_action( 'wp_ajax_maker-delete-entry', 'makerDeleteEntry' );
 
 //redirect makers to the edit entry page  **need to replace site url with actual view path ** 
 function mf_login_redirect( $redirect_to, $request, $user  ) {

@@ -2,6 +2,7 @@
 /*
 Template name: Wide Template
 */
+auth_redirect();
 get_header(); ?>
 
 <div class="clear"></div>

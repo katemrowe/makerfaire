@@ -283,6 +283,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/classes\/mf-sharing-cards.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/classes\/mf-sharing-cards.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/css\/bootstrap-dialog.css": {
 		"fileType": 16,
 		"ignore": 0,
@@ -1069,6 +1078,28 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/drone_promo_desktop.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 258170,
+		"inputAbbreviatedPath": "\/images\/drone_promo_desktop.jpg",
+		"outputAbbreviatedPath": "\/images\/drone_promo_desktop.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/drone_promo_mobile_2x.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 116803,
+		"inputAbbreviatedPath": "\/images\/drone_promo_mobile_2x.jpg",
+		"outputAbbreviatedPath": "\/images\/drone_promo_mobile_2x.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/images\/go.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -1615,6 +1646,17 @@
 		"initialSize": 15166,
 		"inputAbbreviatedPath": "\/images\/map.jpg",
 		"outputAbbreviatedPath": "\/images\/map.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/mf-feature-mfba16-200px.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 50821,
+		"inputAbbreviatedPath": "\/images\/mf-feature-mfba16-200px.png",
+		"outputAbbreviatedPath": "\/images\/mf-feature-mfba16-200px.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -2437,7 +2479,7 @@
 		"outputAbbreviatedPath": "\/css\/style.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"relativeURLS": 0,
 		"shouldRunAutoprefixer": 0,
 		"shouldRunBless": 0,

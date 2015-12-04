@@ -4166,6 +4166,15 @@ img.attachment-post-thumbnail {
 .gv-grid {
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
 }
+.gv-list-container .submitEntry a,
+.gv-grid .submitEntry a {
+  background-color: #00B4F3;
+  line-height: 4em;
+  font-size: .75em;
+  padding: .3em 2em;
+  color: #fff;
+  text-transform: uppercase;
+}
 .gv-list-container .fleft,
 .gv-grid .fleft,
 .gv-list-container .fLeft,

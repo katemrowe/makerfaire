@@ -128,7 +128,7 @@ if( ! $total or !( is_user_logged_in() )) {
                                     
                                     
                                     $form = GFAPI::get_form( $entry['form_id'] );
-                                    $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].' : </p>':'');                                    
+                                    $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].':&nbsp;</p>':'');                                    
                                     //set status color
                                     if($entry['303']=='Accepted'){
                                         $statusBlock = 'greenStatus';
@@ -143,9 +143,11 @@ if( ! $total or !( is_user_logged_in() )) {
                                                 case '22':     
                                                     $title_args['wpautop'] = true;
                                                     break;                                                
-                                                case 'delete_link':                                                    
-                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-trash-o"></i>{{value}}</span>';
-                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                case 'delete_link':    
+                                                    if($entry['303']=='Proposed' || $entry['303']=='In Progress'){
+                                                        $title_args['markup'] = '<span class="edit"><i class="fa fa-trash-o"></i>{{value}}</span>';
+                                                        $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    }
                                                     break;
                                                 case 'edit_link':                                                    
                                                     $title_args['markup'] = '<span class="edit"><i class="fa fa-pencil-square-o"></i>{{value}}</span>';

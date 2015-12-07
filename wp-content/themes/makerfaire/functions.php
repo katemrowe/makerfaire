@@ -1774,9 +1774,10 @@ function get_schedule($lead){
 //add new Notification event of - send confirmation letter and maker cancelled exhibit
 add_filter( 'gform_notification_events', 'add_event' );
 function add_event( $notification_events ) {
-    $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
-    $notification_events['maker_cancel_exhibit'] = __( 'Maker Cancelled Exhibit', 'gravityforms' );
-    $notification_events['maker_delete_exhibit'] = __( 'Maker Deleted Exhibit', 'gravityforms' );
+    $notification_events['confirmation_letter']   = __( 'Confirmation Letter', 'gravityforms' );
+    $notification_events['maker_cancel_exhibit']  = __( 'Maker Cancelled Exhibit', 'gravityforms' );
+    $notification_events['maker_delete_exhibit']  = __( 'Maker Deleted Exhibit', 'gravityforms' );
+    $notification_events['maker_updated_exhibit'] = __( 'Maker Updated Entry', 'gravityforms' );
     return $notification_events;
 }
     
@@ -2147,3 +2148,34 @@ function remove_admin_bar() {
     }
 }
 
+add_action('gravityview/edit_entry/after_update','GVupdate_notification',10,3);
+function GVupdate_notification($form,$entry_id,$orig_entry){            
+    //get updated entry 
+    $updatedEntry = GFAPI::get_entry(esc_attr($entry_id)); 
+    $updText = '<table width="100%" border="1"><thead><tr><td>Field ID</td><td>Original Value</td><td>Updated Value</td></tr></thead>';
+    $updText .= '<tbody>';    
+    
+    foreach($form['fields'] as $field){        
+        //send notification after entry is updated in maker admin
+        $input_id = $field->id;
+        $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
+        $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+        
+        if($origField!=$updatedField){
+            //update field id
+            $updText .= '<tr><td>'.$input_id .'</td><td>'.$origField.'</td><td>'.$updatedField.'</td></tr>';
+        }
+    }
+    $updText .= '</tbody>';
+    $updText .= '<tfoot><tr><td>Field ID</td><td>Original Value</td><td>Updated Value</td></tr></tfoot></table>';
+    
+    //Handle notifications for acceptance
+    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_updated_exhibit', $form, $updatedEntry );
+    foreach ( $notifications_to_send as $notification ) {        
+        if($notification['isActive']){           
+            $notification['message'] .= '<br/><br/>'.$updText;
+            GFCommon::send_notification( $notification, $form, $updatedEntry );
+        }
+    }    
+    
+}

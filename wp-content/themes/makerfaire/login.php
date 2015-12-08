@@ -3,10 +3,15 @@
 /*
  * Template Name: Login Page
  */
+// Get the action
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'login';
 
 //Skip if user is logged in.
-if (is_user_logged_in())
-    return;
+if (is_user_logged_in() && $action == 'logout')
+{
+    wp_logout();
+    wp_redirect(home_url());
+}
 
 //Require auth0
     require_once( ABSPATH . 'wp-content/plugins/auth0/templates/login-form.php');

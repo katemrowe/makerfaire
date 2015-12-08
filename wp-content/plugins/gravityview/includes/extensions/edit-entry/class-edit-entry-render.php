@@ -260,9 +260,10 @@ class GravityView_Edit_Entry_Render {
              * @hack to avoid the capability validation of the method save_lead for GF 1.9+
              */
             unset( $_GET['page'] );
-
+            $orig_entry = $this->entry;
+            
             GFFormsModel::save_lead( $form, $this->entry );
-
+            
             // If there's a post associated with the entry, process post fields
             if( !empty( $this->entry['post_id'] ) ) {
                 $this->maybe_update_post_fields( $form );
@@ -276,7 +277,8 @@ class GravityView_Edit_Entry_Render {
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
              */
-            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+            
+            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $orig_entry );
         }
 
     } // process_save
@@ -632,7 +634,8 @@ class GravityView_Edit_Entry_Render {
         // TODO: Check Updated and Error messages
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
-
+        $html = str_replace('{all_fields:nohidden,noadmin}','',$html);
+        
 	remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );

@@ -40,82 +40,221 @@ get_header(); ?>
     </div>
   </section>
 
-  <!-- Photo Grid Section -->
-  <section class="store-pictures">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <h2 class="section-heading">Portfolio</h2>
-          <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+  <p class="store-red-footer lead text-center">PREFER TO SHOP ONLINE? FIND MORE PRESENTS AT <strong><a href="//www.makershed.com" target="_blank">MAKER SHED</a></strong></p>
+
+  <section class="store-press">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-8">
+        <h3 class="padbottom">Press Coverage</h3>
+        <div class="row padbottom">
+          <div class="col-xs-12">
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <a href="http://blog.thestorefront.com/pop-up-roundup-nov-23-2015/" target="_blank">
+                  <h4 class="media-heading">The Store Front Blog</h4>
+                </a>
+                <p><em>Pop-up Roundup - Cuyana, Hunter, Make: & more</em></p>
+                <blockquote>
+                  <i class="fa fa-quote-left"></i><p>Makers and DIYers in San Francisco are in for a treat: Maker Media, the team behind Make: magazine and Maker Faire, has opened its first pop-up shop near Union Square.</p>
+                </blockquote>
+              </div>
+              <div class="col-xs-4 hidden-xs">
+                <a class="thumbnail" href="http://blog.thestorefront.com/pop-up-roundup-nov-23-2015/" target="_blank">
+                  <img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/Make-store-press-coverage-1.jpg" alt="Make: Store Press Coverage from The Store Front Blog">
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <a href="http://sfchron.cl/1NMd9T9" target="_blank">
+                  <h4 class="media-heading">San Francisco Chronicle</h4>
+                </a>
+                <p><em>Maker movement opens holiday pop-up store near Union Square</em></p>
+                <blockquote>
+                  <i class="fa fa-quote-left"></i><p>The San Francisco company, which helped launch a worldwide push toward DIY and creativity, is funneling that ethos into its first brick-and-mortar outpost, a holiday pop-up called Make: Store. It’s stocked with kits and tools to help kids and adults get their hands on projects in everything from robotics to crafting.</p>
+                </blockquote>
+              </div>
+              <div class="col-xs-4 hidden-xs">
+                <a class="thumbnail" href="http://sfchron.cl/1NMd9T9" target="_blank">
+                  <img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-press-coverage-2.jpg" alt="Make: Store Press Coverage from San Francisco Chronicle">
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/roundicons.png" class="img-responsive" alt="">
-          </a>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/startup-framework.png" class="img-responsive" alt="">
-          </a>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/treehouse.png" class="img-responsive" alt="">
-          </a>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/golden.png" class="img-responsive" alt="">
-          </a>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/escape.png" class="img-responsive" alt="">
-          </a>
-        </div>
-        <div class="col-md-4 col-sm-6 portfolio-item">
-          <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="fa fa-plus fa-3x"></i>
-              </div>
-            </div>
-            <img src="img/portfolio/dreams.png" class="img-responsive" alt="">
-          </a>
+      <div class="col-xs-12 col-sm-12 col-md-4">
+        <h3 class="padbottom">Press Release</h3>
+        <div class="well well-lg">
+          <p><a target="_blank" href="Make: Opens First Pop-Up Store in Union Square in San Francisco">Make: Opens First Pop-Up Store in Union Square in San Francisco</a></p>
+          <p><small class="text-muted">November 20, 2015</small></p>
         </div>
       </div>
     </div>
   </section>
-
-  <p class="store-red-footer lead text-center">PREFER TO SHOP ONLINE? FIND MORE PRESENTS AT <strong><a href="//www.makershed.com" target="_blank">MAKER SHED</a></strong></p>
-
 </div>
 
+<section class="store-pictures">
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1983-e1449519208904.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1983.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1982-e1449519195201.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1982.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2031-e1449519424976.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2031.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1862-e1449519133681.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1862.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1985-e1449519223626.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1985.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1986-e1449519236470.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1986.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1988-e1449519249789.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1988.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1989-e1449519261531.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1989.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1993-e1449519280713.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1993.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1997-e1449519305153.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1997.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1999-e1449519316166.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1999.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1981-e1449519178842.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1981.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1995-e1449519294362.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1995.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2001-e1449519326128.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2001.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2007-e1449519337394.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2007.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2011-e1449519347847.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2011.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2012-e1449519359780.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2012.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2014-e1449519370222.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2014.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2015-e1449519381165.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2015.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2019-e1449519392665.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2019.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2029-e1449519412322.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2029.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+<!--   <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-2032.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-2032.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="" rel="store-gallery">
+      <span><img class="img-responsive" src="" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <a class="fancybox_store_page" href="" rel="store-gallery">
+      <span><img class="img-responsive" src="" alt="Inside the Make: Store" /></span>
+    </a>
+  </div> -->
+</section>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  jQuery(".fancybox_store_page").fancybox({
+    openEffect  : 'none',
+    closeEffect : 'none'
+  });
+});
+
+jQuery(document).ready(function() {
+    jQuery(".portfolio-link1").fancybox({
+          helpers: {
+              title : {
+                  type : 'float'
+              }
+          }
+      });
+
+    jQuery(".portfolio-link2").fancybox({
+      openEffect  : 'elastic',
+      closeEffect : 'elastic',
+
+      helpers : {
+        title : {
+          type : 'inside'
+        }
+      }
+    });
+});
+</script>
 <?php get_footer(); ?>

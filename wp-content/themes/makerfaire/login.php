@@ -5,6 +5,7 @@
  */
 // Get the action
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'login';
+$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 'signin';
 
 //Skip if user is logged in.
 if (is_user_logged_in() && $action == 'logout')
@@ -51,7 +52,7 @@ font-size: 18px
             /**
              * Detect Auth0 plugin. 
              */
-                renderAuth0Form();
+            renderAuth0Form(false, array( "mode" => $mode));
             ?>
         </div>
         <div class="col-md-offset-2">

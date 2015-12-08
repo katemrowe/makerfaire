@@ -94,7 +94,7 @@ get_header(); ?>
       <div class="col-xs-12 col-sm-12 col-md-4">
         <h3 class="padbottom">Press Release</h3>
         <div class="well well-lg">
-          <p><a target="_blank" href="Make: Opens First Pop-Up Store in Union Square in San Francisco">Make: Opens First Pop-Up Store in Union Square in San Francisco</a></p>
+          <p><a target="_blank" href="http://www.marketwired.com/press-release/make-opens-first-pop-up-store-in-union-square-in-san-francisco-2075908.htm">Make: Opens First Pop-Up Store in Union Square in San Francisco</a></p>
           <p><small class="text-muted">November 20, 2015</small></p>
         </div>
       </div>

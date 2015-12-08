@@ -18,29 +18,19 @@ if (is_user_logged_in() && $action == 'logout')
 //Enqueue Login Style
 wp_enqueue_style('login-styles', get_stylesheet_directory_uri() . '/css/login-styles.css');
 
+//Setup dynamic message area depeding on modes or referrer
 $loginmessage = 'Sign In';
 if (strpos(wp_referer_field(),'edit-entry') > 0)
-        $loginmessage = 'Sign in to submit or manage<br /> your applications.';
-
+        $loginmessage = 'Sign in to submit or manage<br /> your entries.';
 if ($mode == "reset")
         $loginmessage = "Change your password";
 
+//Wordpress header and Theme header call
 get_header();
 
 ?>
 <style>
-  .vertical-align {
-    display: flex;
-    align-items: center;
-}
-#a0-lock.a0-theme-default .a0-panel .a0-icon-container
-{
-    height:10px;
-}
-.mftagline {
-color: #3FAFED;
-font-size: 18px
-}
+
 </style>
 
 <div class="clear"></div>
@@ -61,7 +51,7 @@ font-size: 18px
             <ul class="list-unstyled">
                 <li><?php echo $loginmessage; ?></li>
 		<li class="mftagline padtop">
-                <img style="width: auto; height: 58px; margin-right:10px;" src="http://makerfaire.com/wp-content/uploads/2015/05/makey-lg-01.png">The MakerFaire Team
+                <img style="width: auto; height: 58px; margin-right:10px;" src="http://makerfaire.com/wp-content/uploads/2015/05/makey-lg-01.png">The Maker Faire Team
                 </li>	</ul>
             </div>
         </div>

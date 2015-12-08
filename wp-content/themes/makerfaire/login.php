@@ -14,15 +14,16 @@ if (is_user_logged_in() && $action == 'logout')
     wp_redirect(home_url());
 }
 
-//Require auth0
-    require_once( ABSPATH . 'wp-content/plugins/auth0/templates/login-form.php');
 
 //Enqueue Login Style
 wp_enqueue_style('login-styles', get_stylesheet_directory_uri() . '/css/login-styles.css');
 
-$loginmessage = 'Sign in.';
+$loginmessage = 'Sign In';
 if (strpos(wp_referer_field(),'edit-entry') > 0)
         $loginmessage = 'Sign in to submit or manage<br /> your applications.';
+
+if ($mode == "reset")
+        $loginmessage = "Change your password";
 
 get_header();
 
@@ -60,11 +61,27 @@ font-size: 18px
             <ul class="list-unstyled">
                 <li><?php echo $loginmessage; ?></li>
 		<li class="mftagline padtop">
-                <img style="width: auto; height: 58px;" src="http://makerfaire.com/wp-content/uploads/2015/05/makey-lg-01.png">The MakerFaire Team
+                <img style="width: auto; height: 58px; margin-right:10px;" src="http://makerfaire.com/wp-content/uploads/2015/05/makey-lg-01.png">The MakerFaire Team
                 </li>	</ul>
             </div>
         </div>
      </div>
 </div><!--Container-->
 
-<?php wp_footer(); ?>
+<?php wp_footer();
+
+
+/* Page specific functions */
+function renderAuth0Form($canShowLegacyLogin = true, $specialSettings = array())
+{
+    
+    if (!$canShowLegacyLogin || !isset($_GET['wle'])) {
+        //Require auth0
+        require_once( ABSPATH . 'wp-content/plugins/auth0/templates/auth0-login-form.php');
+
+    }else{
+        add_action('login_footer', array('WP_Auth0', 'render_back_to_auth0'));
+        add_action('woocommerce_after_customer_login_form', array('WP_Auth0', 'render_back_to_auth0'));
+    }
+}
+?>

@@ -8,14 +8,14 @@ and open the template in the editor.
     Author     : rich.haynie
 */
 body.login {
-  background-image: url('home-bg.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+    background-image: url('home-bg.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .login h1 a {
-  background-image: url('login-logo.png');
+    background-image: url('login-logo.png');
 }
 
 #auth0-login-form{
@@ -23,7 +23,7 @@ body.login {
 }
 
 p#backtoblog {
-  display: none;
+    display: none;
 }
 .a0-header h1 {
     display: none;
@@ -31,4 +31,17 @@ p#backtoblog {
 
 div.a0-avatar {
     display: none !important;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+#a0-lock.a0-theme-default .a0-panel .a0-icon-container
+{
+    height:10px;
+}
+.mftagline {
+    color: #3FAFED;
+    font-size: 18px
 }

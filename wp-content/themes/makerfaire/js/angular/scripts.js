@@ -12,8 +12,27 @@ var ribbonApp = angular.module('ribbonApp', [ 'ngRoute','angularUtils.directives
    return fallbackSrc;
 });
 
+var uniqueItems = function (data, key) {
+    var result = [];
+    for (var i = 0; i < data.length; i++) {
+        var value = data[i][key];
+        if (result.indexOf(value) == -1) {
+            result.push(value);
+        }
+    }
+    return result;
+};
 
+ribbonApp.filter('groupBy',
+            function () {
+                return function (collection, key) {
+                    if (collection === null) return;
+                    return uniqueItems(collection, key);
+        };
+    });
+    
 ribbonApp.controller('ribbonController', function ($scope, $http) {
+  $scope.layout = 'grid';
   $scope.currentPage = 1;
   $scope.pageSize = 50;  
   $scope.faires = [];    
@@ -26,7 +45,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
     };
     
     $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
-      $scope.ribbons  = data;
+      $scope.ribbons      = data;       
       angular.forEach(data, function(row, key) {        
         angular.forEach(row.faireData, function(value, faire) {
         if($scope.faires.indexOf(value.faire) == -1)

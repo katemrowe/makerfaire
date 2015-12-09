@@ -11,7 +11,7 @@ function  createJson($year=''){
     $filter = " and year= ".($year!=''? $year:date("Y"));
     $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo, post_id, maker_name "
             . " FROM `wp_mf_ribbons` where entry_id > 0 AND post_id > 0 ".$filter." "
-            . " group by entry_id, location, year, ribbonType, numRibbons";
+            . " ORDER BY ribbonType ASC, numRibbons desc, entry_id";
 
     $ribbonData=array();
     $data = array();
@@ -64,6 +64,7 @@ function  createJson($year=''){
         $ribbonData[$entry_id]['project_photo'] = $project_photo;    
     }
     
+    
     foreach($ribbonData as $entry_id=>$data){  
         $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);
         $redCount  = (isset($data['ribbon'][1]['count'])?$data['ribbon'][1]['count']:0);
@@ -76,6 +77,12 @@ function  createJson($year=''){
                 "faireData"     => $data['fairedata']
             );
     }
-
+       
+    usort($json, 'sortByOrder');
     return json_encode($json);
 }
+
+ //sort ribbon data[] by blue ribbon count
+function sortByOrder($a, $b) {
+        return $b['blueCount']- $a['blueCount'];
+    }

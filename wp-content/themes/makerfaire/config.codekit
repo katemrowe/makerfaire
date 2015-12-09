@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "19076",
+"creatorBuild": "19102",
 "files": {
 	"\/_backups\/gravity-forms-custom-post-types\/gfcptaddonbase.php": {
 		"fileType": 8192,
@@ -737,6 +737,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/fpdi\/pdf\/maker_sign.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 289570,
+		"inputAbbreviatedPath": "\/fpdi\/pdf\/maker_sign.png",
+		"outputAbbreviatedPath": "\/fpdi\/pdf\/maker_sign.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/front-page.php": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -888,6 +899,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/blue-ribbon.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1839,
+		"inputAbbreviatedPath": "\/images\/blue-ribbon.png",
+		"outputAbbreviatedPath": "\/images\/blue-ribbon.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/images\/border.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -928,6 +950,17 @@
 		"initialSize": 10980,
 		"inputAbbreviatedPath": "\/images\/CalltoMakers_280px.png",
 		"outputAbbreviatedPath": "\/images\/CalltoMakers_280px.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/cancelled.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1977,
+		"inputAbbreviatedPath": "\/images\/cancelled.png",
+		"outputAbbreviatedPath": "\/images\/cancelled.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -1493,28 +1526,6 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
-	"\/images\/Make-stire-background-pattern.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 837727,
-		"inputAbbreviatedPath": "\/images\/Make-stire-background-pattern.png",
-		"outputAbbreviatedPath": "\/images\/Make-stire-background-pattern.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/images\/Make-store-hero-desktop.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 1.57402e+06,
-		"inputAbbreviatedPath": "\/images\/Make-store-hero-desktop.png",
-		"outputAbbreviatedPath": "\/images\/Make-store-hero-desktop.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
 	"\/images\/Make-store-kids.jpg": {
 		"fileType": 16384,
 		"ignore": 0,
@@ -1544,17 +1555,6 @@
 		"initialSize": 4290,
 		"inputAbbreviatedPath": "\/images\/maker-placeholder.jpg",
 		"outputAbbreviatedPath": "\/images\/maker-placeholder.jpg",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/images\/maker_sign.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 289570,
-		"inputAbbreviatedPath": "\/images\/maker_sign.png",
-		"outputAbbreviatedPath": "\/images\/maker_sign.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -1610,17 +1610,6 @@
 		"initialSize": 60513,
 		"inputAbbreviatedPath": "\/images\/mf-sub-promo-43.jpg",
 		"outputAbbreviatedPath": "\/images\/mf-sub-promo-43.jpg",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/images\/MF15NY_Badge.jpg": {
-		"fileType": 16384,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 391191,
-		"inputAbbreviatedPath": "\/images\/MF15NY_Badge.jpg",
-		"outputAbbreviatedPath": "\/images\/MF15NY_Badge.jpg",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -1812,6 +1801,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/red-ribbon.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2813,
+		"inputAbbreviatedPath": "\/images\/red-ribbon.png",
+		"outputAbbreviatedPath": "\/images\/red-ribbon.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/images\/robot.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -1963,6 +1963,116 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/js\/angular\/angular-filter.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular-filter.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/angular-route.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular-route.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-route-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/angular-route.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular-route.min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-route.min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/angular.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/angular.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular.min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular.min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/dirPagination.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/dirPagination.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/dirPagination-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/dirPagination.spec.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/dirPagination.spec.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/dirPagination.spec-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/min\/angular-filter-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/angular-filter-min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/min\/scripts-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/min\/scripts-min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/scripts-min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/scripts.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/scripts.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/scripts-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
 		},
 	"\/js\/bootbox.min.js": {
 		"fileType": 64,
@@ -2487,6 +2597,24 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/page-blue-ribbon.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/page-blue-ribbon.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/page-blue-ribbonSave.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/page-blue-ribbonSave.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/page-entry.php": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -2582,6 +2710,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/page-maker-checkin.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/page-maker-edit.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/page-maker-edit.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -2699,6 +2836,132 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/page.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/partials\/data\/2007ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2007ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2007ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2008ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2008ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2008ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2009ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2009ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2009ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2010ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2010ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2010ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2011ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2011ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2011ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2012ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2012ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2012ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2013ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2013ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2013ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2014ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2014ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2014ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2015ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2015ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2015ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/db_connect.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/db_connect.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/partials\/dirPagination.tpl.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/dirPagination.tpl.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/partials\/ribbonJSON.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/ribbonJSON.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -3616,7 +3879,7 @@
 	},
 "hooks": [
 	],
-"lastSavedByUser": "David Beauchamp",
+"lastSavedByUser": "Alicia Williams",
 "manualImportLinks": {
 	},
 "projectAttributes": {
@@ -3716,8 +3979,16 @@
 			"active": 0,
 			"flagValue": -1
 			},
+		"no_nested_string_interpolation": {
+			"active": 1,
+			"flagValue": -1
+			},
 		"no_plusplus": {
 			"active": 0,
+			"flagValue": -1
+			},
+		"no_private_function_fat_arrows": {
+			"active": 1,
 			"flagValue": -1
 			},
 		"no_stand_alone_at": {
@@ -3726,6 +3997,10 @@
 			},
 		"no_tabs": {
 			"active": 1,
+			"flagValue": -1
+			},
+		"no_this": {
+			"active": 0,
 			"flagValue": -1
 			},
 		"no_throwing_strings": {

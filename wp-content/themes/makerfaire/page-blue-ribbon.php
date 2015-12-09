@@ -44,48 +44,76 @@ foreach($yearSql as $year){
 			<?php endif; ?>
 		<!-- start blue ribbon data -->
                 <div id="ribbonPage">                           
-                 <div ng-controller="ribbonController" class="my-controller">                         
-                     <select ng-model="faire_year"
-                             ng-init="faire_year = '<?php echo $firstYear;?>'"  ng-change="loadData(faire_year)">
-                        <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>         
-                     </select>
-                     <select ng-model="query.faireData.faire">
-                        <option value=" " selected>All Faires</option>
-                        <option ng-repeat="faire in faires" value="{{faire}}">{{faire}}</option>
-                    </select>
-                    <select ng-model="query.faireData.ribbonType">
-                        <option value="" selected>All Ribbons</option>
-                        <option value="blue">Blue</option>
-                        <option value="red">Red</option>
-                    </select>
-                    <div class="textSearch fancybox-wrap">
-                        <input ng-model="query.$" placeholder="Search Winners">
-                    </div>
-
+                 <div ng-controller="ribbonController" class="my-controller">   
+                     <div class="ribbonToggle" style="float:left">                         
+                        <a ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"  class="box gallery"><i class="fa fa-picture-o"></i>Gallery</a>                                                    
+                        <a ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"  class="box list"><i class="fa fa-list"></i>List</a>
+                     </div>
+                     <div class="ribbonHeader" style="float:right">
+                        <select ng-model="faire_year"
+                                ng-init="faire_year = '<?php echo $firstYear;?>'"  ng-change="loadData(faire_year)">
+                           <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>         
+                        </select>
+                        <select ng-model="query.faireData.faire">
+                           <option value=" " selected>All Faires</option>
+                           <option ng-repeat="faire in faires" value="{{faire}}">{{faire}}</option>
+                       </select>
+                       <select ng-model="query.faireData.ribbonType">
+                           <option value="" selected>All Ribbons</option>
+                           <option value="blue">Blue</option>
+                           <option value="red">Red</option>
+                       </select>
+                       <div class="textSearch fancybox-wrap">
+                           <input ng-model="query.$" placeholder="Filter Winners">
+                       </div>
+                    </div> 
                      <br/><br/>
 
                     <!--| filter:year -->
-                     <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 50" current-page="currentPage">                         
-                          
-                         <a href="/mfarchives/{{ribbon.entryID}}" target="_blank" >
-                              <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo}}"></a>
-                              <div class="ribbons">
-                             
-                                <div class="blueRibbon" ng-if="ribbon.blueCount > 0">
-                                    {{ribbon.blueCount}}
-                                </div>
-                                <div class="redRibbon" ng-if="ribbon.redCount > 0">
-                                    {{ribbon.redCount}}
-                                </div>
-                              </div>
-                           </a>
-                         <div class="makerData">
-                             <div class="projName">
-                             {{ribbon.project_name}}
-                             </div>{{ribbon.maker_name}}<br><br>
-                             <span ng-repeat="faire in ribbon.faireData" class="{{faire.ribbonType}}data"> {{faire.faire}} {{faire.year}}</span>                             
+                     <div ng-show="layout == 'grid'" > 
+                        <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 50" current-page="currentPage">                          
+                            <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">
+                                 <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo}}"></a>
+                                 <div class="ribbons">
+
+                                   <div class="blueRibbon" ng-if="ribbon.blueCount > 0">
+                                       {{ribbon.blueCount}}
+                                   </div>
+                                   <div class="redRibbon" ng-if="ribbon.redCount > 0">
+                                       {{ribbon.redCount}}
+                                   </div>
+                                 </div>
+                              </a>
+                            <div class="makerData">
+                                <div class="projName">
+                                {{ribbon.project_name}}
+                                </div>{{ribbon.maker_name}}<br><br>
+                                <span ng-repeat="faire in ribbon.faireData" class="{{faire.ribbonType}}data"> {{faire.faire}} {{faire.year}}</span>                             
+                            </div>
                          </div>
-                     </div>   
+                         
+                    </div> 
+                    <div  ng-show="layout == 'list'" >
+                        
+                        <div ng-repeat="blueCount in ribbons|groupBy:'blueCount'">
+                            <b ng-if="blueCount>0">{{blueCount}} Blue Ribbons</b>
+                            <ul ng-if="blueCount>0">
+                                <li ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}">
+                                    {{ ribbonData.project_name }}
+                                </li>                                
+                            </ul>
+                        </div>
+                        <div ng-repeat="redCount in ribbons | groupBy:'redCount' | orderBy:'-redCount'">
+                            <b ng-if="redCount>0">{{redCount}} Red Ribbons</b>
+                            <ul  ng-if="redCount>0">
+                                <li ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}">
+                                    {{ ribbonData.project_name }}
+                                </li>                                
+                            </ul>
+                        </div>                     
+                     </div> 
+                    
+                    
                  </div>
                  
                     <div class="text-center">

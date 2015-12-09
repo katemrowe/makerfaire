@@ -283,6 +283,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/classes\/mf-login.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/classes\/mf-login.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/classes\/mf-sharing-cards.php": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -333,6 +342,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/css\/jquery.datetimepicker.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/css\/login-styles.css": {
+		"fileType": 16,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/css\/login-styles.css",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -2022,6 +2040,39 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/js\/angular\/angular-filter.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/angular-filter.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/min\/angular-filter-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/angular-filter-min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/angular\/min\/scripts-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/angular\/min\/scripts-min.js",
+		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/scripts-min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/js\/bootbox.min.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -2527,6 +2578,15 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
+	"\/login.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/login.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/MTM-page-template.php": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -2769,6 +2829,94 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/partials\/data\/2007ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2007ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2007ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2008ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2008ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2008ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2009ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2009ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2009ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2010ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2010ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2010ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2011ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2011ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2011ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2012ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2012ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2012ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2013ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2013ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2013ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/partials\/data\/2014ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2014ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2014ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
 		},
 	"\/plugins\/admin-pages\/current-faire\/css\/dashboard.css": {
 		"fileType": 16,

@@ -2150,33 +2150,54 @@ function remove_admin_bar() {
 }
 
 add_action('gravityview/edit_entry/after_update','GVupdate_notification',10,3);
-function GVupdate_notification($form,$entry_id,$orig_entry){            
+function GVupdate_notification($form,$entry_id,$orig_entry){               
     //get updated entry 
     $updatedEntry = GFAPI::get_entry(esc_attr($entry_id)); 
-    $updText = '<table width="100%" border="1"><thead><tr><td>Field ID</td><td>Original Value</td><td>Updated Value</td></tr></thead>';
-    $updText .= '<tbody>';    
+    $updates = array();
     
     foreach($form['fields'] as $field){        
         //send notification after entry is updated in maker admin
         $input_id = $field->id;
-        $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
-        $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+
+        //if field type is checkbox we need to compare each of the inputs for changes        
+        $inputs = $field->get_entry_inputs();
+        if ( is_array( $inputs ) ) {
+            foreach ( $inputs as $input ) {                
+                $input_id = $input['id'];
+                $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
+                $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+
+                if($origField!=$updatedField){
+                    //update field id
+                    $updates[] = array('lead_id'=>$entry_id,'field_id'=>$input_id,'field_before'=>$origField,'field_after'=>$updatedField);            
+                }
+            }
+        } else {
+            $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
+            $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+
+            if($origField!=$updatedField){
+                //update field id
+                $updates[] = array('lead_id'=>$entry_id,'field_id'=>$input_id,'field_before'=>$origField,'field_after'=>$updatedField);            
+            }
+        }
         
-        if($origField!=$updatedField){
-            //update field id
-            $updText .= '<tr><td>'.$input_id .'</td><td>'.$origField.'</td><td>'.$updatedField.'</td></tr>';
-        }
     }
-    $updText .= '</tbody>';
-    $updText .= '<tfoot><tr><td>Field ID</td><td>Original Value</td><td>Updated Value</td></tr></tfoot></table>';
     
-    //Handle notifications for acceptance
-    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_updated_exhibit', $form, $updatedEntry );
-    foreach ( $notifications_to_send as $notification ) {        
-        if($notification['isActive']){           
-            $notification['message'] .= '<br/><br/>'.$updText;
-            GFCommon::send_notification( $notification, $form, $updatedEntry );
+    //check if there are any updates to process
+    if(!empty($updates)){
+        $current_user = wp_get_current_user();
+        $user_id = $current_user->ID;//current user id
+        $inserts = '';
+
+        //update database with this information
+        foreach($updates as $update){
+            if($inserts !='') $inserts.= ',';
+            $inserts .= '('.$user_id.','.$update['lead_id'].','.$update['field_id'].',"'.$update['field_before'].'","'.$update['field_after'].'")';
         }
-    }    
-    
+
+        $sql = "insert into wp_rg_lead_detail_changes (user_id, lead_id, field_id, field_before, field_after) values " .$inserts;
+        global $wpdb;
+        $wpdb->get_results($sql);
+    }
 }

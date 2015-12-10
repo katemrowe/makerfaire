@@ -2193,10 +2193,10 @@ function GVupdate_notification($form,$entry_id,$orig_entry){
         //update database with this information
         foreach($updates as $update){
             if($inserts !='') $inserts.= ',';
-            $inserts .= '('.$user_id.','.$update['lead_id'].','.$update['field_id'].',"'.$update['field_before'].'","'.$update['field_after'].'")';
+            $inserts .= '('.$user_id.','.$update['lead_id'].','.$form['id'].','.$update['field_id'].',"'.$update['field_before'].'","'.$update['field_after'].'")';
         }
 
-        $sql = "insert into wp_rg_lead_detail_changes (user_id, lead_id, field_id, field_before, field_after) values " .$inserts;
+        $sql = "insert into wp_rg_lead_detail_changes (user_id, lead_id, form_id, field_id, field_before, field_after) values " .$inserts;
         global $wpdb;
         $wpdb->get_results($sql);
     }

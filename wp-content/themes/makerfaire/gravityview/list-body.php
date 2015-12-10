@@ -128,8 +128,9 @@ if( ! $total or !( is_user_logged_in() )) {
                                     );
                                     
                                     
-                                    $form = GFAPI::get_form( $entry['form_id'] );
+                                    $form = GFAPI::get_form( $entry['form_id'] );                                    
                                     $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].':&nbsp;</p>':'');                                    
+                                    
                                     //set status color
                                     if($entry['303']=='Accepted'){
                                         $statusBlock = 'greenStatus';
@@ -172,9 +173,10 @@ if( ! $total or !( is_user_logged_in() )) {
                                             unset( $title_args['markup'] );
                                     }
 				}
+                            if(!empty($entryData)){
                                 ?>
                             
-                            <div class="entryImg"><?php echo $entryData['22'];?></div>
+                            <div class="entryImg"><?php echo (isset($entry['22'])&& $entry['22']!=''?$entryData['22']:'<img src="/wp-content/uploads/2015/10/grey-makey.png" />');?></div>
                             
                             <div class="entryData">
                                 <div class="statusBox <?php echo $statusBlock;?>">
@@ -190,7 +192,7 @@ if( ! $total or !( is_user_logged_in() )) {
                             </div>
                             
                             <?php
-                                               
+                            }                   
 				$this->renderZone('subtitle', array(
 					'markup' => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
 					'wrapper_class' => 'gv-list-view-subtitle',

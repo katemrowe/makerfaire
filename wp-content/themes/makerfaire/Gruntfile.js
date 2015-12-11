@@ -7,13 +7,18 @@ module.exports = function( grunt ) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 
 		// Each Grunt plugins configurations will go here
+		// Compile the less to css
 		less: {
 			development: {
+		    options: {
+		      compress: true
+		    },
 				files: {
-					'css/style.css': 'less/style.less'
+					'css/style.css': 'less/style.less',
 				}
 			}
 		},
+		// Watch for changes on save and livereload
 		watch: {
 			css: {
 				files: ['less/**/*.less'],
@@ -29,8 +34,9 @@ module.exports = function( grunt ) {
 		}
 	});
 
-	// Simplify the repetivite work of listing each plugin in grunt.loadNomTasks(), just get the list from package.json and load them...
-	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+	// Load up tasks
+	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Register the tasks with Grunt
 	// To only watch for less changes and process without browser reload type in "grunt"

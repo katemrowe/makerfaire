@@ -176,7 +176,7 @@ if( ! $total or !( is_user_logged_in() )) {
                             if(!empty($entryData)){
                                 ?>
                             
-                            <div class="entryImg"><?php echo (isset($entry['22'])&& $entry['22']!=''?$entryData['22']:'<img src="/wp-content/uploads/2015/10/grey-makey.png" />');?></div>
+                            <div class="entryImg"><?php echo (isset($entry['22'])&& $entry['22']!=''?$entryData['22']:'<img src="/wp-content/uploads/2015/12/no-image.png" />');?></div>
                             
                             <div class="entryData">
                                 <div class="statusBox <?php echo $statusBlock;?>">

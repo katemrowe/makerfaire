@@ -56,6 +56,7 @@ include_once TEMPLATEPATH. '/classes/gf-helper.php';
 include_once TEMPLATEPATH. '/classes/makerfaire-helper.php';
 include_once TEMPLATEPATH. '/classes/gf-jdb-helper.php';
 include_once TEMPLATEPATH. '/classes/mf-sharing-cards.php';
+include_once TEMPLATEPATH. '/classes/mf-login.php';
 
 // Legacy Helper Functions replacing VIP Wordpress.com calls
 include_once TEMPLATEPATH. '/classes/legacy-helper.php';
@@ -125,9 +126,9 @@ function make_enqueue_jquery() {
 	
 	wp_enqueue_script( 'bootgrid',  get_stylesheet_directory_uri() . '/plugins/grid/jquery.bootgrid.min.js', array( 'jquery' ), null );
 	wp_enqueue_script( 'thickbox',null, array( 'jquery' ), null );
-         wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
+        wp_enqueue_script( 'faireSchedule',  get_stylesheet_directory_uri() . '/js/schedule.js', array( 'jquery' ), null ); 
 
-    $translation_array = array('templateUrl' => get_stylesheet_directory_uri());
+    $translation_array = array('templateUrl' => get_stylesheet_directory_uri(),'ajaxurl' => admin_url( 'admin-ajax.php' ));
     wp_localize_script('jquery-main', 'object_name', $translation_array);
 	
 }
@@ -1067,7 +1068,8 @@ function create_post_type() {
     	 */
     	static public function log_message( $slug, $message, $debug_level ) {
             //don't log debug messages
-            if($debug_level==KLogger::DEBUG){
+            //if($debug_level==KLogger::DEBUG){
+            if($debug_level==KLogger::ERROR){
                 error_log( "GF LOG: $slug, $message, $debug_level" );
             }
     	}
@@ -1383,7 +1385,7 @@ function gform_skip_page($form) {
 add_filter( 'gform_entry_field_value', 'entry_field_standout', 10, 4 );
 function entry_field_standout( $value, $field, $lead, $form ) {
     //topics/category fields
-    if ( $field['id'] != 64)
+    if (isset($field['id']) && $field['id'] != 64)
         return $value;
     
     $value = '<span class="entryStandout">'.$value.'</span>';
@@ -1738,7 +1740,7 @@ function entry_schedule_field_content($field_content, $field, $value, $lead_id, 
 function get_schedule($lead){    
     global $wpdb;
     $schedule = '';
-    $entry_id = $lead['id'];
+    $entry_id = (isset($lead['id'])?$lead['id']:'');
     
     if($entry_id!=''){
         //get scheduling information for this lead
@@ -1770,10 +1772,13 @@ function get_schedule($lead){
     return $schedule;
 }
 
-//add new Notification event of - send confirmation letter
+//add new Notification event of - send confirmation letter and maker cancelled exhibit
 add_filter( 'gform_notification_events', 'add_event' );
 function add_event( $notification_events ) {
-    $notification_events['confirmation_letter'] = __( 'Confirmation Letter', 'gravityforms' );
+    $notification_events['confirmation_letter']   = __( 'Confirmation Letter', 'gravityforms' );
+    $notification_events['maker_cancel_exhibit']  = __( 'Maker Cancelled Exhibit', 'gravityforms' );
+    $notification_events['maker_delete_exhibit']  = __( 'Maker Deleted Exhibit', 'gravityforms' );
+    $notification_events['maker_updated_exhibit'] = __( 'Maker Updated Entry', 'gravityforms' );
     return $notification_events;
 }
     
@@ -1880,3 +1885,319 @@ function subscribe_return_path_overlay() { ?>
     );
   </script>
 <?php }
+
+/* Changes to gravity view for maker admin tool */
+//use all forms
+add_filter('gravityview_before_get_entries','define_entry_search_criteria',10,4);
+add_filter('gravityview_pre_get_entries','define_entry_search_criteria',10,4);
+
+function define_entry_search_criteria($return,$criteria,$passed_criteria,$total){    
+ $entries = GFAPI::get_entries( 0, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+ return $entries;
+}
+
+//add faire field to available field list 
+/* Filter Parameters
+ * array -  $additional_fields	
+ *          Associative array of field arrays, with label_text, desc, field_id, 
+ *          label_type, input_type, field_options, and settings_html keys
+*/
+add_filter('gravityview_additional_fields','gv_add_faire',10,2);
+function gv_add_faire($additional_fields){
+  $additional_fields[] = array("label_text" => "Faire",        "desc"          => "Display Faire Name", 
+                               "field_id"   => "faire_name",   "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  $additional_fields[] = array("label_text" => "Maker Cancel Entry", "desc"          => "Maker Cancel Entry Link", 
+                               "field_id"   => "cancel_link",  "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  $additional_fields[] = array("label_text" => "Maker Copy Entry",   "desc"          => "Maker Copy Entry Link", 
+                               "field_id"   => "copy_entry",   "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  $additional_fields[] = array("label_text" => "Maker Delete Entry",   "desc"          => "Maker Delete Entry Link", 
+                               "field_id"   => "delete_entry",   "label_type"    => "field", 
+                               "input_type" => "text",         "field_options" => NULL, "settings_html"=> NULL);
+  return $additional_fields;
+}
+
+//set faire name and year
+/* Filter Parameters
+    string	$item_output	The HTML output for the item
+    array	$entry	Gravity Forms entry array
+    GravityView_Entry_List	$this	The current class instance */
+add_filter('gform_entry_field_value','gv_faire_name',10,4);
+function gv_faire_name($display_value, $field, $entry, $form){
+    if($field["type"]=='faire_name'){
+        global $wpdb;
+
+        $form_id = $entry['form_id'];
+        $sql = "select faire_name from wp_mf_faire where FIND_IN_SET ($form_id,wp_mf_faire.form_ids)> 0";    
+        $faire = $wpdb->get_results($sql);
+
+        $faire_name = (isset($faire[0]->faire_name) ? $faire[0]->faire_name:$sql);
+        $display_value = $faire_name;
+    }elseif($field["type"]=='cancel_link'){    
+        $display_value = '<a href="#cancelEntry" data-toggle="modal" data-projName="'.$entry['151'].'" data-entry-id="'.$entry['id'].'">Cancel</a>';
+    }elseif($field["type"]=='copy_entry'){    
+        $display_value = '<a href="#copy_entry" data-toggle="modal" data-entry-id="'.$entry['id'].'">Copy</a>';
+    }elseif($field["type"]=='delete_entry'){    
+        $display_value = '<a href="#deleteEntry" data-toggle="modal" data-projName="'.$entry['151'].'" data-entry-id="'.$entry['id'].'">Delete</a>';
+    }
+    
+    return $display_value;
+}
+
+/**
+ * Change the update entry success message, including the link
+ */
+function gv_my_update_message( $message, $view_id, $entry, $back_link ) {
+    $link = str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
+    return 'Entry Updated. <a href="'.esc_url($link).'">Return to your entry list</a>';
+}
+add_filter( 'gravityview/edit_entry/success', 'gv_my_update_message', 10, 4 );
+
+/**
+ * Customise the cancel(back) button link
+ */
+function gv_my_edit_cancel_link( $back_link, $form, $entry, $view_id ) {
+    return str_replace( 'entry/'.$entry['id'].'/', '', $back_link );
+}
+add_filter( 'gravityview/edit_entry/cancel_link', 'gv_my_edit_cancel_link', 10, 4 );
+
+//ajax to cancel the entry
+function makerCancelEntry(){
+  $entryID = (isset($_POST['cancel_entry_id']) ? $_POST['cancel_entry_id']:0);
+  $reason  = (isset($_POST['cancel_reason'])   ? $_POST['cancel_reason']  :'');
+  if($entryID!=0){
+    //get entry data and form data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+    $form = GFAPI::get_form( $lead['form_id']);
+    
+    //Update Status to Cancelled 
+    mf_update_entry_field($entryID,'303','Cancelled');
+    
+    //Make a note of the cancellation
+    $cancelText = "The Exhibit has been cancelled by the maker.  Reason given is: ".stripslashes($reason);            
+    mf_add_note($entryID,$cancelText);
+
+    //Handle notifications for acceptance
+    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_cancel_exhibit', $form, $lead );
+    foreach ( $notifications_to_send as $notification ) {
+            if($notification['isActive']){                                            
+                GFCommon::send_notification( $notification, $form, $lead );
+            }
+
+    }
+    
+    //GFJDBHELPER::gravityforms_sync_status_jdb($entry_info_entry_id,$acceptance_status_change);
+
+    echo $lead['151'].', Exhibit ID '.$entryID.' has been cancelled';
+    
+  }else{
+    echo 'Error in cancelling this exhibit.';
+  }
+  
+  exit;  
+}
+add_action( 'wp_ajax_maker-cancel-entry', 'makerCancelEntry' );
+
+//ajax to delete entry from maker admin and to send notification
+function makerDeleteEntry(){
+  $entryID = (isset($_POST['delete_entry_id']) ? $_POST['delete_entry_id']:0);
+  if($entryID!=0){
+    //get entry data and form data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+    $form = GFAPI::get_form( $lead['form_id']);
+    
+    $trashed = GFAPI::update_entry_property( $entryID, 'status', 'trash' );
+    new GravityView_Cache;
+
+    if( ! $trashed ) {
+        echo new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
+    } 
+         
+    //Make a note of the delete      
+    mf_add_note($entryID,"The Exhibit has been deleted by the maker.");
+
+    //Handle notifications for acceptance
+    $notifications_to_send = GFCommon::get_notifications_to_send( 'maker_delete_exhibit', $form, $lead );
+    foreach ( $notifications_to_send as $notification ) {
+        if($notification['isActive']){                                            
+            GFCommon::send_notification( $notification, $form, $lead );
+        }
+    }    
+    echo $lead['151'].', Exhibit ID '.$entryID.' has been deleted';    
+  }else{
+    echo 'Error in deleting this entry.';
+  }  
+  exit;  
+}
+add_action( 'wp_ajax_maker-delete-entry', 'makerDeleteEntry' );
+
+//disable gravity view cache
+add_filter('gravityview_use_cache', '__return_false');
+
+/* 
+ * ajax to copy an entry into a new form
+ */
+function makeAdminCopyEntry(){
+  $entryID    = (isset($_POST['copy_entry_id']) ? $_POST['copy_entry_id']:0);
+  $copy2Form  = (isset($_POST['copy2Form'])   ? $_POST['copy2Form']  :'');
+  $view_id    = (isset($_POST['view_id'])?$_POST['view_id']:0);
+  
+  if($entryID!=0 and $copy2Form != '' && $view_id!=0){    
+    //get entry data
+    $lead = GFAPI::get_entry(esc_attr($entryID)); 
+
+    //get new form field ID's
+    $form = GFAPI::get_form( $copy2Form);    
+
+    /*The following fields will not be copied from one entry to another
+     * Page 4 review fields:
+     * 295 - Are you 18 years or older
+     * 114 - Full Name
+     * 297 - I am the parent and/or legal guardian of 
+     * 115 - Date
+     * 117 - Release and consent
+     * all admin only fields
+     */
+    $doNotCopy = array(295,114,297,115,117);
+    
+    /*loop thru fields in existing entry and if they are in the new form copy them */
+    $newEntry = array();
+    $newEntry['form_id'] = $copy2Form;
+    foreach($form['fields'] as $field){
+        //skip doNotCopy fields
+        if(!in_array($field['id'], $doNotCopy)){
+            //do not copy admin only fields   
+            $adminOnly = (isset($field['adminOnly']) ? $field['adminOnly'] : FALSE);
+            if(!$adminOnly){
+                if(is_array($field['inputs'])){
+                    foreach($field['inputs'] as $inputs){
+                        $fieldID = $inputs['id']; 
+                        if(isset($lead[$fieldID])){
+                            $newEntry[$fieldID] = $lead[$fieldID];
+                        }   
+                    }
+                }
+                if(isset($lead[$field['id']])){
+                    $newEntry[$field['id']] = $lead[$field['id']];
+                }    
+            }
+        }
+    }
+    $newEntry['303'] = 'In Progress'; //in-progress
+    $newEntry_id = GFAPI::add_entry( $newEntry );
+    $entry = GFAPI::get_entry($newEntry_id);    
+    $href = GravityView_Edit_Entry::get_edit_link( $entry, $view_id );    
+    
+    echo 'New Entry created:'.$newEntry_id.'. Please click <a href="entry/'.$newEntry_id.'/'.$href.'">here</a> to finish the submission process';    
+  }else{
+    echo 'Error in creating a new entry. Proper data was not received.';
+  }
+  
+  exit;  
+}
+add_action( 'wp_ajax_make-admin-copy-entry', 'makeAdminCopyEntry' );
+
+add_filter( 'gform_form_settings', 'my_custom_form_setting', 10, 2 );
+function my_custom_form_setting( $settings, $form ) {
+    //var_dump($settings['Form Basics']);
+    $form_type = rgar($form, 'form_type');
+    $settings['Form Basics']['form_type'] = '
+        <tr>
+            <th><label for="my_custom_setting">Project Type</label></th>
+            <td><select name="form_type">
+                <option value="Exhibit" '.($form_type=='Exhibit'?'selected':'').'>Exhibit</option>
+                <option value="Presentation" '.($form_type=='Presentation'?'selected':'').'>Presentation</option>
+                <option value="Performance" '.($form_type=='Performance'?'selected':'').'>Performance</option>                
+                <option value="Startup Sponsor" '.($form_type=='Startup Sponsor'?'selected':'').'>Startup Sponsor</option>
+                <option value="Sponsor" '.($form_type=='Sponsor'?'selected':'').'>Sponsor</option>                                                        
+                <option value="Other" '.($form_type=='Other' || $form_type==''?'selected':'').'>Other</option>                                                        
+            </select></td>
+        </tr>';
+
+    return $settings;
+}
+
+// save your custom form setting
+add_filter( 'gform_pre_form_settings_save', 'save_form_type_form_setting' );
+function save_form_type_form_setting($form) {
+    $form['form_type'] = rgpost( 'form_type' );
+    return $form;
+}   
+
+add_filter('gravityview/delete-entry/mode','gView_trash_entry');
+function gView_trash_entry(){
+    return 'trash';
+}
+
+
+//redirect makers to the edit entry page  **need to replace site url with actual view path ** 
+function mf_login_redirect( $redirect_to, $request, $user  ) {
+  return ( is_array( $user->roles ) && in_array( 'maker', $user->roles ) ? site_url():admin_url());
+}
+add_filter( 'login_redirect', 'mf_login_redirect', 10, 3 );
+
+add_action('after_setup_theme', 'remove_admin_bar');
+function remove_admin_bar() {
+    global $current_user;
+
+    $user = wp_get_current_user();
+    
+    if(is_array( $user->roles ) && in_array( 'maker', $user->roles )){
+      show_admin_bar(false);
+    }
+}
+
+add_action('gravityview/edit_entry/after_update','GVupdate_notification',10,3);
+function GVupdate_notification($form,$entry_id,$orig_entry){               
+    //get updated entry 
+    $updatedEntry = GFAPI::get_entry(esc_attr($entry_id)); 
+    $updates = array();
+    
+    foreach($form['fields'] as $field){        
+        //send notification after entry is updated in maker admin
+        $input_id = $field->id;
+
+        //if field type is checkbox we need to compare each of the inputs for changes        
+        $inputs = $field->get_entry_inputs();
+        if ( is_array( $inputs ) ) {
+            foreach ( $inputs as $input ) {                
+                $input_id = $input['id'];
+                $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
+                $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+
+                if($origField!=$updatedField){
+                    //update field id
+                    $updates[] = array('lead_id'=>$entry_id,'field_id'=>$input_id,'field_before'=>$origField,'field_after'=>$updatedField);            
+                }
+            }
+        } else {
+            $origField    = (isset($orig_entry[$input_id])   ?  $orig_entry[$input_id ] : '');
+            $updatedField = (isset($updatedEntry[$input_id]) ?  $updatedEntry[$input_id ] : ''); 
+
+            if($origField!=$updatedField){
+                //update field id
+                $updates[] = array('lead_id'=>$entry_id,'field_id'=>$input_id,'field_before'=>$origField,'field_after'=>$updatedField);            
+            }
+        }
+        
+    }
+    
+    //check if there are any updates to process
+    if(!empty($updates)){
+        $current_user = wp_get_current_user();
+        $user_id = $current_user->ID;//current user id
+        $inserts = '';
+
+        //update database with this information
+        foreach($updates as $update){
+            if($inserts !='') $inserts.= ',';
+            $inserts .= '('.$user_id.','.$update['lead_id'].','.$form['id'].','.$update['field_id'].',"'.$update['field_before'].'","'.$update['field_after'].'")';
+        }
+
+        $sql = "insert into wp_rg_lead_detail_changes (user_id, lead_id, form_id, field_id, field_before, field_after) values " .$inserts;
+        global $wpdb;
+        $wpdb->get_results($sql);
+    }
+}

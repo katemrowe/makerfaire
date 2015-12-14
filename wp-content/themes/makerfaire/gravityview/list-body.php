@@ -152,8 +152,11 @@ if( ! $total or !( is_user_logged_in() )) {
                                                     }
                                                     break;
                                                 case 'edit_link':                                                    
-                                                    $title_args['markup'] = '<span class="edit"><i class="fa fa-pencil-square-o"></i>{{value}}</span>';
-                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    //do not display if entry is cancelled
+                                                    if($entry['303']!='Cancelled'){
+                                                        $title_args['markup'] = '<span class="edit"><i class="fa fa-pencil-square-o"></i>{{value}}</span>';
+                                                        $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    }
                                                     break;
                                                 case 'cancel_link':
                                                     //do not display if entry is already cancelled

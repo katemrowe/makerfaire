@@ -36,6 +36,8 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
   $scope.currentPage = 1;
   $scope.pageSize = 50;  
   $scope.faires = [];    
+  $scope.blueList = [];
+  $scope.redList = [];
   
   $scope.years  = yearJson;
   $scope.loadData = function (faireYear) {    
@@ -45,18 +47,37 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
     };
     
     $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
-      $scope.ribbons      = data;       
-      angular.forEach(data, function(row, key) {        
-        angular.forEach(row.faireData, function(value, faire) {
-        if($scope.faires.indexOf(value.faire) == -1)
-        {
-            $scope.faires.push(value.faire);
-        }
-        
-        }) 
-       $scope.faires.sort();             
-     })
-     
+        $scope.ribbons      = data;       
+        angular.forEach(data, function(row, key) {
+            /* create faires data */
+          angular.forEach(row.faireData, function(value, faire) {
+          if($scope.faires.indexOf(value.faire) == -1)
+          {
+              $scope.faires.push(value.faire);
+          }
+
+          }) 
+         $scope.faires.sort();    
+
+         //create blue ribbon list data
+         if(row.blueCount>0){
+             $scope.blueList.push(row);
+         }       
+         //create red ribbon list data
+         if(row.redCount>0){
+             $scope.redList.push(row);
+         }
+       })
+       
+       //sort blue list by # of blue ribbons in reverse order
+       $scope.blueList.sort(function(a, b) {
+            return parseFloat(b.blueCount) - parseFloat(a.blueCount);
+        });
+       
+        //sort red list by # of red ribbons in reverse order
+        $scope.redList.sort(function(a, b) {
+            return parseFloat(b.redCount) - parseFloat(a.redCount);
+        });
     }).
     error(function(data, status, headers, config) {
       // log error
@@ -74,4 +95,9 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
    
 });
 
-
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}

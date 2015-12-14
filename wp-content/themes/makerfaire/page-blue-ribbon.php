@@ -91,11 +91,13 @@ foreach($yearSql as $year){
                                 <span ng-repeat="faire in ribbon.faireData" class="{{faire.ribbonType}}data"> {{faire.faire}} {{faire.year}}</span>                             
                             </div>
                          </div>
-                         
+                        <div class="text-center">
+                            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="<?php echo get_stylesheet_directory_uri();?>/partials/dirPagination.tpl.html"></dir-pagination-controls>
+                        </div> 
                     </div> 
                     <div  ng-show="layout == 'list'" >
                         
-                        <div ng-repeat="blueCount in ribbons|groupBy:'blueCount'">
+                        <div ng-repeat="blueCount in blueList|groupBy:'blueCount'">
                             <b ng-if="blueCount>0">{{blueCount}} Blue Ribbons</b>
                             <ul ng-if="blueCount>0">
                                 <li ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}">
@@ -103,7 +105,7 @@ foreach($yearSql as $year){
                                 </li>                                
                             </ul>
                         </div>
-                        <div ng-repeat="redCount in ribbons | groupBy:'redCount' | orderBy:'-redCount'">
+                        <div ng-repeat="redCount in redList | groupBy:'redCount'">
                             <b ng-if="redCount>0">{{redCount}} Red Ribbons</b>
                             <ul  ng-if="redCount>0">
                                 <li ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}">
@@ -114,12 +116,7 @@ foreach($yearSql as $year){
                      </div> 
                     
                     
-                 </div>
-                 
-                    <div class="text-center">
-                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="<?php echo get_stylesheet_directory_uri();?>/partials/dirPagination.tpl.html"></dir-pagination-controls>
-                    </div>
-       
+                 </div>                                            
                 </div>
                 <div class="container-fluid">
   

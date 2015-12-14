@@ -168,7 +168,11 @@ if( ! $total or !( is_user_logged_in() )) {
                                                 case 'copy_entry':                                                    
                                                     $title_args['markup'] = '<span class="edit"><i class="fa fa-files-o"></i>{{value}}</span>';
                                                     $links .=  gravityview_field_output( $title_args );                                                                                                        
-                                                    break;   
+                                                    break;
+                                                case 'entry_link':
+                                                    $title_args['markup'] = '<i class="fa fa-eye"></i><span class="edit">{{value}}</span>';
+                                                    $links .=  gravityview_field_output( $title_args );                                                                                                        
+                                                    break;
                                                 default:                                                    
                                                     $title_args['markup'] = '{{label}} {{value}}';                                                    
                                             }
@@ -176,6 +180,7 @@ if( ! $total or !( is_user_logged_in() )) {
                                             unset( $title_args['markup'] );
                                     }
 				}
+                             
                             if(!empty($entryData)){
                                 ?>
                             

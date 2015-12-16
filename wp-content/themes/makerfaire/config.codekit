@@ -2885,6 +2885,17 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/partials\/data\/2015ribbonData.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/partials\/data\/2015ribbonData.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/partials\/data\/2015ribbonData-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/plugins\/admin-pages\/current-faire\/css\/dashboard.css": {
 		"fileType": 16,
 		"ignore": 0,

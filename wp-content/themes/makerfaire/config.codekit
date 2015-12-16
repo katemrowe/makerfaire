@@ -1595,7 +1595,7 @@
 		"fileType": 32768,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"initialSize": 1.57402e+06,
+		"initialSize": 428987,
 		"inputAbbreviatedPath": "\/images\/Make-store-hero-desktop.png",
 		"outputAbbreviatedPath": "\/images\/Make-store-hero-desktop.png",
 		"outputPathIsOutsideProject": 0,
@@ -2039,39 +2039,6 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
-		},
-	"\/js\/angular\/angular-filter.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/js\/angular\/angular-filter.js",
-		"outputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/js\/angular\/min\/angular-filter-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/js\/angular\/min\/angular-filter-min.js",
-		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/angular-filter-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/js\/angular\/min\/scripts-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/js\/angular\/min\/scripts-min.js",
-		"outputAbbreviatedPath": "\/js\/angular\/min\/min\/scripts-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
 		},
 	"\/js\/bootbox.min.js": {
 		"fileType": 64,

@@ -2105,7 +2105,7 @@ function my_custom_form_setting( $settings, $form ) {
     $form_type = rgar($form, 'form_type');
     $settings['Form Basics']['form_type'] = '
         <tr>
-            <th><label for="my_custom_setting">Project Type</label></th>
+            <th><label for="my_custom_setting">Form Type</label></th>
             <td><select name="form_type">
                 <option value="Exhibit" '.($form_type=='Exhibit'?'selected':'').'>Exhibit</option>
                 <option value="Presentation" '.($form_type=='Presentation'?'selected':'').'>Presentation</option>

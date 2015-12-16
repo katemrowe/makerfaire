@@ -39,8 +39,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
   $scope.currentPage = 1;
   $scope.pageSize = 50;  
   $scope.faires = [];    
-  $scope.blueList = [];
-  $scope.redList = [];
+  
   $scope.random = function() {
         return 0.5 - Math.random();
     }
@@ -52,8 +51,13 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
     };
     
     $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
+        
+        $scope.blueList = [];
+        $scope.redList = [];
         $scope.ribbons      = data; 
+        //for random order
         shuffle($scope.ribbons);
+        
         angular.forEach(data, function(row, key) {
             /* create faires data */
             angular.forEach(row.faireData, function(value, faire) {

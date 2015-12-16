@@ -1924,10 +1924,11 @@ add_action( 'wp_ajax_getRibbonData', 'retrieveRibbonData' );
 
 //ajax for retrieving blue ribbon data
 function retrieveRibbonData() {
-    global $wpdb;
+   global $wpdb;
    require_once( TEMPLATEPATH. '/partials/ribbonJSON.php' );
     // IMPORTANT: don't forget to "exit"
     exit;
+}
 /* Changes to gravity view for maker admin tool */
 //use all forms
 add_filter('gravityview_before_get_entries','define_entry_search_criteria',10,4);

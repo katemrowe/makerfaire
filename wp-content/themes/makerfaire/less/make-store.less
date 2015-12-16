@@ -105,87 +105,54 @@ section.store-centered-stuff {
   }
 }
 
-// Global Section Styles
+//Press Coverage
+section.store-press {
+  margin-bottom: 60px;
+  blockquote {
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+  }
+  blockquote i {
+    color: #ccc;
+    font-size: 2em;
+    margin-right: 0.25em;
+  }
+  blockquote p {
+    display: inline;
+  }
+
+}
+
+// Images
 section.store-pictures {
-    padding: 50px 0;
-    h2.section-heading {
-    font-size: 40px;
+  padding: 15px 0;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  .col-xs-6 {
+    padding-bottom: 30px;
+  }
+  .fancybox_store_page {
+    overflow: hidden;
+    height: 230px;
+    text-align: center;
+    display: block;
+    > span {
+      display: block;
+      width: 100%;
+      margin-top: -25%;
+      img {
+        display: inline-block;
+      }
+    }
+  }
+  .make-store-wide .fancybox_store_page > span {
     margin-top: 0;
-    margin-bottom: 15px;
-    }
-    h3.section-subheading {
-    font-size: 16px;
-    text-transform: none;
-    font-style: italic;
-    font-weight: 400;
-    margin-bottom: 75px;
-    }
+  }
 }
 
-// Portfolio Section
-
-section.store-pictures {
-  display: none;
-    .portfolio-item {
-        margin: 0 0 15px;
-        right: 0;
-        .portfolio-link {
-            display: block;
-            position: relative;
-            max-width: 400px;
-            margin: 0 auto;
-            .portfolio-hover {
-                background: fade(@brand-primary, 90%);
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                opacity: 0;
-                transition: all ease 0.5s;
-                -webkit-transition: all ease 0.5s;
-                -moz-transition: all ease 0.5s;
-                &:hover {
-                    opacity: 1;
-                }
-                .portfolio-hover-content {
-                    position: absolute;
-                    width: 100%;
-                    height: 20px;
-                    font-size: 20px;
-                    text-align: center;
-                    top: 50%;
-                    margin-top: -12px;
-                    color: white;
-                    i {
-                        margin-top: -12px;
-                    }
-                    h3,
-                    h4 {
-                        margin: 0;
-                    }
-                }                
-            }            
-        }
-        .portfolio-caption {
-          max-width: 400px;
-          margin: 0 auto;
-          background-color: white;
-          text-align: center;
-          padding: 25px;
-          h4 {
-            text-transform: none;
-            margin: 0;
-          }
-          p {
-            font-style: italic;
-            font-size: 16px;
-            margin: 0;
-          }
-        }
-    }
-    * {
-        z-index: 2;
-    }
-}
 
 .store-red-footer {
   color: red;
@@ -207,6 +174,13 @@ section.store-pictures {
     -o-background-size: cover;
   }
 }
+@media screen and (min-width: 768px) and (max-width: 991px) { 
+  section.store-pictures .fancybox_store_page {
+    overflow: hidden;
+    height: 165px;
+  }
+}
+
 @media(min-width:768px) {
     #portfolio {
         .portfolio-item {
@@ -215,4 +189,20 @@ section.store-pictures {
     }
 }
 @media(max-width:767px) {
+  section.store-pictures .fancybox_store_page {
+    height: 200px;
+  }
+  section.store-press {
+    margin-bottom: 30px;
+  }
+}
+@media(max-width:600px) {
+  section.store-pictures .fancybox_store_page {
+    height: 125px;
+  }
+}
+@media(max-width:400px) {
+  section.store-pictures .fancybox_store_page {
+    height: 95px;
+  }
 }

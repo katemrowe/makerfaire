@@ -156,10 +156,13 @@ class GravityView_Edit_Entry_Render {
 
         $entries = $gravityview_view->getEntries();
         $this->entry = $entries[0];
+                
+        $this->form_id = $this->entry['form_id'];
+        $this->form = GFAPI::get_form($this->form_id);
 
+        //$this->form = $gravityview_view->getForm();
+        //$this->form_id = $gravityview_view->getFormId();
 
-        $this->form = $gravityview_view->getForm();
-        $this->form_id = $gravityview_view->getFormId();
         $this->view_id = $gravityview_view->getViewId();
 
         self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
@@ -257,9 +260,10 @@ class GravityView_Edit_Entry_Render {
              * @hack to avoid the capability validation of the method save_lead for GF 1.9+
              */
             unset( $_GET['page'] );
-
+            $orig_entry = $this->entry;
+            
             GFFormsModel::save_lead( $form, $this->entry );
-
+            
             // If there's a post associated with the entry, process post fields
             if( !empty( $this->entry['post_id'] ) ) {
                 $this->maybe_update_post_fields( $form );
@@ -273,7 +277,8 @@ class GravityView_Edit_Entry_Render {
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
              */
-            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+            
+            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $orig_entry );
         }
 
     } // process_save
@@ -323,7 +328,7 @@ class GravityView_Edit_Entry_Render {
      */
     private function form_prepare_for_save() {
         $form = $this->form;
-
+        
         foreach( $form['fields'] as &$field ) {
 
             $field->adminOnly = false;
@@ -476,8 +481,10 @@ class GravityView_Edit_Entry_Render {
      *
      * @return void
      */
-    function after_update() {
-
+    function after_update() {                
+        /* update has occurred, reset the validation form as this has admin only fields set to false */
+        unset($this->form_after_validation);
+        
         do_action( 'gform_after_update_entry', $this->form, $this->entry['id'] );
         do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'] );
 
@@ -559,7 +566,7 @@ class GravityView_Edit_Entry_Render {
 
                     echo GVCommon::generate_notice( $message );
                 }
-
+                
             }
 
             ?>
@@ -627,8 +634,9 @@ class GravityView_Edit_Entry_Render {
         // TODO: Check Updated and Error messages
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
-
-	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
+        $html = str_replace('{all_fields:nohidden,noadmin}','',$html);
+        
+	remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );
         remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
@@ -660,10 +668,10 @@ class GravityView_Edit_Entry_Render {
      * @return array Modified form array
      */
     public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
-
+        
         // In case we have validated the form, use it to inject the validation results into the form render
         if( isset( $this->form_after_validation ) ) {
-            $form = $this->form_after_validation;
+            $form = $this->form_after_validation;            
         } else {
             $form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
         }
@@ -842,13 +850,13 @@ class GravityView_Edit_Entry_Render {
 
         // Fix PHP warning regarding undefined index.
         foreach ( $form['fields'] as &$field) {
-
+            
             // This is because we're doing admin form pretending to be front-end, so Gravity Forms
             // expects certain field array items to be set.
             foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
-	            $field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
-            }
-
+                $field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;                
+            } 
+            
             // unset emailConfirmEnabled for email type fields
            /* if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
                 $field['emailConfirmEnabled'] = '';
@@ -951,7 +959,7 @@ class GravityView_Edit_Entry_Render {
          * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
          * You can enter whatever you want!
          * We try validating, and customize the results using `self::custom_validation()`
-         */
+         */        
         add_filter( 'gform_validation_'. $this->form_id, array( $this, 'custom_validation' ), 10, 4);
 
         // Needed by the validate funtion
@@ -983,15 +991,15 @@ class GravityView_Edit_Entry_Render {
      * @return [type]                     [description]
      */
     function custom_validation( $validation_results ) {
-
+        
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results: ', $validation_results );
-
+        
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
         $gv_valid = true;
 
         foreach ( $validation_results['form']['fields'] as $key => &$field ) {
-
+         
             $value = RGFormsModel::get_field_value( $field );
             $field_type = RGFormsModel::get_input_type( $field );
 
@@ -1102,7 +1110,7 @@ class GravityView_Edit_Entry_Render {
 
         // We'll need this result when rendering the form ( on GFFormDisplay::get_form )
         $this->form_after_validation = $validation_results['form'];
-
+        
         return $validation_results;
     }
 
@@ -1151,8 +1159,8 @@ class GravityView_Edit_Entry_Render {
 
 	    // If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
 	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
-
-        return $fields;
+        
+            return $fields;
     }
 
 	/**
@@ -1291,23 +1299,23 @@ class GravityView_Edit_Entry_Render {
      */
     function filter_admin_only_fields( $fields = array(), $edit_fields = null, $form = array(), $view_id = 0 ) {
 
-	    /**
+        /**
          * @filter `gravityview/edit_entry/use_gf_admin_only_setting` When Edit tab isn't configured, should the Gravity Forms "Admin Only" field settings be used to control field display to non-admins? Default: true
-	     * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
-	     * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
-	     * @since 1.9.1
-	     * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
-	     * @param array $form GF Form array
-	     * @param int $view_id View ID
-	     */
-	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
+         * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
+         * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
+         * @since 1.9.1
+         * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
+         * @param array $form GF Form array
+         * @param int $view_id View ID
+         */
+        $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-	    if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
+        if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
             return $fields;
         }
 
-	    foreach( $fields as &$field ) {
-		    $field->adminOnly = false;
+	foreach( $fields as &$field ) {
+            $field->adminOnly = false;
         }
 
         return $fields;

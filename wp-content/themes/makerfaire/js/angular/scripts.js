@@ -51,13 +51,14 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
     };
     
     $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
-        
-        $scope.blueList = [];
-        $scope.redList = [];
         $scope.ribbons      = data; 
         //for random order
         shuffle($scope.ribbons);
         
+        //clear out old data
+        $scope.blueList = [];
+        $scope.redList = [];
+                
         angular.forEach(data, function(row, key) {
             /* create faires data */
             angular.forEach(row.faireData, function(value, faire) {

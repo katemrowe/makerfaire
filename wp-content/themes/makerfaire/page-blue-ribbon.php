@@ -102,7 +102,7 @@ foreach($yearSql as $year){
                                 <div ng-if="blueCount>0">{{blueCount}} Blue Ribbons</div>
                             </div>                            
 
-                            <div ng-if="blueCount>0" class="col-xs-12 col-sm-6 col-md-6"ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}">
+                            <div ng-if="blueCount>0" class="col-xs-12 col-sm-6 col-md-6"ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}|orderBy:'project_name'">
                                 <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
                             </div> 
                             <div class="clear"></div>
@@ -114,7 +114,7 @@ foreach($yearSql as $year){
                                 <div ng-if="redCount>0">{{redCount}} Red Ribbons</div>
                             </div>  
                             
-                                <div ng-if="redCount>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}">
+                                <div ng-if="redCount>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}|orderBy:'project_name'">
                                     <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
                                 </div>                                
                             </div>

@@ -14,8 +14,8 @@ var firstBy=function(){function n(n,t){if("function"!=typeof n){var r=n;n=functi
 });
 
 var uniqueItems = function (data, key) {
-    console.log('data-'+data);
-    console.log('key-'+key);
+   // console.log('data-'+data);
+    //console.log('key-'+key);
     var result = [];
     for (var i = 0; i < data.length; i++) {
         var value = data[i][key];
@@ -77,9 +77,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
        //sort blue list by # of blue ribbons in reverse order, then by alphabetical
        var s = firstBy(function (v1, v2) { return parseFloat(v2.blueCount) - parseFloat(v1.blueCount); })
                  .thenBy(function (v1, v2) { return v1.project_name < v2.project_name ? -1 : (v1.project_name > v2.project_name ? 1 : 0); });
-       $scope.blueList.sort(s);
-       console.log($scope.blueList);
-       
+       $scope.blueList.sort(s);              
        
         //sort red list by # of red ribbons in reverse order
         $scope.redList.sort(function(a, b) {
@@ -97,7 +95,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
   $scope.loadData(faireYear);
 
   $scope.pageChangeHandler = function(num) {
-      console.log('meals page changed to ' + num);
+      /*console.log('meals page changed to ' + num);*/
   };
    
 });

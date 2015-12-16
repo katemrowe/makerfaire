@@ -281,7 +281,7 @@ function build_ribbonJSON(){
     global $wpdb;
     require_once( TEMPLATEPATH. '/partials/ribbonJSON.php' );  
   
-    $yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 order by year desc");
+    $yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 and post_id > 0 order by year desc");
 
     foreach($yearSql as $year){
         $json = createJSON($year->year);

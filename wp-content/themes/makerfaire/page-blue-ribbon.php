@@ -96,34 +96,33 @@ foreach($yearSql as $year){
                         </div> 
                     </div> 
                     <div  ng-show="layout == 'list'" class="ribbonList">                        
-                        <div ng-repeat="blueCount in blueList|groupBy:'blueCount'">
+                        <div ng-repeat="(key,value) in blueList">
                             <div class="ribbonTitle">
-                                <div class="blueRibbon" ng-if="blueCount > 0" ></div>
-                                <div ng-if="blueCount>0">{{blueCount}} Blue Ribbons</div>
+                                <div class="blueRibbon" ng-if="key > 0" ></div>
+                                <div ng-if="key>0">{{key}} Blue Ribbons</div>
                             </div>                            
 
-                            <div ng-if="blueCount>0" class="col-xs-12 col-sm-6 col-md-6"ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}|orderBy:'project_name'">
+                            <div ng-if="key>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in value">
                                 <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
                             </div> 
                             <div class="clear"></div>
                         </div>
                         <div class="clear"></div>
-                        <div ng-repeat="redCount in redList | groupBy:'redCount'">
+                        <div ng-repeat="(key,value) in redList">
                             <div class="ribbonTitle">
-                                <div class="redRibbon" ng-if="redCount > 0" ></div>
-                                <div ng-if="redCount>0">{{redCount}} Red Ribbons</div>
-                            </div>  
-                            
-                                <div ng-if="redCount>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}|orderBy:'project_name'">
-                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
-                                </div>                                
-                            </div>
-                        </div>                     
-                     </div> 
-                    
-                    
-                 </div>                                            
-                </div>
+                                <div class="redRibbon" ng-if="key > 0" ></div>
+                                <div ng-if="key>0">{{key}} Red Ribbons</div>
+                            </div>                            
+
+                            <div ng-if="key>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in value">
+                                <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
+                            </div> 
+                            <div class="clear"></div>
+                        </div>
+                    </div>                     
+                 </div>                                         
+              </div>                                            
+            </div>
                 <div class="container-fluid">
   
                 </div><!--Content-->

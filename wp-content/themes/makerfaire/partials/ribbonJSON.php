@@ -7,14 +7,15 @@
  */
 
 /*
- * This chunk of code is for testing only
+ * This chunk of code is for testing only 
 define( 'BLOCK_LOAD', true );
 
 require_once( '../../../../wp-config.php' );
 require_once( '../../../../wp-includes/wp-db.php' );
 
 $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-createJson('2014');*/
+createJson('2014');
+*/
 
 function  createJson($year=''){
     global $wpdb;
@@ -22,6 +23,8 @@ function  createJson($year=''){
     $ribbonData=array();
     $data = array();
     $json = array();
+    $blueList = array();
+    $redList = array();
     
     $filter = " and year= ".($year!=''? $year:date("Y"));
     $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo, post_id, maker_name "
@@ -103,28 +106,49 @@ function  createJson($year=''){
         $ribbonData[$entry_id]['maker_name'] = $maker_name;
 
     }
-    
-    
+        
     foreach($ribbonData as $entry_id=>$data){  
         $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);
         $redCount  = (isset($data['ribbon'][1]['count'])?$data['ribbon'][1]['count']:0);
-        $json[]= array('entryID'=> $entry_id,
+        $data = array('entryID'=> $entry_id,
                 "blueCount"     => $blueCount,
                 "redCount"      => $redCount,
-                "project_name"  => $data['project_name'],
+                "project_name"  => html_entity_decode($data['project_name']),
                 "project_photo" => $data['project_photo'],
                 "maker_name"    => $data['maker_name'],
                 "faireData"     => array_map("unserialize", array_unique(array_map("serialize", $data['fairedata'])))
             );
+        $json[] = $data;
+        if($blueCount > 0)
+            $blueList[$blueCount][] = $data;
+        if($redCount > 0)
+            $redList[$redCount][] = $data;
     }
+        
+    //sort blue list and red list, within each group, alphabetically
+    foreach($blueList as $key=>$value){
+        if(is_array($value))      usort($value, 'sortByOrder');
+        $blueList[$key]=$value;
+    }
+     foreach($redList as $key=>$value){
+            if(is_array($value))  usort($value, 'sortByOrder');
+        $redList[$key]=$value;
+    }
+    //sort blue and red list in reverse order by # of ribbons
+    krsort($blueList);
+    krsort($redList);
     
-    usort($json, 'sortByOrder');
-    return json_encode($json);
+    $return['json']     = $json;
+    $return['blueList'] = $blueList;
+    $return['redList']  = $redList;
+    //var_dump(json_encode($return))  ;  
+    return json_encode($return);
+    
 }
 
     //sort ribbon data[] by blue ribbon count
     function sortByOrder($a, $b) {
-        return $b['blueCount']- $a['blueCount'];
+        return $b['project_name']- $a['project_name'];
     }
 
     function fixWPv1Json($content,$ID=0){

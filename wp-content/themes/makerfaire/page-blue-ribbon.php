@@ -70,7 +70,7 @@ foreach($yearSql as $year){
                      <br/><br/>
 
                     <!--| filter:year -->
-                     <div ng-show="layout == 'grid'" > 
+                     <div ng-show="layout == 'grid'"  class="ribbonGrid"> 
                         <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 50" current-page="currentPage">                          
                             <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">
                                  <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo}}"></a>
@@ -95,23 +95,29 @@ foreach($yearSql as $year){
                             <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="<?php echo get_stylesheet_directory_uri();?>/partials/dirPagination.tpl.html"></dir-pagination-controls>
                         </div> 
                     </div> 
-                    <div  ng-show="layout == 'list'" >
-                        
+                    <div  ng-show="layout == 'list'" class="ribbonList">                        
                         <div ng-repeat="blueCount in blueList|groupBy:'blueCount'">
-                            <b ng-if="blueCount>0">{{blueCount}} Blue Ribbons</b>
-                            <ul ng-if="blueCount>0">
-                                <li ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}">
-                                    {{ ribbonData.project_name }}
-                                </li>                                
-                            </ul>
+                            <div class="ribbonTitle">
+                                <div class="blueRibbon" ng-if="blueCount > 0" ></div>
+                                <div ng-if="blueCount>0">{{blueCount}} Blue Ribbons</div>
+                            </div>                            
+
+                            <div ng-if="blueCount>0" class="col-xs-12 col-sm-6 col-md-6"ng-repeat="ribbonData in ribbons | filter: {blueCount: blueCount}">
+                                <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
+                            </div> 
+                            <div class="clear"></div>
                         </div>
+                        <div class="clear"></div>
                         <div ng-repeat="redCount in redList | groupBy:'redCount'">
-                            <b ng-if="redCount>0">{{redCount}} Red Ribbons</b>
-                            <ul  ng-if="redCount>0">
-                                <li ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}">
-                                    {{ ribbonData.project_name }}
-                                </li>                                
-                            </ul>
+                            <div class="ribbonTitle">
+                                <div class="redRibbon" ng-if="redCount > 0" ></div>
+                                <div ng-if="redCount>0">{{redCount}} Red Ribbons</div>
+                            </div>  
+                            
+                                <div ng-if="redCount>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in ribbons | filter: {redCount: redCount}">
+                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
+                                </div>                                
+                            </div>
                         </div>                     
                      </div> 
                     

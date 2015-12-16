@@ -1,5 +1,6 @@
 // Code goes here
 var ribbonApp = angular.module('ribbonApp', [ 'ngRoute','angularUtils.directives.dirPagination']);
+var firstBy=function(){function n(n,t){if("function"!=typeof n){var r=n;n=function(n,t){return n[r]<t[r]?-1:n[r]>t[r]?1:0}}return-1===t?function(t,r){return-n(t,r)}:n}function t(t,u){return t=n(t,u),t.thenBy=r,t}function r(r,u){var f=this;return r=n(r,u),t(function(n,t){return f(n,t)||r(n,t)})}return t}();
 
  ribbonApp.directive('fallbackSrc', function () {
   var fallbackSrc = {
@@ -13,6 +14,8 @@ var ribbonApp = angular.module('ribbonApp', [ 'ngRoute','angularUtils.directives
 });
 
 var uniqueItems = function (data, key) {
+    console.log('data-'+data);
+    console.log('key-'+key);
     var result = [];
     for (var i = 0; i < data.length; i++) {
         var value = data[i][key];
@@ -30,7 +33,7 @@ ribbonApp.filter('groupBy',
                     return uniqueItems(collection, key);
         };
     });
-    
+   
 ribbonApp.controller('ribbonController', function ($scope, $http) {
   $scope.layout = 'grid';
   $scope.currentPage = 1;
@@ -38,7 +41,9 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
   $scope.faires = [];    
   $scope.blueList = [];
   $scope.redList = [];
-  
+  $scope.random = function() {
+        return 0.5 - Math.random();
+    }
   $scope.years  = yearJson;
   $scope.loadData = function (faireYear) {    
       var postData = {
@@ -47,32 +52,34 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
     };
     
     $http.get('/wp-content/themes/makerfaire/partials/data/' + faireYear + 'ribbonData.json').success(function(data) {
-        $scope.ribbons      = data;       
+        $scope.ribbons      = data; 
+        shuffle($scope.ribbons);
         angular.forEach(data, function(row, key) {
             /* create faires data */
-          angular.forEach(row.faireData, function(value, faire) {
-          if($scope.faires.indexOf(value.faire) == -1)
-          {
-              $scope.faires.push(value.faire);
-          }
+            angular.forEach(row.faireData, function(value, faire) {
+              if($scope.faires.indexOf(value.faire) == -1)
+              {
+                  $scope.faires.push(value.faire);
+              }
+            })
+            $scope.faires.sort();    
 
-          }) 
-         $scope.faires.sort();    
-
-         //create blue ribbon list data
-         if(row.blueCount>0){
-             $scope.blueList.push(row);
-         }       
-         //create red ribbon list data
-         if(row.redCount>0){
-             $scope.redList.push(row);
-         }
+            //create blue ribbon list data
+            if(row.blueCount>0){
+                $scope.blueList.push(row);
+            }       
+            //create red ribbon list data
+            if(row.redCount>0){
+                $scope.redList.push(row);
+            }
        })
        
-       //sort blue list by # of blue ribbons in reverse order
-       $scope.blueList.sort(function(a, b) {
-            return parseFloat(b.blueCount) - parseFloat(a.blueCount);
-        });
+       //sort blue list by # of blue ribbons in reverse order, then by alphabetical
+       var s = firstBy(function (v1, v2) { return parseFloat(v2.blueCount) - parseFloat(v1.blueCount); })
+                 .thenBy(function (v1, v2) { return v1.project_name < v2.project_name ? -1 : (v1.project_name > v2.project_name ? 1 : 0); });
+       $scope.blueList.sort(s);
+       console.log($scope.blueList);
+       
        
         //sort red list by # of red ribbons in reverse order
         $scope.redList.sort(function(a, b) {
@@ -100,4 +107,23 @@ function sortByKey(array, key) {
         var x = a[key]; var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }

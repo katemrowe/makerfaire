@@ -37,7 +37,7 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
         $scope.blueList  = data.blueList;
         $scope.redList   = data.redList;
                 
-        angular.forEach(data, function(row, key) {
+        angular.forEach($scope.ribbons, function(row, key) {
             /* create faires data */
             angular.forEach(row.faireData, function(value, faire) {
               if($scope.faires.indexOf(value.faire) == -1)

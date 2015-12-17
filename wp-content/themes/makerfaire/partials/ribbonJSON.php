@@ -8,13 +8,14 @@
 
 /*
  * This chunk of code is for testing only 
+
 define( 'BLOCK_LOAD', true );
 
 require_once( '../../../../wp-config.php' );
 require_once( '../../../../wp-includes/wp-db.php' );
 
 $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-createJson('2014');
+createJson('2014');/*
 */
 
 function  createJson($year=''){
@@ -45,8 +46,9 @@ function  createJson($year=''){
                   . " from wp_posts post "
                   . " right outer join wp_postmeta on "
                 . "                     post.ID = post_id and "
-                . "                    (post_id = $post_id and meta_key like '%maker_name%') or "
-                . "                    (post_id = $post_id and meta_key in('project_photo','project_name')) "
+                . "                   ((post_id = $post_id and meta_key like '%maker_name%') or "
+                . "                    (post_id = $post_id and meta_key in('project_photo','project_name')) or "
+                . "                    (post_id = $post_id and meta_key like '%project_description%')) "                
                 . "  where post.ID = $post_id ORDER BY `wp_postmeta`.`meta_key` DESC";
         
         foreach($wpdb->get_results($makerSQL,ARRAY_A) as $projData){ 
@@ -124,33 +126,39 @@ function  createJson($year=''){
         if($redCount > 0)
             $redList[$redCount][] = $data;
     }
-        
+    $newList = array();        
     //sort blue list and red list, within each group, alphabetically
     foreach($blueList as $key=>$value){
-        if(is_array($value))      usort($value, 'sortByOrder');
-        $blueList[$key]=$value;
+        if(is_array($value))      usort($value, 'sortByName');
+        $newList[] = array('numRibbons'=>$key, 'winners'=>$value);
     }
+    $blueList = $newList;
+    $newList = array();
      foreach($redList as $key=>$value){
-            if(is_array($value))  usort($value, 'sortByOrder');
-        $redList[$key]=$value;
+        if(is_array($value))  usort($value, 'sortByOrder');
+        $newList[] = array('numRibbons'=>$key, 'winners'=>$value);
     }
+    $redList = $newList;
+    
     //sort blue and red list in reverse order by # of ribbons
-    krsort($blueList);
-    krsort($redList);
+    usort($blueList, 'sortByCount');
+    usort($redList, 'sortByCount');       
     
     $return['json']     = $json;
     $return['blueList'] = $blueList;
     $return['redList']  = $redList;
-    //var_dump(json_encode($return))  ;  
+    
     return json_encode($return);
     
 }
 
     //sort ribbon data[] by blue ribbon count
-    function sortByOrder($a, $b) {
-        return $b['project_name']- $a['project_name'];
+    function sortByName($a, $b) {
+        return $a['project_name']- $b['project_name'];
     }
-
+    function sortByCount($a, $b) {
+        return $b['numRibbons'] - $a['numRibbons'];
+    }
     function fixWPv1Json($content,$ID=0){
                  
         //left and right curly brace

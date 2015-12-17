@@ -96,25 +96,25 @@ foreach($yearSql as $year){
                         </div> 
                     </div> 
                     <div  ng-show="layout == 'list'" class="ribbonList">                        
-                        <div ng-repeat="(key,value) in blueList">
+                        <div ng-repeat="blueRibbons in blueList">
                             <div class="ribbonTitle">
-                                <div class="blueRibbon" ng-if="key > 0" ></div>
-                                <div ng-if="key>0">{{key}} Blue Ribbons</div>
+                                <div class="blueMakey" ng-if="blueRibbons.numRibbons > 0" ></div>
+                                <div ng-if="blueRibbons.numRibbons>0">{{blueRibbons.numRibbons}} Blue Ribbons</div>
                             </div>                            
 
-                            <div ng-if="key>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in value">
+                            <div ng-if="blueRibbons.numRibbons>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in blueRibbons.winners">
                                 <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
                             </div> 
                             <div class="clear"></div>
                         </div>
                         <div class="clear"></div>
-                        <div ng-repeat="(key,value) in redList">
+                        <div ng-repeat="redRibbons in redList">
                             <div class="ribbonTitle">
-                                <div class="redRibbon" ng-if="key > 0" ></div>
-                                <div ng-if="key>0">{{key}} Red Ribbons</div>
+                                <div class="redMakey" ng-if="redRibbons.numRibbons > 0" ></div>
+                                <div ng-if="redRibbons.numRibbons>0">{{redRibbons.numRibbons}} Red Ribbons</div>
                             </div>                            
 
-                            <div ng-if="key>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in value">
+                            <div ng-if="redRibbons.numRibbons>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in redRibbons.winners">
                                 <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
                             </div> 
                             <div class="clear"></div>

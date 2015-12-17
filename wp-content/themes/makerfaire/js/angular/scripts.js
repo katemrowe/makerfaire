@@ -32,10 +32,10 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
         $scope.ribbons      = data.json; 
         //for random order
         shuffle($scope.ribbons);
-        console.log(data.blueList);
-        //clear out old data
-        $scope.blueList = data.blueList;
-        $scope.redList  = data.redList;
+        
+        //clear out old data        
+        $scope.blueList  = data.blueList;
+        $scope.redList   = data.redList;
                 
         angular.forEach(data, function(row, key) {
             /* create faires data */

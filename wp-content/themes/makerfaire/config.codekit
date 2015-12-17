@@ -953,6 +953,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/images\/blue-makey.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2760,
+		"inputAbbreviatedPath": "\/images\/blue-makey.png",
+		"outputAbbreviatedPath": "\/images\/blue-makey.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/images\/blue-ribbon.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -1851,6 +1862,17 @@
 		"initialSize": 1009,
 		"inputAbbreviatedPath": "\/images\/program.png",
 		"outputAbbreviatedPath": "\/images\/program.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/images\/red-makey.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 3569,
+		"inputAbbreviatedPath": "\/images\/red-makey.png",
+		"outputAbbreviatedPath": "\/images\/red-makey.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -2974,17 +2996,6 @@
 		"inputAbbreviatedPath": "\/partials\/data\/2014ribbonData.json",
 		"orderOutput": 0,
 		"outputAbbreviatedPath": "\/partials\/data\/2014ribbonData-min.json",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1
-		},
-	"\/partials\/data\/2015ribbonData.json": {
-		"fileType": 524288,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/data\/2015ribbonData.json",
-		"orderOutput": 0,
-		"outputAbbreviatedPath": "\/partials\/data\/2015ribbonData-min.json",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1

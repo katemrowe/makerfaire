@@ -3,12 +3,12 @@ var ribbonApp = angular.module('ribbonApp', [ 'ngRoute','angularUtils.directives
 
  ribbonApp.directive('fallbackSrc', function () {
   var fallbackSrc = {
-    link: function postLink(scope, iElement, iAttrs) {
+    link: function postLink(scope, iElement, iAttrs) {                    
       iElement.bind('error', function() {
         angular.element(this).attr("src", iAttrs.fallbackSrc);
-      });
+      });      
     }
-   }
+   }   
    return fallbackSrc;
 });
    

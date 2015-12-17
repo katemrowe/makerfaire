@@ -7,7 +7,7 @@
  */
 
 /*
- * This chunk of code is for testing only 
+ * This chunk of code is for testing only */
 
 define( 'BLOCK_LOAD', true );
 
@@ -112,11 +112,13 @@ function  createJson($year=''){
     foreach($ribbonData as $entry_id=>$data){  
         $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);
         $redCount  = (isset($data['ribbon'][1]['count'])?$data['ribbon'][1]['count']:0);
+        $project_photo = $data['project_photo'];
+        
         $data = array('entryID'=> $entry_id,
                 "blueCount"     => $blueCount,
                 "redCount"      => $redCount,
                 "project_name"  => html_entity_decode($data['project_name']),
-                "project_photo" => $data['project_photo'],
+                "project_photo" => $project_photo,
                 "maker_name"    => $data['maker_name'],
                 "faireData"     => array_map("unserialize", array_unique(array_map("serialize", $data['fairedata'])))
             );
@@ -135,7 +137,7 @@ function  createJson($year=''){
     $blueList = $newList;
     $newList = array();
      foreach($redList as $key=>$value){
-        if(is_array($value))  usort($value, 'sortByOrder');
+        if(is_array($value))  usort($value, 'sortByName');
         $newList[] = array('numRibbons'=>$key, 'winners'=>$value);
     }
     $redList = $newList;
@@ -244,4 +246,4 @@ function  createJson($year=''){
         }
 
         return false;
-    }
+    }   

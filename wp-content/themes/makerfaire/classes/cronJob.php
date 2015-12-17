@@ -286,8 +286,9 @@ function build_ribbonJSON(){
     foreach($yearSql as $year){
         $json = createJSON($year->year);
         //write json file
-        $fp = fopen(TEMPLATEPATH.'/partials/data/'.$year->year.'ribbonData.json', 'w');
-        fwrite($fp, '');//write blanks to clear out any existing data
+        unlink(TEMPLATEPATH.'/partials/data/'.$year->year.'ribbonData.json'); //delete json file if exists
+        $fp = fopen(TEMPLATEPATH.'/partials/data/'.$year->year.'ribbonData.json', 'w');//create json file
+        
         fwrite($fp, $json);
         fclose($fp);
     }      

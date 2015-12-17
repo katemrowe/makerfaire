@@ -7,7 +7,7 @@
  */
 
 /*
- * This chunk of code is for testing only */
+ * This chunk of code is for testing only 
 
 define( 'BLOCK_LOAD', true );
 
@@ -36,8 +36,8 @@ function  createJson($year=''){
         $entry_id       = $ribbon['entry_id'];
         $post_id        = $ribbon['post_id'];
         $project_name   = $ribbon['project_name'];
-        $project_photo  = $ribbon['project_photo']; 
-        $project_photo  = legacy_get_fit_remote_image_url($project_photo,285,270,0);
+        $project_photo  = $ribbon['project_photo'];  
+        $project_desc   = '';  
         $maker_name     = $ribbon['maker_name'];
                 
                 
@@ -65,15 +65,18 @@ function  createJson($year=''){
                     if($jsonArray['form_type']=='presenter'){
                         $project_name  = $jsonArray['presentation_name'];
                         $project_photo = $jsonArray['presentation_photo'];
-                        $maker_name    = $jsonArray['presenter_name'];          
+                        $maker_name    = $jsonArray['presenter_name'];  
+                        $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
                     }elseif($jsonArray['form_type']=='exhibit'){                    
                             $project_name  = $jsonArray['project_name'];
                             $project_photo = $jsonArray['project_photo'];
-                            $maker_name    = $jsonArray['maker_name'];               
+                            $maker_name    = $jsonArray['maker_name'];   
+                            $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
                     }elseif($jsonArray['form_type']=='performer'){                    
                             $project_name  = $jsonArray['performer_name'];
                             $project_photo = $jsonArray['performer_photo'];
-                            $maker_name    = $jsonArray['name'];                       
+                            $maker_name    = $jsonArray['name'];  
+                            $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
                     }
                     break;
                 }
@@ -92,6 +95,7 @@ function  createJson($year=''){
                 //if maker name has field_ in it, it is not a valid maker name.
                 if(strpos($value, 'field_')===false && $maker_name=='')  $maker_name = $value;
             }
+            if($field=='project_description'  && $project_desc =='')   $project_desc  = $value;
         }
                        
         $location   = $ribbon['location'];
@@ -102,10 +106,11 @@ function  createJson($year=''){
         //build ribbon data array                           
         $currCount = (isset($ribbonData[$entry_id]['ribbon'][$ribbonType]['count']) ? $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']:0);
         $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']  = (int) $currCount + (int) $numRibbons;        
-        $ribbonData[$entry_id]['fairedata'][]  = array( 'year'=>$year, 'faire'=>$location,'ribbonType'=>($ribbonType==0?'blue':'red'));               
+        $ribbonData[$entry_id]['fairedata'][]   = array( 'year'=>$year, 'faire'=>$location,'ribbonType'=>($ribbonType==0?'blue':'red'));               
         $ribbonData[$entry_id]['project_name']  = $project_name;
-        $ribbonData[$entry_id]['project_photo'] = $project_photo;    
-        $ribbonData[$entry_id]['maker_name'] = $maker_name;
+        $ribbonData[$entry_id]['project_photo'] = $project_photo; 
+        $ribbonData[$entry_id]['project_desc']  = $project_desc; 
+        $ribbonData[$entry_id]['maker_name']    = $maker_name;
 
     }
         
@@ -113,13 +118,14 @@ function  createJson($year=''){
         $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);
         $redCount  = (isset($data['ribbon'][1]['count'])?$data['ribbon'][1]['count']:0);
         $project_photo = $data['project_photo'];
-        
+        $project_photo  = legacy_get_fit_remote_image_url($project_photo,285,270,0);
         $data = array('entryID'=> $entry_id,
                 "blueCount"     => $blueCount,
                 "redCount"      => $redCount,
                 "project_name"  => html_entity_decode($data['project_name']),
                 "project_photo" => $project_photo,
                 "maker_name"    => $data['maker_name'],
+                "project_description" => html_entity_decode($data['project_desc']),
                 "faireData"     => array_map("unserialize", array_unique(array_map("serialize", $data['fairedata'])))
             );
         $json[] = $data;

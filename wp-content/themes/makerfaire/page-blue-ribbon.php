@@ -81,8 +81,10 @@ foreach($yearSql as $year){
                           
                         <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 40" current-page="currentPage">                          
                             <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">
-                                 <img class="projImg" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" /></a>
-                                 <div class="ribbons">
+                                 <div class="projImg"> 
+                                     <img CLASS="img-responsive" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" /></a>
+                                 
+                                <div class="ribbons">
 
                                    <div class="blueRibbon" ng-if="ribbon.blueCount > 0">
                                        {{ribbon.blueCount}}
@@ -91,6 +93,8 @@ foreach($yearSql as $year){
                                        {{ribbon.redCount}}
                                    </div>
                                  </div>
+</div>
+                                
                               </a>
                             <div class="makerData" ng-class="{'':'show'}[ribbon.project_photo]" >
                                 <div class="projName">

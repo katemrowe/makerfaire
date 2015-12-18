@@ -3250,7 +3250,14 @@ img.attachment-post-thumbnail{width:100%;height:auto;}
         color: #D3D3D3 !important;
     }
     .textSearch span,.textSearch input {padding: 3px 10px;}
-    .projImg{height: 270px; width: auto;max-width: 100%;}
+    .projImg{height: 270px; max-width: 100%;overflow:hidden;}
+    .projImg img{    object-position: center;
+    height: 100%;
+    width: auto;
+    max-width: none;
+    min-width: 100%;
+    min-height: 100%;
+}
     .bluedata,.reddata{    padding: 5px; margin: 5px;float: left;font-size:12px;}
     .bluedata{background-color: #0e7db5}
     .reddata{background-color: #ff0000}

@@ -20,7 +20,22 @@ if (is_user_logged_in() && $action == 'logout')
 wp_enqueue_style('login-styles', get_stylesheet_directory_uri() . '/css/login-styles.css');
 
 //Setup dynamic message area depeding on modes or referrer
-$loginmessage = 'Sign In';
+$loginmessage = '';
+switch ($sign) {
+    case "1":
+        $currentloginurl = basename($_SERVER['REQUEST_URI']);
+        $loginmessage = 'Sign in to submit an entry. If you haven\'t signed in before, <a href=\''.$currentloginurl.'&mode=signup\'>Sign Up.</a>';
+        break;
+     case "2":
+        $loginmessage = "Sign in to submit a or manage an entry";
+        break;
+    case "3":
+        $loginmessage = "Sign in to manage your entries";
+        break;
+    default:
+        $loginmessage = 'Sign In';
+        break;
+} 
 if (strpos(wp_referer_field(),'edit-entry') > 0)
         $loginmessage = 'Sign in to submit or manage<br /> your entries.';
 if ($mode == "reset")

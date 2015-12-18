@@ -3279,21 +3279,6 @@ img.attachment-post-thumbnail{width:100%;height:auto;}
 
     div.makerData.show, .ribbData:hover div.makerData {opacity:1;}
     
-    .redRibbon,.blueRibbon,.redMakey,.blueMakey{
-        width: 38px;
-        height: 56px;
-        background-size: 38px 56px;
-        background-repeat: no-repeat;
-        float:left;
-        font-weight: bold;
-        color: #FBD818;
-        padding: 11px;
-    }
-    .redRibbon{background-image: url('../images/red-ribbon.png');}
-    .blueRibbon{background-image: url('../images/blue-ribbon.png');}
-    .redMakey{background-image: url('../images/red-makey.png');}
-    .blueMakey{background-image: url('../images/blue-makey.png');}
-    
     .entryImg{position:relative}
     .ribbons{position: absolute; top: 9px; left:20px;}
     
@@ -3340,14 +3325,29 @@ img.attachment-post-thumbnail{width:100%;height:auto;}
     }  
     .ribbonGrid,.ribbonList{margin-bottom: 20px;}
     
-    .ribbonList{
-        .blueRibbon,.redRibbon,.redMakey,.blueMakey
-        { float:none}
+    .ribbonList{        
         .ribbonTitle div{display: inline-block; vertical-align: middle;}
         .ribbonTitle{padding-top:2em;font-size:1.4em;}
     }   
 }
 
+    .redRibbon,.blueRibbon,.redMakey,.blueMakey{
+        width: 38px;
+        height: 56px;
+        background-size: 38px 56px;
+        background-repeat: no-repeat;
+        float:left;
+        font-weight: bold;
+        color: #FBD818;
+        padding: 11px;
+    }
+    .redRibbon{background-image: url('../images/red-ribbon.png');}
+    .blueRibbon{background-image: url('../images/blue-ribbon.png');}
+    .redMakey{background-image: url('../images/red-makey.png');}
+    .blueMakey{background-image: url('../images/blue-makey.png');}
+    .blueRibbon,.redRibbon,.redMakey,.blueMakey{ float:none;display:inline-block}
+    
+    
 /* maker admin */
 .gv-list-container .maker-admin{
     /* parent container */

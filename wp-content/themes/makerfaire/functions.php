@@ -2244,3 +2244,21 @@ function GVupdate_notification($form,$entry_id,$orig_entry){
         $wpdb->get_results($sql);
     }
 }
+
+
+function checkForRibbons($postID){
+    global $wpdb;
+    $sql = "select * from wp_mf_ribbons where post_id = ".$postID." order by ribbonType";
+    $ribbons = $wpdb->get_results($sql);
+    $return = "<h2>Awards</h2>
+        <hr/>";
+    //check for 0??
+    $blueCount = $redCount = 0;
+    foreach($ribbons as $ribbon){
+        if($ribbon->ribbonType==0)
+          $return .= '<div class="blueMakey"></div>';
+        if($ribbon->ribbonType==1)
+          $return .= '<div class="redMakey"></div>';
+    }
+    return $return;
+}

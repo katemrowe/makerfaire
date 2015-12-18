@@ -7,7 +7,7 @@
  */
 
 global $wp_query;
-
+$postID = 0;
 //pull by the slug name 
 $the_slug = $wp_query->query_vars['entryslug']; //entry-id
 
@@ -38,6 +38,7 @@ if(empty($my_posts)){
 }
 
 if(!empty($my_posts)){  
+    $postID = $my_posts[0]->ID;
     $custom_fields      = get_post_custom($my_posts[0]->ID);     
     if(is_array($custom_fields)){
         
@@ -226,8 +227,11 @@ if(!empty($my_posts)){
 
         </div>
       </div>
-
-
+      <?php if($postID!=0){
+          //check if this entry has one any awards
+          $ribbons = checkForRibbons($postID);          
+          echo $ribbons;
+      } ?>
 <!-- Commenting out for now via Clair
       <h2>Schedule</h2>
       <hr />

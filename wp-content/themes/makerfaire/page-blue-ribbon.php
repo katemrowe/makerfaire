@@ -1,5 +1,4 @@
-<?php get_header(); ?>
-<?php
+<?php get_header(); 
 $yearOption='';
 $yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 AND post_id > 0 order by year desc");
 $firstYear = $yearSql[0]->year;

@@ -21,10 +21,11 @@ get_header(); ?>
   </div>
 </header>
 
-<!-- Apply blue bar -->
+<!-- Apply blue bar 
 <section class="store-apply-bar">
   <p>WANT TO WORK AT THE STORE?  <a href="https://www.staffly.com/makers" target="_blank">APPLY HERE</a>
 </section>
+-->
 
 <div class="container store-container">
 
@@ -34,8 +35,10 @@ get_header(); ?>
     <h2>Shop Make: In Real Life <span>#makestore</span></h2>
     <p class="lead">Get the full #makestore experience with one of our special in-store events.</p>
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-        <img class="img-responsive" src="/wp-content/themes/makerfaire/images/Make-store-kids.jpg" alt="Make Store kids at play" />
+      <div class="col-xs-12 text-center">
+        <div id="mf-frameholder">
+          <iframe src="http://www.eventbrite.com/o/maker-media-publisher-of-make-magazine-amp-producer-of-maker-faire-3198699248" scrolling="no" width="1010" height="740"></iframe>
+        </div>
       </div>
     </div>
   </section>
@@ -103,6 +106,22 @@ get_header(); ?>
 </div>
 
 <section class="store-pictures">
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/FullSizeRender.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/FullSizeRender1.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/FullSizeRender-1.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/FullSizeRender-11.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+  <div class="col-xs-6 col-sm-4 make-store-wide">
+    <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/IMG_3127.jpg" rel="store-gallery">
+      <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/IMG_31271.jpg" alt="Inside the Make: Store" /></span>
+    </a>
+  </div>
+
   <div class="col-xs-6 col-sm-4">
     <a class="fancybox_store_page" href="http://makerfaire.com/wp-content/uploads/2015/12/Make-Store-Photo-1983-e1449519208904.jpg" rel="store-gallery">
       <span><img class="img-responsive" src="http://makerfaire.com/wp-content/uploads/2015/12/make-store-photo-1983.jpg" alt="Inside the Make: Store" /></span>

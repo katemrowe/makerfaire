@@ -181,7 +181,13 @@ if(!empty($my_posts)){
 
       <div class="page-header">
 
-        <h1><?php echo $project_title; ?></h1>
+        <h1><?php echo $project_title; ?>
+        <?php if($postID!=0){
+          //check if this entry has one any awards
+          $ribbons = checkForRibbons($postID);          
+          echo $ribbons;
+      } ?>
+            </h1>
         <?php echo ( !empty( $project_faire ) ) ? '<h5><small>' . archives_better_name( $project_faire ) . '</small></h5>' : ''; ?>
         
 
@@ -227,11 +233,7 @@ if(!empty($my_posts)){
 
         </div>
       </div>
-      <?php if($postID!=0){
-          //check if this entry has one any awards
-          $ribbons = checkForRibbons($postID);          
-          echo $ribbons;
-      } ?>
+      
 <!-- Commenting out for now via Clair
       <h2>Schedule</h2>
       <hr />

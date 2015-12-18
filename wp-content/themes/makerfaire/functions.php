@@ -2250,8 +2250,7 @@ function checkForRibbons($postID){
     global $wpdb;
     $sql = "select * from wp_mf_ribbons where post_id = ".$postID." order by ribbonType";
     $ribbons = $wpdb->get_results($sql);
-    $return = "<h2>Awards</h2>
-        <hr/>";
+    $return = "";
     //check for 0??
     $blueCount = $redCount = 0;
     foreach($ribbons as $ribbon){

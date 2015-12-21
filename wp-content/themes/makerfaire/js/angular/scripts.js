@@ -8,19 +8,19 @@ var ribbonApp = angular.module('ribbonApp', [ 'ngRoute','angularUtils.directives
         angular.element(this).attr("src", iAttrs.fallbackSrc);
       });      
     }
-   }   
+   };   
    return fallbackSrc;
 });
    
 ribbonApp.controller('ribbonController', function ($scope, $http) {
-  $scope.layout = 'grid';
+  $scope.layout      = 'grid';
   $scope.currentPage = 1;
-  $scope.pageSize = 40;  
-  $scope.faires = [];    
+  $scope.pageSize    = 40;  
+  $scope.faires      = [];    
   
   $scope.random = function() {
-        return 0.5 - Math.random();
-    }
+    return 0.5 - Math.random();
+  };
   $scope.years  = yearJson;
   $scope.loadData = function (faireYear) {    
       var postData = {
@@ -33,9 +33,45 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
         //for random order
         shuffle($scope.ribbons);
         
-        //clear out old data        
-        $scope.blueList  = data.blueList;
-        $scope.redList   = data.redList;
+        //clear out old data          
+        var blueList = [];
+        angular.forEach(data.blueList, function(element) {
+            var ribbonData = [];
+            angular.forEach(element.winners, function(winner){
+                winnerArray = [];
+                angular.forEach(winner, function(value, key) {
+                    winnerArray[key]=value;
+                });                
+                ribbonData.push(winnerArray);                
+            });
+            ribbonData = sortByKey(ribbonData, 'project_name');
+            arrdata = [];
+            arrdata['numRibbons']  = element.numRibbons;
+            arrdata['winners']     = ribbonData;
+            blueList.push(arrdata);
+        });       
+        $scope.blueList  = blueList;
+        
+        //red list
+        var redList = [];
+        
+        angular.forEach(data.redList, function(element) {
+            var ribbonData = [];
+            angular.forEach(element.winners, function(winner){
+                winnerArray = [];
+                angular.forEach(winner, function(value, key) {
+                    winnerArray[key]=value;
+                });                
+                ribbonData.push(winnerArray);                
+            });
+            ribbonData = sortByKey(ribbonData, 'project_name');
+            arrdata = [];
+            arrdata['numRibbons']  = element.numRibbons;
+            arrdata['winners']     = ribbonData;
+            redList.push(arrdata);
+        });
+        
+        $scope.redList   = redList;
                 
         angular.forEach($scope.ribbons, function(row, key) {
             /* create faires data */
@@ -44,9 +80,9 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
               {
                   $scope.faires.push(value.faire);
               }
-            })
+            });
             $scope.faires.sort();                
-       })
+       });
     }).
     error(function(data, status, headers, config) {
       // log error
@@ -81,4 +117,11 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
 }

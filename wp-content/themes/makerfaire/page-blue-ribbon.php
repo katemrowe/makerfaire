@@ -112,10 +112,11 @@ foreach($yearSql as $year){
                                 <div class="blueMakey" ng-if="blueRibbons.numRibbons > 0" ></div>
                                 <div ng-if="blueRibbons.numRibbons>0">{{blueRibbons.numRibbons}} Blue Ribbons</div>
                             </div>                            
-
-                            <div ng-if="blueRibbons.numRibbons>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in blueRibbons.winners  | filter:query">
-                                <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
-                            </div> 
+                            <ul>
+                                <li ng-if="blueRibbons.numRibbons>0" ng-repeat="ribbonData in blueRibbons.winners | filter:query">
+                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
+                                </li>
+                            </ul>
                             <div class="clear"></div>
                         </div>
                         <div class="clear"></div>
@@ -125,9 +126,11 @@ foreach($yearSql as $year){
                                 <div ng-if="redRibbons.numRibbons>0">{{redRibbons.numRibbons}} Red Ribbons</div>
                             </div>                            
 
-                            <div ng-if="redRibbons.numRibbons>0" class="col-xs-12 col-sm-6 col-md-6" ng-repeat="ribbonData in redRibbons.winners  | filter:query">
-                                <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
-                            </div> 
+                            <ul>
+                                <li ng-if="redRibbons.numRibbons>0" ng-repeat="ribbonData in redRibbons.winners | filter:query">
+                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
+                                </li>
+                            </ul>
                             <div class="clear"></div>
                         </div>
                     </div>                     

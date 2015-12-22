@@ -32,46 +32,8 @@ ribbonApp.controller('ribbonController', function ($scope, $http) {
         $scope.ribbons      = data.json; 
         //for random order
         shuffle($scope.ribbons);
-        
-        //clear out old data          
-        var blueList = [];
-        angular.forEach(data.blueList, function(element) {
-            var ribbonData = [];
-            angular.forEach(element.winners, function(winner){
-                winnerArray = [];
-                angular.forEach(winner, function(value, key) {
-                    winnerArray[key]=value;
-                });                
-                ribbonData.push(winnerArray);                
-            });
-            ribbonData = sortByKey(ribbonData, 'project_name');
-            arrdata = [];
-            arrdata['numRibbons']  = element.numRibbons;
-            arrdata['winners']     = ribbonData;
-            blueList.push(arrdata);
-        });       
-        $scope.blueList  = blueList;
-        
-        //red list
-        var redList = [];
-        
-        angular.forEach(data.redList, function(element) {
-            var ribbonData = [];
-            angular.forEach(element.winners, function(winner){
-                winnerArray = [];
-                angular.forEach(winner, function(value, key) {
-                    winnerArray[key]=value;
-                });                
-                ribbonData.push(winnerArray);                
-            });
-            ribbonData = sortByKey(ribbonData, 'project_name');
-            arrdata = [];
-            arrdata['numRibbons']  = element.numRibbons;
-            arrdata['winners']     = ribbonData;
-            redList.push(arrdata);
-        });
-        
-        $scope.redList   = redList;
+        $scope.blueList = data.blueList;
+        $scope.redList  = data.redList;        
                 
         angular.forEach($scope.ribbons, function(row, key) {
             /* create faires data */
@@ -117,11 +79,4 @@ function shuffle(array) {
   }
 
   return array;
-}
-
-function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
 }

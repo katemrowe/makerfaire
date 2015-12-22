@@ -81,7 +81,7 @@ foreach($yearSql as $year){
                         <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 40" current-page="currentPage">                          
                             <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">
                                  <div class="projImg"> 
-                                     <img CLASS="img-responsive" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" /></a>
+                                     <img class="img-responsive" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" />
                                  
                                 <div class="ribbons">
 
@@ -92,7 +92,7 @@ foreach($yearSql as $year){
                                        {{ribbon.redCount}}
                                    </div>
                                  </div>
-</div>
+                                </div>
                                 
                               </a>
                             <div class="makerData" ng-class="{'':'show'}[ribbon.project_photo]" >
@@ -108,29 +108,34 @@ foreach($yearSql as $year){
                     </div> 
                     <div  ng-show="layout == 'list'" class="ribbonList">                        
                         <div ng-repeat="blueRibbons in blueList">
-                            <div class="ribbonTitle">
-                                <div class="blueMakey" ng-if="blueRibbons.numRibbons > 0" ></div>
-                                <div ng-if="blueRibbons.numRibbons>0">{{blueRibbons.numRibbons}} Blue Ribbons</div>
-                            </div>                            
-                            <ul>
-                                <li ng-if="blueRibbons.numRibbons>0" ng-repeat="ribbonData in blueRibbons.winners | filter:query">
-                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
-                                </li>
-                            </ul>
+                            <div ng-show="(blueRibbons.winners | filter:query).length">
+                                <div class="ribbonTitle">
+                                    <div class="blueMakey"></div>
+                                    <div>{{blueRibbons.numRibbons}} Blue Ribbons</div>
+                                </div>                            
+
+                                <ul>
+                                    <li ng-repeat="bRibbonData in blueRibbons.winners  | filter:query">
+                                        <a href="/mfarchives/{{bRibbonData.entryID}}" target="_blank">{{ bRibbonData.project_name }}</a>
+                                    </li>    
+                                </ul> 
+                            </div>
                             <div class="clear"></div>
                         </div>
                         <div class="clear"></div>
-                        <div ng-repeat="redRibbons in redList | filter:query">
-                            <div class="ribbonTitle">
-                                <div class="redMakey" ng-if="redRibbons.numRibbons > 0" ></div>
-                                <div ng-if="redRibbons.numRibbons>0">{{redRibbons.numRibbons}} Red Ribbons</div>
-                            </div>                            
+                        <div ng-repeat="redRibbons in redList">
+                            <div ng-show="(redRibbons.winners | filter:query).length">
+                                <div class="ribbonTitle">
+                                    <div class="redMakey"></div>
+                                    <div>{{redRibbons.numRibbons}} Red Ribbons</div>
+                                </div>                            
 
-                            <ul>
-                                <li ng-if="redRibbons.numRibbons>0" ng-repeat="ribbonData in redRibbons.winners | filter:query">
-                                    <a href="/mfarchives/{{ribbonData.entryID}}" target="_blank">{{ ribbonData.project_name }}</a>
-                                </li>
-                            </ul>
+                                <ul>
+                                    <li ng-repeat="rRibbonData in redRibbons.winners  | filter:query">
+                                        <a href="/mfarchives/{{bribbonData.entryID}}" target="_blank">{{ rRibbonData.project_name }}</a>
+                                    </li>    
+                                </ul> 
+                            </div> 
                             <div class="clear"></div>
                         </div>
                     </div>                     

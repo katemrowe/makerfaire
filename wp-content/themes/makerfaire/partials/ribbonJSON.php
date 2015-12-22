@@ -113,13 +113,13 @@ function  createJson($year=''){
         $ribbonData[$entry_id]['maker_name']    = $maker_name;
 
     }
-        
+    
     foreach($ribbonData as $entry_id=>$data){  
         $blueCount = (isset($data['ribbon'][0]['count'])?$data['ribbon'][0]['count']:0);
         $redCount  = (isset($data['ribbon'][1]['count'])?$data['ribbon'][1]['count']:0);
         $project_photo = $data['project_photo'];
         $project_photo  = legacy_get_fit_remote_image_url($project_photo,285,270,0);
-        $data = array('entryID'=> $entry_id,
+        $jsondata = array('entryID'=> $entry_id,
                 "blueCount"     => $blueCount,
                 "redCount"      => $redCount,
                 "project_name"  => html_entity_decode($data['project_name']),
@@ -128,29 +128,50 @@ function  createJson($year=''){
                 "project_description" => html_entity_decode($data['project_desc']),
                 "faireData"     => array_map("unserialize", array_unique(array_map("serialize", $data['fairedata'])))
             );
-        $json[] = $data;
-        if($blueCount > 0)
-            $blueList[$blueCount][] = $data;
-        if($redCount > 0)
-            $redList[$redCount][] = $data;
+        $json[] = $jsondata;
+        if($blueCount > 0){            
+            $blueList[$blueCount]['winners'][]  = $jsondata;
+            $blueList[$blueCount]['numRibbons'] = $blueCount;
+        }
+        if($redCount > 0){
+            $redList[$redCount]['winners'][]  = $jsondata;
+            $redList[$redCount]['numRibbons'] = $redCount;
+        }
     }
-    $newList = array();        
-    //sort blue list and red list, within each group, alphabetically
-    foreach($blueList as $key=>$value){
-        if(is_array($value))      usort($value, 'sortByName');
-        $newList[] = array('numRibbons'=>$key, 'winners'=>$value);
-    }
-    $blueList = $newList;
-    $newList = array();
-     foreach($redList as $key=>$value){
-        if(is_array($value))  usort($value, 'sortByName');
-        $newList[] = array('numRibbons'=>$key, 'winners'=>$value);
-    }
-    $redList = $newList;
     
-    //sort blue and red list in reverse order by # of ribbons
-    usort($blueList, 'sortByCount');
-    usort($redList, 'sortByCount');       
+    //blue list is an array of data
+    //$blueList[number of blue ribbons]= array('numRibbons'=>number of blue ribbons
+    //                                         'winners' =>ribbon data
+    //                                         )    
+    
+    
+    //sort blue list and red list, within each group, alphabetically
+    
+    array_sort_by_column($blueList, 'numRibbons',SORT_DESC);
+    foreach($blueList as $key=>&$value){                
+        if(is_array($value['winners'])) {
+            array_sort_by_column($value['winners'], 'project_name');          
+        }    
+        foreach($value['winners'] as $winnerKey=>$winner){
+            foreach($winner['faireData'] as $fdKey=>$faireData){
+                if($faireData['ribbonType']=='red') unset($value['winners'][$winnerKey]['faireData'][$fdKey]);
+            }
+        }
+        $blueList[$key]['winners'] = $value['winners'];
+    }
+         
+    array_sort_by_column($redList, 'numRibbons',SORT_DESC);
+    foreach($redList as $key=>&$value){        
+        if(is_array($value['winners'])) {
+            array_sort_by_column($value['winners'], 'project_name');
+        }  
+        foreach($value['winners'] as $winnerKey=>$winner){
+            foreach($winner['faireData'] as $fdKey=>$faireData){
+                if($faireData['ribbonType']=='blue') unset($value['winners'][$winnerKey]['faireData'][$fdKey]);
+            }
+        }
+        $redList[$key]['winners'] = $value['winners'];
+    }
     
     $return['json']     = $json;
     $return['blueList'] = $blueList;
@@ -161,12 +182,15 @@ function  createJson($year=''){
 }
 
     //sort ribbon data[] by blue ribbon count
-    function sortByName($a, $b) {
-        return $a['project_name']- $b['project_name'];
+   function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
+        $sort_col = array();
+        foreach ($arr as $key=> $row) {
+            $sort_col[$key] = $row[$col];
+        }
+
+        array_multisort($sort_col, $dir, $arr);
     }
-    function sortByCount($a, $b) {
-        return $b['numRibbons'] - $a['numRibbons'];
-    }
+   
     function fixWPv1Json($content,$ID=0){
                  
         //left and right curly brace

@@ -51,6 +51,7 @@ foreach($yearSql as $year){
 		<!-- start blue ribbon data -->
                 <div id="ribbonPage">                           
                  <div ng-controller="ribbonController" class="my-controller">   
+                     <div class="ribbonFilter">
                      <div class="ribbonToggle" style="float:left">                         
                         <a ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"  class="box gallery"><i class="fa fa-picture-o"></i>Gallery</a>                                                    
                         <a ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"  class="box list"><i class="fa fa-list"></i>List</a>
@@ -73,10 +74,11 @@ foreach($yearSql as $year){
                            <input ng-model="query.$" placeholder="Filter Winners">
                        </div>
                     </div> 
+                     </div>
                      <br/><br/>
-                    <p ng-show="(ribbons | filter:query).length == 0">I'm sorry. There are no winners found.</p>
+                    <p ng-show="(ribbons | filter:query).length == 0" class="noData" >I'm sorry. There are no winners found.</p>
                     <!--| filter:year -->
-                     <div ng-show="layout == 'grid'"  class="ribbonGrid">                          
+                     <div ng-show="layout == 'grid'"  class="ribbonGrid row">                          
                           
                         <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 40" current-page="currentPage">                          
                             <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">

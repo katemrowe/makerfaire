@@ -2246,9 +2246,13 @@ function GVupdate_notification($form,$entry_id,$orig_entry){
 }
 
 
-function checkForRibbons($postID){
+function checkForRibbons($postID=0,$entryID=0){
     global $wpdb;
-    $sql = "select * from wp_mf_ribbons where post_id = ".$postID." order by ribbonType";
+    if($postID != 0){
+        $sql = "select * from wp_mf_ribbons where post_id = ".$postID." order by ribbonType";
+    }else{
+        $sql = "select * from wp_mf_ribbons where entry_id = ".$entryID." order by ribbonType";
+    }
     $ribbons = $wpdb->get_results($sql);
     $return = "";
     //check for 0??

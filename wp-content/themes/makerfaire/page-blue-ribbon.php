@@ -1,6 +1,6 @@
 <?php get_header(); 
 $yearOption='';
-$yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 AND post_id > 0 order by year desc");
+$yearSql  = $wpdb->get_results("SELECT distinct(year) FROM wp_mf_ribbons  where entry_id > 0 order by year desc");
 $firstYear = $yearSql[0]->year;
 
 foreach($yearSql as $year){
@@ -81,7 +81,8 @@ foreach($yearSql as $year){
                      <div ng-show="layout == 'grid'"  class="ribbonGrid row">                          
                           
                         <div class="ribbData col-xs-12 col-sm-4 col-md-3" dir-paginate="ribbon in ribbons| filter:query |itemsPerPage: 40" current-page="currentPage">                          
-                            <a href="/mfarchives/{{ribbon.entryID}}" target="_blank">
+                            
+                            <a href="{{ribbon.link}}" target="_blank">
                                  <div class="projImg"> 
                                      <img class="img-responsive" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" />
                                  
@@ -118,7 +119,7 @@ foreach($yearSql as $year){
 
                                 <ul>
                                     <li ng-repeat="bRibbonData in blueRibbons.winners  | filter:query">
-                                        <a href="/mfarchives/{{bRibbonData.entryID}}" target="_blank">{{ bRibbonData.project_name }}</a>
+                                        <a href="{{bRibbonData.link}}" target="_blank">{{ bRibbonData.project_name }}</a>
                                     </li>    
                                 </ul> 
                             </div>
@@ -134,7 +135,7 @@ foreach($yearSql as $year){
 
                                 <ul>
                                     <li ng-repeat="rRibbonData in redRibbons.winners  | filter:query">
-                                        <a href="/mfarchives/{{bribbonData.entryID}}" target="_blank">{{ rRibbonData.project_name }}</a>
+                                        <a href="{{bribbonData.link}}" target="_blank">{{ rRibbonData.project_name }}</a>
                                     </li>    
                                 </ul> 
                             </div> 

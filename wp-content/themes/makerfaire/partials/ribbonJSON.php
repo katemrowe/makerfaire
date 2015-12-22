@@ -15,7 +15,7 @@ require_once( '../../../../wp-config.php' );
 require_once( '../../../../wp-includes/wp-db.php' );
 
 $wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-createJson('2014');/*
+createJson('2015');/*
 */
 
 function  createJson($year=''){
@@ -29,88 +29,129 @@ function  createJson($year=''){
     
     $filter = " and year= ".($year!=''? $year:date("Y"));
     $sql = "SELECT entry_id, location, year, ribbonType, numRibbons,project_name,project_photo, post_id, maker_name "
-            . " FROM `wp_mf_ribbons` where entry_id > 0 AND post_id > 0 ".$filter." "
+            . " FROM `wp_mf_ribbons` where entry_id > 0 ".$filter." "
             . " ORDER BY ribbonType ASC, numRibbons desc, entry_id";
         
-    foreach($wpdb->get_results($sql,ARRAY_A) as $ribbon){  
+    foreach($wpdb->get_results($sql,ARRAY_A) as $ribbon){          
         $entry_id       = $ribbon['entry_id'];
+        $link           = "/mfarchives/". $entry_id;
         $post_id        = $ribbon['post_id'];
         $project_name   = $ribbon['project_name'];
         $project_photo  = $ribbon['project_photo'];  
         $project_desc   = '';  
         $maker_name     = $ribbon['maker_name'];
-                
-                
-        //pull the project information - mf_ribbons data takes precedence      
-        $makerSQL = "select post.post_content, wp_postmeta.* "
-                  . " from wp_posts post "
-                  . " right outer join wp_postmeta on "
-                . "                     post.ID = post_id and "
-                . "                   ((post_id = $post_id and meta_key like '%maker_name%') or "
-                . "                    (post_id = $post_id and meta_key in('project_photo','project_name')) or "
-                . "                    (post_id = $post_id and meta_key like '%project_description%')) "                
-                . "  where post.ID = $post_id ORDER BY `wp_postmeta`.`meta_key` DESC";
-        
-        foreach($wpdb->get_results($makerSQL,ARRAY_A) as $projData){ 
-            //wpv1 project data is in the post_content field
-            //cs project data is in the meta fields
-            if($projData['post_content']!=''){
-                $jsonArray = json_decode($projData['post_content'], true );
-                //if there is an error, try to fix the json
-                if(empty($jsonArray)){  
-                    $content = fixWPv1Json($projData['post_content'],$post_id);
-                    $jsonArray = json_decode($content, true );
-                }
-                if(!empty($jsonArray)){
-                    if($jsonArray['form_type']=='presenter'){
-                        $project_name  = $jsonArray['presentation_name'];
-                        $project_photo = $jsonArray['presentation_photo'];
-                        $maker_name    = $jsonArray['presenter_name'];  
-                        $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
-                    }elseif($jsonArray['form_type']=='exhibit'){                    
-                            $project_name  = $jsonArray['project_name'];
-                            $project_photo = $jsonArray['project_photo'];
-                            $maker_name    = $jsonArray['maker_name'];   
-                            $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
-                    }elseif($jsonArray['form_type']=='performer'){                    
-                            $project_name  = $jsonArray['performer_name'];
-                            $project_photo = $jsonArray['performer_photo'];
-                            $maker_name    = $jsonArray['name'];  
-                            $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
-                    }
-                    break;
-                }
-            }
-            $field = $projData['meta_key'];
-            $value = $projData['meta_value'];
-            if($field=='project_photo' && $project_photo ==''){  
-                if(is_numeric($value)){                    
-                    $project_photo = wp_get_attachment_url( $value);
-                }else{
-                    $project_photo = $value;
-                }
-            }
-            if($field=='project_name'  && $project_name =='')   $project_name  = $value;
-            if(strpos($field, 'maker_name')!== false){
-                //if maker name has field_ in it, it is not a valid maker name.
-                if(strpos($value, 'field_')===false && $maker_name=='')  $maker_name = $value;
-            }
-            if($field=='project_description'  && $project_desc =='')   $project_desc  = $value;
-        }
-                       
         $location   = $ribbon['location'];
         $year       = $ribbon['year'];
         $ribbonType = $ribbon['ribbonType'];
-        $numRibbons = $ribbon['numRibbons'];    
+        $numRibbons = $ribbon['numRibbons'];  
         
-        //build ribbon data array                           
-        $currCount = (isset($ribbonData[$entry_id]['ribbon'][$ribbonType]['count']) ? $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']:0);
-        $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']  = (int) $currCount + (int) $numRibbons;        
-        $ribbonData[$entry_id]['fairedata'][]   = array( 'year'=>$year, 'faire'=>$location,'ribbonType'=>($ribbonType==0?'blue':'red'));               
-        $ribbonData[$entry_id]['project_name']  = $project_name;
-        $ribbonData[$entry_id]['project_photo'] = $project_photo; 
-        $ribbonData[$entry_id]['project_desc']  = $project_desc; 
-        $ribbonData[$entry_id]['maker_name']    = $maker_name;
+        //pull the project information - mf_ribbons data takes precedence      
+        if($post_id!=0){        //archived record            
+            $makerSQL = "select post.post_content, wp_postmeta.* "
+                      . " from wp_posts post "
+                      . " right outer join wp_postmeta on "
+                    . "                     post.ID = post_id and "
+                    . "                   ((post_id = $post_id and meta_key like '%maker_name%') or "
+                    . "                    (post_id = $post_id and meta_key in('project_photo','project_name')) or "
+                    . "                    (post_id = $post_id and meta_key like '%project_description%')) "                
+                    . "  where post.ID = $post_id ORDER BY `wp_postmeta`.`meta_key` DESC";
+
+            foreach($wpdb->get_results($makerSQL,ARRAY_A) as $projData){ 
+                //wpv1 project data is in the post_content field
+                //cs project data is in the meta fields
+                if($projData['post_content']!=''){
+                    $jsonArray = json_decode($projData['post_content'], true );
+                    //if there is an error, try to fix the json
+                    if(empty($jsonArray)){  
+                        $content = fixWPv1Json($projData['post_content'],$post_id);
+                        $jsonArray = json_decode($content, true );
+                    }
+                    if(!empty($jsonArray)){
+                        if($jsonArray['form_type']=='presenter'){
+                            $project_name  = $jsonArray['presentation_name'];
+                            $project_photo = $jsonArray['presentation_photo'];
+                            $maker_name    = $jsonArray['presenter_name'];  
+                            $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
+                        }elseif($jsonArray['form_type']=='exhibit'){                    
+                                $project_name  = $jsonArray['project_name'];
+                                $project_photo = $jsonArray['project_photo'];
+                                $maker_name    = $jsonArray['maker_name'];   
+                                $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
+                        }elseif($jsonArray['form_type']=='performer'){                    
+                                $project_name  = $jsonArray['performer_name'];
+                                $project_photo = $jsonArray['performer_photo'];
+                                $maker_name    = $jsonArray['name'];  
+                                $project_desc  = (isset($jsonArray['public_description'])?$jsonArray['public_description']:'');
+                        }
+                        break;
+                    }
+                }
+                $field = $projData['meta_key'];
+                $value = $projData['meta_value'];
+                if($field=='project_photo' && $project_photo ==''){  
+                    if(is_numeric($value)){                    
+                        $project_photo = wp_get_attachment_url( $value);
+                    }else{
+                        $project_photo = $value;
+                    }
+                }
+                if($field=='project_name'  && $project_name =='')   $project_name  = $value;
+                if(strpos($field, 'maker_name')!== false){
+                    //if maker name has field_ in it, it is not a valid maker name.
+                    if(strpos($value, 'field_')===false && $maker_name=='')  $maker_name = $value;
+                }
+                if($field=='project_description'  && $project_desc =='')   $project_desc  = $value;
+            }
+        }else{ //non archived record
+            $link           = "/maker/entry/". $entry_id;
+            $maker_first_name = $maker_last_name = '';
+            //check if this is a GF entry
+            $leadSQL = "SELECT  wp_rg_lead_detail.field_number,wp_rg_lead_detail.value,wp_rg_lead_detail_long.value as long_value  "
+                    . " FROM wp_rg_lead_detail "
+                    . " left outer join wp_rg_lead_detail_long ON "
+                    . "     wp_rg_lead_detail.id = wp_rg_lead_detail_long.lead_detail_id "
+                    . " WHERE wp_rg_lead_detail.lead_id = ".$entry_id ." order by lead_id, field_number";
+            
+            foreach($wpdb->get_results($leadSQL,ARRAY_A) as $projData){             
+                switch($projData['field_number']){
+                    case '22':
+                        $project_photo = $projData['value'];
+                        break;
+                    case '151';
+                        $project_name = $projData['value'];
+                        break;
+                    case '16';
+                        if($projData['long_value'] != NULL){
+                            $project_desc = $projData['long_value'];
+                        }else{
+                            $project_desc = $projData['value'];
+                        }
+                        break;
+                    case '160.3':
+                        $maker_first_name = $projData['value'];
+                        break;
+                    case '160.6':
+                        $maker_last_name = $projData['value'];
+                        break;
+                }
+
+                $maker_name = $maker_first_name . ' ' . $maker_last_name;
+            }
+        }
+        //do not add to ribbon array if $project_name, $project_photo and $project_desc are blank
+        if($project_name=='' && $project_photo == '' && $project_desc == '' ){      
+            //skip
+        }else{
+            //build ribbon data array                           
+            $currCount = (isset($ribbonData[$entry_id]['ribbon'][$ribbonType]['count']) ? $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']:0);
+            $ribbonData[$entry_id]['ribbon'][$ribbonType]['count']  = (int) $currCount + (int) $numRibbons;        
+            $ribbonData[$entry_id]['fairedata'][]   = array( 'year'=>$year, 'faire'=>$location,'ribbonType'=>($ribbonType==0?'blue':'red'));               
+            $ribbonData[$entry_id]['project_name']  = $project_name;
+            $ribbonData[$entry_id]['project_photo'] = $project_photo; 
+            $ribbonData[$entry_id]['project_desc']  = $project_desc; 
+            $ribbonData[$entry_id]['maker_name']    = $maker_name;
+            $ribbonData[$entry_id]['link']    = $link;
+        }
 
     }
     
@@ -125,6 +166,7 @@ function  createJson($year=''){
                 "project_name"  => html_entity_decode($data['project_name']),
                 "project_photo" => $project_photo,
                 "maker_name"    => $data['maker_name'],
+                "link"          => $data['link'],
                 "project_description" => html_entity_decode($data['project_desc']),
                 "faireData"     => array_map("unserialize", array_unique(array_map("serialize", $data['fairedata'])))
             );

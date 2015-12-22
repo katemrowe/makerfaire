@@ -95,7 +95,11 @@
       <div class="page-header">
 
         <h1><?php echo $project_title; ?></h1>
-
+        <?php
+           //check if this entry has one any awards
+          $ribbons = checkForRibbons(0,$entryId);          
+          echo $ribbons;
+        ?>
       </div>
 
       <img class="img-responsive padbottom" src="<?php echo $project_photo; ?>" />

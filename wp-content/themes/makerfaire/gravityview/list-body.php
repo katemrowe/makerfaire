@@ -85,23 +85,26 @@ if( ! $total or !( is_user_logged_in() )) {
 
 	// There are entries. Loop through them.
 	foreach ( $entries as $entry ) {
-
 		$this->setCurrentEntry( $entry );
+                
+                $form = GFAPI::get_form( $entry['form_id'] );                                    
+                $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].':&nbsp;</p>':'');             
+                if($form_type != 'Other' && $form_type != ''){
 
-	?>
-            <hr/>
-		<div id="gv_list_<?php echo $entry['id']; ?>" class="maker-admin">
+                ?>
+                    <hr/>
+                    <div id="gv_list_<?php echo $entry['id']; ?>" class="maker-admin">
 
-		<?php
+                    <?php
 
-		/**
-		 * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
-		 * @param array $entry Gravity Forms Entry array
-		 * @param GravityView_View $this The GravityView_View instance
-		 */
-		do_action( 'gravityview_entry_before', $entry, $this );
+                    /**
+                     * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
+                     * @param array $entry Gravity Forms Entry array
+                     * @param GravityView_View $this The GravityView_View instance
+                     */
+                    do_action( 'gravityview_entry_before', $entry, $this );
 
-		?>
+                    ?>
 
 		<?php if ( $this->getField('directory_list-title') || $this->getField('directory_list-subtitle') ): ?>
 
@@ -126,10 +129,7 @@ if( ! $total or !( is_user_logged_in() )) {
                                             'form'       => $this->getForm(),
                                             'hide_empty' => $this->getAtts( 'hide_empty' ),
                                     );
-                                    
-                                    
-                                    $form = GFAPI::get_form( $entry['form_id'] );                                    
-                                    $form_type = (isset($form['form_type'])?'<p>'.$form['form_type'].':&nbsp;</p>':'');                                    
+                                                                                                                                   
                                     
                                     //set status color
                                     if($entry['303']=='Accepted'){
@@ -270,7 +270,7 @@ if( ! $total or !( is_user_logged_in() )) {
 		?>
 
 		</div>   
-
+        <?php } ?>
 	<?php } ?>
                 <div class="modal" id="cancelEntry">
                     <div class="modal-dialog">

@@ -166,6 +166,28 @@ section.store-pictures {
   }
 }
 
+#mf-frameholder {
+  width:1010px;
+  height:653px;
+  overflow:hidden;
+  margin-left: auto;
+  margin-right: auto;
+}
+#mf-frameholder iframe {
+  width:1010px;
+  height:875px;
+  margin-left:-12px;
+  margin-top:-217px;   
+  border:0;
+  body {
+    background: transparent;
+  }
+}
+
+body.js-d-track-event-links {
+  background: transparent;
+}
+
 @media(min-width:1200px) {
   .store-container {
     -webkit-background-size: cover;
@@ -174,19 +196,34 @@ section.store-pictures {
     -o-background-size: cover;
   }
 }
+@media screen and (min-width: 992px) and (max-width: 1199px) { 
+  #mf-frameholder {
+    width:940px;
+  }
+  #mf-frameholder iframe {
+    width:940px;
+  }
+}
 @media screen and (min-width: 768px) and (max-width: 991px) { 
   section.store-pictures .fancybox_store_page {
     overflow: hidden;
     height: 165px;
   }
+  #mf-frameholder {
+    width:720px;
+    height: 386px;
+  }
+  #mf-frameholder iframe {
+    width:720px;
+  }
 }
 
 @media(min-width:768px) {
-    #portfolio {
-        .portfolio-item {
-            margin: 0 0 30px;
-        }
-    }
+  #portfolio {
+      .portfolio-item {
+          margin: 0 0 30px;
+      }
+  }
 }
 @media(max-width:767px) {
   section.store-pictures .fancybox_store_page {
@@ -194,6 +231,14 @@ section.store-pictures {
   }
   section.store-press {
     margin-bottom: 30px;
+  }
+  #mf-frameholder {
+    width:330px;
+    height: 321px;
+  }
+  #mf-frameholder iframe {
+    width:330px;
+    margin-top: -347px;
   }
 }
 @media(max-width:600px) {

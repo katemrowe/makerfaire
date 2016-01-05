@@ -18,8 +18,7 @@ if(!require_once(dirname($gw_perk_file) . '/safetynet.php'))
     return;
 
 class GWCopyCat extends GWPerk {
-
-	public $version = '1.3.3';
+	
 	public $version = '1.3.4';
 	protected $min_perks_version = '1.0.6';
 	protected $min_gravity_forms_version = '1.9.3';

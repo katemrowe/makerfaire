@@ -84,7 +84,7 @@ foreach($yearSql as $year){
                             
                             <a href="{{ribbon.link}}" target="_blank">
                                  <div class="projImg"> 
-                                     <img class="img-responsive" fallback-src="/wp-content/uploads/2015/10/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" />
+                                     <img class="img-responsive" fallback-src="/wp-content/themes/makerfaire/images/grey-makey.png" ng-src="{{ribbon.project_photo != '' && ribbon.project_photo || '/wp-content/uploads/2015/10/grey-makey.png'}}" />
                                  
                                 <div class="ribbons">
 
